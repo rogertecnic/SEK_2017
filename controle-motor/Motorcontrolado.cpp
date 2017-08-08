@@ -9,16 +9,21 @@
 #include "ev3dev.h"
 
 Motor_controlado::Motor_controlado(string porta)
-:motor(ev3dev::large_motor(porta))
+:motor(ev3dev::large_motor(porta)),
+ thread_pid(std::thread(&Motor_controlado::run_controle, this))
 {
 	motor.reset();
 }
 
-Motor_controlado::~Motor_controlado() {
+int Motor_controlado::girar_indefinido(Sentido sentido){
+std::thread();
+	return 0;
 }
 
-void Motor_controlado::run_velo_max(){
-	double pwm;
+
+
+void Motor_controlado::run_controle(){
+	double pwm=0;
 	double velo_real;
 	double velo_sp_tmp;
 	double e=0;
@@ -27,23 +32,24 @@ void Motor_controlado::run_velo_max(){
 	double kd = 1;
 	int i=1;
 
-	if(acc_sp == 0) pwm = velo_sp/velo_max*100;
-	else{
-		pwm = 0;
-	}
-
-	motor.set_duty_cycle_sp(pwm);
-	motor.run_direct();
 
 	//-------------CONTROLADOR-THREAD
-
-	while(!ev3dev::button::enter.process()){
-		if(acc_sp == 0)
-			velo_sp_tmp = velo_sp;
-		else if(velo_sp_tmp< velo_sp){
-			velo_sp_tmp = acc_sp*i*0.005;
-			if(velo_sp_tmp> velo_sp) velo_sp_tmp = velo_sp;
+	while(true){
+		if(!parado){ // ----ACELERACAO
+			if(sentido_giro){ // FRENTE
+				velo_sp_tmp = (velo_sp_tmp<velo_sp ? velo_sp_tmp + acc_sp*0.05 : velo_sp);
+			}else{ // TRAZ
+				velo_sp_tmp = (velo_sp_tmp>velo_sp ? velo_sp_tmp - acc_sp*0.05 : velo_sp);
+			}
 		}
+		else {// ----DESACELERACAO
+			if(sentido_giro){ // FRENTE
+				velo_sp_tmp = (velo_sp_tmp>0 ? velo_sp_tmp - acc_sp*0.05 : 0);
+			}else{ // TRAZ
+				velo_sp_tmp = (velo_sp_tmp<0 ? velo_sp_tmp + acc_sp*0.05 : 0);
+			}
+		}
+
 		usleep(5*1000); // pausa por 5 milis
 		velo_real = motor.speed();
 		e =  (velo_sp_tmp-velo_real)/velo_max*100; // erro positivo saida baixa, aumentala
@@ -54,14 +60,5 @@ void Motor_controlado::run_velo_max(){
 		eant = e;
 
 		cout<<pwm<<";"<<motor.speed()<<endl;
-		i++;
-		switch(i){
-		case 500:
-			velo_sp = 360;
-			break;
-		case 1000:
-			velo_sp = 540;
-			break;
-		}
 	}
 }
