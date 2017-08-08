@@ -44,10 +44,10 @@ int main(){
 	calibraLinha();
 
 	while(!ev3dev::button::back.process()){
-		segueLinha();
+		//segueLinha();
 
 
-
+		cout<<linhaE()<<";"<<linhaD()<<endl;
 		//		frente();
 		//		usleep(1000000);
 		//		stop();
@@ -65,21 +65,27 @@ int main(){
 Cor linhaE(){
 	std::tuple<int, int, int> sample;
 	sample = sensorE.raw();
-	if(get<0>(sample)>r)
-		return Cor::branco; //cout<<"branco"<<endl;
-	else if (get<1>(sample)>g)
-		return Cor::verde ; //cout<<"verde"<<endl;
-	else return Cor::preto; //cout<<"preto"<<endl;
+	if(get<0>(sample)>r && get<1>(sample)>g &&get<2>(sample)>b)
+		return Cor::branco;
+	if(get<0>(sample)<r && get<1>(sample)>g &&get<2>(sample)<b)
+		return Cor::verde;
+	else return Cor::preto;
 }
 
 Cor linhaD(){
 	std::tuple<int, int, int> sample;
 	sample = sensorD.raw();
-	if(get<0>(sample)>r)
-		return Cor::branco; //cout<<"branco"<<endl;
-	else if (get<1>(sample)>g)
-		return Cor::verde ; //cout<<"verde"<<endl;
-	else return Cor::preto; //cout<<"preto"<<endl;
+
+	if(get<0>(sample)>r && get<1>(sample)>g &&get<2>(sample)>b)
+		return Cor::branco;
+	if(get<0>(sample)<r && get<1>(sample)>g &&get<2>(sample)<b)
+		return Cor::verde;
+	else return Cor::preto;
+	//	if(get<0>(sample)>r)
+	//			return Cor::branco; //cout<<"branco"<<endl;
+	//		else if (get<1>(sample)>g)
+	//			return Cor::verde; //cout<<"verde"<<endl;
+	//		else return Cor::preto; //cout<<"preto"<<endl;
 }
 
 void segueLinha(){
@@ -99,29 +105,44 @@ void segueLinha(){
 		if(linhaD() == Cor::preto){
 			stop();
 			traz();
-			usleep(600*1000);
+			usleep(300*1000);
 			girar(Direcao::direita,200);
 		}
 
 		if(linhaE() == Cor::verde){
-			rodaD.set_speed_sp(120);
-			rodaE.set_speed_sp(120);
-			while(rodaE.state() != ev3dev::motor::state_holding &&
-					rodaD.state() != ev3dev::motor::state_holding){
-				if(linhaE() == Cor::preto) rodaE.stop();
-				if(linhaD() == Cor::preto) rodaD.stop();
-			}
-			girar(Direcao::esquerda, 500);
-			frente();
-			usleep(400*1000);
 			stop();
-			cout<<"conseguiu terminar o cruzamento"<<endl;
+			usleep(10000);
+			if(linhaE() == Cor::verde){
+				cout<<"intrcect esq"<<endl;
+				usleep(500000);
+				rodaD.set_speed_sp(80);
+				rodaE.set_speed_sp(80);
+				frente();
+				bool rodaEparou = false;
+				bool rodaDparou = false;
+				while(true){
+					if(linhaE() == Cor::preto && !rodaEparou){
+						rodaE.stop();
+						rodaEparou = true;
+					}
+					if(linhaD() == Cor::preto){
+						rodaD.stop();
+						rodaDparou = true;
+					}
+					if(rodaEparou && rodaDparou)break;
+				}
+				girar(Direcao::esquerda, 500);
+				frente();
+				usleep(400*1000);
+				stop();
+				cout<<"conseguiu terminar o cruzamento"<<endl;
+				usleep(2000000);
+			}
 		}
 
 		if(linhaD() == Cor::verde){
 
 		}
-
 	}
 }
 
@@ -168,30 +189,64 @@ void girar(Direcao dir, int millis){
 
 }
 
+
+
 void calibraLinha(){
-	cout<<"cal dir \n linha preta"<<endl;
-	while(!ev3dev::button::enter.process()){};
-	std::tuple<int, int, int> rgbpreto;
-	rgbpreto = sensorD.raw();
-	while(!ev3dev::button::enter.process()){};
+		cout<<"cal dir preto"<<endl;
+		while(!ev3dev::button::enter.process()){};
+		std::tuple<int, int, int> rgbpreto;
+		rgbpreto = sensorD.raw();
+		while(!ev3dev::button::enter.process()){};
 
-	cout<<"cal dir \n branco"<<endl;
-	while(!ev3dev::button::enter.process()){};
-	std::tuple<int, int, int> rgbbranco;
-	rgbbranco = sensorD.raw();
-	while(!ev3dev::button::enter.process()){};
+		cout<<"cal dir \n branco"<<endl;
+		while(!ev3dev::button::enter.process()){};
+		std::tuple<int, int, int> rgbbranco;
+		rgbbranco = sensorD.raw();
+		while(!ev3dev::button::enter.process()){};
 
-	cout<<"cal dir \n verde"<<endl;
-	while(!ev3dev::button::enter.process()){};
-	std::tuple<int, int, int> rgbverde;
-	rgbverde = sensorD.raw();
-	while(!ev3dev::button::enter.process()){};
+		cout<<"cal dir \n verde"<<endl;
+		while(!ev3dev::button::enter.process()){};
+		std::tuple<int, int, int> rgbverde;
+		rgbverde = sensorD.raw();
+		while(!ev3dev::button::enter.process()){};
 
 
-	r = ( get<0>(rgbpreto) + get<0>(rgbbranco) )/2;
-	g = ( get<1>(rgbpreto) + get<1>(rgbverde) )/2;
-	b = ( get<2>(rgbpreto) + get<2>(rgbbranco) )/2;
-	cout<<r<<";"<<g<<";"<<b<<endl;
-	while(!ev3dev::button::enter.process()){};
-	while(!ev3dev::button::enter.process()){};
+		r = ( get<0>(rgbpreto) + get<0>(rgbbranco) )/2;
+		g = ( get<1>(rgbpreto) + get<1>(rgbverde) )/2;
+		b = ( get<2>(rgbpreto) + get<2>(rgbbranco) )/2;
+		cout<<r<<";"<<g<<";"<<b<<endl;
+		while(!ev3dev::button::enter.process()){};
+		while(!ev3dev::button::enter.process()){};
+		cout<<endl<<endl<<endl<<endl;
 }
+
+
+
+//void calibraLinha(){
+//	cout<<"cal dir \n linha preta"<<endl;
+//	while(!ev3dev::button::enter.process()){};
+//	std::tuple<int, int, int> rgbpreto;
+//	rgbpreto = sensorD.raw();
+//	while(!ev3dev::button::enter.process()){};
+//
+//	cout<<"cal dir \n branco"<<endl;
+//	while(!ev3dev::button::enter.process()){};
+//	std::tuple<int, int, int> rgbbranco;
+//	rgbbranco = sensorD.raw();
+//	while(!ev3dev::button::enter.process()){};
+//
+//	cout<<"cal dir \n verde"<<endl;
+//	while(!ev3dev::button::enter.process()){};
+//	std::tuple<int, int, int> rgbverde;
+//	rgbverde = sensorD.raw();
+//	while(!ev3dev::button::enter.process()){};
+//
+//
+//	r = ( get<0>(rgbpreto) + get<0>(rgbbranco) )/2;
+//	g = ( get<1>(rgbpreto) + get<1>(rgbverde) )/2;
+//	b = ( get<2>(rgbpreto) + get<2>(rgbbranco) )/2;
+//	cout<<r<<";"<<g<<";"<<b<<endl;
+//	while(!ev3dev::button::enter.process()){};
+//	while(!ev3dev::button::enter.process()){};
+//	cout<<endl<<endl<<endl<<endl;
+//}
