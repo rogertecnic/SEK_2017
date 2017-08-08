@@ -1,0 +1,1 @@
+/usr/bin/arm-linux-gnueabi-g++       CMakeFiles/binario.dir/ev3dev.o CMakeFiles/binario.dir/Classe.o CMakeFiles/binario.dir/main.o  -o binario -rdynamic -pthread 
