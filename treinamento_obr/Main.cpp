@@ -11,13 +11,22 @@
 
 using namespace std;
 
+enum Cor{preto, branco, verde};
+enum Parte_prova{segueLinha, desvia, busca};
+enum Direcao{esquerda, direita};
 int r,g,b;
-bool calibraLinha();
-bool linhaE();
-bool linhaD();
-bool segueLinha();
-bool desviaObstaculo();
-bool intersecao();
+Parte_prova estado;
+
+Cor linhaE();
+Cor linhaD();
+void segueLinha();
+void frente();
+void traz();
+void stop();
+void girar(int);
+void calibraLinha();
+void desviaObstaculo();
+void intersecao();
 
 ev3dev::large_motor rodaD(ev3dev::OUTPUT_A);
 ev3dev::large_motor rodaE(ev3dev::OUTPUT_B);
@@ -33,39 +42,85 @@ int main(){
 	while(!ev3dev::button::back.process()){
 		std::tuple<int, int, int> sample;
 		sample = sensorD.raw();
-		//linhaD();
-
-		//cout<<get<1>(sample)<<";"<<g<<endl;
-		if(get<0>(sample)>r)
-			cout<<"branco"<<endl;
-		else if (get<1>(sample)>g)
-			cout<<"verde"<<endl;
-		else cout<<"preto"<<endl;
+		cout<<linhaE()<<";"<<linhaD()<<endl;
 	}
-
-
 }
 
-bool linhaE(){
+
+Cor linhaE(){
 	std::tuple<int, int, int> sample;
 	sample = sensorE.raw();
-	cout<<get<0>(sample)<<";"<<get<1>(sample)<<";"<<get<2>(sample)<<endl;
+	if(get<0>(sample)>r)
+		return Cor::branco; //cout<<"branco"<<endl;
+	else if (get<1>(sample)>g)
+		return Cor::verde ; //cout<<"verde"<<endl;
+	else return Cor::preto; //cout<<"preto"<<endl;
 }
 
-bool linhad(){
+Cor linhaD(){
 	std::tuple<int, int, int> sample;
 	sample = sensorD.raw();
-	cout<<get<0>(sample)<<";"<<get<1>(sample)<<";"<<get<2>(sample)<<endl;
+	if(get<0>(sample)>r)
+		return Cor::branco; //cout<<"branco"<<endl;
+	else if (get<1>(sample)>g)
+		return Cor::verde ; //cout<<"verde"<<endl;
+	else return Cor::preto; //cout<<"preto"<<endl;
 }
 
-bool segueLinha(){
+void segueLinha(){
 	rodaE.reset();
 	rodaD.reset();
 	rodaE.set_speed_sp(360);
 	rodaD.set_speed_sp(360);
 
+	estado = Parte_prova::segueLinha;
 	rodaE.run_forever();
 	rodaD.run_forever();
+	while(estado == Parte_prova::segueLinha){
+
+		if(linhaE() == Cor::preto){
+
+		}
+		if(linhaD() == Cor::preto){
+
+		}
+
+		if(linhaE() == Cor::verde){
+
+		}
+
+		if(linhaD() == Cor::verde){
+
+		}
+
+	}
+}
+
+
+void frente(){
+	rodaD.set_speed_sp(180);
+	rodaE.set_speed_sp(180);
+	rodaD.run_forever();
+	rodaE.run_forever();
+}
+
+void traz(){
+	rodaD.set_speed_sp(-180);
+	rodaE.set_speed_sp(-180);
+	rodaD.run_forever();
+	rodaE.run_forever();
+}
+
+void stop(){
+	rodaD.set_stop_action(ev3dev::motor::stop_action_hold);
+	rodaE.set_stop_action(ev3dev::motor::stop_action_hold);
+	rodaD.stop();
+	rodaE.stop();
+
+}
+
+void girar(Direcao dir){
+
 }
 
 bool calibraLinha(){
