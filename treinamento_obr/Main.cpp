@@ -8,11 +8,12 @@
 #include <iostream>
 #include <tuple>
 #include "ev3dev.h"
+#include <unistd.h>
 
 using namespace std;
 
 enum Cor{preto, branco, verde};
-enum Parte_prova{segueLinha, desvia, busca};
+enum Parte_prova{linha, desvia, busca};
 enum Direcao{esquerda, direita};
 int r,g,b;
 Parte_prova estado;
@@ -23,7 +24,7 @@ void segueLinha();
 void frente();
 void traz();
 void stop();
-void girar(int);
+void girar(Direcao, int);
 void calibraLinha();
 void desviaObstaculo();
 void intersecao();
@@ -35,14 +36,28 @@ ev3dev::color_sensor sensorE(ev3dev::INPUT_2);
 ev3dev::ultrasonic_sensor us(ev3dev::INPUT_3);
 
 int main(){
+	rodaE.reset();
+	rodaD.reset();
+	stop();
 	system("setfont Greek-TerminusBold20x10.psf.gz");
 
 	calibraLinha();
 
 	while(!ev3dev::button::back.process()){
-		std::tuple<int, int, int> sample;
-		sample = sensorD.raw();
-		cout<<linhaE()<<";"<<linhaD()<<endl;
+		segueLinha();
+
+
+
+		//		frente();
+		//		usleep(1000000);
+		//		stop();
+		//		girar(Direcao::esquerda, 300);
+		//		usleep(500000);
+		//		girar(Direcao::direita, 300);
+		//		traz();
+		//		usleep(1000000);
+		//		stop();
+		//		usleep(1000000);
 	}
 }
 
@@ -68,25 +83,39 @@ Cor linhaD(){
 }
 
 void segueLinha(){
-	rodaE.reset();
-	rodaD.reset();
-	rodaE.set_speed_sp(360);
-	rodaD.set_speed_sp(360);
 
-	estado = Parte_prova::segueLinha;
-	rodaE.run_forever();
-	rodaD.run_forever();
-	while(estado == Parte_prova::segueLinha){
+
+	estado = Parte_prova::linha;
+
+	while(estado == Parte_prova::linha){
+		frente();
 
 		if(linhaE() == Cor::preto){
-
+			stop();
+			traz();
+			usleep(300*1000);
+			girar(Direcao::esquerda,200);
 		}
 		if(linhaD() == Cor::preto){
-
+			stop();
+			traz();
+			usleep(600*1000);
+			girar(Direcao::direita,200);
 		}
 
 		if(linhaE() == Cor::verde){
-
+			rodaD.set_speed_sp(120);
+			rodaE.set_speed_sp(120);
+			while(rodaE.state() != ev3dev::motor::state_holding &&
+					rodaD.state() != ev3dev::motor::state_holding){
+				if(linhaE() == Cor::preto) rodaE.stop();
+				if(linhaD() == Cor::preto) rodaD.stop();
+			}
+			girar(Direcao::esquerda, 500);
+			frente();
+			usleep(400*1000);
+			stop();
+			cout<<"conseguiu terminar o cruzamento"<<endl;
 		}
 
 		if(linhaD() == Cor::verde){
@@ -119,11 +148,27 @@ void stop(){
 
 }
 
-void girar(Direcao dir){
+void girar(Direcao dir, int millis){
+	stop();
+	if(dir == Direcao::esquerda){
+		rodaE.set_speed_sp(-120);
+		rodaD.set_speed_sp(120);
+		rodaE.run_forever();
+		rodaD.run_forever();
+		usleep(millis*1000);
+	}
+	else{
+		rodaE.set_speed_sp(120);
+		rodaD.set_speed_sp(-120);
+		rodaE.run_forever();
+		rodaD.run_forever();
+		usleep(millis*1000);
+	}
+	stop();
 
 }
 
-bool calibraLinha(){
+void calibraLinha(){
 	cout<<"cal dir \n linha preta"<<endl;
 	while(!ev3dev::button::enter.process()){};
 	std::tuple<int, int, int> rgbpreto;
