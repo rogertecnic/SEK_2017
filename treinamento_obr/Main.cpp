@@ -18,10 +18,11 @@ enum Direcao{esquerda, direita};
 
 struct RangesCor{
 	int r[2],g[2], b[2];
-	static const int range = 10;
+	static const int range = 30;
 };
 
-RangesCor range_branco, range_preto, range_verde;
+RangesCor r_dir_branco, r_dir_preto, r_dir_verde;
+RangesCor r_esq_branco, r_esq_preto, r_esq_verde;
 
 Parte_prova estado;
 bool corEstaEntre(std::tuple<int, int, int>, RangesCor);
@@ -51,20 +52,22 @@ int main(){
 	calibraLinha();
 
 	while(!ev3dev::button::back.process()){
-		//segueLinha();
+		segueLinha();
 
 
-		cout<<linhaE()<<";"<<linhaD()<<endl;
-		//		frente();
-		//		usleep(1000000);
-		//		stop();
-		//		girar(Direcao::esquerda, 300);
-		//		usleep(500000);
-		//		girar(Direcao::direita, 300);
-		//		traz();
-		//		usleep(1000000);
-		//		stop();
-		//		usleep(1000000);
+		//cout<<linhaE()<<";"<<linhaD()<<endl;
+
+		//				frente();
+		//				usleep(1000000);
+		//				stop();
+		//				girar(Direcao::esquerda, 300);
+		//				usleep(500000);
+		//				girar(Direcao::direita, 300);
+		//				traz();
+		//				usleep(1000000);
+		//				stop();
+		//				usleep(1000000);
+
 	}
 }
 
@@ -82,11 +85,10 @@ bool corEstaEntre(std::tuple<int, int, int> sample, RangesCor ranges){
 Cor linhaE(){
 	std::tuple<int, int, int> sample;
 	sample = sensorE.raw();
-	if(corEstaEntre(sample, range_preto)) return Cor::preto;
-	if(corEstaEntre(sample, range_branco)) return Cor::branco;
-	if(corEstaEntre(sample, range_verde)) return Cor::verde;
+	if(corEstaEntre(sample, r_esq_preto)) return Cor::preto;
+	if(corEstaEntre(sample, r_esq_branco)) return Cor::branco;
+	if(corEstaEntre(sample, r_esq_verde)) return Cor::verde;
 	else{
-		cout<<"cor irreconhecivel"<<endl;
 		return Cor::nda;
 	}
 }
@@ -95,18 +97,12 @@ Cor linhaD(){
 	std::tuple<int, int, int> sample;
 	sample = sensorD.raw();
 
-	//	if(get<0>(sample)>r && get<1>(sample)>g &&get<2>(sample)>b)
-	//		return Cor::branco;
-	//	if(get<0>(sample)<r && get<1>(sample)>g &&get<2>(sample)<b)
-	//		return Cor::verde;
-	//	else return Cor::preto;
-
-	//	if(get<0>(sample)>r)
-	//			return Cor::branco; //cout<<"branco"<<endl;
-	//		else if (get<1>(sample)>g)
-	//			return Cor::verde; //cout<<"verde"<<endl;
-	//		else return Cor::preto; //cout<<"preto"<<endl;
-	return Cor::nda;
+	if(corEstaEntre(sample, r_dir_preto)) return Cor::preto;
+	if(corEstaEntre(sample, r_dir_branco)) return Cor::branco;
+	if(corEstaEntre(sample, r_dir_verde)) return Cor::verde;
+	else{
+		return Cor::nda;
+	}
 }
 
 void segueLinha(){
@@ -131,51 +127,26 @@ void segueLinha(){
 		}
 
 
-		if(linhaE() == Cor::verde){		// intersecao detectada
+		if(linhaE() == Cor::verde){		// intersecao a esquerda detectada
 			stop();
-			usleep(10000);
+			cout<<"esq"<<endl;
+			usleep(500*1000);
 			rodaD.set_speed_sp(80);
 			rodaE.set_speed_sp(80);
-			frente();
+			rodaD.run_forever();
+			rodaE.run_forever();
 			while(linhaE() != Cor::preto){};
 			stop();
 			traz();
-			usleep(500*1000);
+			usleep(200*1000);
 			stop();
+			rodaD.set_speed_sp(80);
 			rodaD.run_forever();
-			usleep(800*1000);
+			usleep(2500*1000);
+			rodaE.set_speed_sp(80);
+			rodaE.run_forever();
+			usleep(700*1000);
 			stop();
-
-
-			//			if(linhaE() == Cor::verde){
-			//
-			//				usleep(500000);
-			//				rodaD.set_speed_sp(80);
-			//				rodaE.set_speed_sp(80);
-			//				frente();
-			//				bool rodaEparou = false;
-			//				bool rodaDparou = false;
-			//				while(true){
-			//					if(linhaE() == Cor::preto && !rodaEparou){
-			//						rodaE.stop();
-			//						rodaEparou = true;
-			//					}
-			//					if(linhaD() == Cor::preto){
-			//						rodaD.stop();
-			//						rodaDparou = true;
-			//					}
-			//					if(rodaEparou && rodaDparou)break;
-			//				}
-			//				girar(Direcao::esquerda, 500);
-			//				frente();
-			//				usleep(400*1000);
-			//				stop();
-			//				usleep(2000000);
-			//			}
-			//		}
-			//
-			//		if(linhaD() == Cor::verde){
-
 		}
 	}
 }
@@ -226,80 +197,80 @@ void girar(Direcao dir, int millis){
 
 
 void calibraLinha(){
+	std::tuple<int, int, int> rgbverde;
+	std::tuple<int, int, int> rgbpreto;
+	std::tuple<int, int, int> rgbbranco;
+
 	cout<<"cal dir preto"<<endl;
 	while(!ev3dev::button::enter.process()){};
-	std::tuple<int, int, int> rgbpreto;
 	rgbpreto = sensorD.raw();
 	while(!ev3dev::button::enter.process()){};
 
 	cout<<"cal dir \n branco"<<endl;
 	while(!ev3dev::button::enter.process()){};
-	std::tuple<int, int, int> rgbbranco;
 	rgbbranco = sensorD.raw();
 	while(!ev3dev::button::enter.process()){};
 
 	cout<<"cal dir \n verde"<<endl;
 	while(!ev3dev::button::enter.process()){};
-	std::tuple<int, int, int> rgbverde;
 	rgbverde = sensorD.raw();
 	while(!ev3dev::button::enter.process()){};
 
-	range_preto.r[0] = get<0>(rgbpreto) - RangesCor::range;
-	range_preto.r[1] = get<0>(rgbpreto) + RangesCor::range;
-	range_preto.g[0] = get<1>(rgbpreto) - RangesCor::range;
-	range_preto.g[1] = get<1>(rgbpreto) + RangesCor::range;
-	range_preto.b[0] = get<2>(rgbpreto) - RangesCor::range;
-	range_preto.b[1] = get<2>(rgbpreto) + RangesCor::range;
-	range_branco.r[0] = get<0>(rgbbranco) - RangesCor::range;
-	range_branco.r[1] = get<0>(rgbbranco) + RangesCor::range;
-	range_branco.g[0] = get<1>(rgbbranco) - RangesCor::range;
-	range_branco.g[1] = get<1>(rgbbranco) + RangesCor::range;
-	range_branco.b[0] = get<2>(rgbbranco) - RangesCor::range;
-	range_branco.b[1] = get<2>(rgbbranco) + RangesCor::range;
-	range_verde.r[0] = get<0>(rgbverde) - RangesCor::range;
-	range_verde.r[1] = get<0>(rgbverde) + RangesCor::range;
-	range_verde.g[0] = get<1>(rgbverde) - RangesCor::range;
-	range_verde.g[1] = get<1>(rgbverde) + RangesCor::range;
-	range_verde.b[0] = get<2>(rgbverde) - RangesCor::range;
-	range_verde.b[1] = get<2>(rgbverde) + RangesCor::range;
+	r_dir_preto.r[0] = get<0>(rgbpreto) - RangesCor::range;
+	r_dir_preto.r[1] = get<0>(rgbpreto) + RangesCor::range;
+	r_dir_preto.g[0] = get<1>(rgbpreto) - RangesCor::range;
+	r_dir_preto.g[1] = get<1>(rgbpreto) + RangesCor::range;
+	r_dir_preto.b[0] = get<2>(rgbpreto) - RangesCor::range;
+	r_dir_preto.b[1] = get<2>(rgbpreto) + RangesCor::range;
+	r_dir_branco.r[0] = get<0>(rgbbranco) - RangesCor::range;
+	r_dir_branco.r[1] = get<0>(rgbbranco) + RangesCor::range;
+	r_dir_branco.g[0] = get<1>(rgbbranco) - RangesCor::range;
+	r_dir_branco.g[1] = get<1>(rgbbranco) + RangesCor::range;
+	r_dir_branco.b[0] = get<2>(rgbbranco) - RangesCor::range;
+	r_dir_branco.b[1] = get<2>(rgbbranco) + RangesCor::range;
+	r_dir_verde.r[0] = get<0>(rgbverde) - RangesCor::range;
+	r_dir_verde.r[1] = get<0>(rgbverde) + RangesCor::range;
+	r_dir_verde.g[0] = get<1>(rgbverde) - RangesCor::range;
+	r_dir_verde.g[1] = get<1>(rgbverde) + RangesCor::range;
+	r_dir_verde.b[0] = get<2>(rgbverde) - RangesCor::range;
+	r_dir_verde.b[1] = get<2>(rgbverde) + RangesCor::range;
 
+	cout<<"cal esq preto"<<endl;
+	while(!ev3dev::button::enter.process()){};
+	rgbpreto = sensorE.raw();
+	while(!ev3dev::button::enter.process()){};
 
-	//		r = ( get<0>(rgbpreto) + get<0>(rgbbranco) )/2;
-	//		g = ( get<1>(rgbpreto) + get<1>(rgbverde) )/2;
-	//		b = ( get<2>(rgbpreto) + get<2>(rgbbranco) )/2;
-	//cout<<r<<";"<<g<<";"<<b<<endl;
+	cout<<"cal esq \n branco"<<endl;
+	while(!ev3dev::button::enter.process()){};
+	rgbbranco = sensorE.raw();
+	while(!ev3dev::button::enter.process()){};
+
+	cout<<"cal esq \n verde"<<endl;
+	while(!ev3dev::button::enter.process()){};
+	rgbverde = sensorE.raw();
+	while(!ev3dev::button::enter.process()){};
+
+	r_esq_preto.r[0] = get<0>(rgbpreto) - RangesCor::range;
+	r_esq_preto.r[1] = get<0>(rgbpreto) + RangesCor::range;
+	r_esq_preto.g[0] = get<1>(rgbpreto) - RangesCor::range;
+	r_esq_preto.g[1] = get<1>(rgbpreto) + RangesCor::range;
+	r_esq_preto.b[0] = get<2>(rgbpreto) - RangesCor::range;
+	r_esq_preto.b[1] = get<2>(rgbpreto) + RangesCor::range;
+	r_esq_branco.r[0] = get<0>(rgbbranco) - RangesCor::range;
+	r_esq_branco.r[1] = get<0>(rgbbranco) + RangesCor::range;
+	r_esq_branco.g[0] = get<1>(rgbbranco) - RangesCor::range;
+	r_esq_branco.g[1] = get<1>(rgbbranco) + RangesCor::range;
+	r_esq_branco.b[0] = get<2>(rgbbranco) - RangesCor::range;
+	r_esq_branco.b[1] = get<2>(rgbbranco) + RangesCor::range;
+	r_esq_verde.r[0] = get<0>(rgbverde) - RangesCor::range;
+	r_esq_verde.r[1] = get<0>(rgbverde) + RangesCor::range;
+	r_esq_verde.g[0] = get<1>(rgbverde) - RangesCor::range;
+	r_esq_verde.g[1] = get<1>(rgbverde) + RangesCor::range;
+	r_esq_verde.b[0] = get<2>(rgbverde) - RangesCor::range;
+	r_esq_verde.b[1] = get<2>(rgbverde) + RangesCor::range;
+
 	while(!ev3dev::button::enter.process()){};
 	while(!ev3dev::button::enter.process()){};
 	cout<<endl<<endl<<endl<<endl;
+
 }
-
-
-
-//void calibraLinha(){
-//	cout<<"cal dir \n linha preta"<<endl;
-//	while(!ev3dev::button::enter.process()){};
-//	std::tuple<int, int, int> rgbpreto;
-//	rgbpreto = sensorD.raw();
-//	while(!ev3dev::button::enter.process()){};
-//
-//	cout<<"cal dir \n branco"<<endl;
-//	while(!ev3dev::button::enter.process()){};
-//	std::tuple<int, int, int> rgbbranco;
-//	rgbbranco = sensorD.raw();
-//	while(!ev3dev::button::enter.process()){};
-//
-//	cout<<"cal dir \n verde"<<endl;
-//	while(!ev3dev::button::enter.process()){};
-//	std::tuple<int, int, int> rgbverde;
-//	rgbverde = sensorD.raw();
-//	while(!ev3dev::button::enter.process()){};
-//
-//
-//	r = ( get<0>(rgbpreto) + get<0>(rgbbranco) )/2;
-//	g = ( get<1>(rgbpreto) + get<1>(rgbverde) )/2;
-//	b = ( get<2>(rgbpreto) + get<2>(rgbbranco) )/2;
-//	cout<<r<<";"<<g<<";"<<b<<endl;
-//	while(!ev3dev::button::enter.process()){};
-//	while(!ev3dev::button::enter.process()){};
-//	cout<<endl<<endl<<endl<<endl;
-//}
