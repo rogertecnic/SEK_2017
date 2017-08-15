@@ -9,4 +9,5 @@ CMakeFiles/binario.dir/ev3dev.o
  /src/ev3dev.h
 CMakeFiles/binario.dir/main.o
  /src/Classe.h
+ /src/ev3dev.h
  /src/main.cpp
