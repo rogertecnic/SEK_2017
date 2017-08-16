@@ -17,13 +17,10 @@ typedef std::chrono::high_resolution_clock Time;
 typedef std::chrono::milliseconds ms;
 typedef std::chrono::duration<float> fsec;
 
-ev3dev::large_motor rodaD(ev3dev::OUTPUT_B); // roda esquerda
+ev3dev::large_motor rodaE(ev3dev::OUTPUT_A); // roda esquerda
+ev3dev::large_motor rodaD(ev3dev::OUTPUT_B); // roda direita
 
-
-
-int main1(){
-	system("setfont Greek-TerminusBold20x10.psf.gz");
-
+void testeAceleracao(){
 	// usando as funcoes ramp_up e ramp_down:
 	// argumento: milliseg que o motor demora pra acelerar/desacelerar de 0
 	// ate a velocidade maxima teórica (max_speed)
@@ -41,8 +38,8 @@ int main1(){
 	int tm = vm/a_sp; // tempo que o motor demoraria para acelerar/desacelerar de 0 a vm em seg
 
 	rodaD.reset();
-		rodaD.set_position_sp(360*25);
-		rodaD.set_speed_sp(v_sp);
+	rodaD.set_position_sp(360*25);
+	rodaD.set_speed_sp(v_sp);
 	rodaD.set_ramp_up_sp(tm*1000); // em miliseg
 	rodaD.set_ramp_down_sp(50);
 	rodaD.run_forever();
@@ -60,7 +57,7 @@ int main1(){
 	//std::cout << d.count() << "ms\n";
 
 
-
+	// espera apertar e soltar o botao enter do brick
 	while(!ev3dev::button::enter.process()){
 	}
 	while(!ev3dev::button::enter.process()){
@@ -68,3 +65,72 @@ int main1(){
 
 }
 
+void anda_e_para(){
+	rodaE.reset();
+	rodaD.reset();
+	rodaE.set_stop_action("hold");
+	rodaD.set_stop_action("hold");
+
+
+	int v_sp = 180*3; // setpoint da velocidade real
+	int t_sp = 1; // tempo de aceleracao/desaceleracao de 0 ate v_sp
+	int a_sp = v_sp/t_sp; // aceleracao/desaceleracao que queremos no motor
+	int vm = rodaE.max_speed(); // velocidade teorica maxima do motor
+	int tm = vm/a_sp; // tempo que o motor demoraria para acelerar/desacelerar de 0 a vm em seg
+	std::cout<<vm<<std::endl;
+
+	rodaE.set_speed_sp(v_sp);
+	rodaE.set_ramp_up_sp(tm*1000);
+	rodaE.set_ramp_down_sp(tm*1000);
+	rodaE.set_position_sp(360*2);
+
+	vm = rodaD.max_speed(); // velocidade teorica maxima do motor
+	tm = vm/a_sp; // tempo que o motor demoraria para acelerar/desacelerar de 0 a vm em seg
+	std::cout<<vm<<std::endl;
+
+	rodaD.set_speed_sp(v_sp);
+	rodaD.set_ramp_up_sp(tm*1000);
+	rodaD.set_ramp_down_sp(tm*1000);
+	rodaD.set_position_sp(360*2);
+
+	//rodaE.run_to_rel_pos();
+	//rodaD.run_to_rel_pos();
+
+	rodaE.run_forever();
+	rodaD.run_forever();
+	usleep(3000*1000); // em milli
+	rodaE.set_speed_sp(180*1);
+	rodaE.run_forever();
+	usleep(3000*1000); // em milli
+	rodaE.stop();
+	rodaD.stop();
+
+	// espera apertar e soltar o botao enter do brick
+	while(!ev3dev::button::enter.process()){
+	}
+	while(!ev3dev::button::enter.process()){
+	}
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+int main(){
+	system("setfont Greek-TerminusBold20x10.psf.gz");
+	anda_e_para();
+}

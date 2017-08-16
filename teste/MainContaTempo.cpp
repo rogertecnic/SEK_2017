@@ -16,7 +16,7 @@ typedef std::chrono::high_resolution_clock Time;
 typedef std::chrono::milliseconds ms;
 typedef std::chrono::duration<float> fsec;
 
-int main(){
+int main1(){
 	system("setfont Greek-TerminusBold20x10.psf.gz");
 	while(!ev3dev::button::enter.process()){
 	}
