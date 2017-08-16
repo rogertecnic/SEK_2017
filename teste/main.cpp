@@ -21,12 +21,29 @@ ev3dev::large_motor rodaD(ev3dev::OUTPUT_B); // roda esquerda
 
 
 
-int main(){
+int main1(){
 	system("setfont Greek-TerminusBold20x10.psf.gz");
+
+	// usando as funcoes ramp_up e ramp_down:
+	// argumento: milliseg que o motor demora pra acelerar/desacelerar de 0
+	// ate a velocidade maxima teórica (max_speed)
+	// como não queremos a velocidade máxima precisamos fazer umas conversões
+	// tambem da pra fazer por semelhança de triangulos imaginando
+	// uma reta num grafico velo vs tempo o seu triangulo menor
+	// teria os catetos como o t_sp e o v_sp e o triangulo maior
+	// seria o tm e o vm, daria na mesma conta, a aceleraçao eh a inclinacao
+	// da reta, aooo fisica 1 em
+
+	int v_sp = 180*3; // setpoint da velocidade real
+	int t_sp = 5; // tempo de aceleracao/desaceleracao de 0 ate v_sp
+	int a_sp = v_sp/t_sp; // aceleracao/desaceleracao que queremos no motor
+	int vm = rodaD.max_speed(); // velocidade teorica maxima do motor
+	int tm = vm/a_sp; // tempo que o motor demoraria para acelerar/desacelerar de 0 a vm em seg
+
 	rodaD.reset();
-	rodaD.set_position_sp(360*25);
-	rodaD.set_speed_sp(180*3);
-	rodaD.set_ramp_up_sp(rodaD.max_speed()*1000/108); // em miliseg
+		rodaD.set_position_sp(360*25);
+		rodaD.set_speed_sp(v_sp);
+	rodaD.set_ramp_up_sp(tm*1000); // em miliseg
 	rodaD.set_ramp_down_sp(50);
 	rodaD.run_forever();
 
