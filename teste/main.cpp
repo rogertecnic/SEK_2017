@@ -71,18 +71,18 @@ void anda_e_para(){
 	rodaE.set_stop_action("hold");
 	rodaD.set_stop_action("hold");
 
-
-	int v_sp = 180*3; // setpoint da velocidade real
-	int t_sp = 1; // tempo de aceleracao/desaceleracao de 0 ate v_sp
-	int a_sp = v_sp/t_sp; // aceleracao/desaceleracao que queremos no motor
-	int vm = rodaE.max_speed(); // velocidade teorica maxima do motor
-	int tm = vm/a_sp; // tempo que o motor demoraria para acelerar/desacelerar de 0 a vm em seg
+	double pos_sp = 360*3;
+	double v_sp = 180*4; // setpoint da velocidade real
+	double t_sp = 5; // tempo de aceleracao/desaceleracao de 0 ate v_sp
+	double a_sp = v_sp/t_sp; // aceleracao/desaceleracao que queremos no motor
+	double vm = rodaE.max_speed(); // velocidade teorica maxima do motor
+	double tm = vm/a_sp; // tempo que o motor demoraria para acelerar/desacelerar de 0 a vm em seg
 	std::cout<<vm<<std::endl;
 
 	rodaE.set_speed_sp(v_sp);
 	rodaE.set_ramp_up_sp(tm*1000);
 	rodaE.set_ramp_down_sp(tm*1000);
-	rodaE.set_position_sp(360*2);
+	rodaE.set_position_sp(pos_sp);
 
 	vm = rodaD.max_speed(); // velocidade teorica maxima do motor
 	tm = vm/a_sp; // tempo que o motor demoraria para acelerar/desacelerar de 0 a vm em seg
@@ -91,17 +91,28 @@ void anda_e_para(){
 	rodaD.set_speed_sp(v_sp);
 	rodaD.set_ramp_up_sp(tm*1000);
 	rodaD.set_ramp_down_sp(tm*1000);
-	rodaD.set_position_sp(360*2);
+	rodaD.set_position_sp(pos_sp);
 
 	//rodaE.run_to_rel_pos();
 	//rodaD.run_to_rel_pos();
 
+	//rodaD.run_forever();
 	rodaE.run_forever();
-	rodaD.run_forever();
-	usleep(3000*1000); // em milli
-	rodaE.set_speed_sp(180*1);
+	usleep(7000*1000); // em milli
+
+	// reajuste da aceleração
+	v_sp = 180*1; // setpoint da velocidade real
+	t_sp = 0.2; // tempo de aceleracao/desaceleracao de 0 ate v_sp
+	a_sp = v_sp/t_sp; // aceleracao/desaceleracao que queremos no motor
+	tm = vm/a_sp; // tempo que o motor demoraria para acelerar/desacelerar de 0 a vm em seg
+
+	rodaE.set_ramp_up_sp(tm*1000);
+	rodaE.set_ramp_down_sp(tm*1000);
+
+	// reajuste da velocidade
+	rodaE.set_speed_sp(v_sp);
 	rodaE.run_forever();
-	usleep(3000*1000); // em milli
+	usleep(6000*1000); // em milli
 	rodaE.stop();
 	rodaD.stop();
 
