@@ -13,6 +13,10 @@
 #include "ev3dev.h"
 #include <math.h>
 
+// *******LIB TEMPO
+#include <chrono>
+
+
 using namespace std;
 typedef std::chrono::high_resolution_clock Time;
 typedef std::chrono::milliseconds ms;
@@ -98,7 +102,7 @@ void anda_e_para(){
 	//rodaD.run_to_rel_pos();
 
 	//rodaD.run_forever();
-	rodaE.run_forever();
+	//rodaE.run_forever();
 	usleep(7000*1000); // em milli
 
 	// reajuste da aceleração
@@ -126,6 +130,11 @@ void anda_e_para(){
 }
 
 
+double calctAcc(double acc){
+	double vm = rodaE.max_speed(); // velocidade teorica maxima do motor
+	return  (vm/acc)*1000; // tempo que o motor demoraria para acelerar/desacelerar de 0 a vm em miliseg
+}
+
 
 void teste_controle_velocidade(){
 	rodaE.reset();
@@ -134,46 +143,110 @@ void teste_controle_velocidade(){
 	rodaD.set_stop_action("hold");
 
 	double vm = rodaE.max_speed(); // velocidade teorica maxima do motor
-	double pos_sp = 360*3;
+	double pos_sp = 360*4;
 	double v_sp = 180*4; // setpoint da velocidade real
-	double t_sp = 5; // tempo de aceleracao/desaceleracao de 0 ate v_sp
+	double t_sp = 1.7; // tempo de aceleracao/desaceleracao de 0 ate v_sp
 	double a_sp = v_sp/t_sp; // aceleracao/desaceleracao que queremos no motor
 	double tm = vm/a_sp; // tempo que o motor demoraria para acelerar/desacelerar de 0 a vm em seg
-	std::cout<<vm<<std::endl;
 
 	rodaE.set_speed_sp(v_sp);
 	rodaE.set_ramp_up_sp(tm*1000);
-	rodaE.set_ramp_down_sp(tm*1000);
+	rodaE.set_ramp_down_sp(tm*1000/3);
 	rodaE.set_position_sp(pos_sp);
 
 	rodaD.set_speed_sp(v_sp);
 	rodaD.set_ramp_up_sp(tm*1000);
-	rodaD.set_ramp_down_sp(tm*1000);
+	rodaD.set_ramp_down_sp(tm*1000/3);
 	rodaD.set_position_sp(pos_sp);
 
 	int kgz = 1;
-	float raio_roda = 0.06; // metros, diametro/2
-	float largura_robo = 0.25; // largura de uma roda a outra em metros
+	float raio_roda = 0.0415; // metros, diametro/2
+	float largura_robo = 0.261; // largura de uma roda a outra em metros
 	float erro_angulo = 0; // pos se o robo estiver para direita e neg se estiver para a esquerda
-	float fator_veloE;
-	float fator_veloD;
+	float fator_veloE = 1;
+	float fator_veloD = 1;
 
+	rodaE.run_to_rel_pos();
+	rodaD.run_to_rel_pos();
+	//usleep(1000*50000);
+
+	// variaveis de controle da aceleracao
+	chrono::system_clock::time_point t1 = Time::now();
+	chrono::system_clock::time_point t2;
+	std::chrono::duration<double> dt; // usar dt.count() para pegar o tempo em seg
+	double v1E = 0;
+	double v1D = 0;
+	double v2E = 0;
+	double v2D = 0;
+
+	double dv;
+	double accE;
+	double accD;
+	double accErro;
+	double fator_accE;
+	double fator_accD;
 
 	while(!ev3dev::button::enter.process()){
-
+		// **********************CONTROLADOR VELOCIDADE DO ROBO*************
 		erro_angulo = std::atan2( (rodaE.position() - rodaD.position())*raio_roda*3.1415/180 , largura_robo);
 		fator_veloE = 1-std::sin(erro_angulo)+kgz*tan(-erro_angulo);
-		fator_veloD = 1+std::sin(erro_angulo)+kgz*tan(erro_angulo);
+		fator_veloD= 1+std::sin(erro_angulo)+kgz*tan(erro_angulo);
+
+		if(fator_veloE > 1 ) fator_veloE = 1;
+		if(fator_veloE < -1 ) fator_veloE = -1;
+		if(fator_veloD > 1 ) fator_veloD = 1;
+		if(fator_veloD < -1 ) fator_veloD = -1;
 
 		rodaE.set_speed_sp(v_sp*fator_veloE);
 		rodaD.set_speed_sp(v_sp*fator_veloD);
 
-		rodaE.run_to_rel_pos();
-		rodaD.run_to_rel_pos();
+		// **********************CONTROLADOR ACELERACAO DO ROBO*************
+		t2 = Time::now();
+		v2E = rodaE.speed()*raio_roda*3.1415/180 ;
+		v2D = rodaD.speed()*raio_roda*3.1415/180 ;
+		dt = t2-t1;
+		t1 = t2;
 
+		dv = v2E-v1E;
+		accE = dv/dt.count();
+		v1E = v2E;
 
+		dv = v2D-v1D;
+		accD = dv/dt.count();
+		v1D = v2D;
+		cout<<accD<<endl;
+
+		kgz = 60;
+		accErro = (accE - accD);// accD maior erro negativo
+		fator_accE = 2-std::sin(accErro)+kgz*tan(-accErro);
+		fator_accD= 2+std::sin(accErro)+kgz*tan(accErro);
+
+		if(fator_accE >2) fator_accE = 2;
+		if( fator_accE < 0) fator_accE = 1;
+		if(fator_accD >2) fator_accD = 2;
+		if( fator_accD < 0) fator_accD = 1;
+
+		fator_veloE = (fator_veloE+1)/2;
+		fator_veloD = (fator_veloD+1)/2;
+		rodaE.set_ramp_up_sp(calctAcc(360*fator_veloE));
+		rodaD.set_ramp_up_sp(calctAcc(360*fator_veloD));
+
+		rodaE.run_forever();
+		rodaD.run_forever();
+		usleep(1000*5);
+
+		if(rodaE.position()>=pos_sp){
+			rodaE.stop();
+			rodaD.stop();
+			while(!ev3dev::button::enter.process()){
+			}
+			while(!ev3dev::button::enter.process()){
+			}
+			break;
+		}
 
 	}
+
 }
 
 
@@ -193,5 +266,7 @@ void teste_controle_velocidade(){
 
 int main(){
 	system("setfont Greek-TerminusBold20x10.psf.gz");
-	anda_e_para();
+	teste_controle_velocidade();
+
+	//anda_e_para();
 }
