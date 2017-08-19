@@ -11,6 +11,7 @@
 #include "Classe.h"
 #include <unistd.h>
 #include "ev3dev.h"
+#include <math.h>
 
 using namespace std;
 typedef std::chrono::high_resolution_clock Time;
@@ -125,6 +126,55 @@ void anda_e_para(){
 }
 
 
+
+void teste_controle_velocidade(){
+	rodaE.reset();
+	rodaD.reset();
+	rodaE.set_stop_action("hold");
+	rodaD.set_stop_action("hold");
+
+	double vm = rodaE.max_speed(); // velocidade teorica maxima do motor
+	double pos_sp = 360*3;
+	double v_sp = 180*4; // setpoint da velocidade real
+	double t_sp = 5; // tempo de aceleracao/desaceleracao de 0 ate v_sp
+	double a_sp = v_sp/t_sp; // aceleracao/desaceleracao que queremos no motor
+	double tm = vm/a_sp; // tempo que o motor demoraria para acelerar/desacelerar de 0 a vm em seg
+	std::cout<<vm<<std::endl;
+
+	rodaE.set_speed_sp(v_sp);
+	rodaE.set_ramp_up_sp(tm*1000);
+	rodaE.set_ramp_down_sp(tm*1000);
+	rodaE.set_position_sp(pos_sp);
+
+	rodaD.set_speed_sp(v_sp);
+	rodaD.set_ramp_up_sp(tm*1000);
+	rodaD.set_ramp_down_sp(tm*1000);
+	rodaD.set_position_sp(pos_sp);
+
+	int kgz = 1;
+	float raio_roda = 0.06; // metros, diametro/2
+	float largura_robo = 0.25; // largura de uma roda a outra em metros
+	float erro_angulo = 0; // pos se o robo estiver para direita e neg se estiver para a esquerda
+	float fator_veloE;
+	float fator_veloD;
+
+
+	while(!ev3dev::button::enter.process()){
+
+		erro_angulo = std::atan2( (rodaE.position() - rodaD.position())*raio_roda*3.1415/180 , largura_robo);
+		fator_veloE = 1-std::sin(erro_angulo)+kgz*tan(-erro_angulo);
+		fator_veloD = 1+std::sin(erro_angulo)+kgz*tan(erro_angulo);
+
+		rodaE.set_speed_sp(v_sp*fator_veloE);
+		rodaD.set_speed_sp(v_sp*fator_veloD);
+
+		rodaE.run_to_rel_pos();
+		rodaD.run_to_rel_pos();
+
+
+
+	}
+}
 
 
 
