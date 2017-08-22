@@ -28,6 +28,108 @@ ev3dev::large_motor rodaE(ev3dev::OUTPUT_A); // roda esquerda
 ev3dev::large_motor rodaD(ev3dev::OUTPUT_B); // roda direita
 ofstream file;
 
+/*
+ * tentativa de criar um controlador de velocidade
+ * ir alterando o raio da roda
+ */
+void teorema_de_roger(){
+	rodaE.reset();
+	rodaD.reset();
+	rodaE.set_stop_action("hold");
+	rodaD.set_stop_action("hold");
+	rodaE.set_ramp_down_sp(1500);
+	rodaD.set_ramp_down_sp(1500);
+
+
+	//atributos do motor
+	double raioE = 0.0408, // metro
+			raioD = 0.0408, // metro
+			velocidade = 0.3, // m/s
+			v_retardada = 0,
+			t_aceleracao = 2, // tempo para ir de 0 m/s a "velocidade" m/s
+			aceleracao = velocidade/t_aceleracao, // m/s²
+			distancia = 2, // m
+
+			//variaveis do controlador de velocidade (PID)
+			delay = 5, //tempo de amostragem do controlador
+
+			erroE = 0,
+			pos1E = 0,
+			pos2E = 0,
+			v1E = 0,
+			v2E = 0,
+			acumuladorE = 0,
+
+			erroD = 0,
+			pos1D = 0,
+			pos2D = 0,
+			v1D = 0,
+			v2D = 0,
+			acumuladorD = 0,
+
+			kp = 1.26,
+			ki = 0.05,
+			kd = 0,
+			pwmE = 0, // -1 ate 1
+			pwmD = 0;
+	chrono::system_clock::time_point t1 = Time::now();
+	chrono::system_clock::time_point t2;
+	std::chrono::duration<double> dt; // usardt = t1-t2 e dt.count() para pegar o tempo em seg
+
+	//********************************CONTROLADOR DE VELOCIDADE, TEM DOIS RODANDO JUNTOS********************
+	//******************************************************************************************************
+	//******************************************************************************************************
+	//******************************************************************************************************
+	while(!ev3dev::button::enter.process()){
+		pos2E = rodaE.position()*3.141592/180*raioE;
+		pos2D = rodaD.position()*3.141592/180*raioD;
+		t2 = Time::now();
+		dt = t1-t2;
+
+		v2E = (pos1E - pos2E)/dt.count(); // count retorna em seg
+		v2D = (pos1D - pos2D)/dt.count();
+
+		erroE = v_retardada - v2E;// m/s
+		erroD = v_retardada - v2D;
+
+		acumuladorE += erroE;
+		acumuladorD += erroD;
+
+		pwmE = kp*erroE + ki*acumuladorE + kd*(v1E - v2E);
+		pwmD = kp*erroD + ki*acumuladorD + kd*(v1D - v2D);
+		if(pwmE > 1) pwmE =1 ;
+		if(pwmE < -1) pwmE = -1;
+		if(pwmD > 1) pwmD = 1;
+		if(pwmD < -1) pwmD = -1;
+
+		rodaE.set_duty_cycle_sp(pwmE);
+		rodaD.set_duty_cycle_sp(pwmD);
+
+		t1 = t2;
+		pos1E = pos2E;
+		pos1D = pos2D;
+		v1E = v2E;
+		v1D = v2D;
+
+		if(pos2E >= distancia){
+			rodaE.stop();
+			rodaD.stop();
+			while(!ev3dev::button::enter.process()){
+			}
+			break;
+		}
+
+		usleep(1000*delay);
+		if(v_retardada < velocidade) v_retardada += v_retardada*aceleracao;
+		rodaE.run_direct();
+		rodaD.run_direct();
+	}
+
+}
+
+/**
+ * testa a aceleracao da biblioteca
+ */
 void testeAceleracao(){
 	// usando as funcoes ramp_up e ramp_down:
 	// argumento: milliseg que o motor demora pra acelerar/desacelerar de 0
@@ -73,6 +175,9 @@ void testeAceleracao(){
 
 }
 
+/**
+ * metodo simplesmente anda ate a posicao e para, usando a biblioteca
+ */
 void anda_e_para(){
 	rodaE.reset();
 	rodaD.reset();
@@ -103,12 +208,10 @@ void anda_e_para(){
 }
 
 
-double calctAcc(double acc){
-	double vm = rodaE.max_speed(); // velocidade teorica maxima do motor
-	return  (vm/acc)*1000; // tempo que o motor demoraria para acelerar/desacelerar de 0 a vm em miliseg
-}
 
-
+/**
+ * tentativa de controlar a velocidade e aceleracao do robo falha, os tacometros sao errados
+ */
 void teste_controle_velocidade(){
 	rodaE.reset();
 	rodaD.reset();
