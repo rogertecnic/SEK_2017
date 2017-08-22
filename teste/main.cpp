@@ -33,25 +33,28 @@ ofstream file;
  * ir alterando o raio da roda
  */
 void teorema_de_roger(){
+	file.open ("debug_lego.txt");
 	rodaE.reset();
 	rodaD.reset();
 	rodaE.set_stop_action("hold");
 	rodaD.set_stop_action("hold");
-	rodaE.set_ramp_down_sp(1500);
-	rodaD.set_ramp_down_sp(1500);
+	//rodaE.set_ramp_down_sp(1500);
+	//rodaD.set_ramp_down_sp(1500);
 
 
 	//atributos do motor
-	double raioE = 0.0408, // metro
-			raioD = 0.0408, // metro
-			velocidade = 0.3, // m/s
+	double raioE = 0.02, // metro 0.0408 padrao, 0.04 para o juvenal
+			raioD = 0.0402, // metro 0.0402 para o juvenal
+			v_max_E = 775.57, // em graus/seg
+			v_max_D = 809.59, // em graus/seg
+			velocidade = 0.8, // m/s
 			v_retardada = 0,
-			t_aceleracao = 2, // tempo para ir de 0 m/s a "velocidade" m/s
+			t_aceleracao = 0.2, // tempo para ir de 0 m/s a "velocidade" m/s
 			aceleracao = velocidade/t_aceleracao, // m/s²
-			distancia = 2, // m
+			distancia = 3, // m
 
 			//variaveis do controlador de velocidade (PID)
-			delay = 5, //tempo de amostragem do controlador
+			delay = 5, //tempo de amostragem do controlador em ms
 
 			erroE = 0,
 			pos1E = 0,
@@ -67,9 +70,9 @@ void teorema_de_roger(){
 			v2D = 0,
 			acumuladorD = 0,
 
-			kp = 1.26,
-			ki = 0.05,
-			kd = 0,
+			kp = 6, // 3
+			ki = 0.1, // 0.05
+			kd = 0.09, // 0.02
 			pwmE = 0, // -1 ate 1
 			pwmD = 0;
 	chrono::system_clock::time_point t1 = Time::now();
@@ -80,27 +83,49 @@ void teorema_de_roger(){
 	//******************************************************************************************************
 	//******************************************************************************************************
 	//******************************************************************************************************
+
+	// pode deletar
+	chrono::system_clock::time_point ti = t1;
+	std::chrono::duration<double> dt_experimental; // fazer possiveis medidas
+	bool acelerou = false;
+	//pode deletar
+
+	v_max_E = v_max_E*3.141592/180*raioE; // convertendo para m/s
+	v_max_D = v_max_D*3.141592/180*raioE; // convertendo para m/s
 	while(!ev3dev::button::enter.process()){
 		pos2E = rodaE.position()*3.141592/180*raioE;
 		pos2D = rodaD.position()*3.141592/180*raioD;
 		t2 = Time::now();
-		dt = t1-t2;
+		dt = t2-t1;
 
-		v2E = (pos1E - pos2E)/dt.count(); // count retorna em seg
-		v2D = (pos1D - pos2D)/dt.count();
+		v2E = (pos2E - pos1E)/dt.count(); // count retorna em seg
+		v2D = (pos2D - pos1D)/dt.count();
 
-		erroE = v_retardada - v2E;// m/s
-		erroD = v_retardada - v2D;
+		erroE = (v_retardada - v2E)*100/v_max_E;// m/s
+		erroD = (v_retardada - v2D)*100/v_max_D;// m/s
+
 
 		acumuladorE += erroE;
 		acumuladorD += erroD;
 
-		pwmE = kp*erroE + ki*acumuladorE + kd*(v1E - v2E);
-		pwmD = kp*erroD + ki*acumuladorD + kd*(v1D - v2D);
-		if(pwmE > 1) pwmE =1 ;
-		if(pwmE < -1) pwmE = -1;
-		if(pwmD > 1) pwmD = 1;
-		if(pwmD < -1) pwmD = -1;
+		pwmE = kp*erroE + ki*acumuladorE + kd*(v2E - v1E);
+		pwmD = kp*erroD + ki*acumuladorD + kd*(v2D - v1D);
+		if(pwmE > 100) pwmE =100 ;
+		if(pwmE < -100) pwmE = -100;
+		if(pwmD > 100) pwmD = 100;
+		if(pwmD < -100) pwmD = -100;
+
+		// pode apagar
+		//		if(v2E >= velocidade && !acelerou){
+		//			acelerou = true;
+		//			dt_experimental = t2-ti;
+		//			ti = t2;
+		//			file<<"terminou de acelerar:"<<endl;
+		//			file<<v2E<<"\t"<<pos2E<<"\t"<< dt_experimental.count()<<endl;
+		//		}
+		// pode apagar
+
+		file<<erroE<<"\t"<<erroD<<"\t"<<pos2E<<"\t"<<pos2D<<"\t"<<v2E<<"\t"<<v2D<<"\t"<<v_retardada<<endl;
 
 		rodaE.set_duty_cycle_sp(pwmE);
 		rodaD.set_duty_cycle_sp(pwmD);
@@ -111,16 +136,44 @@ void teorema_de_roger(){
 		v1E = v2E;
 		v1D = v2D;
 
-		if(pos2E >= distancia){
-			rodaE.stop();
-			rodaD.stop();
+		if(pos2E >= distancia*2){
+			//rodaE.stop();
+			//rodaD.stop();
+			//			dt_experimental = t2-ti;
+			//			file<<"terminou o percurso:"<<endl;
+			//			file<<v2E<<"\t"<<pos2E<<"\t"<< dt_experimental.count()<<endl;
 			while(!ev3dev::button::enter.process()){
 			}
 			break;
 		}
 
+		// testando desaceleracao e parada
+//		if(pos2E > 1 && pos2E < 2.7){
+//			velocidade = 0.3;
+//			acumuladorD = 0;
+//			acumuladorE = 0;
+//		}
+		if(pos2E > 2.7){
+			velocidade = 0;
+			aceleracao = 0.3/0.5;
+			acumuladorD = 0;
+			acumuladorE = 0;
+		}
+		if(velocidade == 0 &&
+				(v_retardada > -aceleracao*delay/1000 && v_retardada < aceleracao*delay/1000)){
+			rodaE.stop();
+			rodaD.stop();
+			cout<<"parou"<<endl;
+			while(velocidade == 0 && !ev3dev::button::enter.process()){
+
+			}
+			break;
+		}
+
+
 		usleep(1000*delay);
-		if(v_retardada < velocidade) v_retardada += v_retardada*aceleracao;
+		if(v_retardada < (velocidade-aceleracao*delay/1000)) v_retardada += aceleracao*dt.count();
+		if(v_retardada > (velocidade+aceleracao*delay/1000)) v_retardada -= aceleracao*dt.count();
 		rodaE.run_direct();
 		rodaD.run_direct();
 	}
@@ -186,21 +239,33 @@ void anda_e_para(){
 
 	file.open ("debug_lego.txt");
 
-
+	// usando o controlador pid interno
 	int pos_sp = 360*12;
-	rodaE.set_position_sp(pos_sp);
-	rodaD.set_position_sp(pos_sp);
-	rodaE.set_speed_sp(180*3*0.995);
-	rodaD.set_speed_sp(180*3);
-	rodaE.set_ramp_up_sp(4180);
-	rodaD.set_ramp_up_sp(4000);
-	rodaE.run_to_rel_pos();
-	rodaD.run_to_rel_pos();
+	//	rodaE.set_position_sp(pos_sp);
+	//	rodaD.set_position_sp(pos_sp);
+	//	rodaE.set_speed_sp(180*3*0.995);
+	//	rodaD.set_speed_sp(180*3);
+	//	rodaE.set_ramp_up_sp(4180);
+	//	rodaD.set_ramp_up_sp(4000);
+	//	rodaE.run_to_rel_pos();
+	//	rodaD.run_to_rel_pos();
 
+	// usando apenas o pwm sem controlador
+
+	rodaE.set_duty_cycle_sp(100);
+	rodaD.set_duty_cycle_sp(100);
+	rodaE.run_direct();
+	rodaD.run_direct();
+	while(!ev3dev::button::enter.process() &&
+			rodaE.position() <= pos_sp){
+		file << rodaE.position()<<"\t"<<rodaD.position()<<"\t"<< rodaE.speed()<<"\t"<<rodaD.speed()<<endl;
+	}
+	rodaE.stop();
+	rodaD.stop();
 
 	// espera apertar e soltar o botao enter do brick
 	while(!ev3dev::button::enter.process()){
-		file << rodaE.position()<<";"<<rodaD.position()<<endl;
+		file << rodaE.position()<<"\t"<<rodaD.position()<<"\t"<< rodaE.speed()<<"\t"<<rodaD.speed()<<endl;
 	}
 	while(!ev3dev::button::enter.process()){
 	}
@@ -404,6 +469,6 @@ void teste_controle_velocidade(){
 int main(){
 	system("setfont Greek-TerminusBold20x10.psf.gz");
 	//teste_controle_velocidade();
-
-	anda_e_para();
+	teorema_de_roger();
+	//anda_e_para();
 }
