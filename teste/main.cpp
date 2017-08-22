@@ -43,13 +43,13 @@ void teorema_de_roger(){
 
 
 	//atributos do motor
-	double raioE = 0.02, // metro 0.0408 padrao, 0.04 para o juvenal
+	double raioE = 0.04, // metro 0.0408 padrao, 0.04 para o juvenal
 			raioD = 0.0402, // metro 0.0402 para o juvenal
 			v_max_E = 775.57, // em graus/seg
 			v_max_D = 809.59, // em graus/seg
-			velocidade = 0.8, // m/s
+			velocidade = 0.4, // m/s
 			v_retardada = 0,
-			t_aceleracao = 0.2, // tempo para ir de 0 m/s a "velocidade" m/s
+			t_aceleracao = 1, // tempo para ir de 0 m/s a "velocidade" m/s
 			aceleracao = velocidade/t_aceleracao, // m/s²
 			distancia = 3, // m
 
@@ -70,9 +70,9 @@ void teorema_de_roger(){
 			v2D = 0,
 			acumuladorD = 0,
 
-			kp = 6, // 3
-			ki = 0.1, // 0.05
-			kd = 0.09, // 0.02
+			kp = 3, // 3
+			ki = 0.05, // 0.05
+			kd = 0.02, // 0.02
 			pwmE = 0, // -1 ate 1
 			pwmD = 0;
 	chrono::system_clock::time_point t1 = Time::now();
@@ -125,7 +125,7 @@ void teorema_de_roger(){
 		//		}
 		// pode apagar
 
-		file<<erroE<<"\t"<<erroD<<"\t"<<pos2E<<"\t"<<pos2D<<"\t"<<v2E<<"\t"<<v2D<<"\t"<<v_retardada<<endl;
+		file<<pwmE<<"\t"<<pwmD<<"\t"<<pos2E<<"\t"<<pos2D<<"\t"<<v2E<<"\t"<<v2D<<"\t"<<v_retardada<<endl;
 
 		rodaE.set_duty_cycle_sp(pwmE);
 		rodaD.set_duty_cycle_sp(pwmD);
