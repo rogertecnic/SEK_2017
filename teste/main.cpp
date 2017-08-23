@@ -8,7 +8,6 @@
 
 
 
-#include "Classe.h"
 #include <unistd.h>
 #include "ev3dev.h"
 #include <math.h>
@@ -17,6 +16,7 @@
 
 // *******LIB TEMPO
 #include <chrono>
+#include "Controlador_motor.h"
 
 
 using namespace std;
