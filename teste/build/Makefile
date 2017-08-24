@@ -116,19 +116,19 @@ binario/fast:
 .PHONY : binario/fast
 
 # target to build an object file
-Classe.o:
-	$(MAKE) -f CMakeFiles/binario.dir/build.make CMakeFiles/binario.dir/Classe.o
-.PHONY : Classe.o
+Controlador_motor.o:
+	$(MAKE) -f CMakeFiles/binario.dir/build.make CMakeFiles/binario.dir/Controlador_motor.o
+.PHONY : Controlador_motor.o
 
 # target to preprocess a source file
-Classe.i:
-	$(MAKE) -f CMakeFiles/binario.dir/build.make CMakeFiles/binario.dir/Classe.i
-.PHONY : Classe.i
+Controlador_motor.i:
+	$(MAKE) -f CMakeFiles/binario.dir/build.make CMakeFiles/binario.dir/Controlador_motor.i
+.PHONY : Controlador_motor.i
 
 # target to generate assembly for a file
-Classe.s:
-	$(MAKE) -f CMakeFiles/binario.dir/build.make CMakeFiles/binario.dir/Classe.s
-.PHONY : Classe.s
+Controlador_motor.s:
+	$(MAKE) -f CMakeFiles/binario.dir/build.make CMakeFiles/binario.dir/Controlador_motor.s
+.PHONY : Controlador_motor.s
 
 # target to build an object file
 ev3dev.o:
@@ -169,9 +169,9 @@ help:
 	@echo "... binario"
 	@echo "... edit_cache"
 	@echo "... rebuild_cache"
-	@echo "... Classe.o"
-	@echo "... Classe.i"
-	@echo "... Classe.s"
+	@echo "... Controlador_motor.o"
+	@echo "... Controlador_motor.i"
+	@echo "... Controlador_motor.s"
 	@echo "... ev3dev.o"
 	@echo "... ev3dev.i"
 	@echo "... ev3dev.s"

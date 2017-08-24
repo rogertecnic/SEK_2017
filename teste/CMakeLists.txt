@@ -6,4 +6,4 @@ add_compile_options("-std=c++0x")
 add_compile_options("-pthread")
 link_libraries("-pthread")
 
-add_executable(binario ev3dev.cpp Classe.cpp main.cpp)
+add_executable(binario ev3dev.cpp Controlador_motor.cpp main.cpp)

@@ -72,28 +72,28 @@ CMakeFiles/binario.dir/ev3dev.o.provides: CMakeFiles/binario.dir/ev3dev.o.requir
 
 CMakeFiles/binario.dir/ev3dev.o.provides.build: CMakeFiles/binario.dir/ev3dev.o
 
-CMakeFiles/binario.dir/Classe.o: CMakeFiles/binario.dir/flags.make
-CMakeFiles/binario.dir/Classe.o: ../Classe.cpp
+CMakeFiles/binario.dir/Controlador_motor.o: CMakeFiles/binario.dir/flags.make
+CMakeFiles/binario.dir/Controlador_motor.o: ../Controlador_motor.cpp
 	$(CMAKE_COMMAND) -E cmake_progress_report /src/build/CMakeFiles $(CMAKE_PROGRESS_2)
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Building CXX object CMakeFiles/binario.dir/Classe.o"
-	/usr/bin/arm-linux-gnueabi-g++   $(CXX_DEFINES) $(CXX_FLAGS) -o CMakeFiles/binario.dir/Classe.o -c /src/Classe.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Building CXX object CMakeFiles/binario.dir/Controlador_motor.o"
+	/usr/bin/arm-linux-gnueabi-g++   $(CXX_DEFINES) $(CXX_FLAGS) -o CMakeFiles/binario.dir/Controlador_motor.o -c /src/Controlador_motor.cpp
 
-CMakeFiles/binario.dir/Classe.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/binario.dir/Classe.i"
-	/usr/bin/arm-linux-gnueabi-g++  $(CXX_DEFINES) $(CXX_FLAGS) -E /src/Classe.cpp > CMakeFiles/binario.dir/Classe.i
+CMakeFiles/binario.dir/Controlador_motor.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/binario.dir/Controlador_motor.i"
+	/usr/bin/arm-linux-gnueabi-g++  $(CXX_DEFINES) $(CXX_FLAGS) -E /src/Controlador_motor.cpp > CMakeFiles/binario.dir/Controlador_motor.i
 
-CMakeFiles/binario.dir/Classe.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/binario.dir/Classe.s"
-	/usr/bin/arm-linux-gnueabi-g++  $(CXX_DEFINES) $(CXX_FLAGS) -S /src/Classe.cpp -o CMakeFiles/binario.dir/Classe.s
+CMakeFiles/binario.dir/Controlador_motor.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/binario.dir/Controlador_motor.s"
+	/usr/bin/arm-linux-gnueabi-g++  $(CXX_DEFINES) $(CXX_FLAGS) -S /src/Controlador_motor.cpp -o CMakeFiles/binario.dir/Controlador_motor.s
 
-CMakeFiles/binario.dir/Classe.o.requires:
-.PHONY : CMakeFiles/binario.dir/Classe.o.requires
+CMakeFiles/binario.dir/Controlador_motor.o.requires:
+.PHONY : CMakeFiles/binario.dir/Controlador_motor.o.requires
 
-CMakeFiles/binario.dir/Classe.o.provides: CMakeFiles/binario.dir/Classe.o.requires
-	$(MAKE) -f CMakeFiles/binario.dir/build.make CMakeFiles/binario.dir/Classe.o.provides.build
-.PHONY : CMakeFiles/binario.dir/Classe.o.provides
+CMakeFiles/binario.dir/Controlador_motor.o.provides: CMakeFiles/binario.dir/Controlador_motor.o.requires
+	$(MAKE) -f CMakeFiles/binario.dir/build.make CMakeFiles/binario.dir/Controlador_motor.o.provides.build
+.PHONY : CMakeFiles/binario.dir/Controlador_motor.o.provides
 
-CMakeFiles/binario.dir/Classe.o.provides.build: CMakeFiles/binario.dir/Classe.o
+CMakeFiles/binario.dir/Controlador_motor.o.provides.build: CMakeFiles/binario.dir/Controlador_motor.o
 
 CMakeFiles/binario.dir/main.o: CMakeFiles/binario.dir/flags.make
 CMakeFiles/binario.dir/main.o: ../main.cpp
@@ -121,14 +121,14 @@ CMakeFiles/binario.dir/main.o.provides.build: CMakeFiles/binario.dir/main.o
 # Object files for target binario
 binario_OBJECTS = \
 "CMakeFiles/binario.dir/ev3dev.o" \
-"CMakeFiles/binario.dir/Classe.o" \
+"CMakeFiles/binario.dir/Controlador_motor.o" \
 "CMakeFiles/binario.dir/main.o"
 
 # External object files for target binario
 binario_EXTERNAL_OBJECTS =
 
 binario: CMakeFiles/binario.dir/ev3dev.o
-binario: CMakeFiles/binario.dir/Classe.o
+binario: CMakeFiles/binario.dir/Controlador_motor.o
 binario: CMakeFiles/binario.dir/main.o
 binario: CMakeFiles/binario.dir/build.make
 binario: CMakeFiles/binario.dir/link.txt
@@ -140,7 +140,7 @@ CMakeFiles/binario.dir/build: binario
 .PHONY : CMakeFiles/binario.dir/build
 
 CMakeFiles/binario.dir/requires: CMakeFiles/binario.dir/ev3dev.o.requires
-CMakeFiles/binario.dir/requires: CMakeFiles/binario.dir/Classe.o.requires
+CMakeFiles/binario.dir/requires: CMakeFiles/binario.dir/Controlador_motor.o.requires
 CMakeFiles/binario.dir/requires: CMakeFiles/binario.dir/main.o.requires
 .PHONY : CMakeFiles/binario.dir/requires
 

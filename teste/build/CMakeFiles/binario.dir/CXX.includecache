@@ -6,11 +6,25 @@
 
 #IncludeRegexTransform: 
 
-/src/Classe.h
+/src/Controlador_motor.cpp
+Controlador_motor.h
+/src/Controlador_motor.h
+
+/src/Controlador_motor.h
 iostream
+-
+fstream
 -
 thread
 -
+chrono
+-
+unistd.h
+-
+math.h
+-
+ev3dev.h
+/src/ev3dev.h
 
 /src/ev3dev.h
 map
@@ -31,8 +45,6 @@ memory
 -
 
 /src/main.cpp
-Classe.h
-/src/Classe.h
 unistd.h
 -
 ev3dev.h
@@ -45,4 +57,6 @@ fstream
 -
 chrono
 -
+Controlador_motor.h
+/src/Controlador_motor.h
 

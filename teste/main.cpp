@@ -148,11 +148,11 @@ void teorema_de_roger(){
 		}
 
 		// testando desaceleracao e parada
-//		if(pos2E > 1 && pos2E < 2.7){
-//			velocidade = 0.3;
-//			acumuladorD = 0;
-//			acumuladorE = 0;
-//		}
+		//		if(pos2E > 1 && pos2E < 2.7){
+		//			velocidade = 0.3;
+		//			acumuladorD = 0;
+		//			acumuladorE = 0;
+		//		}
 		if(pos2E > 2.7){
 			velocidade = 0;
 			aceleracao = 0.3/0.5;
@@ -240,11 +240,11 @@ void anda_e_para(){
 	file.open ("debug_lego.txt");
 
 	// usando o controlador pid interno
-	int pos_sp = 360*12;
+	int pos_sp = 360*120;
 	//	rodaE.set_position_sp(pos_sp);
 	//	rodaD.set_position_sp(pos_sp);
-	//	rodaE.set_speed_sp(180*3*0.995);
-	//	rodaD.set_speed_sp(180*3);
+		rodaE.set_speed_sp(180*2);
+		rodaD.set_speed_sp(180*2);
 	//	rodaE.set_ramp_up_sp(4180);
 	//	rodaD.set_ramp_up_sp(4000);
 	//	rodaE.run_to_rel_pos();
@@ -252,13 +252,34 @@ void anda_e_para(){
 
 	// usando apenas o pwm sem controlador
 
-	rodaE.set_duty_cycle_sp(100);
-	rodaD.set_duty_cycle_sp(100);
-	rodaE.run_direct();
-	rodaD.run_direct();
+	rodaE.set_duty_cycle_sp(25);
+	rodaD.set_duty_cycle_sp(25);
+	chrono::system_clock::time_point ti = Time::now();
+	chrono::system_clock::time_point tf;
+	double pos_inicialE = 0;
+	double pos_finalE = 0;
+	double pos_inicialD = 0;
+	double pos_finalD = 0;
+	std::chrono::duration<double> dt; // usardt = t1-t2 e dt.count() para pegar o tempo em seg
+	double tempoooooooo =0;
+	file<<"velo_e"<<"\t"<<"velo_d"<<"\t"<<"v_e_lib"<<"\t"<<"v_d_lib"<<endl;
+	ti = Time::now();
 	while(!ev3dev::button::enter.process() &&
 			rodaE.position() <= pos_sp){
-		file << rodaE.position()<<"\t"<<rodaD.position()<<"\t"<< rodaE.speed()<<"\t"<<rodaD.speed()<<endl;
+		pos_inicialE = rodaE.position();
+		pos_inicialD = rodaD.position();
+
+		usleep(1000*5);
+		pos_finalE = rodaE.position();
+		pos_finalD = rodaD.position();
+		tf = Time::now();
+
+		dt = tf - ti;
+		ti = tf;
+		tempoooooooo += dt.count();
+		file <<(pos_finalE-pos_inicialE)/dt.count()<<"\t"<<(pos_finalD-pos_inicialD)/dt.count()<<"\t"<<rodaE.speed()<<"\t"<<rodaD.speed()<<"\t"<<tempoooooooo<<endl;
+		rodaE.run_forever();
+		rodaD.run_forever();
 	}
 	rodaE.stop();
 	rodaD.stop();
@@ -468,7 +489,18 @@ void teste_controle_velocidade(){
 
 int main(){
 	system("setfont Greek-TerminusBold20x10.psf.gz");
+	Controlador_motor rodaE(ev3dev::OUTPUT_A, 0.0408, 775, 0.3, true,  "debug_lego_E.txt");
+	Controlador_motor rodaD(ev3dev::OUTPUT_B, 0.0408, 809, 0.3, true,  "debug_lego_D.txt");
+
+	rodaE.set_velo(0.3);
+	rodaD.set_velo(0.3);
+	//anda_e_para();
+	while(!ev3dev::button::enter.process()){
+
+	}
+	rodaE.close_file();
+	rodaD.close_file();
 	//teste_controle_velocidade();
-	teorema_de_roger();
+	//teorema_de_roger();
 	//anda_e_para();
 }
