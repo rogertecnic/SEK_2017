@@ -1,20 +1,20 @@
 #include "MArquivos.h"
 
 
-void M_arquivos::elementos_arq (int tam, double xn, ...) {
+void M_arquivos::elementos_arq (double xn, ...) {
 	double valor;
 	va_list elem;
 	va_start (elem, xn);
 
 	elementos.push_back(xn);
-	for (int i = 0; i < tam-1; i++) {
+	for (int i = 0; i < tamanho_coluna-1; i++) {
 		valor = va_arg(elem, double);
 		elementos.push_back(valor);
 	}
 	va_end(elem);
 }
 
-void M_arquivos::arquivo () {
+void M_arquivos::fecha_arquivo () {
 	ofstream outfile;
 	outfile.open (nome_arquivo);
 	int tamanho_linha = elementos.size()/tamanho_coluna;

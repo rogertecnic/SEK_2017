@@ -6,20 +6,20 @@
 #include <list>
 #include <string>
 
-#define tamanho_coluna 4
-
 using namespace std;
 
 class M_arquivos {
-	list<double> elementos;
-	std::list<double>::iterator it1, it2;
-
 public:
-	void elementos_arq (int tam, double xn, ...);
-	void arquivo ();
+	M_arquivos (string nome, int tamanho)
+		: nome_arquivo (nome), tamanho_coluna (tamanho) {}
+	void elementos_arq (double xn, ...);
+	void fecha_arquivo ();
 
 private:
-	string nome_arquivo = "mat.m";
+	list<double> elementos;
+	std::list<double>::iterator it1, it2;
+	string nome_arquivo;
+	int tamanho_coluna;
 
 };
 
