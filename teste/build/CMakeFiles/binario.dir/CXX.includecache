@@ -58,3 +58,21 @@ functional
 memory
 -
 
+/src/main.cpp
+unistd.h
+-
+ev3dev.h
+/src/ev3dev.h
+math.h
+-
+iostream
+-
+fstream
+-
+chrono
+-
+Controlador_motor.h
+/src/Controlador_motor.h
+MArquivos.h
+/src/MArquivos.h
+

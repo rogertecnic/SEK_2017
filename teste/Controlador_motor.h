@@ -35,12 +35,12 @@ private:
 	//***************VARIAVEIS DO CONTROLADOR***************
 	//******************************************************
 	//******************************************************
-	int delay = 2; // ms
+	int delay = 5; // ms
 	double erro = 0,
 			pos_inicial = 0,
 			pos_final = 0, // acumulativo
 			velo_inicial_med = 0,
-			velo_final = 0,
+			velo_instantanea = 0,
 			velo_final_med = 0,
 			acumulador = 0,
 			kp = 0,
