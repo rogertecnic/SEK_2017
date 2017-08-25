@@ -5,6 +5,7 @@ set(CMAKE_DEPENDS_LANGUAGES
 # The set of files for implicit dependencies of each language:
 set(CMAKE_DEPENDS_CHECK_CXX
   "/src/Controlador_motor.cpp" "/src/build/CMakeFiles/binario.dir/Controlador_motor.o"
+  "/src/MArquivos.cpp" "/src/build/CMakeFiles/binario.dir/MArquivos.o"
   "/src/ev3dev.cpp" "/src/build/CMakeFiles/binario.dir/ev3dev.o"
   "/src/main.cpp" "/src/build/CMakeFiles/binario.dir/main.o"
   )

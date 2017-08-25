@@ -17,7 +17,7 @@
 // *******LIB TEMPO
 #include <chrono>
 #include "Controlador_motor.h"
-
+#include "MArquivos.h"
 
 using namespace std;
 typedef std::chrono::high_resolution_clock Time;
@@ -243,8 +243,8 @@ void anda_e_para(){
 	int pos_sp = 360*120;
 	//	rodaE.set_position_sp(pos_sp);
 	//	rodaD.set_position_sp(pos_sp);
-		rodaE.set_speed_sp(180*2);
-		rodaD.set_speed_sp(180*2);
+	rodaE.set_speed_sp(180*2);
+	rodaD.set_speed_sp(180*2);
 	//	rodaE.set_ramp_up_sp(4180);
 	//	rodaD.set_ramp_up_sp(4000);
 	//	rodaE.run_to_rel_pos();
@@ -262,7 +262,7 @@ void anda_e_para(){
 	double pos_finalD = 0;
 	std::chrono::duration<double> dt; // usardt = t1-t2 e dt.count() para pegar o tempo em seg
 	double tempoooooooo =0;
-	file<<"velo_e"<<"\t"<<"velo_d"<<"\t"<<"v_e_lib"<<"\t"<<"v_d_lib"<<endl;
+	//file<<"velo_e"<<"\t"<<"velo_d"<<"\t"<<"v_e_lib"<<"\t"<<"v_d_lib"<<endl;
 	ti = Time::now();
 	while(!ev3dev::button::enter.process() &&
 			rodaE.position() <= pos_sp){
@@ -277,7 +277,10 @@ void anda_e_para(){
 		dt = tf - ti;
 		ti = tf;
 		tempoooooooo += dt.count();
-		file <<(pos_finalE-pos_inicialE)/dt.count()<<"\t"<<(pos_finalD-pos_inicialD)/dt.count()<<"\t"<<rodaE.speed()<<"\t"<<rodaD.speed()<<"\t"<<tempoooooooo<<endl;
+		//file <<(pos_finalE-pos_inicialE)/dt.count()<<"\t"<<(pos_finalD-pos_inicialD)/dt.count()<<"\t"<<rodaE.speed()<<"\t"<<rodaD.speed()<<"\t"<<tempoooooooo<<endl;
+
+		// tempo, posicao, velocidade media
+		//arquivo.elementos_arq(3, tempoooooooo, pos_finalE, rodaE.speed());
 		rodaE.run_forever();
 		rodaD.run_forever();
 	}
@@ -290,7 +293,6 @@ void anda_e_para(){
 	}
 	while(!ev3dev::button::enter.process()){
 	}
-	file.close();
 }
 
 
@@ -489,17 +491,18 @@ void teste_controle_velocidade(){
 
 int main(){
 	system("setfont Greek-TerminusBold20x10.psf.gz");
-	Controlador_motor rodaE(ev3dev::OUTPUT_A, 0.0408, 775, 0.3, true,  "debug_lego_E.txt");
-	Controlador_motor rodaD(ev3dev::OUTPUT_B, 0.0408, 809, 0.3, true,  "debug_lego_D.txt");
+	Controlador_motor rodaE(ev3dev::OUTPUT_A, 0.0408, 775, 0.3, true,  "debug_lego_E.m");
+	Controlador_motor rodaD(ev3dev::OUTPUT_B, 0.0408, 809, 0.3, true,  "debug_lego_D.m");
 
 	rodaE.set_velo(0.3);
 	rodaD.set_velo(0.3);
 	//anda_e_para();
-	while(!ev3dev::button::enter.process()){
 
+	while(!ev3dev::button::enter.process()){
 	}
-	rodaE.close_file();
-	rodaD.close_file();
+
+	rodaE.finaliza_thread();
+	rodaD.finaliza_thread();
 	//teste_controle_velocidade();
 	//teorema_de_roger();
 	//anda_e_para();

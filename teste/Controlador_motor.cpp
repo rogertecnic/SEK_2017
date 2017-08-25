@@ -14,11 +14,14 @@ Controlador_motor::Controlador_motor(string motor_port, double raio, double velo
  velo_max(velo_max),
  aceleracao(aceleracao),
  debug(debug),
+ arquivo_aberto(debug),
+ arquivo(arquivo_nome, 5), // vetores: tempo, pos, velo, pwm, erro;
  thread_controle(std::thread(&Controlador_motor::loop_controlador, this))
 {
-	if(debug) file.open(arquivo_nome);
+
 	roda.reset();
 	roda.set_stop_action("hold");
+	thread_controle.detach();
 }
 
 
@@ -38,56 +41,73 @@ void Controlador_motor::set_aceleracao(double aceleracao){
 	this->aceleracao = aceleracao;
 }
 
-void Controlador_motor::close_file(){
-	file.close();
+
+bool Controlador_motor::fecha_arquivo(){
+	arquivo.fecha_arquivo();
+	return true;
 }
+
+
+bool Controlador_motor::finaliza_thread(){
+	if(!thread_finalizar){
+		thread_finalizar = true;
+		while(arquivo_aberto){};
+	}
+	return true;
+}
+
+
 void Controlador_motor::loop_controlador(){
 	velo_max = velo_max*3.141592/180*raio;
 
-	if(debug){
-		while(!file.is_open()){ }
-		file<<"v_calc"<<"\t"<<"v_speed"<<endl;
-		//file<<"erro"<<"\t"<<"pwm"<<"\t"<<"pos_f"<<"\t"<<"velo_f"<<"\t"<<"v_retar"<<endl;
-	}
-	while(1){
-		pos_final = roda.position()*3.141592/180*raio;
-		t_final = Time::now();
-		delta_t = t_final-t_inicial;
+	while(!thread_finalizar){
+		for(int i = 0; i < 6 ; i++){
+			pos_final = roda.position()*3.141592/180*raio;
+			t_final = Time::now();
+			delta_t = t_final-t_inicial;
+			delta_t_5_iteracoes += delta_t.count();
+			tempo_total += delta_t.count();
 
-		velo_final = (pos_final - pos_inicial)/delta_t.count(); // count retorna em seg
+			velo_final = (pos_final - pos_inicial)/delta_t.count(); // count retorna em seg
+			velo_final_med += roda.speed();//velo_final;
+			t_inicial = t_final;
+			pos_inicial = pos_final;
+			usleep(1000*delay);
+		}
+		velo_final_med = velo_final_med/5;
 
-		erro = (velo_retardada - velo_final)*100/velo_max;// m/s
+		erro = (velo_retardada - velo_final_med)*100/velo_max;// m/s
 		acumulador += erro;
 
-		pwm = velo_retardada*100/velo_max;
-		pwm += kp*erro + ki*acumulador + kd*(velo_final - velo_inicial);
+		//pwm = velo_retardada*100/velo_max;
+		pwm = velo_sp*100/velo_max;
+		pwm += kp*erro + ki*acumulador + kd*(velo_final_med - velo_inicial_med);
 		if(pwm > 100) pwm =100 ;
 		if(pwm < -100) pwm = -100;
 
-		int decimal = 1000;
-		if(debug) file<<trunc(velo_final*decimal)/decimal<<"\t"<<trunc(roda.speed()*decimal)/decimal<<endl;
-		//file<<trunc(erro*decimal)/decimal<<"\t"<<trunc(pwm*decimal)/decimal<<"\t"<<trunc(pos_final*decimal)/decimal<<"\t"<<trunc(velo_final*decimal)/decimal<<"\t"<<trunc(velo_retardada*decimal)/decimal<<endl;
+		if(debug)arquivo.elementos_arq(tempo_total,pos_final, velo_final_med, pwm, erro);
+
+		velo_inicial_med = velo_final_med;
+		velo_final_med =0;
 
 		roda.set_duty_cycle_sp(pwm);
 
-		t_inicial = t_final;
-		pos_inicial = pos_final;
-		velo_inicial = velo_final;
-
+		//verifica se a roda esta quase parando, se sim, trava a roda
 		if(velo_sp == 0 &&
 				(velo_retardada < aceleracao*delay/1000 && velo_retardada > -aceleracao*delay/1000)){
 			roda.stop();
 			cout<<"parou"<<endl;
 			while(velo_sp == 0){
+
 				usleep(1000*delay);
 			}
 		}
 
-
-		usleep(1000*delay);
-		velo_retardada = velo_sp;
-//		if(velo_retardada < (velo_sp)) velo_retardada += aceleracao*delta_t.count();
-//		if(velo_retardada > (velo_sp)) velo_retardada -= aceleracao*delta_t.count();
+		if(velo_retardada < (velo_sp-aceleracao*delay*2/1000)) velo_retardada += aceleracao*delta_t_5_iteracoes;
+		if(velo_retardada > (velo_sp+aceleracao*delay*2/1000)) velo_retardada -= aceleracao*delta_t_5_iteracoes;
+		delta_t_5_iteracoes =  0;
 		roda.run_direct();
 	}
+	roda.stop();
+	arquivo_aberto = !fecha_arquivo();
 }

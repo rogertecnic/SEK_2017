@@ -131,6 +131,21 @@ Controlador_motor.s:
 .PHONY : Controlador_motor.s
 
 # target to build an object file
+MArquivos.o:
+	$(MAKE) -f CMakeFiles/binario.dir/build.make CMakeFiles/binario.dir/MArquivos.o
+.PHONY : MArquivos.o
+
+# target to preprocess a source file
+MArquivos.i:
+	$(MAKE) -f CMakeFiles/binario.dir/build.make CMakeFiles/binario.dir/MArquivos.i
+.PHONY : MArquivos.i
+
+# target to generate assembly for a file
+MArquivos.s:
+	$(MAKE) -f CMakeFiles/binario.dir/build.make CMakeFiles/binario.dir/MArquivos.s
+.PHONY : MArquivos.s
+
+# target to build an object file
 ev3dev.o:
 	$(MAKE) -f CMakeFiles/binario.dir/build.make CMakeFiles/binario.dir/ev3dev.o
 .PHONY : ev3dev.o
@@ -172,6 +187,9 @@ help:
 	@echo "... Controlador_motor.o"
 	@echo "... Controlador_motor.i"
 	@echo "... Controlador_motor.s"
+	@echo "... MArquivos.o"
+	@echo "... MArquivos.i"
+	@echo "... MArquivos.s"
 	@echo "... ev3dev.o"
 	@echo "... ev3dev.i"
 	@echo "... ev3dev.s"

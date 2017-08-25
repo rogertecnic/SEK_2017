@@ -3,12 +3,17 @@
 
 CMakeFiles/binario.dir/Controlador_motor.o: ../Controlador_motor.cpp
 CMakeFiles/binario.dir/Controlador_motor.o: ../Controlador_motor.h
+CMakeFiles/binario.dir/Controlador_motor.o: ../MArquivos.h
 CMakeFiles/binario.dir/Controlador_motor.o: ../ev3dev.h
+
+CMakeFiles/binario.dir/MArquivos.o: ../MArquivos.cpp
+CMakeFiles/binario.dir/MArquivos.o: ../MArquivos.h
 
 CMakeFiles/binario.dir/ev3dev.o: ../ev3dev.cpp
 CMakeFiles/binario.dir/ev3dev.o: ../ev3dev.h
 
 CMakeFiles/binario.dir/main.o: ../Controlador_motor.h
+CMakeFiles/binario.dir/main.o: ../MArquivos.h
 CMakeFiles/binario.dir/main.o: ../ev3dev.h
 CMakeFiles/binario.dir/main.o: ../main.cpp
 
