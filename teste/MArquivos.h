@@ -13,7 +13,7 @@ public:
 	M_arquivos (string nome, int tamanho)
 		: nome_arquivo (nome), tamanho_coluna (tamanho) {}
 	void elementos_arq (double xn, ...);
-	void fecha_arquivo ();
+	void fecha_arq ();
 
 private:
 	list<double> elementos;

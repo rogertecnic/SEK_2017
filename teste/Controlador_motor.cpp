@@ -43,7 +43,7 @@ void Controlador_motor::set_aceleracao(double aceleracao){
 
 
 bool Controlador_motor::fecha_arquivo(){
-	arquivo.fecha_arquivo();
+	arquivo.fecha_arq();
 	return true;
 }
 
