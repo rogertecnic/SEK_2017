@@ -36,8 +36,7 @@ void M_arquivos::elementos_arq (double xn, ...) {
  */
 
 void M_arquivos::fecha_arq() {
-	ofstream outfile;
-	outfile.open (nome_arquivo);
+	outfile.open (nome_arquivo, ios::out);
 	int tamanho_linha = elementos.size()/tamanho_coluna;
 	int count = 0;
 
@@ -60,4 +59,17 @@ void M_arquivos::fecha_arq() {
 
 		}
 	}
+	outfile << endl;
+	outfile.close();
+}
+
+/*
+ * Metódo que ao final dos vetores do arquivo escreve uma string
+ * a cada vez que o mesmo for chamado e pula uma linha em sequência
+ */
+
+void M_arquivos::string_arq (string str) {
+	outfile.open (nome_arquivo, ios::app);
+	outfile << str << endl;
+	outfile.close();
 }
