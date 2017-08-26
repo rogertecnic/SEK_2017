@@ -1,14 +1,5 @@
 #include "MArquivos.h"
 
-
-
-/*
- * Função elementos_arq extrai todas as variáveis passadas por parâmetro
- * e coloca numa lista de elementos.
- * A lista estará no modelo:
- * t1,x1.1, x2.1, ..., xn.1, ..., tm, xm.1, xm.2, ..., xm.n
- */
-
 void M_arquivos::elementos_arq (double xn, ...) {
 	double valor;
 	va_list elem;
@@ -22,22 +13,8 @@ void M_arquivos::elementos_arq (double xn, ...) {
 	va_end(elem);
 }
 
-
-
-/*
- *  Função fecha_arq pega a lista gerada a cada chamada da função elemntos_arq
- *  e escreve em um arquivo.
- *  O arquivo estará no modelo:
- *
- *  t = [t1 t2 t3 ... tn];
- *  x1 = [x1.1 x1.2 x1.3 ... x1.n];
- *  ...
- *  xm = [xm.1 xm.2 xm.3 ... xmn];
- */
-
 void M_arquivos::fecha_arq() {
-	ofstream outfile;
-	outfile.open (nome_arquivo);
+	outfile.open (nome_arquivo, ios::out);
 	int tamanho_linha = elementos.size()/tamanho_coluna;
 	int count = 0;
 
@@ -60,4 +37,12 @@ void M_arquivos::fecha_arq() {
 
 		}
 	}
+	outfile << endl;
+	outfile.close();
+}
+
+void M_arquivos::string_arq (string str) {
+	outfile.open (nome_arquivo, ios::app);
+	outfile << str << endl;
+	outfile.close();
 }
