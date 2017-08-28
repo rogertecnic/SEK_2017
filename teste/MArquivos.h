@@ -10,8 +10,11 @@ using namespace std;
 
 class M_arquivos {
 public:
+	M_arquivos ()
+:nome_arquivo (""), tamanho_coluna (0){}
+
 	M_arquivos (string nome, int tamanho)
-		: nome_arquivo (nome), tamanho_coluna (tamanho) {}
+	: nome_arquivo (nome), tamanho_coluna (tamanho) {}
 
 
 	/*

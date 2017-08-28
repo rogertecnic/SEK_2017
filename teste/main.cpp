@@ -491,18 +491,28 @@ void teste_controle_velocidade(){
 
 int main(){
 	system("setfont Greek-TerminusBold20x10.psf.gz");
-	Controlador_motor rodaE(ev3dev::OUTPUT_A, 0.0408, 775, 0.3, true,  "debug_lego_E.m");
-	Controlador_motor rodaD(ev3dev::OUTPUT_B, 0.0408, 809, 0.3, true,  "debug_lego_D.m");
+	Controlador_motor rodaE(ev3dev::OUTPUT_A, 0.0408, 0.808, 0.255, true,  "debug_lego_E.m");
+	Controlador_motor rodaD(ev3dev::OUTPUT_B, 0.0405, 0.79, 0.3, true,  "debug_lego_D.m");
+
+	rodaE.inicializa_thread();
+	rodaD.inicializa_thread();
 
 	rodaE.set_velo(0.3);
 	rodaD.set_velo(0.3);
-	//anda_e_para();
 
-	while(!ev3dev::button::enter.process()){
-	}
+	//anda_e_para();
+	//	rodaE.tora_o_pau("rodaE_full_speed.m");
+	//	rodaD.tora_o_pau("rodaD_full_speed.m");
+	usleep(1000*1000);
+	while(!ev3dev::button::enter.process()){}
 
 	rodaE.finaliza_thread();
 	rodaD.finaliza_thread();
+	//	while(!ev3dev::button::enter.process()){
+	//	}
+
+	//rodaE.finaliza_thread();
+	//rodaD.finaliza_thread();
 	//teste_controle_velocidade();
 	//teorema_de_roger();
 	//anda_e_para();
