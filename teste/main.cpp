@@ -13,13 +13,12 @@
 #include <math.h>
 #include <iostream>
 #include <fstream>
-
-// *******LIB TEMPO
 #include <chrono>
 #include "Controlador_motor.h"
 #include "MArquivos.h"
 
 using namespace std;
+
 typedef std::chrono::high_resolution_clock Time;
 typedef std::chrono::milliseconds ms;
 typedef std::chrono::duration<float> fsec;
@@ -38,8 +37,6 @@ void teorema_de_roger(){
 	rodaD.reset();
 	rodaE.set_stop_action("hold");
 	rodaD.set_stop_action("hold");
-	//rodaE.set_ramp_down_sp(1500);
-	//rodaD.set_ramp_down_sp(1500);
 
 
 	//atributos do motor
@@ -115,15 +112,6 @@ void teorema_de_roger(){
 		if(pwmD > 100) pwmD = 100;
 		if(pwmD < -100) pwmD = -100;
 
-		// pode apagar
-		//		if(v2E >= velocidade && !acelerou){
-		//			acelerou = true;
-		//			dt_experimental = t2-ti;
-		//			ti = t2;
-		//			file<<"terminou de acelerar:"<<endl;
-		//			file<<v2E<<"\t"<<pos2E<<"\t"<< dt_experimental.count()<<endl;
-		//		}
-		// pode apagar
 
 		file<<pwmE<<"\t"<<pwmD<<"\t"<<pos2E<<"\t"<<pos2D<<"\t"<<v2E<<"\t"<<v2D<<"\t"<<v_retardada<<endl;
 
@@ -137,22 +125,10 @@ void teorema_de_roger(){
 		v1D = v2D;
 
 		if(pos2E >= distancia*2){
-			//rodaE.stop();
-			//rodaD.stop();
-			//			dt_experimental = t2-ti;
-			//			file<<"terminou o percurso:"<<endl;
-			//			file<<v2E<<"\t"<<pos2E<<"\t"<< dt_experimental.count()<<endl;
-			while(!ev3dev::button::enter.process()){
-			}
+			while(!ev3dev::button::enter.process()){}
 			break;
 		}
 
-		// testando desaceleracao e parada
-		//		if(pos2E > 1 && pos2E < 2.7){
-		//			velocidade = 0.3;
-		//			acumuladorD = 0;
-		//			acumuladorE = 0;
-		//		}
 		if(pos2E > 2.7){
 			velocidade = 0;
 			aceleracao = 0.3/0.5;
@@ -164,9 +140,7 @@ void teorema_de_roger(){
 			rodaE.stop();
 			rodaD.stop();
 			cout<<"parou"<<endl;
-			while(velocidade == 0 && !ev3dev::button::enter.process()){
-
-			}
+			while(velocidade == 0 && !ev3dev::button::enter.process()){}
 			break;
 		}
 
@@ -210,21 +184,15 @@ void testeAceleracao(){
 	auto t0 = Time::now();
 	std::cout<<"iniciado"<<endl;
 
-	while((rodaD.speed()>=180*3?false:true )){
-	}
+	while((rodaD.speed()>=180*3?false:true )){}
 
 	auto t1 = Time::now();
 	fsec fs = t1 - t0;
-	//std::chrono::milliseconds d = std::chrono::duration_cast<std::chrono::milliseconds>(fs);
 	std::cout << fs.count() << "s\n";
-	//std::cout << d.count() << "ms\n";
-
 
 	// espera apertar e soltar o botao enter do brick
-	while(!ev3dev::button::enter.process()){
-	}
-	while(!ev3dev::button::enter.process()){
-	}
+	while(!ev3dev::button::enter.process()){}
+	while(!ev3dev::button::enter.process()){}
 
 }
 
@@ -241,14 +209,8 @@ void anda_e_para(){
 
 	// usando o controlador pid interno
 	int pos_sp = 360*120;
-	//	rodaE.set_position_sp(pos_sp);
-	//	rodaD.set_position_sp(pos_sp);
 	rodaE.set_speed_sp(180*2);
 	rodaD.set_speed_sp(180*2);
-	//	rodaE.set_ramp_up_sp(4180);
-	//	rodaD.set_ramp_up_sp(4000);
-	//	rodaE.run_to_rel_pos();
-	//	rodaD.run_to_rel_pos();
 
 	// usando apenas o pwm sem controlador
 
@@ -262,7 +224,7 @@ void anda_e_para(){
 	double pos_finalD = 0;
 	std::chrono::duration<double> dt; // usardt = t1-t2 e dt.count() para pegar o tempo em seg
 	double tempoooooooo =0;
-	//file<<"velo_e"<<"\t"<<"velo_d"<<"\t"<<"v_e_lib"<<"\t"<<"v_d_lib"<<endl;
+
 	ti = Time::now();
 	while(!ev3dev::button::enter.process() &&
 			rodaE.position() <= pos_sp){
@@ -277,10 +239,7 @@ void anda_e_para(){
 		dt = tf - ti;
 		ti = tf;
 		tempoooooooo += dt.count();
-		//file <<(pos_finalE-pos_inicialE)/dt.count()<<"\t"<<(pos_finalD-pos_inicialD)/dt.count()<<"\t"<<rodaE.speed()<<"\t"<<rodaD.speed()<<"\t"<<tempoooooooo<<endl;
 
-		// tempo, posicao, velocidade media
-		//arquivo.elementos_arq(3, tempoooooooo, pos_finalE, rodaE.speed());
 		rodaE.run_forever();
 		rodaD.run_forever();
 	}
@@ -291,8 +250,7 @@ void anda_e_para(){
 	while(!ev3dev::button::enter.process()){
 		file << rodaE.position()<<"\t"<<rodaD.position()<<"\t"<< rodaE.speed()<<"\t"<<rodaD.speed()<<endl;
 	}
-	while(!ev3dev::button::enter.process()){
-	}
+	while(!ev3dev::button::enter.process()){}
 }
 
 
@@ -317,26 +275,15 @@ void teste_controle_velocidade(){
 	double a_sp = v_sp/t_sp; // aceleracao/desaceleracao que queremos no motor
 	double tm = vm/a_sp; // tempo que o motor demoraria para acelerar/desacelerar de 0 a vm em seg
 
-	//rodaE.set_speed_sp(v_sp);
-	//rodaE.set_ramp_up_sp(tm*1000);
 	rodaE.set_ramp_down_sp(tm*1000/3);
 	rodaE.set_position_sp(pos_sp);
 
-	//rodaD.set_speed_sp(v_sp);
-	//rodaD.set_ramp_up_sp(tm*1000);
 	rodaD.set_ramp_down_sp(tm*1000/3);
 	rodaD.set_position_sp(pos_sp);
 
-	//int kgz = 1;
 	float raio_roda = 0.0407; // metros, diametro/2
 	float largura_robo = 0.261; // largura de uma roda a outra em metros
-	//float erro_angulo = 0; // pos se o robo estiver para direita e neg se estiver para a esquerda
-	//float fator_veloE = 1;
-	//float fator_veloD = 1;
 
-	//rodaE.run_to_rel_pos();
-	//rodaD.run_to_rel_pos();
-	//usleep(1000*50000);
 
 	// variaveis do controle de posicao
 	double erro_pos;
@@ -348,24 +295,6 @@ void teste_controle_velocidade(){
 	chrono::system_clock::time_point t2;
 	std::chrono::duration<double> dt; // usar dt.count() para pegar o tempo em seg
 
-
-	// variaveis de controle da aceleracao
-	//	chrono::system_clock::time_point t1 = Time::now();
-	//	chrono::system_clock::time_point t2;
-	//	std::chrono::duration<double> dt; // usar dt.count() para pegar o tempo em seg
-	//	double v1E = 0;
-	//	double v1D = 0;
-	//	double v2E = 0;
-	//	double v2D = 0;
-	//
-	//	double dv;
-	//	double accE;
-	//	double accD;
-	//	double accErro;
-	//	double fator_accE;
-	//	double fator_accD;
-
-	//a_sp = 360;
 	rodaE.run_direct();
 	rodaD.run_direct();
 	while(!ev3dev::button::enter.process()){
@@ -378,9 +307,7 @@ void teste_controle_velocidade(){
 		// a linha reta inicial que ele deve seguir, positivo sentido anti-hor
 		erro_ang = atan2(erro_pos, largura_robo);// variando de -pi ate pi
 		erro_ang = erro_ang/3.1415*10; // deixa o range de -1 ate 1
-		//cout<<erro_ang<<endl;
-		// fator de posicao eh um valor de ajuste que vaira de -1 a 1
-		// que indica o quanto o robo esta inclinado
+
 		if(erro_ang >0){
 			fator_posicao = pow(erro_ang,expoente);
 			if(fator_posicao > 1) fator_posicao = 1;
@@ -398,75 +325,17 @@ void teste_controle_velocidade(){
 		}
 		t1 = t2;
 		file << (int)(v_retardada*(1+fator_posicao)>850 ? 850 : v_retardada*(1+fator_posicao) )*100/850<<";"<<(int)(v_retardada*(1-fator_posicao)>850 ? 850 : v_retardada*(1-fator_posicao) )*100/850<<";"<<dt.count()<<";"<<erro_ang<<endl;
-		//cout<<(int)(v_retardada*(1+fator_posicao)>850 ? 850 : v_retardada*(1+fator_posicao) )*100/850<<";"<<(v_retardada*(1-fator_posicao)>850 ? 850 : v_retardada*(1-fator_posicao) )*100/850<<endl;
-		//rodaE.set_speed_sp(1051);
-		//rodaE.set_speed_sp(v_retardada*(1+fator_posicao)>1050 ? 1050 : v_retardada*(1+fator_posicao));
-		//rodaD.set_speed_sp(v_retardada*(1-fator_posicao)>1050 ? 1050 : v_retardada*(1-fator_posicao));
 
-		//rodaE.run_forever();
-		//rodaD.run_forever();
-
-		//int pwm = (v_retardada+v_retardada*(1+fator_posicao)>850 ? 850 : v_retardada*(1+fator_posicao))*100/850;
 		rodaE.set_duty_cycle_sp( 0.9*(v_retardada*(1+fator_posicao)>850 ? 850 : v_retardada*(1+fator_posicao) )*100/850);
 		rodaD.set_duty_cycle_sp( (v_retardada*(1-fator_posicao)>850 ? 850 : v_retardada*(1-fator_posicao) )*100/850);
 
 		usleep(1000*100);
 
-		//		// **********************CONTROLADOR VELOCIDADE DO ROBO*************
-		//		erro_angulo = std::atan2( (rodaE.position() - rodaD.position())*raio_roda*3.1415/180 , largura_robo);
-		//		fator_veloE = 1-std::sin(erro_angulo)+kgz*tan(-erro_angulo);
-		//		fator_veloD= 1+std::sin(erro_angulo)+kgz*tan(erro_angulo);
-		//
-		//		if(fator_veloE > 1 ) fator_veloE = 1;
-		//		if(fator_veloE < -1 ) fator_veloE = -1;
-		//		if(fator_veloD > 1 ) fator_veloD = 1;
-		//		if(fator_veloD < -1 ) fator_veloD = -1;
-		//
-		//		rodaE.set_speed_sp(v_sp*fator_veloE);
-		//		rodaD.set_speed_sp(v_sp*fator_veloD);
-		//
-		//		// **********************CONTROLADOR ACELERACAO DO ROBO*************
-		//		t2 = Time::now();
-		//		v2E = rodaE.speed()*raio_roda*3.1415/180 ;
-		//		v2D = rodaD.speed()*raio_roda*3.1415/180 ;
-		//		dt = t2-t1;
-		//		t1 = t2;
-		//
-		//		dv = v2E-v1E;
-		//		accE = dv/dt.count();
-		//		v1E = v2E;
-		//
-		//		dv = v2D-v1D;
-		//		accD = dv/dt.count();
-		//		v1D = v2D;
-		//		cout<<accD<<endl;
-		//
-		//		kgz = 60;
-		//		accErro = (accE - accD);// accD maior erro negativo
-		//		fator_accE = 2-std::sin(accErro)+kgz*tan(-accErro);
-		//		fator_accD= 2+std::sin(accErro)+kgz*tan(accErro);
-		//
-		//		if(fator_accE >2) fator_accE = 2;
-		//		if( fator_accE < 0) fator_accE = 1;
-		//		if(fator_accD >2) fator_accD = 2;
-		//		if( fator_accD < 0) fator_accD = 1;
-		//
-		//		fator_veloE = (fator_veloE+1)/2;
-		//		fator_veloD = (fator_veloD+1)/2;
-		//		rodaE.set_ramp_up_sp(calctAcc(360*fator_veloE));
-		//		rodaD.set_ramp_up_sp(calctAcc(360*fator_veloD));
-		//
-		//		rodaE.run_forever();
-		//		rodaD.run_forever();
-		//		usleep(1000*5);
-		//
 		if(rodaE.position()>=pos_sp){
 			rodaE.stop();
 			rodaD.stop();
-			while(!ev3dev::button::enter.process()){
-			}
-			while(!ev3dev::button::enter.process()){
-			}
+			while(!ev3dev::button::enter.process()){}
+			while(!ev3dev::button::enter.process()){}
 			break;
 		}
 
@@ -502,6 +371,7 @@ int main(){
 
 	usleep(1000*1000);
 	while(!ev3dev::button::enter.process()){}
+
 
 	rodaE.finaliza_thread();
 	rodaD.finaliza_thread();
