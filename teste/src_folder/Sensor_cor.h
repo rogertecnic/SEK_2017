@@ -5,8 +5,8 @@
  *      Author: pcsek
  */
 
-#ifndef SENSORCOR_H_
-#define SENSORCOR_H_
+#ifndef SENSOR_COR_H_
+#define SENSOR_COR_H_
 #include <iostream>
 #include <tuple>
 #include "ev3dev.h"
@@ -14,23 +14,24 @@
 
 using namespace std;
 
-enum Cor{nda, preto, branco, verde, azul, vermelho}; // cores possiveis
+enum Cor{nda, preto, branco, vermelho, verde, azul}; // cores possiveis
 
 struct RangesCor{
 	int r[2],g[2], b[2];
-	static const int range = 10;
+	static const int range = 20;
 };
 
 class Sensor_cor {
 public:
-	Sensor_cor(); // construtor
+	Sensor_cor(string sensor_port); // construtor
 	Cor ler_cor(); // por favor ne
+	void calibra();
 
 private:
-	RangesCor r_preto, r_branco, r_verde, r_azul, r_vermelho;
+	RangesCor r_Preto, r_Branco, r_Vermelho, r_Verde, r_Azul;
 	bool corEstaEntre(std::tuple<int, int, int>, RangesCor);
-	void calibra();
-	ev3dev::color_sensor;
+
+	ev3dev::color_sensor sensor;
 };
 
-#endif /* SENSORCOR_H_ */
+#endif /* SENSOR_COR_H_ */

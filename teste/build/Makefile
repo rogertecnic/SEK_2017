@@ -116,51 +116,6 @@ binario/fast:
 .PHONY : binario/fast
 
 # target to build an object file
-Controlador_motor.o:
-	$(MAKE) -f CMakeFiles/binario.dir/build.make CMakeFiles/binario.dir/Controlador_motor.o
-.PHONY : Controlador_motor.o
-
-# target to preprocess a source file
-Controlador_motor.i:
-	$(MAKE) -f CMakeFiles/binario.dir/build.make CMakeFiles/binario.dir/Controlador_motor.i
-.PHONY : Controlador_motor.i
-
-# target to generate assembly for a file
-Controlador_motor.s:
-	$(MAKE) -f CMakeFiles/binario.dir/build.make CMakeFiles/binario.dir/Controlador_motor.s
-.PHONY : Controlador_motor.s
-
-# target to build an object file
-MArquivos.o:
-	$(MAKE) -f CMakeFiles/binario.dir/build.make CMakeFiles/binario.dir/MArquivos.o
-.PHONY : MArquivos.o
-
-# target to preprocess a source file
-MArquivos.i:
-	$(MAKE) -f CMakeFiles/binario.dir/build.make CMakeFiles/binario.dir/MArquivos.i
-.PHONY : MArquivos.i
-
-# target to generate assembly for a file
-MArquivos.s:
-	$(MAKE) -f CMakeFiles/binario.dir/build.make CMakeFiles/binario.dir/MArquivos.s
-.PHONY : MArquivos.s
-
-# target to build an object file
-ev3dev.o:
-	$(MAKE) -f CMakeFiles/binario.dir/build.make CMakeFiles/binario.dir/ev3dev.o
-.PHONY : ev3dev.o
-
-# target to preprocess a source file
-ev3dev.i:
-	$(MAKE) -f CMakeFiles/binario.dir/build.make CMakeFiles/binario.dir/ev3dev.i
-.PHONY : ev3dev.i
-
-# target to generate assembly for a file
-ev3dev.s:
-	$(MAKE) -f CMakeFiles/binario.dir/build.make CMakeFiles/binario.dir/ev3dev.s
-.PHONY : ev3dev.s
-
-# target to build an object file
 main.o:
 	$(MAKE) -f CMakeFiles/binario.dir/build.make CMakeFiles/binario.dir/main.o
 .PHONY : main.o
@@ -175,6 +130,66 @@ main.s:
 	$(MAKE) -f CMakeFiles/binario.dir/build.make CMakeFiles/binario.dir/main.s
 .PHONY : main.s
 
+# target to build an object file
+src_folder/Controlador_motor.o:
+	$(MAKE) -f CMakeFiles/binario.dir/build.make CMakeFiles/binario.dir/src_folder/Controlador_motor.o
+.PHONY : src_folder/Controlador_motor.o
+
+# target to preprocess a source file
+src_folder/Controlador_motor.i:
+	$(MAKE) -f CMakeFiles/binario.dir/build.make CMakeFiles/binario.dir/src_folder/Controlador_motor.i
+.PHONY : src_folder/Controlador_motor.i
+
+# target to generate assembly for a file
+src_folder/Controlador_motor.s:
+	$(MAKE) -f CMakeFiles/binario.dir/build.make CMakeFiles/binario.dir/src_folder/Controlador_motor.s
+.PHONY : src_folder/Controlador_motor.s
+
+# target to build an object file
+src_folder/MArquivos.o:
+	$(MAKE) -f CMakeFiles/binario.dir/build.make CMakeFiles/binario.dir/src_folder/MArquivos.o
+.PHONY : src_folder/MArquivos.o
+
+# target to preprocess a source file
+src_folder/MArquivos.i:
+	$(MAKE) -f CMakeFiles/binario.dir/build.make CMakeFiles/binario.dir/src_folder/MArquivos.i
+.PHONY : src_folder/MArquivos.i
+
+# target to generate assembly for a file
+src_folder/MArquivos.s:
+	$(MAKE) -f CMakeFiles/binario.dir/build.make CMakeFiles/binario.dir/src_folder/MArquivos.s
+.PHONY : src_folder/MArquivos.s
+
+# target to build an object file
+src_folder/Sensor_cor.o:
+	$(MAKE) -f CMakeFiles/binario.dir/build.make CMakeFiles/binario.dir/src_folder/Sensor_cor.o
+.PHONY : src_folder/Sensor_cor.o
+
+# target to preprocess a source file
+src_folder/Sensor_cor.i:
+	$(MAKE) -f CMakeFiles/binario.dir/build.make CMakeFiles/binario.dir/src_folder/Sensor_cor.i
+.PHONY : src_folder/Sensor_cor.i
+
+# target to generate assembly for a file
+src_folder/Sensor_cor.s:
+	$(MAKE) -f CMakeFiles/binario.dir/build.make CMakeFiles/binario.dir/src_folder/Sensor_cor.s
+.PHONY : src_folder/Sensor_cor.s
+
+# target to build an object file
+src_folder/ev3dev.o:
+	$(MAKE) -f CMakeFiles/binario.dir/build.make CMakeFiles/binario.dir/src_folder/ev3dev.o
+.PHONY : src_folder/ev3dev.o
+
+# target to preprocess a source file
+src_folder/ev3dev.i:
+	$(MAKE) -f CMakeFiles/binario.dir/build.make CMakeFiles/binario.dir/src_folder/ev3dev.i
+.PHONY : src_folder/ev3dev.i
+
+# target to generate assembly for a file
+src_folder/ev3dev.s:
+	$(MAKE) -f CMakeFiles/binario.dir/build.make CMakeFiles/binario.dir/src_folder/ev3dev.s
+.PHONY : src_folder/ev3dev.s
+
 # Help Target
 help:
 	@echo "The following are some of the valid targets for this Makefile:"
@@ -184,18 +199,21 @@ help:
 	@echo "... binario"
 	@echo "... edit_cache"
 	@echo "... rebuild_cache"
-	@echo "... Controlador_motor.o"
-	@echo "... Controlador_motor.i"
-	@echo "... Controlador_motor.s"
-	@echo "... MArquivos.o"
-	@echo "... MArquivos.i"
-	@echo "... MArquivos.s"
-	@echo "... ev3dev.o"
-	@echo "... ev3dev.i"
-	@echo "... ev3dev.s"
 	@echo "... main.o"
 	@echo "... main.i"
 	@echo "... main.s"
+	@echo "... src_folder/Controlador_motor.o"
+	@echo "... src_folder/Controlador_motor.i"
+	@echo "... src_folder/Controlador_motor.s"
+	@echo "... src_folder/MArquivos.o"
+	@echo "... src_folder/MArquivos.i"
+	@echo "... src_folder/MArquivos.s"
+	@echo "... src_folder/Sensor_cor.o"
+	@echo "... src_folder/Sensor_cor.i"
+	@echo "... src_folder/Sensor_cor.s"
+	@echo "... src_folder/ev3dev.o"
+	@echo "... src_folder/ev3dev.i"
+	@echo "... src_folder/ev3dev.s"
 .PHONY : help
 
 
