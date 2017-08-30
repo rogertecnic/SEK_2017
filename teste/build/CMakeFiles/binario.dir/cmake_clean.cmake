@@ -1,7 +1,8 @@
 file(REMOVE_RECURSE
-  "CMakeFiles/binario.dir/ev3dev.o"
-  "CMakeFiles/binario.dir/Controlador_motor.o"
-  "CMakeFiles/binario.dir/MArquivos.o"
+  "CMakeFiles/binario.dir/src_folder/ev3dev.o"
+  "CMakeFiles/binario.dir/src_folder/Controlador_motor.o"
+  "CMakeFiles/binario.dir/src_folder/MArquivos.o"
+  "CMakeFiles/binario.dir/src_folder/Sensor_cor.o"
   "CMakeFiles/binario.dir/main.o"
   "binario.pdb"
   "binario"

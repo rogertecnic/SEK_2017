@@ -4,10 +4,11 @@ set(CMAKE_DEPENDS_LANGUAGES
   )
 # The set of files for implicit dependencies of each language:
 set(CMAKE_DEPENDS_CHECK_CXX
-  "/src/Controlador_motor.cpp" "/src/build/CMakeFiles/binario.dir/Controlador_motor.o"
-  "/src/MArquivos.cpp" "/src/build/CMakeFiles/binario.dir/MArquivos.o"
-  "/src/ev3dev.cpp" "/src/build/CMakeFiles/binario.dir/ev3dev.o"
   "/src/main.cpp" "/src/build/CMakeFiles/binario.dir/main.o"
+  "/src/src_folder/Controlador_motor.cpp" "/src/build/CMakeFiles/binario.dir/src_folder/Controlador_motor.o"
+  "/src/src_folder/MArquivos.cpp" "/src/build/CMakeFiles/binario.dir/src_folder/MArquivos.o"
+  "/src/src_folder/Sensor_cor.cpp" "/src/build/CMakeFiles/binario.dir/src_folder/Sensor_cor.o"
+  "/src/src_folder/ev3dev.cpp" "/src/build/CMakeFiles/binario.dir/src_folder/ev3dev.o"
   )
 set(CMAKE_CXX_COMPILER_ID "GNU")
 
@@ -17,6 +18,7 @@ set(CMAKE_TARGET_LINKED_INFO_FILES
 
 # The include file search paths:
 set(CMAKE_C_TARGET_INCLUDE_PATH
+  "../src_folder"
   )
 set(CMAKE_CXX_TARGET_INCLUDE_PATH ${CMAKE_C_TARGET_INCLUDE_PATH})
 set(CMAKE_Fortran_TARGET_INCLUDE_PATH ${CMAKE_C_TARGET_INCLUDE_PATH})

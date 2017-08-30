@@ -1,7 +1,5 @@
 #ifndef CONTROLADOR_MOTOR_H_
 #define CONTROLADOR_MOTOR_H_
-#include <iostream>
-#include <fstream>
 #include <thread>
 #include <chrono>
 #include <unistd.h>
