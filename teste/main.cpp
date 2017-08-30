@@ -360,7 +360,7 @@ void teste_controle_velocidade(){
 
 int main(){
 	system("setfont Greek-TerminusBold20x10.psf.gz");
-	Controlador_motor rodaE(ev3dev::OUTPUT_A, 0.04075, 0.808, 0.248, true,  "debug_lego_E.m");
+	Controlador_motor rodaE(ev3dev::OUTPUT_A, 0.0408, 0.808, 0.3*0.826666667, true,  "debug_lego_E.m");
 	Controlador_motor rodaD(ev3dev::OUTPUT_B, 0.04058, 0.79, 0.3, true,  "debug_lego_D.m");
 
 	rodaE.inicializa_thread();
