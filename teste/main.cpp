@@ -16,7 +16,7 @@
 #include "src_folder/Sensor_cor.h"
 using namespace std;
 
-//Controlador_motor rodaE(ev3dev::OUTPUT_A, 0.0408, 0.808, 0.248, true,  "debug_lego_E.m");
+Controlador_motor rodaE(ev3dev::OUTPUT_A, 0.0408, 0.808, 0.248, true,  "debug_lego_E.m");
 Controlador_motor rodaD(ev3dev::OUTPUT_B, 0.04058, 0.79, 0.3, true,  "debug_lego_D.m");
 Sensor_cor sensorE(ev3dev::INPUT_1);
 Sensor_cor sensorD(ev3dev::INPUT_2);
