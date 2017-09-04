@@ -3,12 +3,20 @@
 #include <iostream>
 #include "ev3dev.h"
 #include "Controlador_motor.h"
-#include "Sensorcor.h"
+#include "Sensor_cor.h"
 
 using namespace std;
 
+enum Direcao{esquerda, direita};
+
 class Controlador_robo {
-	void nao_cai_porra ();
+public:
+	void frente();
+	void tras();
+	void girar(Direcao);
+
+private:
+
 };
 
 
