@@ -23,12 +23,8 @@ Sensor_cor sensorD(ev3dev::INPUT_2);
 
 int main(){
 	system("setfont Greek-TerminusBold20x10.psf.gz");
-<<<<<<< HEAD
 	Controlador_motor rodaE(ev3dev::OUTPUT_A, 0.0408, 0.808, 0.3*0.826666667, true,  "debug_lego_E.m");
 	Controlador_motor rodaD(ev3dev::OUTPUT_B, 0.04058, 0.79, 0.3, true,  "debug_lego_D.m");
-=======
-
->>>>>>> refs/remotes/origin/master
 
 	rodaE.inicializa_thread();
 	rodaD.inicializa_thread();

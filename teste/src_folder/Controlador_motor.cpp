@@ -123,9 +123,7 @@ void Controlador_motor::loop_controlador(){
 				(velo_retardada < aceleracao*delay*5/1000 && velo_retardada > -aceleracao*delay*5/1000)){
 			roda.stop();
 			cout<<"parada"<<endl;
-			while(velo_sp == 0){
-				usleep(1000*delay);
-			}
+			while(velo_sp == 0 && thread_rodando){}
 		}
 
 		t_final = Time::now();
@@ -134,7 +132,8 @@ void Controlador_motor::loop_controlador(){
 		tempo_total += delta_t.count();
 		if(velo_retardada < (velo_sp-aceleracao*delay*2/1000)) velo_retardada += aceleracao*delta_t.count();
 		if(velo_retardada > (velo_sp+aceleracao*delay*2/1000)) velo_retardada -= aceleracao*delta_t.count();
-		roda.run_direct();
+
+		if(velo_sp != 0)roda.run_direct();
 	}
 
 	roda.stop();

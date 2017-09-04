@@ -53,8 +53,6 @@ CMAKE_SOURCE_DIR = /src
 CMAKE_BINARY_DIR = /src/build
 
 #=============================================================================
-<<<<<<< HEAD
-=======
 # Target rules for target CMakeFiles/binario.dir
 
 # All Build rule for target.
@@ -90,7 +88,6 @@ clean: CMakeFiles/binario.dir/clean
 .PHONY : clean
 
 #=============================================================================
->>>>>>> refs/remotes/origin/master
 # Special targets to cleanup operation of make.
 
 # Special rule to run CMake to check the build system integrity.
