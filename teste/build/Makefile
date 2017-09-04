@@ -146,19 +146,19 @@ src_folder/Controlador_motor.s:
 .PHONY : src_folder/Controlador_motor.s
 
 # target to build an object file
-src_folder/MArquivos.o:
-	$(MAKE) -f CMakeFiles/binario.dir/build.make CMakeFiles/binario.dir/src_folder/MArquivos.o
-.PHONY : src_folder/MArquivos.o
+src_folder/M_arquivos.o:
+	$(MAKE) -f CMakeFiles/binario.dir/build.make CMakeFiles/binario.dir/src_folder/M_arquivos.o
+.PHONY : src_folder/M_arquivos.o
 
 # target to preprocess a source file
-src_folder/MArquivos.i:
-	$(MAKE) -f CMakeFiles/binario.dir/build.make CMakeFiles/binario.dir/src_folder/MArquivos.i
-.PHONY : src_folder/MArquivos.i
+src_folder/M_arquivos.i:
+	$(MAKE) -f CMakeFiles/binario.dir/build.make CMakeFiles/binario.dir/src_folder/M_arquivos.i
+.PHONY : src_folder/M_arquivos.i
 
 # target to generate assembly for a file
-src_folder/MArquivos.s:
-	$(MAKE) -f CMakeFiles/binario.dir/build.make CMakeFiles/binario.dir/src_folder/MArquivos.s
-.PHONY : src_folder/MArquivos.s
+src_folder/M_arquivos.s:
+	$(MAKE) -f CMakeFiles/binario.dir/build.make CMakeFiles/binario.dir/src_folder/M_arquivos.s
+.PHONY : src_folder/M_arquivos.s
 
 # target to build an object file
 src_folder/Sensor_cor.o:
@@ -174,6 +174,21 @@ src_folder/Sensor_cor.i:
 src_folder/Sensor_cor.s:
 	$(MAKE) -f CMakeFiles/binario.dir/build.make CMakeFiles/binario.dir/src_folder/Sensor_cor.s
 .PHONY : src_folder/Sensor_cor.s
+
+# target to build an object file
+src_folder/Ultra_Som.o:
+	$(MAKE) -f CMakeFiles/binario.dir/build.make CMakeFiles/binario.dir/src_folder/Ultra_Som.o
+.PHONY : src_folder/Ultra_Som.o
+
+# target to preprocess a source file
+src_folder/Ultra_Som.i:
+	$(MAKE) -f CMakeFiles/binario.dir/build.make CMakeFiles/binario.dir/src_folder/Ultra_Som.i
+.PHONY : src_folder/Ultra_Som.i
+
+# target to generate assembly for a file
+src_folder/Ultra_Som.s:
+	$(MAKE) -f CMakeFiles/binario.dir/build.make CMakeFiles/binario.dir/src_folder/Ultra_Som.s
+.PHONY : src_folder/Ultra_Som.s
 
 # target to build an object file
 src_folder/ev3dev.o:
@@ -205,12 +220,15 @@ help:
 	@echo "... src_folder/Controlador_motor.o"
 	@echo "... src_folder/Controlador_motor.i"
 	@echo "... src_folder/Controlador_motor.s"
-	@echo "... src_folder/MArquivos.o"
-	@echo "... src_folder/MArquivos.i"
-	@echo "... src_folder/MArquivos.s"
+	@echo "... src_folder/M_arquivos.o"
+	@echo "... src_folder/M_arquivos.i"
+	@echo "... src_folder/M_arquivos.s"
 	@echo "... src_folder/Sensor_cor.o"
 	@echo "... src_folder/Sensor_cor.i"
 	@echo "... src_folder/Sensor_cor.s"
+	@echo "... src_folder/Ultra_Som.o"
+	@echo "... src_folder/Ultra_Som.i"
+	@echo "... src_folder/Ultra_Som.s"
 	@echo "... src_folder/ev3dev.o"
 	@echo "... src_folder/ev3dev.i"
 	@echo "... src_folder/ev3dev.s"

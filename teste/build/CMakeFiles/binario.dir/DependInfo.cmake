@@ -6,8 +6,9 @@ set(CMAKE_DEPENDS_LANGUAGES
 set(CMAKE_DEPENDS_CHECK_CXX
   "/src/main.cpp" "/src/build/CMakeFiles/binario.dir/main.o"
   "/src/src_folder/Controlador_motor.cpp" "/src/build/CMakeFiles/binario.dir/src_folder/Controlador_motor.o"
-  "/src/src_folder/MArquivos.cpp" "/src/build/CMakeFiles/binario.dir/src_folder/MArquivos.o"
+  "/src/src_folder/M_arquivos.cpp" "/src/build/CMakeFiles/binario.dir/src_folder/M_arquivos.o"
   "/src/src_folder/Sensor_cor.cpp" "/src/build/CMakeFiles/binario.dir/src_folder/Sensor_cor.o"
+  "/src/src_folder/Ultra_Som.cpp" "/src/build/CMakeFiles/binario.dir/src_folder/Ultra_Som.o"
   "/src/src_folder/ev3dev.cpp" "/src/build/CMakeFiles/binario.dir/src_folder/ev3dev.o"
   )
 set(CMAKE_CXX_COMPILER_ID "GNU")

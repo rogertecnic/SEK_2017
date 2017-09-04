@@ -4,8 +4,8 @@
 #include <chrono>
 #include <unistd.h>
 #include <math.h>
+#include <M_arquivos.h>
 #include "ev3dev.h"
-#include "MArquivos.h"
 using namespace std;
 typedef std::chrono::high_resolution_clock Time;
 
@@ -17,6 +17,7 @@ public:
 	void set_aceleracao(double aceleracao);
 	bool finaliza_thread();
 	bool inicializa_thread();
+	//TODO adicionar metodo de leitura de distancia
 private:
 
 	//****************VARIAVEIS DO MOTOR********************

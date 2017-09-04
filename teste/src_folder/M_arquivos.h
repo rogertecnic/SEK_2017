@@ -1,5 +1,5 @@
-#ifndef MARQUIVOS_H_
-#define MARQUIVOS_H_
+#ifndef M_ARQUIVOS_H_
+#define M_ARQUIVOS_H_
 #include <iostream>
 #include <stdarg.h>
 #include <fstream>
@@ -54,4 +54,4 @@ private:
 
 };
 
-#endif /*MARQUIVOS_H_ */
+#endif /*M_ARQUIVOS_H_ */
