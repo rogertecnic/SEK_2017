@@ -14,7 +14,7 @@ link_libraries("-pthread")
 include_directories(src_folder)
 
 # seta a variavel uma lista com a biblioteca padrao
-set(LIBS src_folder/Ultrassom.cpp)
+set(LIBS src_folder/Ultrassom_nxt.cpp)
 
 # adiciona todos os sources e o main para serem compilados juntos
 add_executable(binario  ${LIBS} Main.cpp)

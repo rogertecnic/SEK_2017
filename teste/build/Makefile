@@ -176,19 +176,19 @@ src_folder/Sensor_cor.s:
 .PHONY : src_folder/Sensor_cor.s
 
 # target to build an object file
-src_folder/Ultra_Som.o:
-	$(MAKE) -f CMakeFiles/binario.dir/build.make CMakeFiles/binario.dir/src_folder/Ultra_Som.o
-.PHONY : src_folder/Ultra_Som.o
+src_folder/Ultrassom_nxt.o:
+	$(MAKE) -f CMakeFiles/binario.dir/build.make CMakeFiles/binario.dir/src_folder/Ultrassom_nxt.o
+.PHONY : src_folder/Ultrassom_nxt.o
 
 # target to preprocess a source file
-src_folder/Ultra_Som.i:
-	$(MAKE) -f CMakeFiles/binario.dir/build.make CMakeFiles/binario.dir/src_folder/Ultra_Som.i
-.PHONY : src_folder/Ultra_Som.i
+src_folder/Ultrassom_nxt.i:
+	$(MAKE) -f CMakeFiles/binario.dir/build.make CMakeFiles/binario.dir/src_folder/Ultrassom_nxt.i
+.PHONY : src_folder/Ultrassom_nxt.i
 
 # target to generate assembly for a file
-src_folder/Ultra_Som.s:
-	$(MAKE) -f CMakeFiles/binario.dir/build.make CMakeFiles/binario.dir/src_folder/Ultra_Som.s
-.PHONY : src_folder/Ultra_Som.s
+src_folder/Ultrassom_nxt.s:
+	$(MAKE) -f CMakeFiles/binario.dir/build.make CMakeFiles/binario.dir/src_folder/Ultrassom_nxt.s
+.PHONY : src_folder/Ultrassom_nxt.s
 
 # target to build an object file
 src_folder/ev3dev.o:
@@ -226,9 +226,9 @@ help:
 	@echo "... src_folder/Sensor_cor.o"
 	@echo "... src_folder/Sensor_cor.i"
 	@echo "... src_folder/Sensor_cor.s"
-	@echo "... src_folder/Ultra_Som.o"
-	@echo "... src_folder/Ultra_Som.i"
-	@echo "... src_folder/Ultra_Som.s"
+	@echo "... src_folder/Ultrassom_nxt.o"
+	@echo "... src_folder/Ultrassom_nxt.i"
+	@echo "... src_folder/Ultrassom_nxt.s"
 	@echo "... src_folder/ev3dev.o"
 	@echo "... src_folder/ev3dev.i"
 	@echo "... src_folder/ev3dev.s"

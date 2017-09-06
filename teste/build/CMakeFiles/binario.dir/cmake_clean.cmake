@@ -3,7 +3,7 @@ file(REMOVE_RECURSE
   "CMakeFiles/binario.dir/src_folder/Controlador_motor.o"
   "CMakeFiles/binario.dir/src_folder/M_arquivos.o"
   "CMakeFiles/binario.dir/src_folder/Sensor_cor.o"
-  "CMakeFiles/binario.dir/src_folder/Ultra_Som.o"
+  "CMakeFiles/binario.dir/src_folder/Ultrassom_nxt.o"
   "CMakeFiles/binario.dir/main.o"
   "binario.pdb"
   "binario"

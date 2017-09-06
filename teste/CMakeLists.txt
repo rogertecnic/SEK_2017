@@ -20,7 +20,7 @@ set(LIBS src_folder/ev3dev.cpp)
 list(APPEND LIBS  src_folder/Controlador_motor.cpp)
 list(APPEND LIBS  src_folder/M_arquivos.cpp)
 list(APPEND LIBS  src_folder/Sensor_cor.cpp)
-list(APPEND LIBS  src_folder/Ultra_Som.cpp)
+list(APPEND LIBS  src_folder/Ultrassom_nxt.cpp)
 
 # adiciona todos os sources e o main para serem compilados juntos
 add_executable(binario  ${LIBS} main.cpp)

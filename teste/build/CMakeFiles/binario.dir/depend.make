@@ -7,7 +7,7 @@ CMakeFiles/binario.dir/main.o: ../src_folder/ev3dev.h
 CMakeFiles/binario.dir/main.o: ../main.cpp
 CMakeFiles/binario.dir/main.o: ../src_folder/Controlador_motor.h
 CMakeFiles/binario.dir/main.o: ../src_folder/Sensor_cor.h
-CMakeFiles/binario.dir/main.o: ../src_folder/Ultra_Som.h
+CMakeFiles/binario.dir/main.o: ../src_folder/Ultrassom_nxt.h
 
 CMakeFiles/binario.dir/src_folder/Controlador_motor.o: ../src_folder/M_arquivos.h
 CMakeFiles/binario.dir/src_folder/Controlador_motor.o: ../src_folder/Controlador_motor.cpp
@@ -21,10 +21,8 @@ CMakeFiles/binario.dir/src_folder/Sensor_cor.o: ../src_folder/Sensor_cor.cpp
 CMakeFiles/binario.dir/src_folder/Sensor_cor.o: ../src_folder/Sensor_cor.h
 CMakeFiles/binario.dir/src_folder/Sensor_cor.o: ../src_folder/ev3dev.h
 
-CMakeFiles/binario.dir/src_folder/Ultra_Som.o: ../src_folder/M_arquivos.h
-CMakeFiles/binario.dir/src_folder/Ultra_Som.o: ../src_folder/Ultra_Som.h
-CMakeFiles/binario.dir/src_folder/Ultra_Som.o: ../src_folder/ev3dev.h
-CMakeFiles/binario.dir/src_folder/Ultra_Som.o: ../src_folder/Ultra_Som.cpp
+CMakeFiles/binario.dir/src_folder/Ultrassom_nxt.o: ../src_folder/Ultrassom_nxt.cpp
+CMakeFiles/binario.dir/src_folder/Ultrassom_nxt.o: ../src_folder/Ultrassom_nxt.h
 
 CMakeFiles/binario.dir/src_folder/ev3dev.o: ../src_folder/ev3dev.cpp
 CMakeFiles/binario.dir/src_folder/ev3dev.o: ../src_folder/ev3dev.h
