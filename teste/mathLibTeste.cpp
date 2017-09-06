@@ -12,7 +12,7 @@
 #include <math.h>
 using namespace std;
 
-int main2(){
+int main35(){
 	if(3>=3)
 	cout<<atan2(4,4);
 

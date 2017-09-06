@@ -4,7 +4,7 @@
 #include <chrono>
 #include <unistd.h>
 #include <math.h>
-#include <M_arquivos.h>
+#include "M_arquivos.h"
 #include "ev3dev.h"
 using namespace std;
 typedef std::chrono::high_resolution_clock Time;
@@ -28,7 +28,6 @@ private:
 	velo_retardada = 0,
 	velo_max = 0, // em graus/seg
 	aceleracao = 0; // m/s²
-
 
 
 	//***************VARIAVEIS DO CONTROLADOR***************

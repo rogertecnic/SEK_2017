@@ -1,4 +1,4 @@
-#include <M_arquivos.h>
+#include "M_arquivos.h"
 
 void M_arquivos::elementos_arq (double xn, ...) {
 	double valor;
