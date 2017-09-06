@@ -6,7 +6,6 @@ set(CMAKE_DEPENDS_LANGUAGES
 set(CMAKE_DEPENDS_CHECK_CXX
   "/src/main.cpp" "/src/build/CMakeFiles/binario.dir/main.o"
   "/src/src_folder/Controlador_motor.cpp" "/src/build/CMakeFiles/binario.dir/src_folder/Controlador_motor.o"
-  "/src/src_folder/Controlador_robo.cpp" "/src/build/CMakeFiles/binario.dir/src_folder/Controlador_robo.o"
   "/src/src_folder/M_arquivos.cpp" "/src/build/CMakeFiles/binario.dir/src_folder/M_arquivos.o"
   "/src/src_folder/Sensor_cor.cpp" "/src/build/CMakeFiles/binario.dir/src_folder/Sensor_cor.o"
   "/src/src_folder/Ultrassom_nxt.cpp" "/src/build/CMakeFiles/binario.dir/src_folder/Ultrassom_nxt.o"

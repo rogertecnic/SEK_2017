@@ -7,12 +7,11 @@
 
 #include "Controlador_motor.h"
 
-Controlador_motor::Controlador_motor(string motor_port, double raio, double velo_max, double aceleracao, bool debug = false, string arquivo_nome = "")
+Controlador_motor::Controlador_motor(string motor_port, double raio, double velo_max, bool debug = false, string arquivo_nome = "")
 :arquivo_nome(arquivo_nome),
  roda(ev3dev::large_motor(motor_port)),
  raio(raio),
  velo_max(velo_max),
- aceleracao(aceleracao),
  debug(debug),
  arquivo_aberto(debug)
 {
@@ -36,10 +35,6 @@ void Controlador_motor::set_velo(double velo_sp){
 	this->velo_sp = velo_sp;
 }
 
-
-void Controlador_motor::set_aceleracao(double aceleracao){
-	this->aceleracao = aceleracao;
-}
 
 
 bool Controlador_motor::fecha_arquivo(){
@@ -103,11 +98,11 @@ void Controlador_motor::loop_controlador(){
 
 		velo_final_med = velo_final_med/5;
 
-		erro = (velo_retardada - velo_final_med)*100/velo_max;// m/s
+		erro = (velo_sp - velo_final_med)*100/velo_max;// m/s
 		acumulador += erro;
-		pwm = velo_retardada*100/velo_max;
 		//pwm = velo_sp*100/velo_max;
-		pwm += kp*erro + ki*acumulador + kd*(velo_final_med - velo_inicial_med);
+		//pwm = velo_sp*100/velo_max;
+		pwm = kp*erro + ki*acumulador + kd*(velo_final_med - velo_inicial_med);
 		if(pwm > 100) pwm =100 ;
 		if(pwm < -100) pwm = -100;
 
@@ -118,22 +113,13 @@ void Controlador_motor::loop_controlador(){
 
 		roda.set_duty_cycle_sp(pwm);
 
-		//verifica se a roda esta quase parando, se sim, trava a roda
-		if(velo_sp == 0 &&
-				(velo_retardada < aceleracao*delay*5/1000 && velo_retardada > -aceleracao*delay*5/1000)){
-			roda.stop();
-			cout<<"parada"<<endl;
-			while(velo_sp == 0 && thread_rodando){}
-		}
-
 		t_final = Time::now();
 		delta_t = t_final - t_inicial;
 		t_inicial = t_final;
 		tempo_total += delta_t.count();
-		if(velo_retardada < (velo_sp-aceleracao*delay*2/1000)) velo_retardada += aceleracao*delta_t.count();
-		if(velo_retardada > (velo_sp+aceleracao*delay*2/1000)) velo_retardada -= aceleracao*delta_t.count();
 
 		if(velo_sp != 0)roda.run_direct();
+		else roda.stop();
 	}
 
 	roda.stop();
