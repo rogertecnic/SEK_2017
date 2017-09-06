@@ -100,8 +100,7 @@ void Controlador_motor::loop_controlador(){
 
 		erro = (velo_sp - velo_final_med)*100/velo_max;// m/s
 		acumulador += erro;
-		//pwm = velo_sp*100/velo_max;
-		//pwm = velo_sp*100/velo_max;
+
 		pwm = kp*erro + ki*acumulador + kd*(velo_final_med - velo_inicial_med);
 		if(pwm > 100) pwm =100 ;
 		if(pwm < -100) pwm = -100;
