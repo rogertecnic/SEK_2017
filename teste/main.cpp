@@ -62,7 +62,7 @@ int main(){
 
 
 	while(sensorE.ler_cor() != Cor::preto){
-	cout<<"nao para"<<endl;
+		cout<<"nao para"<<endl;
 	}
 	cout<<"PARA"<<endl;
 	velo_sp = 0;
