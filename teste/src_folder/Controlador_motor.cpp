@@ -16,7 +16,7 @@ Controlador_motor::Controlador_motor(string motor_port, double raio, double velo
  arquivo_aberto(debug)
 {
 	if(debug)
-		arquivo = new M_arquivos(arquivo_nome, 5); // vetores: tempo, pos, velo, pwm, erro;
+		arquivo = new M_arquivos(arquivo_nome, 3); // vetores: tempo, pos, velo, pwm, erro;
 
 	roda.reset();
 	roda.set_stop_action("hold");
@@ -87,8 +87,38 @@ void Controlador_motor::loop_tora_o_pau(){
 
 
 void Controlador_motor::loop_controlador(){
-	thread_rodando = true;
-	t_inicial = Time::now();
+	//	thread_rodando = true;
+	//	t_inicial = Time::now();
+	//
+	//	double posicao_final = 0;
+	//	double posicao_inicial = roda.position();
+	//	roda.set_duty_cycle_sp(30);
+	//	roda.run_direct();
+	//	while(thread_rodando){
+	//		while(posicao_final < (posicao_inicial + 10)){
+	//			posicao_final = roda.position();
+	//		}
+	//		t_final = Time::now();
+	//
+	//		if(posicao_final != (posicao_inicial + 10)){
+	//			posicao_inicial += 10;
+	//			t_inicial = t_final;
+	//		} else{
+	//			delta_t = t_final - t_inicial;
+	//			t_inicial = t_final;
+	//			tempo_total += delta_t.count();
+	//
+	//			velo_final_med = (posicao_final - posicao_inicial)/delta_t.count();
+	//
+	//			arquivo->elementos_arq((double)tempo_total, (double)posicao_inicial, (double)velo_final_med);
+	//			posicao_inicial = posicao_final;
+	//		}
+	//	}
+	//
+	//	roda.stop();
+	//	arquivo_aberto = !fecha_arquivo();
+	//	if(debug) arquivo->string_arq("plot(t,x4);");
+
 
 	while(thread_rodando){
 		//******************TIRA A MEDIA DA VELOCIDADE REAL INSTANTANEA*******
@@ -113,7 +143,7 @@ void Controlador_motor::loop_controlador(){
 		pwm = kp*erro + ki*acumulador + kd*(velo_final_med - velo_inicial_med);
 
 		//******************CEIFA O PWM NO INTERVALO PERMITIDO********
-		if(pwm > 100) pwm =100 ;
+		if(pwm > 100) pwm =100;
 		if(pwm < -100) pwm = -100;
 
 		//******************SALVA VELOCIDADE PARA PROXIMA ITERACAO*********
@@ -137,7 +167,7 @@ void Controlador_motor::loop_controlador(){
 double Controlador_motor::get_velo(){
 	return velo_inicial_med;
 }
-	double Controlador_motor::get_posicao(){
-		//TODO fazer metodo get_posicao
-		return 0;
-	}
+double Controlador_motor::get_posicao(){
+	//TODO fazer metodo get_posicao
+	return 0;
+}

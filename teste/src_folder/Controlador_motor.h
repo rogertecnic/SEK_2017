@@ -33,14 +33,14 @@ private:
 	//***************VARIAVEIS DO CONTROLADOR***************
 	//******************************************************
 	//******************************************************
-	int delay = 5; // ms
+	int delay = 1; // ms
 	double erro = 0,
 			velo_inicial_med = 0,
 			velo_final_med = 0,
 			acumulador = 0,
-			kp = 2, // 1.2
-			ki = 0, // 0.1
-			kd = 0, // 3
+			kp = 1.55, // 1.55
+			kd = 20, // mudanças nao afetam
+			ki = 0.1, //
 			pwm = 0, // -100 ate 100
 			tempo_total = 0;
 	chrono::system_clock::time_point t_inicial;
