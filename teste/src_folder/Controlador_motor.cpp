@@ -13,10 +13,12 @@ Controlador_motor::Controlador_motor(string motor_port, double raio, double velo
  raio(raio),
  velo_max(velo_max),
  debug(debug),
- arquivo_aberto(debug)
+ arquivo_aberto(debug),
+ velos_variancias_extremas({0,0}),
+ indice_velos_extremas({0,0})
 {
 	if(debug)
-		arquivo = new M_arquivos(arquivo_nome, 3); // vetores: tempo, pos, velo, pwm, erro;
+		arquivo = new M_arquivos(arquivo_nome, 5); // vetores: tempo, pos, velo, pwm, erro;
 
 	roda.reset();
 	roda.set_stop_action("hold");
@@ -87,8 +89,8 @@ void Controlador_motor::loop_tora_o_pau(){
 
 
 void Controlador_motor::loop_controlador(){
-		thread_rodando = true;
-		t_inicial = Time::now();
+	thread_rodando = true;
+	t_inicial = Time::now();
 	//
 	//	double posicao_final = 0;
 	//	double posicao_inicial = roda.position();
@@ -121,12 +123,33 @@ void Controlador_motor::loop_controlador(){
 
 
 	while(thread_rodando){
-		//******************TIRA A MEDIA DA VELOCIDADE REAL INSTANTANEA*******
-		for(int i = 0 ; i < 5 ; i++){
-			velo_final_med += roda.speed()*3.141592/180*raio;// graus/s para m/s
+		//******************COLETA 7 VELOCIDADES REAIS INSTANTANEAS E FAZ MEDIA*******
+		for(int i = 0 ; i < 7 ; i++){
+			velos_instantaneas[i] = roda.speed()*3.141592/180*raio;// graus/s para m/s
+			velo_final_med += velos_instantaneas[i];
 			usleep(1000*delay);
 		}
+		velo_final_med = velo_final_med/7;
+
+
+		//******************EXCLUI AS 2 LEITURAS MAIS DISCREPANTES DA MEDIA*******
+		for(int j = 0; j < 2; j ++){
+			for(int i = 0; i < 7; i++){
+				if(velos_variancias_extremas[j] < fabs(velos_instantaneas[i] - velo_final_med) ){
+					velos_variancias_extremas[j] = fabs(velos_instantaneas[i] - velo_final_med);
+					indice_velos_extremas[j] = i;
+				}
+			}
+			velos_instantaneas[ indice_velos_extremas[j] ] = velos_variancias_extremas[j];
+		}
+		velo_final_med = 0;
+		for(int i = 0; i < 7; i++){
+			if(i != indice_velos_extremas[0] && i != indice_velos_extremas[1] ){
+				velo_final_med += velos_instantaneas[i];
+			}
+		}
 		velo_final_med = velo_final_med/5;
+
 
 		//******************SALVA DADOS EM ARQUIVO*********
 		if(debug){
@@ -137,6 +160,7 @@ void Controlador_motor::loop_controlador(){
 			arquivo->elementos_arq((double)tempo_total,(double)(roda.position()*3.141592/180*raio), (double)velo_final_med, (double)pwm, (double)erro);
 		}
 
+
 		//******************CONTROLADOR PID VELOCIDADE*******
 		erro = (velo_sp - velo_final_med)*100/velo_max;// m/s
 		acumulador += erro;
@@ -146,13 +170,14 @@ void Controlador_motor::loop_controlador(){
 		if(pwm > 100) pwm =100;
 		if(pwm < -100) pwm = -100;
 
-		//******************SALVA VELOCIDADE PARA PROXIMA ITERACAO*********
+		//******************SALVA VELOCIDADE PARA PROXIMA ITERACAO E ZERA TUDO*********
 		velo_inicial_med = velo_final_med;
 		velo_final_med =0;
+		velos_variancias_extremas[0] = 0;
+		velos_variancias_extremas[1] = 0;
+
 
 		roda.set_duty_cycle_sp(pwm);
-
-
 
 		if(velo_sp != 0)roda.run_direct();
 		else roda.stop();

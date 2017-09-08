@@ -33,8 +33,11 @@ private:
 	//***************VARIAVEIS DO CONTROLADOR***************
 	//******************************************************
 	//******************************************************
-	int delay = 1; // ms
+	int delay = 1, // ms
+			indice_velos_extremas[2]; // velos a serem desconsideradas na media da velocidade
 	double erro = 0,
+			velos_variancias_extremas[2],
+			velos_instantaneas[7],
 			velo_inicial_med = 0,
 			velo_final_med = 0,
 			acumulador = 0,
