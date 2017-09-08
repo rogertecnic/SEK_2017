@@ -87,8 +87,8 @@ void Controlador_motor::loop_tora_o_pau(){
 
 
 void Controlador_motor::loop_controlador(){
-	//	thread_rodando = true;
-	//	t_inicial = Time::now();
+		thread_rodando = true;
+		t_inicial = Time::now();
 	//
 	//	double posicao_final = 0;
 	//	double posicao_inicial = roda.position();
