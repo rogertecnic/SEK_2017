@@ -61,8 +61,10 @@ src_folder/Sensor_cor.h
 /src/src_folder/Sensor_cor.h
 src_folder/Ultrassom_nxt.h
 /src/src_folder/Ultrassom_nxt.h
-src_folder/Controlador_robo.h
-/src/src_folder/Controlador_robo.h
+
+/src/src_folder/Controlador_motor.cpp
+Controlador_motor.h
+/src/src_folder/Controlador_motor.h
 
 /src/src_folder/Controlador_motor.h
 thread
@@ -78,14 +80,16 @@ M_arquivos.h
 ev3dev.h
 /src/src_folder/ev3dev.h
 
-/src/src_folder/Controlador_robo.h
+/src/src_folder/M_arquivos.h
 iostream
 -
-ev3dev.h
-/src/src_folder/ev3dev.h
-Controlador_motor.h
-/src/src_folder/Controlador_motor.h
-thread
+stdarg.h
+-
+fstream
+-
+list
+-
+string
 -
 
 /src/src_folder/Sensor_cor.h
@@ -102,5 +106,23 @@ unistd.h
 iostream
 -
 string
+-
+
+/src/src_folder/ev3dev.h
+map
+-
+set
+-
+string
+-
+tuple
+-
+vector
+-
+algorithm
+-
+functional
+-
+memory
 -
 

@@ -18,7 +18,7 @@ enum Cor{nda, preto, branco, vermelho, verde, azul}; // cores possiveis
 
 struct RangesCor{
 	int r[2],g[2], b[2];
-	static const int range = 20;
+	static const int range = 30;
 };
 
 class Sensor_cor {

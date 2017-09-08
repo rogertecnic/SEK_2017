@@ -14,7 +14,7 @@
 #include "src_folder/Controlador_motor.h"
 #include "src_folder/Sensor_cor.h"
 #include "src_folder/Ultrassom_nxt.h"
-#include "src_folder/Controlador_robo.h"
+//#include "src_folder/Controlador_robo.h"
 using namespace std;
 
 Controlador_motor rodaE(ev3dev::OUTPUT_A, 0.0408, 0.7, true,  "debug_lego_E.m");
@@ -49,38 +49,53 @@ int main(){
 	//**********************************************************
 	//*****************************DELETAR**********************
 	//**********************************************************
-	sensorE.calibra();
+	//sensorE.calibra();
 	double velo_retardada = 0;
 	double velo_sp = 0.3;
-	double aceleracao = 0.5;
-	while(velo_retardada <= velo_sp){
-		rodaE.set_velo(velo_retardada);
-		rodaD.set_velo(velo_retardada);
-		usleep(1000*5);
-		velo_retardada += aceleracao*0.005;
-	}
+	rodaE.set_velo(velo_sp);
+	rodaD.set_velo(velo_sp);
+	//	double aceleracao = 0.5;
+	//	while(velo_retardada <= velo_sp){
+	//		rodaE.set_velo(velo_retardada);
+	//		rodaD.set_velo(velo_retardada);
+	//		usleep(1000*5);
+	//		velo_retardada += aceleracao*0.005;
+	//	}
 
 
-	while(sensorE.ler_cor() != Cor::preto){
-		cout<<"nao para"<<endl;
-	}
-	cout<<"PARA"<<endl;
-	velo_sp = 0;
-	aceleracao = 2;
-	while(velo_retardada > velo_sp){
-		rodaE.set_velo(velo_retardada);
-		rodaD.set_velo(velo_retardada);
-		usleep(1000*5);
-		if(velo_retardada< aceleracao*0.01 && velo_retardada> -aceleracao*0.01 ){
-			rodaE.set_velo(0);
-			rodaD.set_velo(0);
+	//	while(sensorE.ler_cor() == Cor::branco){
+	//		cout<<"nao para"<<endl;
+	//	}
+	//	cout<<"PARA"<<endl;
+	//	velo_sp = 0;
+	//	aceleracao = velo_retardada/0.005; // faz a velo_retardada ir a 0
+	//	while(velo_retardada > velo_sp){
+	//		rodaE.set_velo(velo_retardada);
+	//		rodaD.set_velo(velo_retardada);
+	//		usleep(1000*5);
+	//		if(velo_retardada< aceleracao*0.01 && velo_retardada> -aceleracao*0.01 ){
+	//			rodaE.set_velo(0);
+	//			rodaD.set_velo(0);
+	//
+	//			velo_retardada = 0;
+	//			usleep(1000*300);
+	//			aceleracao = 0.5;
+	//			break;
+	//		}
+	//		velo_retardada -= aceleracao*0.005;
+	//	}
 
-			velo_retardada = 0;
-			usleep(1000*300);
-			aceleracao = 0.5;
-		}
-		velo_retardada -= aceleracao*0.005;
-	}
+
+
+
+
+
+
+
+
+
+
+
 	//	//sensorE.calibra();
 	//	//sensorD.calibra();
 	//	//cout<<"iniciou teste"<<endl;
@@ -89,6 +104,9 @@ int main(){
 	while(!ev3dev::button::enter.process()){
 		//		//cout<<US_Esquerdo.le_centimetro()<<"<>"<<US_Direito.le_centimetro()<<endl;
 	}
+
+	rodaE.set_velo(0);
+	rodaD.set_velo(0);
 	//
 	//	robots.finalizar_thread();
 	//

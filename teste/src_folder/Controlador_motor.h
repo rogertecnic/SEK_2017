@@ -16,6 +16,8 @@ public:
 	void set_velo(double velo_sp);
 	bool finaliza_thread();
 	bool inicializa_thread();
+	double get_velo();
+	double get_posicao();
 	//TODO adicionar metodo de leitura de distancia
 private:
 
@@ -36,9 +38,9 @@ private:
 			velo_inicial_med = 0,
 			velo_final_med = 0,
 			acumulador = 0,
-			kp = 1.2, // 1.2
-			ki = 0.1, // 0.1
-			kd = 3, // 3
+			kp = 2, // 1.2
+			ki = 0, // 0.1
+			kd = 0, // 3
 			pwm = 0, // -100 ate 100
 			tempo_total = 0;
 	chrono::system_clock::time_point t_inicial;

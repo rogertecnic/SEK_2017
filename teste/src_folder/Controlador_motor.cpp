@@ -91,31 +91,38 @@ void Controlador_motor::loop_controlador(){
 	t_inicial = Time::now();
 
 	while(thread_rodando){
+		//******************TIRA A MEDIA DA VELOCIDADE REAL INSTANTANEA*******
 		for(int i = 0 ; i < 5 ; i++){
-			velo_final_med += roda.speed()*3.141592/180*raio;
+			velo_final_med += roda.speed()*3.141592/180*raio;// graus/s para m/s
 			usleep(1000*delay);
 		}
-
 		velo_final_med = velo_final_med/5;
 
+		//******************SALVA DADOS EM ARQUIVO*********
+		if(debug){
+			t_final = Time::now();
+			delta_t = t_final - t_inicial;
+			t_inicial = t_final;
+			tempo_total += delta_t.count();
+			arquivo->elementos_arq((double)tempo_total,(double)(roda.position()*3.141592/180*raio), (double)velo_final_med, (double)pwm, (double)erro);
+		}
+
+		//******************CONTROLADOR PID VELOCIDADE*******
 		erro = (velo_sp - velo_final_med)*100/velo_max;// m/s
 		acumulador += erro;
-
 		pwm = kp*erro + ki*acumulador + kd*(velo_final_med - velo_inicial_med);
+
+		//******************CEIFA O PWM NO INTERVALO PERMITIDO********
 		if(pwm > 100) pwm =100 ;
 		if(pwm < -100) pwm = -100;
 
-		if(debug)arquivo->elementos_arq((double)tempo_total,(double)roda.position()*3.141592/180*raio, (double)velo_final_med, (double)pwm, (double)erro);
-
+		//******************SALVA VELOCIDADE PARA PROXIMA ITERACAO*********
 		velo_inicial_med = velo_final_med;
 		velo_final_med =0;
 
 		roda.set_duty_cycle_sp(pwm);
 
-		t_final = Time::now();
-		delta_t = t_final - t_inicial;
-		t_inicial = t_final;
-		tempo_total += delta_t.count();
+
 
 		if(velo_sp != 0)roda.run_direct();
 		else roda.stop();
@@ -125,3 +132,12 @@ void Controlador_motor::loop_controlador(){
 	arquivo_aberto = !fecha_arquivo();
 	if(debug) arquivo->string_arq("plot(t,x4);");
 }
+
+
+double Controlador_motor::get_velo(){
+	return velo_inicial_med;
+}
+	double Controlador_motor::get_posicao(){
+		//TODO fazer metodo get_posicao
+		return 0;
+	}
