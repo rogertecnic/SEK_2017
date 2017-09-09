@@ -18,7 +18,7 @@ Controlador_motor::Controlador_motor(string motor_port, double raio, double velo
  indice_velos_extremas({0,0})
 {
 	if(debug)
-		arquivo = new M_arquivos(arquivo_nome, 5); // vetores: tempo, pos, velo, pwm, erro;
+		arquivo = new M_arquivos(arquivo_nome, 6); // vetores: tempo, pos, velo, pwm, erro, dif_velo;
 
 	roda.reset();
 	roda.set_stop_action("hold");
@@ -157,7 +157,8 @@ void Controlador_motor::loop_controlador(){
 			delta_t = t_final - t_inicial;
 			t_inicial = t_final;
 			tempo_total += delta_t.count();
-			arquivo->elementos_arq((double)tempo_total,(double)(roda.position()*3.141592/180*raio), (double)velo_final_med, (double)pwm, (double)erro);
+			arquivo->elementos_arq((double)tempo_total,(double)(roda.position()*3.141592/180*raio),
+					(double)velo_final_med, (double)pwm, (double)erro, (double)(velo_final_med - velo_inicial_med));
 		}
 
 
