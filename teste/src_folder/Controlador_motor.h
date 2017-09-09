@@ -34,16 +34,16 @@ private:
 	//******************************************************
 	//******************************************************
 	int delay = 1, // ms
-			indice_velos_extremas[2]; // velos a serem desconsideradas na media da velocidade
+			indice_velos_extremas[4]; // velos a serem desconsideradas na media da velocidade
 	double erro = 0,
-			velos_variancias_extremas[2],
-			velos_instantaneas[7],
+			variancias_extremas[4],
+			velos_instantaneas[10],
 			velo_inicial_med = 0,
 			velo_final_med = 0,
 			acumulador = 0,
-			kp = 1.55, // 1.55
-			kd = 20, // mudanças nao afetam
-			ki = 0.1, //
+			kp = 0, // 1.55
+			kd = 0, // mudanças nao afetam
+			ki = 0, //
 			pwm = 0, // -100 ate 100
 			tempo_total = 0;
 	chrono::system_clock::time_point t_inicial;
