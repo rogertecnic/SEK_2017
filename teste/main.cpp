@@ -89,10 +89,10 @@ int main(){
 	Controlador_robo robot(1.005);
 
 	robot.inicializar_thread_aceleracao();
-	robot.frente(30);
+	robot.andar(30);
 	usleep(1000*1000*5);
-	robot.tras(30);
-	usleep(1000*1000*5);
+	robot.andar(-30);
+	usleep(1000*1000*7);
 	robot.parar();
 	while(!ev3dev::button::enter.process()){}
 

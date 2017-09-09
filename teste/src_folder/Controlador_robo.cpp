@@ -15,23 +15,15 @@ Controlador_robo::Controlador_robo(double fator_croda)
 }
 
 
-void Controlador_robo::frente (int pwm_sp){
+void Controlador_robo::andar (int pwm_sp){
 	/*
 	velo_sp_me = velo_sp;
 	velo_sp_md = velo_sp;
 	 */
 	this->pwm_sp = pwm_sp;
-	estado = flag_aceleracao::frente;
+	estado = flag_aceleracao::linha_reta;
 }
 
-void Controlador_robo::tras(int pwm_sp){
-	/*
-	velo_sp_me = velo_sp;
-	velo_sp_md = velo_sp;
-	 */
-	this->pwm_sp = -pwm_sp;
-	estado = flag_aceleracao::tras;
-}
 
 void Controlador_robo::parar () {
 	/*
@@ -61,6 +53,7 @@ void Controlador_robo::girar(Direcao dir){
 
 }
 
+
 bool Controlador_robo::inicializar_thread_aceleracao(){
 	thread_controle_velocidade = thread(&Controlador_robo::loop_controle_aceleracao, this);
 	thread_controle_velocidade.detach();
@@ -83,7 +76,7 @@ void Controlador_robo::loop_controle_aceleracao(){
 		 */
 
 		switch(estado){
-		case flag_aceleracao::frente :
+		case flag_aceleracao::linha_reta :
 			//while(true){
 			erro = rodaE->position()*fator_croda - rodaD->position();
 			pid = kp*erro + kd*(erro-erro_anterior);
@@ -102,8 +95,10 @@ void Controlador_robo::loop_controle_aceleracao(){
 			rodaE->run_direct();
 			rodaD->run_direct();
 
-			if(pwm_retardada< pwm_sp)
-				pwm_retardada += aceleracao*delay/1000; // converte para miliseg
+			if(pwm_retardada < pwm_sp-aceleracao*delay/1000)
+				pwm_retardada += aceleracao*delay/1000;
+			if(pwm_retardada > pwm_sp+aceleracao*delay/1000)
+				pwm_retardada -= aceleracao*delay/1000;
 			cout<<pwm_retardada<<";"<<pwm_sp<<endl;
 
 			/*
@@ -121,27 +116,27 @@ void Controlador_robo::loop_controle_aceleracao(){
 			//estado = nda;
 			break;
 
-		case flag_aceleracao::tras : //  ->tras(velo_sp);
-			erro = rodaE->position()*fator_croda - rodaD->position();
-			pid = kp*erro + kd*(erro-erro_anterior);
-
-			pwm = pwm_retardada + pid;
-			if(pwm > 100) pwm = 100;
-			if(pwm < -100) pwm = -100;
-			rodaE->set_duty_cycle_sp(pwm);
-
-			pwm = pwm_retardada - pid;
-			if(pwm > 100) pwm = 100;
-			if(pwm < -100) pwm = -100;
-			rodaD->set_duty_cycle_sp(pwm);
-			usleep(1000*delay);
-
-			rodaE->run_direct();
-			rodaD->run_direct();
-
-			if(pwm_retardada > pwm_sp)
-				pwm_retardada -= aceleracao*delay/1000; // converte para miliseg
-			cout<<pwm_retardada<<";"<<pwm_sp<<endl;
+		case 5 : //  ->tras(velo_sp);
+			//			erro = rodaE->position()*fator_croda - rodaD->position();
+			//			pid = kp*erro + kd*(erro-erro_anterior);
+			//
+			//			pwm = pwm_retardada + pid;
+			//			if(pwm > 100) pwm = 100;
+			//			if(pwm < -100) pwm = -100;
+			//			rodaE->set_duty_cycle_sp(pwm);
+			//
+			//			pwm = pwm_retardada - pid;
+			//			if(pwm > 100) pwm = 100;
+			//			if(pwm < -100) pwm = -100;
+			//			rodaD->set_duty_cycle_sp(pwm);
+			//			usleep(1000*delay);
+			//
+			//			rodaE->run_direct();
+			//			rodaD->run_direct();
+			//
+			//			if(pwm_retardada > pwm_sp)
+			//				pwm_retardada -= aceleracao*delay/1000; // converte para miliseg
+			//			cout<<pwm_retardada<<";"<<pwm_sp<<endl;
 
 
 			//while(true){

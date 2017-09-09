@@ -14,15 +14,14 @@ typedef chrono::high_resolution_clock Time;
 
 
 enum Direcao{esquerda, direita};
-enum flag_aceleracao{frente, tras, parar};
+enum flag_aceleracao{linha_reta, parar};
 
 
 class Controlador_robo {
 public:
 	Controlador_robo(double fator_croda);
 
-	void frente(int);
-	void tras(int);
+	void andar(int);
 	void parar();
 	void girar(Direcao);
 
@@ -60,13 +59,13 @@ private:
 	double fator_croda;
 
 	double delay = 5; // em miliseg
-	double aceleracao = 30; // em pwm/seg
+	double aceleracao = 60; // em pwm/seg
 
 	/*Variáveis controlador PWM*/
 	double erro = 0;
 	double erro_anterior = 0;
-	int kp = 6;
-	int kd = 1;
+	int kp = 5; // 6
+	int kd = 1; // 1
 	int pid = 0;
 
 	int pwm_sp = 0; // valor que eu quero
