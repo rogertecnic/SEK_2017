@@ -16,8 +16,6 @@ void Controlador_robo::finalizar_threads_motor(){
 }
 
 void Controlador_robo::frente (double velo_sp){
-	cout << "FRENTE" << endl;
-	usleep (1.5*1000000);
 	velo_sp_me = velo_sp;
 	velo_sp_md = velo_sp;
 
@@ -25,8 +23,6 @@ void Controlador_robo::frente (double velo_sp){
 }
 
 void Controlador_robo::tras(double velo_sp){
-	cout << "TRAS" << endl;
-	usleep (1.5*1000000);
 	velo_sp_me = velo_sp;
 	velo_sp_md = velo_sp;
 
@@ -34,8 +30,6 @@ void Controlador_robo::tras(double velo_sp){
 }
 
 void Controlador_robo::parar () {
-	cout << "PARAR" << endl;
-	usleep (1.5*1000000);
 	velo_sp_me = 0.0;
 	velo_sp_md = 0.0;
 
@@ -76,7 +70,6 @@ bool Controlador_robo::finalizar_thread_aceleracao(){
 
 void Controlador_robo::loop_controle_aceleracao(){
 	thread_rodando = true;
-	cout << "THREAD_ACELERACAO" << endl;
 	while (thread_rodando) {
 		/*  Controle de aceleração utilizando as variáveis:
 			velo_sp_me		velo_sp_md
@@ -136,8 +129,8 @@ void Controlador_robo::loop_controle_aceleracao(){
 						velo_retardada_md = 0.0;
 						usleep(1000*(delay*5));
 					}
-					velo_retardada_me -= aceleracao*(5*delay*(0.001));
-					velo_retardada_md -= aceleracao*(5*delay*(0.001));
+					velo_retardada_me -= aceleracao*(10*delay*(0.001));
+					velo_retardada_md -= aceleracao*(10*delay*(0.001));
 
 					if (velo_retardada_me == 0.0 && velo_retardada_md == 0.0)
 						break;

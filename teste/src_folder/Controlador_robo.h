@@ -1,16 +1,20 @@
 #ifndef CONTROLADOR_ROBO_H_
 #define CONTROLADOR_ROBO_H_
 #include <iostream>
+#include <thread>
 #include "ev3dev.h"
 #include "Controlador_motor.h"
-#include <thread>
+
 
 #define delay 5
 #define aceleracao 0.2
 
+
 using namespace std;
 
+
 enum Direcao{esquerda, direita};
+
 
 class Controlador_robo {
 public:
