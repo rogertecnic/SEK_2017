@@ -86,17 +86,17 @@ int main(){
 	//	rodaD.stop();
 	//	arquivo.fecha_arq();
 	//	arquivo.string_arq("plot(t,x1);");
-	Controlador_robo robot(1.005);
+	Controlador_robo robot(1, true, "debug posicao direto no pwm.m"); // fator_croda = 1.005
 
 	robot.inicializar_thread_aceleracao();
-	robot.andar(30);
-	usleep(1000*1000*5);
-	robot.andar(-30);
-	usleep(1000*1000*7);
-	robot.parar();
+	robot.andar(50);
+	usleep(1000*1000*4);
+	robot.andar(-50);
+	usleep(1000*1000*6);
+	robot.girar(90);
 	while(!ev3dev::button::enter.process()){}
 
-robot.finalizar_thread_aceleracao();
+	robot.finalizar_thread_aceleracao();
 
 
 

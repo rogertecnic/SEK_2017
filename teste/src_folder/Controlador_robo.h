@@ -5,6 +5,7 @@
 #include <chrono>
 #include <unistd.h>
 #include "ev3dev.h"
+#include "M_arquivos.h"
 
 
 using namespace std;
@@ -13,20 +14,20 @@ using namespace std;
 typedef chrono::high_resolution_clock Time;
 
 
-enum Direcao{esquerda, direita};
-enum flag_aceleracao{linha_reta, parar};
+enum flag_aceleracao{nd, linha_reta, parar, girar};
 
 
 class Controlador_robo {
 public:
-	Controlador_robo(double);
+	Controlador_robo(double fator_croda, bool debug, string nome_arquivo);
 
 	void andar(int);
 	void parar();
-	void girar(Direcao);
+	void girar(int angulo_robo_graus); // positivo anti-horario
 
 	bool inicializar_thread_aceleracao();
 	bool finalizar_thread_aceleracao();
+	flag_aceleracao get_estado();
 
 
 private:
@@ -48,27 +49,31 @@ private:
 	/*Variaveis caracteristica do robo*/
 	double fator_croda;
 	double delay = 5.0;//Em miliseg
-	double aceleracao = 60.0;//Em pwm/seg
-
+	double aceleracao = 100.0;//Em pwm/seg
+	double raio_roda = 0.056; // metros
+	double raio_robo = 0.150; // largura entre os centros das rodas div por 2
 
 	/*Variáveis controlador PWM*/
 	double erro = 0.0;
 	double erro_anterior = 0.0;
-	int kp = 5;// 6
+	int kp = 6;// 6
 	int kd = 1;
 	int pid = 0;
 
-	int pwm_sp = 0;//Valor desejado
+	double pwm_sp = 0;//Valor desejado
 	double pwm_retardada = 0.0;//Valor que será incrementado
-	int pwm = 0;//Valor argumento da função "set_duty_cycle_sp"
+	double pwm = 0;//Valor argumento da função "set_duty_cycle_sp"
+	int angulo_robo_graus = 0;
 
-	/*Leitura de tempo p/ debug*/
+	/*Variaveis para debug*/
 	chrono::system_clock::time_point t_inicial;
 	chrono::system_clock::time_point t_final;
 	chrono::duration<double> delta_t; //Usar dt = t1-t2 e dt.count() para pegar o tempo em seg
 	double tempo = 0;
-
-
+	bool debug;
+	string nome_arquivo;
+	M_arquivos *arquivo;
+	bool arquivo_aberto = false;
 };
 
 #endif
