@@ -34,63 +34,69 @@ int main(){
 	//
 	//	rodaE.finaliza_thread();
 	//	rodaD.finaliza_thread();
-	ev3dev::large_motor rodaE(ev3dev::OUTPUT_A);
-	ev3dev::large_motor rodaD(ev3dev::OUTPUT_B);
-	M_arquivos arquivo("debug posicao direto no pwm.m", 4);
+	//	ev3dev::large_motor rodaE(ev3dev::OUTPUT_A);
+	//	ev3dev::large_motor rodaD(ev3dev::OUTPUT_B);
+	//	M_arquivos arquivo("debug posicao direto no pwm.m", 4);
+	//
+	//	chrono::system_clock::time_point t_inicial;
+	//	chrono::system_clock::time_point t_final;
+	//	std::chrono::duration<double> delta_t; // usar dt = t1-t2 e dt.count() para pegar o tempo em seg
+	//	double tempo = 0;
+	//	rodaE.reset();
+	//	rodaD.reset();
+	//
+	//	rodaE.run_direct();
+	//	rodaD.run_direct();
+	//	int erro = 0;
+	//	int pwm_sp = 60;
+	//	int pwm = pwm_sp;
+	//	double fator = 10;
+	//	t_inicial = Time::now();
+	//
+	//	double acumulador = 0,
+	//			kp = 6, // 6
+	//			kd = 1,
+	//			ki = 0,
+	//			erro_ant = 0,
+	//			pid = 0;
+	//
+	//	while(!ev3dev::button::enter.process()){
+	//		erro = (rodaE.position()*1.005) - rodaD.position();
+	//		acumulador += erro;
+	//		pid = kp*erro + kd*(erro - erro_ant) + ki*acumulador;
+	//
+	//		pwm = pwm_sp - pid;
+	//		if(pwm > 100) pwm = 100;
+	//		if(pwm < -100) pwm = -100;
+	//		rodaE.set_duty_cycle_sp(pwm);
+	//
+	//		pwm = pwm_sp + pid;
+	//		if(pwm > 100) pwm = 100;
+	//		if(pwm < -100) pwm = -100;
+	//		rodaD.set_duty_cycle_sp(pwm);
+	//		usleep(1000*5);
+	//
+	//		t_final = Time::now();
+	//		delta_t = t_final - t_inicial;
+	//		t_inicial = t_final;
+	//		tempo += delta_t.count();
+	//		arquivo.elementos_arq((double)tempo, (double) rodaE.position(), (double)rodaD.position(), (double)erro);
+	//	}
+	//	rodaE.stop();
+	//	rodaD.stop();
+	//	arquivo.fecha_arq();
+	//	arquivo.string_arq("plot(t,x1);");
+	Controlador_robo robot(1.005);
 
-	chrono::system_clock::time_point t_inicial;
-	chrono::system_clock::time_point t_final;
-	std::chrono::duration<double> delta_t; // usar dt = t1-t2 e dt.count() para pegar o tempo em seg
-	double tempo = 0;
-	rodaE.reset();
-	rodaD.reset();
+	robot.inicializar_thread_aceleracao();
+	robot.frente(30);
+	usleep(1000*1000*5);
+	robot.tras(30);
+	usleep(1000*1000*5);
+	robot.parar();
+	while(!ev3dev::button::enter.process()){}
 
-	rodaE.run_direct();
-	rodaD.run_direct();
-	int erro = 0;
-	int pwm_sp = 60;
-	int pwm = pwm_sp;
-	double fator = 10;
-	t_inicial = Time::now();
-
-	double acumulador = 0,
-			kp = 6, // 6
-			kd = 1,
-			ki = 0,
-			erro_ant = 0,
-			pid = 0;
-
-	while(!ev3dev::button::enter.process()){
-		erro = (rodaE.position()*1.005) - rodaD.position();
-		acumulador += erro;
-		pid = kp*erro + kd*(erro - erro_ant) + ki*acumulador;
-
-		pwm = pwm_sp - pid;
-		if(pwm > 100) pwm = 100;
-		if(pwm < -100) pwm = -100;
-		rodaE.set_duty_cycle_sp(pwm);
-
-		pwm = pwm_sp + pid;
-		if(pwm > 100) pwm = 100;
-		if(pwm < -100) pwm = -100;
-		rodaD.set_duty_cycle_sp(pwm);
-		usleep(1000*5);
-
-		t_final = Time::now();
-		delta_t = t_final - t_inicial;
-		t_inicial = t_final;
-		tempo += delta_t.count();
-		arquivo.elementos_arq((double)tempo, (double) rodaE.position(), (double)rodaD.position(), (double)erro);
-	}
-	rodaE.stop();
-	rodaD.stop();
-	arquivo.fecha_arq();
-	arquivo.string_arq("plot(t,x1);");
-
-
-
-
-
+robot.finalizar_thread_aceleracao();
 
 
 

@@ -4,10 +4,8 @@
 #include <thread>
 #include <chrono>
 #include "ev3dev.h"
+#include <unistd.h>
 
-
-#define delay 5
-#define aceleracao 0.2
 
 
 using namespace std;
@@ -16,12 +14,12 @@ typedef chrono::high_resolution_clock Time;
 
 
 enum Direcao{esquerda, direita};
-enum flag_aceleracao{nda, frente, tras, parar};
+enum flag_aceleracao{frente, tras, parar};
 
 
 class Controlador_robo {
 public:
-	Controlador_robo(double);
+	Controlador_robo(double fator_croda);
 
 	void frente(int);
 	void tras(int);
@@ -38,14 +36,14 @@ private:
 	ev3dev::large_motor *rodaD;
 
 	/*Flag de controle do Switch da thread loop_controle_aceleracao*/
-	flag_aceleracao estado = nda;
+	flag_aceleracao estado = flag_aceleracao::parar;
 
 	/*Variáveis de controle da velocidade de cada roda
 	double velo_retardada_me = 0.0;
 	double velo_retardada_md = 0.0;
 	double velo_sp_me = 0.0;
 	double velo_sp_md = 0.0;
-	*/
+	 */
 
 	/*Thread: loop_controle_aceleracao*/
 	bool thread_rodando = false;
@@ -58,9 +56,11 @@ private:
 	/***********************************************************************************************/
 
 
-	/**/
+	/*Variaveis caracteristica do robo*/
 	double fator_croda;
 
+	double delay = 5; // em miliseg
+	double aceleracao = 30; // em pwm/seg
 
 	/*Variáveis controlador PWM*/
 	double erro = 0;
@@ -69,8 +69,9 @@ private:
 	int kd = 1;
 	int pid = 0;
 
-	int pwm_sp = 0;
-	int pwn_retardada = 0;
+	int pwm_sp = 0; // valor que eu quero
+	double pwm_retardada = 0; // valor que eu vou incrementar
+	int pwm = 0; // valor argumento da funcao "set_duty_cycle_sp
 
 	/*Leitura de tempo p/ debug*/
 	chrono::system_clock::time_point t_inicial;
