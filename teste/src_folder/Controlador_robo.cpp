@@ -1,39 +1,45 @@
 #include "Controlador_robo.h"
 
-Controlador_robo::Controlador_robo(){
-	rodaE = new Controlador_motor(ev3dev::OUTPUT_A, 0.0408, 0.808, false,  "debug_lego_E.m");
-	rodaD = new Controlador_motor(ev3dev::OUTPUT_B, 0.04058, 0.79, false,  "debug_lego_D.m");
+Controlador_robo::Controlador_robo(double fator_croda)
+:fator_croda(fator_croda)
+{
+	rodaE = new ev3dev::large_motor(ev3dev::OUTPUT_A);
+	rodaD = new ev3dev::large_motor(ev3dev::OUTPUT_B);
+
+	rodaE->reset();
+	rodaD->reset();
+
+	rodaE->set_stop_action("hold");
+	rodaD->set_stop_action("hold");
+
 }
 
-void Controlador_robo::inicializar_threads_motor() {
-	rodaE->inicializa_thread();
-	rodaD->inicializa_thread();
-}
 
-void Controlador_robo::finalizar_threads_motor(){
-	rodaE->finaliza_thread();
-	rodaD->finaliza_thread();
-}
-
-void Controlador_robo::frente (double velo_sp){
+void Controlador_robo::frente (int pwm_sp){
+	/*
 	velo_sp_me = velo_sp;
 	velo_sp_md = velo_sp;
+	*/
 
-	flag_aceleracao = 1;
+	estado = frente;
 }
 
-void Controlador_robo::tras(double velo_sp){
+void Controlador_robo::tras(int pwm_sp){
+	/*
 	velo_sp_me = velo_sp;
 	velo_sp_md = velo_sp;
+	*/
 
-	flag_aceleracao = 2;
+	estado = tras;
 }
 
 void Controlador_robo::parar () {
+	/*
 	velo_sp_me = 0.0;
 	velo_sp_md = 0.0;
+	*/
 
-	flag_aceleracao = 3;
+	estado = parar;
 
 }
 
@@ -75,10 +81,16 @@ void Controlador_robo::loop_controle_aceleracao(){
 			velo_sp_me		velo_sp_md
 			Que serão atualizadas nos métodos: frente(), tras(), parar().
 		 */
-		switch(flag_aceleracao){
-		case 0: break;
-		case 1: //  ->frente(velo_sp);
+		switch(estado){
+		case flag_aceleracao::nda : break;
+		case flag_aceleracao::frente :
 			while(true){
+				erro = rodaE->position()*fator_croda - rodaD->position();
+				pid = kp*erro + kd*(erro-erro_anterior);
+
+
+
+				/*
 				if (velo_retardada_me <= velo_sp_me)
 					rodaE->set_velo(velo_retardada_me);
 				if (velo_retardada_md <= velo_sp_md)
@@ -88,13 +100,12 @@ void Controlador_robo::loop_controle_aceleracao(){
 				velo_retardada_md += aceleracao*(delay*0.001);
 				if (velo_retardada_me > velo_sp_me && velo_retardada_md > velo_sp_md)
 					break;
+				*/
 			}
-			cout << flag_aceleracao << endl;
-			flag_aceleracao = 0;
-			cout << flag_aceleracao << endl;
+			estado = nda;
 			break;
 
-		case 2: //  ->tras(velo_sp);
+		case flag_aceleracao::tras : //  ->tras(velo_sp);
 			while(true){
 				if (velo_retardada_me >= velo_sp_me)
 					rodaE->set_velo(velo_retardada_me);
@@ -110,7 +121,7 @@ void Controlador_robo::loop_controle_aceleracao(){
 			flag_aceleracao = 0;
 			break;
 
-		case 3: //  ->parar(0);
+		case flag_aceleracao::parar: //  ->parar(0);
 			while(true) {
 				while(true){
 					if(velo_retardada_me > velo_sp_me)
