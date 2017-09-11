@@ -34,17 +34,20 @@ int main(){
 	//
 	//	rodaE.finaliza_thread();
 	//	rodaD.finaliza_thread();
-	//	ev3dev::large_motor rodaE(ev3dev::OUTPUT_A);
-	//	ev3dev::large_motor rodaD(ev3dev::OUTPUT_B);
+
 	//	M_arquivos arquivo("debug posicao direto no pwm.m", 4);
 	//
 	//	chrono::system_clock::time_point t_inicial;
 	//	chrono::system_clock::time_point t_final;
 	//	std::chrono::duration<double> delta_t; // usar dt = t1-t2 e dt.count() para pegar o tempo em seg
 	//	double tempo = 0;
+	//	ev3dev::large_motor rodaE(ev3dev::OUTPUT_A);
+	//	ev3dev::large_motor rodaD(ev3dev::OUTPUT_B);
 	//	rodaE.reset();
 	//	rodaD.reset();
-	//
+	//	rodaE.set_duty_cycle_sp(-100);
+	//	rodaD.set_duty_cycle_sp(-100);
+	//	//
 	//	rodaE.run_direct();
 	//	rodaD.run_direct();
 	//	int erro = 0;
@@ -86,16 +89,25 @@ int main(){
 	//	rodaD.stop();
 	//	arquivo.fecha_arq();
 	//	arquivo.string_arq("plot(t,x1);");
-	Controlador_robo robot(1, true, "debug posicao direto no pwm.m"); // fator_croda = 1.005
+
+
+
+	Controlador_robo robot(true, "debug posicao direto no pwm.m"); // fator_croda = 1.005
 
 	robot.inicializar_thread_aceleracao();
-	robot.andar(50);
-	usleep(1000*1000*4);
-	robot.andar(-50);
-	usleep(1000*1000*6);
+	//	robot.andar(100);
+	//	while(robot.get_distancia()<3){
+	//	}
+	//robot.parar();
+	//usleep(1000*1000*6);
 	robot.girar(90);
+//	usleep(1000*1000);
+//	robot.andar(50);
+//	usleep(1000*5000);
+//	robot.andar(-50);
 	while(!ev3dev::button::enter.process()){}
-
+	robot.parar();
+	//usleep(1000*500);
 	robot.finalizar_thread_aceleracao();
 
 

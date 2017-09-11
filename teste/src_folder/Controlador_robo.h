@@ -19,7 +19,7 @@ enum flag_aceleracao{nd, linha_reta, parar, girar};
 
 class Controlador_robo {
 public:
-	Controlador_robo(double fator_croda, bool debug, string nome_arquivo);
+	Controlador_robo(bool debug, string nome_arquivo);
 
 	void andar(int);
 	void parar();
@@ -28,6 +28,8 @@ public:
 	bool inicializar_thread_aceleracao();
 	bool finalizar_thread_aceleracao();
 	flag_aceleracao get_estado();
+	int get_tacometro();
+	double get_distancia();
 
 
 private:
@@ -47,23 +49,25 @@ private:
 
 
 	/*Variaveis caracteristica do robo*/
-	double fator_croda;
+	double fator_croda = 0.9945;
 	double delay = 5.0;//Em miliseg
-	double aceleracao = 100.0;//Em pwm/seg
-	double raio_roda = 0.056; // metros
-	double raio_robo = 0.150; // largura entre os centros das rodas div por 2
+	double aceleracao = 1000.0;//Em pwm/seg
+	double raio_roda = 0.0545/2; // metros
+	double relacao_engrenagem = 0.5; // 2 volta motor equivale 1 voltas roda
+	double raio_robo = 0.153/2; // largura entre os centros das rodas div por 2
+	double angulo_robo_graus = 0; // quanto o robo vai girar quando chamar o metodo girar
+	double distancia_linha_reta = 0; // distancia que  o robo ja andou
 
 	/*Variáveis controlador PWM*/
 	double erro = 0.0;
 	double erro_anterior = 0.0;
-	int kp = 6;// 6
-	int kd = 1;
-	int pid = 0;
+	double kp = 2;// melhor valor 2
+	double kd = 0; // melhor valor 0 (duvida, olha os graficos)
+	double pid = 0;
 
 	double pwm_sp = 0;//Valor desejado
 	double pwm_retardada = 0.0;//Valor que será incrementado
 	double pwm = 0;//Valor argumento da função "set_duty_cycle_sp"
-	int angulo_robo_graus = 0;
 
 	/*Variaveis para debug*/
 	chrono::system_clock::time_point t_inicial;
