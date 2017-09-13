@@ -54,7 +54,7 @@ private:
 	double aceleracao = 1000.0;//Em pwm/seg
 	double raio_roda = 0.0545/2; // metros
 	double relacao_engrenagem = 0.5; // 2 volta motor equivale 1 voltas roda
-	double raio_robo = 0.153/2; // largura entre os centros das rodas div por 2
+	double raio_robo = 0.1506/2; // largura entre os centros das rodas div por 2
 	double angulo_robo_graus = 0; // quanto o robo vai girar quando chamar o metodo girar
 	double distancia_linha_reta = 0; // distancia que  o robo ja andou
 

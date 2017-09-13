@@ -93,22 +93,20 @@ int main(){
 
 
 	Controlador_robo robot(true, "debug posicao direto no pwm.m"); // fator_croda = 1.005
+	Sensor_cor corE(ev3dev::INPUT_1);
+	Sensor_cor corD(ev3dev::INPUT_2);
+	//M_arquivos arquivo("debug cor.m",3);
+	corE.calibra();
+	corD.calibra();
+	while(!ev3dev::button::enter.process())
+		cout<<corE.ler_cor()<<";"<<corD.ler_cor()<<endl;
 
-	robot.inicializar_thread_aceleracao();
-	//	robot.andar(100);
-	//	while(robot.get_distancia()<3){
-	//	}
+	//robot.inicializar_thread_aceleracao();
+
+	//while(!ev3dev::button::enter.process()){}
 	//robot.parar();
-	//usleep(1000*1000*6);
-	robot.girar(90);
-//	usleep(1000*1000);
-//	robot.andar(50);
-//	usleep(1000*5000);
-//	robot.andar(-50);
-	while(!ev3dev::button::enter.process()){}
-	robot.parar();
 	//usleep(1000*500);
-	robot.finalizar_thread_aceleracao();
+	//robot.finalizar_thread_aceleracao();
 
 
 

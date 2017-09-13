@@ -68,12 +68,12 @@ void Sensor_cor::calibra(){
 	rgb_Azul = sensor.raw();
 	while(!ev3dev::button::enter.process()){};
 
-	r_Preto.r[0] = get<0>(rgb_Preto) - RangesCor::range;
-	r_Preto.r[1] = get<0>(rgb_Preto) + RangesCor::range;
-	r_Preto.g[0] = get<1>(rgb_Preto) - RangesCor::range;
-	r_Preto.g[1] = get<1>(rgb_Preto) + RangesCor::range;
-	r_Preto.b[0] = get<2>(rgb_Preto) - RangesCor::range;
-	r_Preto.b[1] = get<2>(rgb_Preto) + RangesCor::range;
+	r_Preto.r[0] = get<0>(rgb_Preto) - RangesCor::range_preto;
+	r_Preto.r[1] = get<0>(rgb_Preto) + RangesCor::range_preto;
+	r_Preto.g[0] = get<1>(rgb_Preto) - RangesCor::range_preto;
+	r_Preto.g[1] = get<1>(rgb_Preto) + RangesCor::range_preto;
+	r_Preto.b[0] = get<2>(rgb_Preto) - RangesCor::range_preto;
+	r_Preto.b[1] = get<2>(rgb_Preto) + RangesCor::range_preto;
 	r_Branco.r[0] = get<0>(rgb_Branco) - RangesCor::range;
 	r_Branco.r[1] = get<0>(rgb_Branco) + RangesCor::range;
 	r_Branco.g[0] = get<1>(rgb_Branco) - RangesCor::range;
