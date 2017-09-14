@@ -95,18 +95,113 @@ int main(){
 	Controlador_robo robot(true, "debug posicao direto no pwm.m"); // fator_croda = 1.005
 	Sensor_cor corE(ev3dev::INPUT_1);
 	Sensor_cor corD(ev3dev::INPUT_2);
-	//M_arquivos arquivo("debug cor.m",3);
+	robot.inicializar_thread_aceleracao();
+	/*
+	 * teste da classe controlador_robo
+	 */
+	//robot.andar(50);
+	//	while(!ev3dev::button::enter.process())
+	//	cout<<robot.get_velocidade()<<endl;
+	//	usleep(1000*2000);
+	//	robot.girar(360*2);
+	//	usleep(1000*2000);
+	//	robot.andar(50);
+	//	usleep(1000*2000);
+	//	robot.andar(-50);
+	//	usleep(1000*2000);
+	//	robot.girar(-360);
+	//	while(!ev3dev::button::enter.process()){}
+
+	/*
+	 * teste da classe sensor_cor
+	 */
 	corE.calibra();
 	corD.calibra();
-	while(!ev3dev::button::enter.process())
+	//		while(!ev3dev::button::back.process()){
+	//			while(!ev3dev::button::enter.process()){}
+	//			while(!ev3dev::button::enter.process()){}
+	//			robot.andar(50);
+	//			while(!ev3dev::button::enter.process())
+	//				cout<<corE.ler_cor()<<";"<<corD.ler_cor()<<endl;
+	//			robot.parar();
+	//			while(!ev3dev::button::enter.process()){}
+	//		}
+
+
+	//se der certo depois eh so imbutir isso tudo em um metodo
+	//e passar como argumento o primeiro sensor e o segundo sensor q detectar a linha
+	double leu_corE = 0,
+			leu_corD = 0,
+			velo_robo = 0,
+			dist = 0,
+			ang_robo = 0,
+			posicao_inicial = 0;
+	chrono::system_clock::time_point t_inicial;
+	chrono::system_clock::time_point t_final;
+	chrono::duration<double> delta_t; //Usar dt = t1-t2 e dt.count() para pegar o tempo em seg
+	robot.andar(50);
+	while(!ev3dev::button::enter.process()){
+		velo_robo = robot.get_velocidade();
 		cout<<corE.ler_cor()<<";"<<corD.ler_cor()<<endl;
+		if(corE.ler_cor() != Cor::branco){
+			cout<<"viu esquerdo"<<endl;
+			t_inicial = Time::now();
+			while(corD.ler_cor() == Cor::branco){}
+			t_final = Time::now();
+			posicao_inicial = robot.get_distancia();
+			while(robot.get_distancia() < posicao_inicial + 0.19){}
+			robot.parar();
+			delta_t = t_final - t_inicial;
+			dist = velo_robo*delta_t.count();
+			// aqui era pra ser a largura entre os sensores, mas
+			// o angulo dava muito pequeno, entao eu diminui para dar um angulo maior
+			ang_robo = atan2(dist, 0.11);
+			cout<< dist<<endl;
+			cout<<delta_t.count()<<endl;
+			cout<<velo_robo<<endl;
+			cout<<ang_robo*180/3.141592<<endl;
+			//while(!ev3dev::button::enter.process()){}
+			robot.girar(-90+ang_robo*180/3.141592);
+			while(robot.get_estado() == flag_aceleracao::girar){}
+			robot.andar(50);
+			usleep(1000*3000);
+			cout<<"partiu"<<endl;
+		}
 
-	//robot.inicializar_thread_aceleracao();
+		if(corD.ler_cor() != Cor::branco){
+			cout<<"viu direito"<<endl;
+			t_inicial = Time::now();
+			while(corE.ler_cor() == Cor::branco){}
+			t_final = Time::now();
+			posicao_inicial = robot.get_distancia();
+			while(robot.get_distancia() < posicao_inicial + 0.19){}
+			robot.parar();
+			delta_t = t_final - t_inicial;
+			dist = velo_robo*delta_t.count();
+			// aqui era pra ser a largura entre os sensores, mas
+			// o angulo dava muito pequeno, entao eu diminui para dar um angulo maior
+			ang_robo = atan2(dist, 0.11);
+			cout<< dist<<endl;
+			cout<<delta_t.count()<<endl;
+			cout<<velo_robo<<endl;
+			cout<<ang_robo*180/3.141592<<endl;
+			//while(!ev3dev::button::enter.process()){}
+			robot.girar(-90-ang_robo*180/3.141592);
+			while(robot.get_estado() == flag_aceleracao::girar){}
+			robot.andar(50);
+			usleep(1000*3000);
+			cout<<"partiu"<<endl;
+		}
+	}
 
-	//while(!ev3dev::button::enter.process()){}
-	//robot.parar();
-	//usleep(1000*500);
-	//robot.finalizar_thread_aceleracao();
+
+	//robot.andar(50, 3);
+
+
+	while(!ev3dev::button::enter.process()){}
+	robot.parar();
+	usleep(1000*500);
+	robot.finalizar_thread_aceleracao();
 
 
 

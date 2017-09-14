@@ -21,21 +21,22 @@ class Controlador_robo {
 public:
 	Controlador_robo(bool debug, string nome_arquivo);
 
-	void andar(int);
+	void andar(int pwm_sp);
+	void andar(int pwm, double distancia_metros);
 	void parar();
 	void girar(int angulo_robo_graus); // positivo anti-horario
 
 	bool inicializar_thread_aceleracao();
 	bool finalizar_thread_aceleracao();
 	flag_aceleracao get_estado();
-	int get_tacometro();
 	double get_distancia();
+	double get_velocidade();
 
 
 private:
 	/*Roda esquerda e Roda direita do robô*/
-	ev3dev::large_motor *rodaE;
-	ev3dev::large_motor *rodaD;
+	ev3dev::large_motor *motorE;
+	ev3dev::large_motor *motorD;
 
 
 	/*Flag de controle do Switch da thread loop_controle_aceleracao*/
@@ -49,12 +50,12 @@ private:
 
 
 	/*Variaveis caracteristica do robo*/
-	double fator_croda = 0.9945;
+	double fator_croda = 0.997;
 	double delay = 5.0;//Em miliseg
-	double aceleracao = 1000.0;//Em pwm/seg
-	double raio_roda = 0.0545/2; // metros
+	double aceleracao = 700.0;//Em pwm/seg
+	double raio_roda = 0.0538/2; // metros
 	double relacao_engrenagem = 0.5; // 2 volta motor equivale 1 voltas roda
-	double raio_robo = 0.1506/2; // largura entre os centros das rodas div por 2
+	double raio_robo = 0.156/2; // largura entre os centros das rodas div por 2
 	double angulo_robo_graus = 0; // quanto o robo vai girar quando chamar o metodo girar
 	double distancia_linha_reta = 0; // distancia que  o robo ja andou
 

@@ -2,21 +2,20 @@
 
 
 Controlador_robo::Controlador_robo(bool debug, string nome_arquivo)
-:fator_croda(fator_croda),
- nome_arquivo(nome_arquivo),
+:nome_arquivo(nome_arquivo),
  debug(debug)
 {
-	rodaE = new ev3dev::large_motor(ev3dev::OUTPUT_A);
-	rodaD = new ev3dev::large_motor(ev3dev::OUTPUT_B);
+	motorE = new ev3dev::large_motor(ev3dev::OUTPUT_A);
+	motorD = new ev3dev::large_motor(ev3dev::OUTPUT_B);
 
-	rodaE->reset();
-	rodaD->reset();
-	rodaE->set_stop_action("hold");
-	rodaD->set_stop_action("hold");
+	motorE->reset();
+	motorD->reset();
+	motorE->set_stop_action("hold");
+	motorD->set_stop_action("hold");
 
 
 	if(debug){
-		arquivo = new M_arquivos(nome_arquivo, 5); // tempo, ang_rodaE, ang_rodaD, erro, pwm Direito
+		arquivo = new M_arquivos(nome_arquivo, 5); // tempo, ang_motorE, ang_motorD, erro, pwm Direito
 		arquivo_aberto = true;
 	}
 }
@@ -26,6 +25,20 @@ void Controlador_robo::andar (int pwm_sp){
 	estado = flag_aceleracao::linha_reta;
 	usleep(1000*10);
 	this->pwm_sp = -pwm_sp;
+}
+
+
+void Controlador_robo::andar (int pwm_sp, double distancia){
+	motorE->reset();
+	motorD->reset();
+	motorE->set_stop_action("hold");
+	motorD->set_stop_action("hold");
+	andar(pwm_sp);
+
+	while(get_distancia() < distancia){
+		cout<<get_distancia()<<endl;
+	}
+	parar();
 }
 
 
@@ -64,19 +77,19 @@ flag_aceleracao Controlador_robo::get_estado(){
 }
 
 /*
- *  retorna a media entre os 2 tacometros das rodas
+ *  retorna a distancia em linha reta que o robo andou
  * ATENCAO: toda vez que o robo girar os tacometros sao resetados
  */
-int Controlador_robo::get_tacometro(){
-	return(rodaE->position() + rodaD->position())/2;
-}
-
-
 double Controlador_robo::get_distancia(){
-	//cout<<distancia_linha_reta<<endl;
 	return distancia_linha_reta;
 }
 
+/*
+ * retorna a velocidade do robo em m/s
+ */
+double Controlador_robo::get_velocidade(){
+	return -(motorE->speed() + motorD->speed())/2*3.141592/180*relacao_engrenagem*raio_roda;
+}
 
 void Controlador_robo::loop_controle_aceleracao(){
 	thread_rodando = true;
@@ -86,7 +99,7 @@ void Controlador_robo::loop_controle_aceleracao(){
 		delta_t = t_final - t_inicial;
 		t_inicial = t_final;
 		tempo += delta_t.count();
-		arquivo->elementos_arq(tempo, (double)rodaE->position(), (double)rodaD->position(), erro, pwm);
+		arquivo->elementos_arq(tempo, (double)motorE->position(), (double)motorD->position(), erro, pwm);
 
 
 		switch(estado){
@@ -96,24 +109,41 @@ void Controlador_robo::loop_controle_aceleracao(){
 
 		case flag_aceleracao::linha_reta :
 			distancia_linha_reta =
-					-(rodaE->position()+rodaD->position())/2 *3.141592/180*relacao_engrenagem*raio_roda;
-			erro = rodaE->position()*fator_croda - rodaD->position();
+					-(motorE->position()+motorD->position())/2 *3.141592/180*relacao_engrenagem*raio_roda;
+			/*
+			 * devido a relacao inverter o sentido de giro, um aumento na posicao da
+			 * roda significa uma diminuicao na posicao do motor, sendo assim
+			 * se a posicao do motorE > motorD entao a rodaE esta mais para traz
+			 * em relacao a rodaD, entao o erro eh positivo
+			 * se o robo estiver torto no sentido ANTI-HORARIO
+			 */
+			erro = (double)motorE->position()*fator_croda - (double)motorD->position();
+			/*
+			 * se o erro estiver positivo o proporcional (kp) sera positivo
+			 * se o erro atual for maior que o erro anterior, ou seja, o erro aumentou
+			 * o diferencial (kd) vai ser positivo, aumentando mais ainda o pid
+			 */
 			pid = kp*erro + kd*(erro-erro_anterior);
 			erro_anterior = erro;
 
+
+			/*
+			 * erro positivo >> pid positivo >> motorE > motorD >> diminuir o pwm
+			 * do motorE e aumentar o pwm do motorD
+			 */
 			pwm = pwm_retardada - pid;
 			if(pwm > 100) pwm = 100;
 			if(pwm < -100) pwm = -100;
-			rodaE->set_duty_cycle_sp((int)pwm);
+			motorE->set_duty_cycle_sp((int)pwm);
 
 			pwm = pwm_retardada + pid;
 			if(pwm > 100) pwm = 100;
 			if(pwm < -100) pwm = -100;
-			rodaD->set_duty_cycle_sp((int)pwm);
+			motorD->set_duty_cycle_sp((int)pwm);
 			usleep(1000*5);
 
-			rodaE->run_direct();
-			rodaD->run_direct();
+			motorE->run_direct();
+			motorD->run_direct();
 
 			if(pwm_retardada < pwm_sp-aceleracao*delay/1000)
 				pwm_retardada += aceleracao*delay/1000;
@@ -122,38 +152,38 @@ void Controlador_robo::loop_controle_aceleracao(){
 			break;
 
 		case flag_aceleracao::girar :
-			rodaE->stop();
-			rodaD->stop();
+			motorE->stop();
+			motorD->stop();
 			pwm_sp = 0;
 			pwm_retardada = 0.0;
 			pwm = 0;
 			usleep(1000*300);
-			rodaE->set_position_sp((angulo_robo_graus*raio_robo/raio_roda)/relacao_engrenagem);
-			rodaD->set_position_sp(-(angulo_robo_graus*raio_robo/raio_roda)/relacao_engrenagem);
-			rodaE->set_speed_sp(400);
-			rodaD->set_speed_sp(400);
-			rodaE->run_to_rel_pos();
-			rodaD->run_to_rel_pos();
+			motorE->set_position_sp((angulo_robo_graus*raio_robo/raio_roda)/relacao_engrenagem);
+			motorD->set_position_sp(-(angulo_robo_graus*raio_robo/raio_roda)/relacao_engrenagem);
+			motorE->set_speed_sp(400);
+			motorD->set_speed_sp(400);
+			motorE->run_to_rel_pos();
+			motorD->run_to_rel_pos();
 			usleep(1000*100);
-			while((rodaE->speed() > 2 || rodaE->speed() < -2) &&
+			while((motorE->speed() > 2 || motorE->speed() < -2) &&
 					estado == flag_aceleracao::girar){ }
 
-			rodaE->run_forever(); // so funciona se chamar o run_forever
-			rodaD->run_forever(); // antes de parar, caso contrario o robo fica louco
-			rodaE->stop();
-			rodaD->stop();
+			motorE->run_forever(); // so funciona se chamar o run_forever
+			motorD->run_forever(); // antes de parar, caso contrario o robo fica louco
+			motorE->stop();
+			motorD->stop();
 			usleep(1000*300);
 			if(estado == flag_aceleracao::girar) // se o giro terminar a thread fica ociosa
 				estado = flag_aceleracao::nd; // se for interrompida, vai para a proxima acao
-			rodaE->reset();
-			rodaD->reset();
-			rodaE->set_stop_action("hold");
-			rodaD->set_stop_action("hold");
+			motorE->reset();
+			motorD->reset();
+			motorE->set_stop_action("hold");
+			motorD->set_stop_action("hold");
 			break;
 
 		case flag_aceleracao::parar :
-			rodaE->stop();
-			rodaD->stop();
+			motorE->stop();
+			motorD->stop();
 			pwm_sp = 0;
 			pwm_retardada = 0.0;
 			pwm = 0;
@@ -162,8 +192,8 @@ void Controlador_robo::loop_controle_aceleracao(){
 			break;
 		}
 	}
-	rodaE->stop();
-	rodaD->stop();
+	motorE->stop();
+	motorD->stop();
 	if(arquivo_aberto){
 		arquivo->fecha_arq();
 		arquivo->string_arq("plot(t,x4);");
