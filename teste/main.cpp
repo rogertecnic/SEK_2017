@@ -10,10 +10,9 @@ using namespace std;
 #include <chrono>
 typedef std::chrono::high_resolution_clock Time;
 
-int main(){
-	system("setfont Greek-TerminusBold20x10.psf.gz");
 
 
+void teste_rogerio(){
 	//*****************************************
 	//*****************************************
 	//**************TESTES ROGERIO***************
@@ -139,13 +138,31 @@ int main(){
 	chrono::system_clock::time_point t_inicial;
 	chrono::system_clock::time_point t_final;
 	chrono::duration<double> delta_t; //Usar dt = t1-t2 e dt.count() para pegar o tempo em seg
-	robot.andar(50);
+
+	/*
+	 * VERIFICA SE A VELOCIDADE LIDA EH A VELOCIDADE REAL
+	 * RESULTADOS BEM SATISFATORIOS, PRECISAO DE 0.001 m/s
+	 */
+	//	t_inicial = Time::now();
+	robot.andar(70);
+	//	while(robot.get_distancia() < 3){}
+	//	velo_robo = robot.get_velocidade();
+	//	robot.parar();
+	//	t_final = Time::now();
+	//	delta_t = t_final - t_inicial;
+	//	cout<<3/delta_t.count()<<endl;
+	//	cout<<velo_robo<<endl;
+
+	/*
+	 * METODO PARA CORRIGIR ROBO TORTO QUANDO PASSAR PELA
+	 * INTERCESSAO
+	 */
 	while(!ev3dev::button::enter.process()){
 		velo_robo = robot.get_velocidade();
 		cout<<corE.ler_cor()<<";"<<corD.ler_cor()<<endl;
 		if(corE.ler_cor() != Cor::branco){
-			cout<<"viu esquerdo"<<endl;
 			t_inicial = Time::now();
+			cout<<"viu esquerdo"<<endl;
 			while(corD.ler_cor() == Cor::branco){}
 			t_final = Time::now();
 			posicao_inicial = robot.get_distancia();
@@ -155,22 +172,22 @@ int main(){
 			dist = velo_robo*delta_t.count();
 			// aqui era pra ser a largura entre os sensores, mas
 			// o angulo dava muito pequeno, entao eu diminui para dar um angulo maior
-			ang_robo = atan2(dist, 0.11);
+			ang_robo = atan2(dist, 0.17);
 			cout<< dist<<endl;
 			cout<<delta_t.count()<<endl;
 			cout<<velo_robo<<endl;
-			cout<<ang_robo*180/3.141592<<endl;
+			cout<<ang_robo*180/3.141592<<endl;t_inicial = Time::now();
 			//while(!ev3dev::button::enter.process()){}
 			robot.girar(-90+ang_robo*180/3.141592);
 			while(robot.get_estado() == flag_aceleracao::girar){}
-			robot.andar(50);
+			robot.andar(70);
 			usleep(1000*3000);
 			cout<<"partiu"<<endl;
 		}
 
 		if(corD.ler_cor() != Cor::branco){
-			cout<<"viu direito"<<endl;
 			t_inicial = Time::now();
+			cout<<"viu direito"<<endl;
 			while(corE.ler_cor() == Cor::branco){}
 			t_final = Time::now();
 			posicao_inicial = robot.get_distancia();
@@ -180,7 +197,7 @@ int main(){
 			dist = velo_robo*delta_t.count();
 			// aqui era pra ser a largura entre os sensores, mas
 			// o angulo dava muito pequeno, entao eu diminui para dar um angulo maior
-			ang_robo = atan2(dist, 0.11);
+			ang_robo = atan2(dist, 0.17);
 			cout<< dist<<endl;
 			cout<<delta_t.count()<<endl;
 			cout<<velo_robo<<endl;
@@ -188,20 +205,37 @@ int main(){
 			//while(!ev3dev::button::enter.process()){}
 			robot.girar(-90-ang_robo*180/3.141592);
 			while(robot.get_estado() == flag_aceleracao::girar){}
-			robot.andar(50);
+			robot.andar(70);
 			usleep(1000*3000);
 			cout<<"partiu"<<endl;
 		}
 	}
 
-
-	//robot.andar(50, 3);
-
+	//	ev3dev::touch_sensor toque(ev3dev::INPUT_1);
+	//	while(!ev3dev::button::enter.process()){
+	//		//while(!toque.is_pressed()){}
+	//		t_inicial = Time::now();
+	//		//toque.is_pressed();
+	//		//toque.is_pressed();
+	//		//toque.is_pressed();
+	//		usleep(1000*1000);
+	//		//while(toque.is_pressed()){}
+	//		t_final = Time::now();
+	//		delta_t = t_final - t_inicial;
+	//		cout<<delta_t.count()<<endl;
+	//		usleep(1000*3000);
+	//	}
 
 	while(!ev3dev::button::enter.process()){}
 	robot.parar();
 	usleep(1000*500);
 	robot.finalizar_thread_aceleracao();
+}
+
+
+int main(){
+	system("setfont Greek-TerminusBold20x10.psf.gz");
+	teste_rogerio();
 
 
 
