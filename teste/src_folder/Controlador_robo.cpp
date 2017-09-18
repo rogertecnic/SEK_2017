@@ -44,7 +44,7 @@ void Controlador_robo::andar (int pwm_sp, double distancia){
 
 void Controlador_robo::parar () {
 	estado = flag_aceleracao::parar;
-
+	usleep(1000*120);
 }
 
 
@@ -58,7 +58,7 @@ void Controlador_robo::girar(int angulo_robo_graus){
 bool Controlador_robo::inicializar_thread_aceleracao(){
 	thread_controle_velocidade = thread(&Controlador_robo::loop_controle_aceleracao, this);
 	thread_controle_velocidade.detach();
-	usleep(1000*100);
+	usleep(1000*500);
 	return thread_rodando;
 }
 
@@ -184,6 +184,7 @@ void Controlador_robo::loop_controle_aceleracao(){
 		case flag_aceleracao::parar :
 			motorE->stop();
 			motorD->stop();
+			usleep(1000*100);
 			pwm_sp = 0;
 			pwm_retardada = 0.0;
 			pwm = 0;
