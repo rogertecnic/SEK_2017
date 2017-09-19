@@ -20,12 +20,12 @@ Sensor_cor::Sensor_cor(string sensor_port_E, string sensor_port_D)
 Cor Sensor_cor::ler_cor_E(){
 	std::tuple<int, int, int> sample;
 	sample = sensor_E.raw();
+	if(corEstaEntre(sample, limites_Fora_E)) return Cor::fora;
 	if(corEstaEntre(sample, limites_Preto_E)) return Cor::preto;
 	if(corEstaEntre(sample, limites_Branco_E)) return Cor::branco;
 	if(corEstaEntre(sample, limites_Vermelho_E)) return Cor::vermelho;
 	if(corEstaEntre(sample, limites_Verde_E)) return Cor::verde;
 	if(corEstaEntre(sample, limites_Azul_E)) return Cor::azul;
-	if(corEstaEntre(sample, limites_Fora_E)) return Cor::fora;
 	else{
 		return Cor::nda;
 	}
@@ -35,12 +35,12 @@ Cor Sensor_cor::ler_cor_E(){
 Cor Sensor_cor::ler_cor_D(){
 	std::tuple<int, int, int> sample;
 	sample = sensor_D.raw();
+	if(corEstaEntre(sample, limites_Fora_D)) return Cor::fora;
 	if(corEstaEntre(sample, limites_Preto_D)) return Cor::preto;
 	if(corEstaEntre(sample, limites_Branco_D)) return Cor::branco;
 	if(corEstaEntre(sample, limites_Vermelho_D)) return Cor::vermelho;
 	if(corEstaEntre(sample, limites_Verde_D)) return Cor::verde;
 	if(corEstaEntre(sample, limites_Azul_D)) return Cor::azul;
-	if(corEstaEntre(sample, limites_Fora_D)) return Cor::fora;
 	else{
 		return Cor::nda;
 	}

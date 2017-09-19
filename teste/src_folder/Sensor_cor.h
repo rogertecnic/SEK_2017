@@ -18,12 +18,12 @@ enum Cor{nda, preto, branco, vermelho, verde, azul, fora}; // cores possiveis
 
 struct RangesCor{
 	int r[2] = {0,0},g[2] = {0,0}, b[2] = {0,0};
-	static const int range_preto = 8; // 8 fica bom se nao balancar muito
-	static const int range_branco = 25;
-	static const int range_vermelho =40;
-	static const int range_verde =40;
-	static const int range_azul =40;
-	static const int range_fora =15;
+	static const int range_preto = 8; // medido com o metodo de verificar ranges
+	static const int range_branco = 35; // medido com o metodo de verificar ranges
+	static const int range_vermelho = 30;
+	static const int range_verde = 40;
+	static const int range_azul = 20; // medido com o metodo de verificar ranges
+	static const int range_fora = 20;
 };
 
 class Sensor_cor {

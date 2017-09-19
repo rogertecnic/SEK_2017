@@ -154,6 +154,7 @@ void teste_rogerio(){
 	 * INTERCESSAO
 	 */
 	int i = 0;
+	cor.calibra();
 	while(!ev3dev::button::back.process()){
 		//		if(cor.ler_cor_D() == Cor::nda || cor.ler_cor_E() == Cor::nda){
 		//			i ++;
@@ -167,15 +168,16 @@ void teste_rogerio(){
 		//			robot.girar(30);
 		//		}
 
+
 		//velo_robo = robot.get_velocidade();
 		robot.andar(70);
-		//cout<<cor.ler_cor_E()<<";"<<cor.ler_cor_D()<<endl;
-		cor.define_ranges();
-		robot.parar();
-		usleep(1000*1000);
-		while(!ev3dev::button::enter.process()){}
-		usleep(1000*500);
-		ev3dev::button::enter.process();
+		cout<<cor.ler_cor_E()<<";"<<cor.ler_cor_D()<<endl;
+		//cor.define_ranges();
+		//		robot.parar();
+		//		usleep(1000*1000);
+		//		while(!ev3dev::button::enter.process()){}
+		//		usleep(1000*500);
+		//		ev3dev::button::enter.process();
 		//		if(cor.ler_cor_E() == Cor::preto){
 		//			t_inicial = Time::now();
 		//			cout<<"viu esquerdo"<<endl;
@@ -253,20 +255,20 @@ void teste_rogerio(){
 		//			usleep(1000*3000);
 		//		}
 
-		//		if(cor.ler_cor_E() == Cor::fora){
-		//			robot.parar();
-		//			robot.andar(-40);
-		//			usleep(1000*2000);
-		//			robot.girar(-35);
-		//			robot.andar(70);
-		//		}
-		//		if(cor.ler_cor_D() == Cor::fora){
-		//			robot.parar();
-		//			robot.andar(-40);
-		//			usleep(1000*2000);
-		//			robot.girar(35);
-		//			robot.andar(70);
-		//		}
+				if(cor.ler_cor_E() == Cor::fora){
+					robot.parar();
+					robot.andar(-40);
+					usleep(1000*2000);
+					robot.girar(-35);
+					robot.andar(70);
+				}
+				if(cor.ler_cor_D() == Cor::fora){
+					robot.parar();
+					robot.andar(-40);
+					usleep(1000*2000);
+					robot.girar(35);
+					robot.andar(70);
+				}
 	}
 
 
