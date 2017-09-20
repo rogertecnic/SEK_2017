@@ -7,6 +7,7 @@ void Mapeamento::mapeamento(Controlador_robo *robo, Sensor_cor *sensor){
 	while (true){
 
 		if(delay > 10){
+			//TODO
 			//corrigir_rota();
 			delay = 0;
 		}
@@ -16,11 +17,13 @@ void Mapeamento::mapeamento(Controlador_robo *robo, Sensor_cor *sensor){
 			continue;
 
 		else if(sensor->ler_cor_D() == Cor::fora || sensor->ler_cor_E() == Cor::fora){
+			//TODO
 			//corrigir_rota();
 			delay = 0;
 		}
 
 		else if(sensor->ler_cor_D() == Cor::nda || sensor->ler_cor_E() == Cor::nda){
+			//TODO
 			++delay;
 
 		}
@@ -37,8 +40,8 @@ void Mapeamento::mapeamento(Controlador_robo *robo, Sensor_cor *sensor){
 }
 
 bool Mapeamento::mapeamento_intersec(Controlador_robo *robo, Sensor_cor *sensor) {
+	arquivo = new Arquivos_mapeamento("intersec.txt");
 
-	Arquivos_mapeamento arquivo;
 
 	/*Fim da cidade*/
 	if (sensor->ler_cor_D() == Cor::vermelho && sensor->ler_cor_E() == Cor::vermelho) {
@@ -49,7 +52,7 @@ bool Mapeamento::mapeamento_intersec(Controlador_robo *robo, Sensor_cor *sensor)
 				usleep(delay_f*100000);
 				if(sensor->ler_cor_D() == Cor::branco && sensor->ler_cor_E() == Cor::branco){
 					sentido_navegacao = -1;
-					arquivo.arq_intersec(checkpoint_vermelho, checkpoint_verde, checkpoint_azul);
+					arquivo->arq_intersec(checkpoint_vermelho, checkpoint_verde, checkpoint_azul);
 					return false;
 				}
 			}

@@ -25,7 +25,6 @@ typedef union posicao_bonecos{
 
 class Mapeamento {
 public:
-
 	void mapeamento(Controlador_robo *, Sensor_cor *);
 	bool mapeamento_intersec(Controlador_robo *, Sensor_cor *);
 	void caminho_certo(Controlador_robo *, Sensor_cor *);
@@ -39,14 +38,20 @@ public:
 
 private:
 
-	enum status{nda1, em_frente, direita, esquerda};
-	enum checkpoint{nda, vermelho, verde, azul};
+	/*Arquivo para salvar as informações de mapeamento*/
+	Arquivos_mapeamento *arquivo;
 
+	/* == 1 se estiver indo do ponto de start para a rampa
+	 * == -1 se estiver indo da rampa para o ponto de start
+	 */
 	int sentido_navegacao = 0;
-	double posicao_inicial = 0;
 
-	int delay = 0;
-	bool confirmacao_status = false;
+
+	/*	Checkpoint faz o controle de qual cor estamos avaliando no momento
+	 * Status indica a direção que determinada cor da intersecção indica
+	 */
+	enum checkpoint{nda, vermelho, verde, azul};
+	enum status{nda1, em_frente, direita, esquerda};
 
 	/*Flags mapeamento intersecção*/
 	checkpoint cor_atual = checkpoint::nda;
@@ -57,12 +62,17 @@ private:
 	status checkpoint_verde = status::nda1;
 	status checkpoint_azul = status::nda1;
 
+	/*Variável de controle de posicao na chegada de um quadrado(deadend/intersec*/
+	double posicao_inicial = 0;
+
+	/*Variável de controle de correção de rota*/
+	int delay = 0;
+
+	/*Variável de controle se a intersecção já foi mapeada*/
+	bool confirmacao_status = false;
 
 
 	/*Mapeamento dos bonecos*/
-	bool intersec = false;
-	double distancia = 0;
-
 	bool thread_rodando = false;
 	thread mapeamento_bonecoD;
 	thread mapeamento_bonecoE;
@@ -73,7 +83,7 @@ private:
 	bool thread_rodando_naveg = false;
 	thread navegacao;
 	void loop_navegacao();
-	*/
+	 */
 
 
 };
