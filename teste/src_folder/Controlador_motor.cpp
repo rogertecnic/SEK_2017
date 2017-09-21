@@ -204,6 +204,6 @@ double Controlador_motor::get_velo(){
 	return velo_inicial_med;
 }
 double Controlador_motor::get_posicao(){
-	//TODO fazer metodo get_posicao
+
 	return 0;
 }

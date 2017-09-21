@@ -94,6 +94,16 @@ ev3dev.h
 M_arquivos.h
 /src/src_folder/M_arquivos.h
 
+/src/src_folder/Sensor_cor.cpp
+Sensor_cor.h
+/src/src_folder/Sensor_cor.h
+math.h
+-
+list
+-
+vector
+-
+
 /src/src_folder/Sensor_cor.h
 iostream
 -
@@ -108,5 +118,23 @@ unistd.h
 iostream
 -
 string
+-
+
+/src/src_folder/ev3dev.h
+map
+-
+set
+-
+string
+-
+tuple
+-
+vector
+-
+algorithm
+-
+functional
+-
+memory
 -
 

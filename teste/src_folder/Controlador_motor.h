@@ -18,7 +18,7 @@ public:
 	bool inicializa_thread();
 	double get_velo();
 	double get_posicao();
-	//TODO adicionar metodo de leitura de distancia
+
 private:
 
 	//****************VARIAVEIS DO MOTOR********************
