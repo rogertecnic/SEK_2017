@@ -22,7 +22,7 @@ struct LimitesCor{
 
 namespace RangesCor{
 	static constexpr  int range_preto[3] = {8,7,7};
-	static constexpr  int range_branco[3] = {40,35,35};
+	static constexpr  int range_branco[3] = {50,50,50};
 	static constexpr  int range_vermelho[3] = {27,30,17};
 	static constexpr  int range_verde[3] = {17,20,15};
 	static constexpr  int range_azul[3] = {19,16,17};

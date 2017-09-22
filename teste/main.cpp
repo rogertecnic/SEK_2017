@@ -139,6 +139,7 @@ void teste_rogerio_alinhamento(){
 			usleep(1000*100);
 		}else i = 0;
 		if(i >=6){
+			cout<<"viu nda 6x"<<endl;
 			robot.parar();
 			robot.andar(-50);
 			usleep(1000*3000);
@@ -186,6 +187,7 @@ void teste_rogerio_alinhamento(){
 
 
 		if(cor.ler_cor_E() == Cor::fora){
+			cout<<"saiu E"<<endl;
 			robot.parar();
 			robot.andar(-40);
 			usleep(1000*2000);
@@ -193,6 +195,7 @@ void teste_rogerio_alinhamento(){
 			robot.andar(70);
 		}
 		if(cor.ler_cor_D() == Cor::fora){
+			cout<<"saiu D"<<endl;
 			robot.parar();
 			robot.andar(-40);
 			usleep(1000*2000);
