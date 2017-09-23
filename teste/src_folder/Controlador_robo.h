@@ -6,6 +6,7 @@
 #include <unistd.h>
 #include "ev3dev.h"
 #include "M_arquivos.h"
+#include "Sensor_cor.h"
 
 
 using namespace std;
@@ -25,6 +26,7 @@ public:
 	void andar(int pwm, double distancia_metros);
 	void parar();
 	void girar(int angulo_robo_graus); // positivo anti-horario
+	void alinhar_para_traz(Sensor_cor *cor);
 
 	bool inicializar_thread_aceleracao();
 	bool finalizar_thread_aceleracao();
@@ -37,7 +39,6 @@ private:
 	/*Roda esquerda e Roda direita do robô*/
 	ev3dev::large_motor *motorE;
 	ev3dev::large_motor *motorD;
-
 
 	/*Flag de controle do Switch da thread loop_controle_aceleracao*/
 	flag_aceleracao estado = flag_aceleracao::parar;

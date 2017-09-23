@@ -35,16 +35,16 @@ void Controlador_robo::andar (int pwm_sp, double distancia){
 	motorD->set_stop_action("hold");
 	andar(pwm_sp);
 
-	while(get_distancia() < distancia){
-		cout<<get_distancia()<<endl;
-	}
+	if(pwm_sp > 0) while(get_distancia() < distancia){}
+	if(pwm_sp < 0) while(get_distancia() > -distancia){}
+
 	parar();
 }
 
 
 void Controlador_robo::parar () {
 	estado = flag_aceleracao::parar;
-	usleep(1000*120);
+	usleep(1000*200);
 }
 
 
@@ -52,6 +52,42 @@ void Controlador_robo::girar(int angulo_robo_graus){
 	this->angulo_robo_graus = angulo_robo_graus;
 	estado = flag_aceleracao::girar;
 	usleep(1000*100);
+}
+
+
+void Controlador_robo::alinhar_para_traz(Sensor_cor *cor){
+	int cor_E;
+	int cor_D;
+	do{
+		andar(-20, 0.01);
+		cor_E = cor->ler_cor_E();
+		cor_D = cor->ler_cor_D();
+	}while(cor_E == Cor::nda || cor_D == Cor::nda);
+	cout<<"alinhando:"<<cor_E<<";"<<cor_D<<endl;
+	motorD->set_duty_cycle_sp(25);
+	motorE->set_duty_cycle_sp(25); // sentido inverso devido a reducao de engrenagem
+	motorE->run_direct();
+	motorD->run_direct();
+	bool motorE_parado = false,
+			motorD_parado = false;
+	while(!motorE_parado || !motorD_parado){
+		if(cor->ler_cor_D() != cor_D && !motorD_parado){
+			usleep(1000*80);
+			if(cor->ler_cor_D() != cor_D){
+				motorD->run_forever(); // pra n dar pau no stop
+				motorD->stop();
+				motorD_parado = true;
+			}
+		}
+		if(cor->ler_cor_E() != cor_E && !motorE_parado){
+			usleep(1000*80);
+			if(cor->ler_cor_E() != cor_E){
+				motorE->run_forever(); // pra n dar pau no stop
+				motorE->stop();
+				motorE_parado = true;
+			}
+		}
+	}
 }
 
 
@@ -160,8 +196,8 @@ void Controlador_robo::loop_controle_aceleracao(){
 			usleep(1000*300);
 			motorE->set_position_sp((angulo_robo_graus*raio_robo/raio_roda)/relacao_engrenagem);
 			motorD->set_position_sp(-(angulo_robo_graus*raio_robo/raio_roda)/relacao_engrenagem);
-			motorE->set_speed_sp(400);
-			motorD->set_speed_sp(400);
+			motorE->set_speed_sp(300);
+			motorD->set_speed_sp(300);
 			motorE->run_to_rel_pos();
 			motorD->run_to_rel_pos();
 			usleep(1000*100);
@@ -184,7 +220,6 @@ void Controlador_robo::loop_controle_aceleracao(){
 		case flag_aceleracao::parar :
 			motorE->stop();
 			motorD->stop();
-			usleep(1000*100);
 			pwm_sp = 0;
 			pwm_retardada = 0.0;
 			pwm = 0;

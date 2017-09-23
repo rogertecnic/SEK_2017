@@ -36,18 +36,18 @@ void teste_rogerio(){
 	 * teste da classe sensor_cor
 	 * imprime o que o sensor esta lendo usando a classe
 	 */
-		cor.calibra();
-		while(!ev3dev::button::back.process()){
-			while(!ev3dev::button::enter.process()){}
-			usleep(1000*800);
-			ev3dev::button::enter.process();
-			robot.andar(30);
-			while(!ev3dev::button::enter.process())
-				cout<<cor.ler_cor_E()<<";"<<cor.ler_cor_D()<<endl;
-			robot.parar();
-			usleep(1000*800);
-			ev3dev::button::enter.process();
-		}
+	cor.calibra();
+	while(!ev3dev::button::back.process()){
+		while(!ev3dev::button::enter.process()){}
+		usleep(1000*800);
+		ev3dev::button::enter.process();
+		robot.andar(30);
+		while(!ev3dev::button::enter.process())
+			cout<<cor.ler_cor_E()<<";"<<cor.ler_cor_D()<<endl;
+		robot.parar();
+		usleep(1000*800);
+		ev3dev::button::enter.process();
+	}
 
 
 	/*
@@ -98,6 +98,12 @@ void teste_rogerio(){
 
 
 	/*
+	 * TESTE ANDAR RE
+	 */
+	//robot.andar(-50, 0.5);
+
+
+	/*
 	 * TESTE COM SENSOR TOUCH PARA VERIFICAR TEMPO
 	 */
 	//	ev3dev::touch_sensor toque(ev3dev::INPUT_1);
@@ -115,11 +121,13 @@ void teste_rogerio(){
 	//		usleep(1000*3000);
 	//	}
 
-	//while(!ev3dev::button::enter.process()){}
-	//robot.parar();
+	while(!ev3dev::button::enter.process()){}
+	robot.parar();
 	usleep(1000*500);
-	//robot.finalizar_thread_aceleracao();
+	robot.finalizar_thread_aceleracao();
 }
+
+
 void teste_rogerio_alinhamento(){
 	Controlador_robo robot(true, "debug posicao direto no pwm.m"); // fator_croda = 1.005
 	Sensor_cor cor(ev3dev::INPUT_1, ev3dev::INPUT_2);
@@ -131,85 +139,169 @@ void teste_rogerio_alinhamento(){
 			posicao_final = 0;
 
 	int i = 0;
+	int c = 0;
 	cor.calibra();
 	while(!ev3dev::button::back.process()){
 		// verifica se o sensor esta vendo "nda" por um longo tempo
 		if(cor.ler_cor_D() == Cor::nda || cor.ler_cor_E() == Cor::nda){
 			i ++;
-			usleep(1000*100);
 		}else i = 0;
-		if(i >=6){
-			cout<<"viu nda 6x"<<endl;
+		if(i >=40){
+			cout<<"viu nda 40"<<endl;
 			robot.parar();
-			robot.andar(-50);
-			usleep(1000*3000);
+			robot.andar(-100);
+			usleep(1000*1000);
 			robot.girar(30);
 		}
-		//***********termina verificacao
+		//***********termina verificacao da cor "nda"
 
 
 		robot.andar(70);
+		// forma de alinhamento calculando o angulo que o robo ta torto
 		// se o sensor E ver preto
-//		if(cor.ler_cor_E() == Cor::preto){
-//			cout<<"viu esquerdo"<<endl;
-//			posicao_inicial = robot.get_distancia();
-//			while(cor.ler_cor_D() != Cor::preto){}
-//			posicao_final = robot.get_distancia();
-//			while(robot.get_distancia() < posicao_final + 0.19){}
-//			robot.parar();
-//			dist = posicao_final - posicao_inicial;
-//			ang_robo = atan2(dist, 0.17);
-//			cout<< dist<<endl;
-//			cout<<ang_robo*180/3.141592<<endl;
-//			robot.girar(-90+ang_robo*180/3.141592);
-//			while(robot.get_estado() == flag_aceleracao::girar){}
-//			robot.andar(70);
-//			usleep(1000*3000);
-//		}
-//
-//		// se o sensor D ver preto
-//		if(cor.ler_cor_D() == Cor::preto){
-//			cout<<"viu direito"<<endl;
-//			posicao_inicial = robot.get_distancia();
-//			while(cor.ler_cor_E() != Cor::preto){}
-//			posicao_final = robot.get_distancia();
-//			while(robot.get_distancia() < posicao_final + 0.19){}
-//			robot.parar();
-//			dist = posicao_final - posicao_inicial;
-//			ang_robo = atan2(dist, 0.17);
-//			cout<< dist<<endl;
-//			cout<<ang_robo*180/3.141592<<endl;
-//			robot.girar(-90- ang_robo*180/3.141592);
-//			while(robot.get_estado() == flag_aceleracao::girar){}
-//			robot.andar(70);
-//			usleep(1000*3000);
-//		}
+		//		if(cor.ler_cor_E() == Cor::preto){ // eh preto mesmo ou fora, verificar
+		//			posicao_inicial = robot.get_distancia();
+		//			robot.andar(30); // velocidade de atencao
+		//			cout<<"preto E?";
+		//			while(true){
+		//				if(cor.ler_cor_E() == Cor::fora){
+		//					cout<<"nao;"<<endl<<"saiu E"<<endl;
+		//					robot.parar();
+		//					robot.andar(-40);
+		//					usleep(1000*2000);
+		//					robot.girar(-35);
+		//					robot.andar(70);
+		//					break;
+		//				}else if(cor.ler_cor_D() == Cor::preto ||
+		//						cor.ler_cor_D() == Cor::fora){
+		//					posicao_final = robot.get_distancia();
+		//					cout<<"SIM!"<<endl;
+		//					while(robot.get_distancia() < posicao_final + 0.18){}
+		//					robot.parar();
+		//					dist = posicao_final - posicao_inicial;
+		//					ang_robo = atan2(dist, 0.17);
+		//					robot.girar(-90+ang_robo*180/3.141592);
+		//					while(robot.get_estado() == flag_aceleracao::girar){}
+		//					while(cor.ler_cor_E() != preto) robot.girar(-30);
+		//					while(cor.ler_cor_D() != preto) robot.girar(30);
+		//					robot.andar(70);
+		//					while(cor.ler_cor_D() == Cor::preto ||
+		//							cor.ler_cor_E() == Cor::preto){}
+		//					break;
+		//				}
+		//			}
+		//		}
+		//
+		//		// se o sensor D ver preto
+		//		if(cor.ler_cor_D() == Cor::preto){ // eh preto mesmo ou fora, verificar
+		//			posicao_inicial = robot.get_distancia();
+		//			cout<<"preto D?";
+		//			robot.andar(30); // velocidade de atencao
+		//			while(true){
+		//				if(cor.ler_cor_D() == Cor::fora){
+		//					cout<<"nao;"<<endl<<"saiu D"<<endl;
+		//					robot.parar();
+		//					robot.andar(-40);
+		//					usleep(1000*2000);
+		//					robot.girar(-35);
+		//					robot.andar(70);
+		//					break;
+		//				}else if(cor.ler_cor_E() == Cor::preto ||
+		//						cor.ler_cor_E() == Cor::fora){
+		//					posicao_final = robot.get_distancia();
+		//					cout<<"SIM!"<<endl;
+		//					while(robot.get_distancia() < posicao_final + 0.18){}
+		//					robot.parar();
+		//					dist = posicao_final - posicao_inicial;
+		//					ang_robo = atan2(dist, 0.17);
+		//					robot.girar(-90+ang_robo*180/3.141592);
+		//					while(robot.get_estado() == flag_aceleracao::girar){}
+		//					while(cor.ler_cor_E() != preto) robot.girar(-30);
+		//					while(cor.ler_cor_D() != preto) robot.girar(30);
+		//					robot.andar(70);
+		//					while(cor.ler_cor_D() == Cor::preto ||
+		//							cor.ler_cor_E() == Cor::preto){}
+		//					break;
+		//				}
+		//			}
+		//		}
+
+		// alinhar usando o metodo da classe robo
+		int cor_E = cor.ler_cor_E();
+		int cor_D = cor.ler_cor_D();
+		if( (cor_E != Cor::branco && cor_E != Cor::fora) ||
+				(cor_D != Cor::branco && cor_D != Cor::fora)){
+			usleep(1000*80);
+			if(cor.ler_cor_E() == cor_E ||
+					cor.ler_cor_D() == cor_D)
+			{
+				cout<<"viu cor :";
+				posicao_inicial = robot.get_distancia();
+				while(robot.get_distancia() < posicao_inicial + 0.03){}
+				robot.parar();
+				if(cor.ler_cor_E() != cor_E){ // sensor E saiu
+					cout<<"E saiu"<<endl;
+					robot.parar();
+					robot.andar(-40);
+					usleep(1000*1000);
+					robot.girar(-10);
+					while(robot.get_estado() == flag_aceleracao::girar){}
+					robot.andar(70);
+				}else if(cor.ler_cor_D() != cor_D){ // sensor D saiu
+					cout<<"D saiu"<<endl;
+					robot.parar();
+					robot.andar(-40);
+					usleep(1000*1000);
+					robot.girar(10);
+					while(robot.get_estado() == flag_aceleracao::girar){}
+					robot.andar(70);
+				}else{
+					robot.parar();
+					robot.alinhar_para_traz(&cor); // alinha esse caralho de robo
+					robot.andar(50, 0.03);
+					robot.alinhar_para_traz(&cor); // alinha esse caralho de robo
+					robot.andar(50, 0.195);
+					robot.girar(90);
+					while(robot.get_estado() == flag_aceleracao::girar){}
+					robot.andar(70);
+					while(cor.ler_cor_E() == cor_E ||
+							cor.ler_cor_D() == cor_D){}
+				}
+
+			}
+		}
+
+
+
 
 
 		if(cor.ler_cor_E() == Cor::fora){
 			cout<<"saiu E"<<endl;
 			robot.parar();
 			robot.andar(-40);
-			usleep(1000*2000);
-			robot.girar(-35);
+			usleep(1000*1000);
+			robot.girar(-10);
+			while(robot.get_estado() == flag_aceleracao::girar){}
 			robot.andar(70);
 		}
 		if(cor.ler_cor_D() == Cor::fora){
 			cout<<"saiu D"<<endl;
 			robot.parar();
 			robot.andar(-40);
-			usleep(1000*2000);
-			robot.girar(35);
+			usleep(1000*1000);
+			robot.girar(10);
+			while(robot.get_estado() == flag_aceleracao::girar){}
 			robot.andar(70);
 		}
 	}
 }
 
 
+
 int main(){
 	system("setfont Greek-TerminusBold20x10.psf.gz");
-	//teste_rogerio();
-	teste_rogerio_alinhamento();
+	teste_rogerio();
+	//teste_rogerio_alinhamento();
 
 
 

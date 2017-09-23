@@ -21,19 +21,19 @@ struct LimitesCor{
 };
 
 namespace RangesCor{
-	static constexpr  int range_preto[3] = {8,7,7};
-	static constexpr  int range_branco[3] = {50,50,50};
-	static constexpr  int range_vermelho[3] = {27,30,17};
-	static constexpr  int range_verde[3] = {17,20,15};
-	static constexpr  int range_azul[3] = {19,16,17};
+	static constexpr  int range_preto[3] = {9,9,9};
+	static constexpr  int range_branco[3] = {35,37,35};
+	static constexpr  int range_vermelho[3] = {43,26,10};
+	static constexpr  int range_verde[3] = {50,75,39};
+	static constexpr  int range_azul[3] = {35,43,31};
 	static constexpr  int range_fora[3] = {6,6,6};
 };
 
 class Sensor_cor {
 public:
 	Sensor_cor(string sensor_port_E, string sensor_port_D); // construtor
-	int ler_cor_E(); // por favor ne
-	int ler_cor_D(); // por favor ne
+	Cor ler_cor_E(); // por favor ne
+	Cor ler_cor_D(); // por favor ne
 	void calibra();
 	void define_ranges();
 	void printa_rgb_E();
@@ -50,8 +50,7 @@ private:
 	limites_Verde_D, limites_Azul_D, limites_Fora_D;
 
 	bool corEstaEntre(std::tuple<int, int, int>, LimitesCor);
-	int vezes_calibrou = 3;
-	int vezer_leu = 3;
+	int vezes_calibrou = 4;
 	ev3dev::color_sensor sensor_E;
 	ev3dev::color_sensor sensor_D;
 };

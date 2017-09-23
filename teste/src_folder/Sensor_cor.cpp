@@ -9,6 +9,10 @@
 #include <math.h>
 #include <list>
 #include <vector>
+#include <chrono>
+#include "M_arquivos.h"
+
+typedef std::chrono::high_resolution_clock Time;
 
 Sensor_cor::Sensor_cor(string sensor_port_E, string sensor_port_D)
 :sensor_E(ev3dev::color_sensor(sensor_port_E)),
@@ -16,83 +20,29 @@ Sensor_cor::Sensor_cor(string sensor_port_E, string sensor_port_D)
 {}
 
 
-int Sensor_cor::ler_cor_E(){
+Cor Sensor_cor::ler_cor_E(){
 	std::tuple<int, int, int> sample;
 	sample = sensor_E.raw();
-	int cor;
-	if(corEstaEntre(sample, limites_Fora_E)) cor = Cor::fora; // 6
-	else if(corEstaEntre(sample, limites_Preto_E)) cor = Cor::preto; // 1
-	else if(corEstaEntre(sample, limites_Branco_E)) cor = Cor::branco; // 2
-	else if(corEstaEntre(sample, limites_Vermelho_E)) cor = Cor::vermelho; // 3
-	else if(corEstaEntre(sample, limites_Verde_E)) cor = Cor::verde; // 4
-	else if(corEstaEntre(sample, limites_Azul_E)) cor = Cor::azul; // 5
+	if(corEstaEntre(sample, limites_Fora_E)) return Cor::fora; // 6
+	else if(corEstaEntre(sample, limites_Preto_E)) return Cor::preto; // 1
+	else if(corEstaEntre(sample, limites_Branco_E)) return Cor::branco; // 2
+	else if(corEstaEntre(sample, limites_Vermelho_E)) return Cor::vermelho; // 3
+	else if(corEstaEntre(sample, limites_Verde_E)) return Cor::verde; // 4
+	else if(corEstaEntre(sample, limites_Azul_E)) return Cor::azul; // 5
 	else return Cor::nda; //0
-
-	for(int i = 2; i <= vezer_leu ; i++){
-		usleep(1000*50);
-		sample = sensor_E.raw();
-		switch(cor){
-		case Cor::fora:
-			if(!corEstaEntre(sample, limites_Fora_E)) return Cor::nda;
-			break;
-		case Cor::preto:
-			if(!corEstaEntre(sample, limites_Preto_E)) return Cor::nda;
-			break;
-		case Cor::branco:
-			if(!corEstaEntre(sample, limites_Branco_E)) return Cor::nda;
-			break;
-		case Cor::vermelho:
-			if(!corEstaEntre(sample, limites_Vermelho_E)) return Cor::nda;
-			break;
-		case Cor::verde:
-			if(!corEstaEntre(sample, limites_Verde_E)) return Cor::nda;
-			break;
-		case Cor::azul:
-			if(!corEstaEntre(sample, limites_Azul_E)) return Cor::nda;
-			break;
-		}
-	}
-	return cor;
 }
 
 
-int Sensor_cor::ler_cor_D(){
+Cor Sensor_cor::ler_cor_D(){
 	std::tuple<int, int, int> sample;
 	sample = sensor_D.raw();
-	int cor;
-	if(corEstaEntre(sample, limites_Fora_D)) cor = Cor::fora; // 6
-	else if(corEstaEntre(sample, limites_Preto_D)) cor = Cor::preto; // 1
-	else if(corEstaEntre(sample, limites_Branco_D)) cor = Cor::branco; // 2
-	else if(corEstaEntre(sample, limites_Vermelho_D)) cor = Cor::vermelho; // 3
-	else if(corEstaEntre(sample, limites_Verde_D)) cor = Cor::verde; // 4
-	else if(corEstaEntre(sample, limites_Azul_D)) cor = Cor::azul; // 5
+	if(corEstaEntre(sample, limites_Fora_D)) return Cor::fora; // 6
+	else if(corEstaEntre(sample, limites_Preto_D)) return Cor::preto; // 1
+	else if(corEstaEntre(sample, limites_Branco_D)) return Cor::branco; // 2
+	else if(corEstaEntre(sample, limites_Vermelho_D)) return Cor::vermelho; // 3
+	else if(corEstaEntre(sample, limites_Verde_D)) return Cor::verde; // 4
+	else if(corEstaEntre(sample, limites_Azul_D)) return Cor::azul; // 5
 	else return Cor::nda; //0
-
-	for(int i = 2; i <= vezer_leu ; i++){
-		usleep(1000*50);
-		sample = sensor_D.raw();
-		switch(cor){
-		case Cor::fora:
-			if(!corEstaEntre(sample, limites_Fora_D)) return Cor::nda;
-			break;
-		case Cor::preto:
-			if(!corEstaEntre(sample, limites_Preto_D)) return Cor::nda;
-			break;
-		case Cor::branco:
-			if(!corEstaEntre(sample, limites_Branco_D)) return Cor::nda;
-			break;
-		case Cor::vermelho:
-			if(!corEstaEntre(sample, limites_Vermelho_D)) return Cor::nda;
-			break;
-		case Cor::verde:
-			if(!corEstaEntre(sample, limites_Verde_D)) return Cor::nda;
-			break;
-		case Cor::azul:
-			if(!corEstaEntre(sample, limites_Azul_D)) return Cor::nda;
-			break;
-		}
-	}
-	return cor;
 }
 
 
@@ -179,6 +129,20 @@ void Sensor_cor::calibra(){
 	}
 	calibra_cor(RangesCor::range_fora, &limites_Fora_E);
 	calibra_cor(RangesCor::range_fora, &limites_Fora_D);
+	M_arquivos arquivo("media cores.m", 7);
+	arquivo.elementos_arq((double)0, (double)limites_Preto_E.r[2], (double)limites_Preto_E.g[2], (double)limites_Preto_E.b[2],
+			(double)limites_Preto_D.r[2], (double)limites_Preto_D.g[2], (double)limites_Preto_D.b[2]);
+	arquivo.elementos_arq((double)0, (double)limites_Branco_E.r[2], (double)limites_Branco_E.g[2], (double)limites_Branco_E.b[2],
+			(double)limites_Branco_D.r[2], (double)limites_Branco_D.g[2], (double)limites_Branco_D.b[2]);
+	arquivo.elementos_arq((double)0, (double)limites_Vermelho_E.r[2], (double)limites_Vermelho_E.g[2], (double)limites_Vermelho_E.b[2],
+			(double)limites_Vermelho_D.r[2], (double)limites_Vermelho_D.g[2], (double)limites_Vermelho_D.b[2]);
+	arquivo.elementos_arq((double)0, (double)limites_Verde_E.r[2], (double)limites_Verde_E.g[2], (double)limites_Verde_E.b[2],
+			(double)limites_Verde_D.r[2], (double)limites_Verde_D.g[2], (double)limites_Verde_D.b[2]);
+	arquivo.elementos_arq((double)0, (double)limites_Azul_E.r[2], (double)limites_Azul_E.g[2], (double)limites_Azul_E.b[2],
+			(double)limites_Azul_D.r[2], (double)limites_Azul_D.g[2], (double)limites_Azul_D.b[2]);
+	arquivo.elementos_arq((double)0, (double)limites_Fora_E.r[2], (double)limites_Fora_E.g[2], (double)limites_Fora_E.b[2],
+			(double)limites_Fora_D.r[2], (double)limites_Fora_D.g[2], (double)limites_Fora_D.b[2]);
+	arquivo.fecha_arq();
 }
 
 
@@ -192,25 +156,36 @@ void Sensor_cor::define_ranges(){
 			var_E[3] = {0,0,0},
 			var_D[3] = {0,0,0};
 	int i = 0;
-	std::tuple<int, int, int> sample;
+	std::tuple<int, int, int> sampleE, sampleD;
 	vector<int> valores;
 	usleep(1000.500);
 	cout<<"calc ranges"<<endl;
+	M_arquivos arquivo("leitura_cores.m", 7);
+	chrono::system_clock::time_point t_inicial;
+	chrono::system_clock::time_point t_final;
+	chrono::duration<double> delta_t; //Usar dt = t1-t2 e dt.count() para pegar o tempo em seg
+	t_inicial = Time::now();
 	while(!ev3dev::button::enter.process()){
 		i++;
-		sample = sensor_E.raw();
-		valores = {get<0>(sample), get<1>(sample), get<2>(sample)};
+		sampleE = sensor_E.raw();
+		valores = {get<0>(sampleE), get<1>(sampleE), get<2>(sampleE)};
 		valores_E.push_back(valores);
-		med_E[0] += get<0>(sample);
-		med_E[1] += get<1>(sample);
-		med_E[2] += get<2>(sample);
-		sample = sensor_D.raw();
-		valores = {get<0>(sample), get<1>(sample), get<2>(sample)};
+		med_E[0] += get<0>(sampleE);
+		med_E[1] += get<1>(sampleE);
+		med_E[2] += get<2>(sampleE);
+		sampleD = sensor_D.raw();
+		valores = {get<0>(sampleD), get<1>(sampleD), get<2>(sampleD)};
 		valores_D.push_back(valores);
-		med_D[0] += get<0>(sample);
-		med_D[1] += get<1>(sample);
-		med_D[2] += get<2>(sample);
+		med_D[0] += get<0>(sampleD);
+		med_D[1] += get<1>(sampleD);
+		med_D[2] += get<2>(sampleD);
+		t_final = Time::now();
+		delta_t = t_final - t_inicial;
+		arquivo.elementos_arq((double)delta_t.count(), (double)get<0>(sampleE), (double)get<1>(sampleE), (double)get<2>(sampleE),
+				(double)get<0>(sampleD), (double)get<1>(sampleD), (double)get<2>(sampleD));
 	}
+	arquivo.fecha_arq();
+	arquivo.string_arq("plot(t, x1);");
 	usleep(1000*500);
 	ev3dev::button::enter.process();
 	med_E[0] = med_E[0]/i;

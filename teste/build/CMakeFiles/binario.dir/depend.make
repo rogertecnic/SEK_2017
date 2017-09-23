@@ -18,11 +18,13 @@ CMakeFiles/binario.dir/src_folder/Controlador_motor.o: ../src_folder/ev3dev.h
 CMakeFiles/binario.dir/src_folder/Controlador_robo.o: ../src_folder/Controlador_robo.cpp
 CMakeFiles/binario.dir/src_folder/Controlador_robo.o: ../src_folder/Controlador_robo.h
 CMakeFiles/binario.dir/src_folder/Controlador_robo.o: ../src_folder/M_arquivos.h
+CMakeFiles/binario.dir/src_folder/Controlador_robo.o: ../src_folder/Sensor_cor.h
 CMakeFiles/binario.dir/src_folder/Controlador_robo.o: ../src_folder/ev3dev.h
 
 CMakeFiles/binario.dir/src_folder/M_arquivos.o: ../src_folder/M_arquivos.cpp
 CMakeFiles/binario.dir/src_folder/M_arquivos.o: ../src_folder/M_arquivos.h
 
+CMakeFiles/binario.dir/src_folder/Sensor_cor.o: ../src_folder/M_arquivos.h
 CMakeFiles/binario.dir/src_folder/Sensor_cor.o: ../src_folder/Sensor_cor.cpp
 CMakeFiles/binario.dir/src_folder/Sensor_cor.o: ../src_folder/Sensor_cor.h
 CMakeFiles/binario.dir/src_folder/Sensor_cor.o: ../src_folder/ev3dev.h
