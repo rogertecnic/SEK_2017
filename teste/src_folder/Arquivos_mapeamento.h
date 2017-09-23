@@ -14,7 +14,7 @@ public:
 	Arquivos_mapeamento(string nome)
 	: nome_arquivo (nome){}
 
-	void arq_intersec(int, int, int);
+	void arquivo_map(status_checkpoint);
 
 private:
 	ofstream outfile;
