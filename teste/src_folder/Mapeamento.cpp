@@ -1,8 +1,6 @@
 #include "Mapeamento.h"
 
 void Mapeamento::mapeamento(Controlador_robo *robo, Sensor_cor *sensor){
-	arquivo = new Arquivos_mapeamento("mapeamento.txt");
-
 	robo->andar(30);
 	status_atual = status::em_frente;
 	sentido_navegacao = 1;
@@ -32,7 +30,7 @@ void Mapeamento::mapeamento(Controlador_robo *robo, Sensor_cor *sensor){
 
 				if(!mapeamento_intersec(robo, sensor)){
 					finalizar_threads_ultra();
-					arquivo->arquivo_map(cp);
+					arq_map->arquivo_map(cp, no);
 
 					break;
 				}

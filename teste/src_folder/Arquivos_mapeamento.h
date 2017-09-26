@@ -8,18 +8,10 @@ using namespace std;
 
 class Arquivos_mapeamento {
 public:
-	Arquivos_mapeamento ()
-	: nome_arquivo (""){}
-
-	Arquivos_mapeamento(string nome)
-	: nome_arquivo (nome){}
-
-	void arquivo_map(status_checkpoint);
+	void arquivo_map(status_checkpoint, list<no_intersec>);
 
 private:
 	ofstream outfile;
-	string nome_arquivo;
-
 };
 
 

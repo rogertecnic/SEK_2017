@@ -55,7 +55,7 @@ private:
 	bool map_boneco_inicio = false;
 
 	/*Arquivo para salvar as informações de mapeamento*/
-	Arquivos_mapeamento *arquivo;
+	Arquivos_mapeamento *arq_map;
 
 
 	/* == 1 se estiver indo do ponto de start para a rampa
