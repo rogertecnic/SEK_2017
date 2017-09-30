@@ -1,6 +1,7 @@
 /*
  * Sensorcor.cpp
- *
+ * nao eh necessario calibrar, tudo que estou usando esta somente nos
+ * metodos ler_cor
  *  Created on: 29 de ago de 2017
  *      Author: pcsek
  */
@@ -23,26 +24,53 @@ Sensor_cor::Sensor_cor(string sensor_port_E, string sensor_port_D)
 Cor Sensor_cor::ler_cor_E(){
 	std::tuple<int, int, int> sample;
 	sample = sensor_E.raw();
-	if(corEstaEntre(sample, limites_Fora_E)) return Cor::fora; // 6
-	else if(corEstaEntre(sample, limites_Preto_E)) return Cor::preto; // 1
-	else if(corEstaEntre(sample, limites_Branco_E)) return Cor::branco; // 2
-	else if(corEstaEntre(sample, limites_Vermelho_E)) return Cor::vermelho; // 3
-	else if(corEstaEntre(sample, limites_Verde_E)) return Cor::verde; // 4
-	else if(corEstaEntre(sample, limites_Azul_E)) return Cor::azul; // 5
-	else return Cor::nda; //0
+	if(get<0>(sample)>30 || get<1>(sample)>30 || get<2>(sample)>13){
+		if(get<0>(sample)>90 &&  get<1>(sample)<55 && get<2>(sample) <45) return Cor::vermelho;
+		else if(get<0>(sample)<40 &&  get<1>(sample)>60 && get<2>(sample)<40) return Cor::verde;
+		else if(get<0>(sample) < get<1>(sample) && get<0>(sample) < get<2>(sample)) return Cor::azul;
+		else if(get<0>(sample)>170 &&  get<1>(sample)>170 && get<2>(sample)<120) return Cor::branco;
+		else return Cor::nda;
+	}
+	else{
+		if(get<0>(sample) > 16 || get<1>(sample) > 16 || get<2>(sample) > 16) return Cor::preto;
+		else return Cor::fora;
+	}
+
+
+
+	//	if(corEstaEntre(sample, limites_Fora_E)) return Cor::fora; // 6
+	//	else if(corEstaEntre(sample, limites_Preto_E)) return Cor::preto; // 1
+	//	else if(corEstaEntre(sample, limites_Branco_E)) return Cor::branco; // 2
+	//	else if(corEstaEntre(sample, limites_Vermelho_E)) return Cor::vermelho; // 3
+	//	else if(corEstaEntre(sample, limites_Verde_E)) return Cor::verde; // 4
+	//	else if(corEstaEntre(sample, limites_Azul_E)) return Cor::azul; // 5
+	//	else return Cor::nda; //0
 }
 
 
 Cor Sensor_cor::ler_cor_D(){
 	std::tuple<int, int, int> sample;
 	sample = sensor_D.raw();
-	if(corEstaEntre(sample, limites_Fora_D)) return Cor::fora; // 6
-	else if(corEstaEntre(sample, limites_Preto_D)) return Cor::preto; // 1
-	else if(corEstaEntre(sample, limites_Branco_D)) return Cor::branco; // 2
-	else if(corEstaEntre(sample, limites_Vermelho_D)) return Cor::vermelho; // 3
-	else if(corEstaEntre(sample, limites_Verde_D)) return Cor::verde; // 4
-	else if(corEstaEntre(sample, limites_Azul_D)) return Cor::azul; // 5
-	else return Cor::nda; //0
+	if(get<0>(sample)>40 || get<1>(sample)>40 || get<2>(sample)>40){
+		if(get<0>(sample)>130 &&  get<1>(sample)<70 && get<2>(sample) <70) return Cor::vermelho;
+		else if(get<0>(sample)<70 &&  get<1>(sample)>80 && get<2>(sample)<70) return Cor::verde;
+		else if(get<0>(sample) < get<1>(sample) && get<0>(sample) < get<2>(sample)) return Cor::azul;
+		else if(get<0>(sample)>200 &&  get<1>(sample)>250 && get<2>(sample)<240) return Cor::branco;
+		else return Cor::nda;
+	}
+	else{
+		if(get<0>(sample) > 22 || get<1>(sample) > 22 || get<2>(sample) > 22) return Cor::preto;
+		else return Cor::fora;
+	}
+
+
+	//	if(corEstaEntre(sample, limites_Fora_D)) return Cor::fora; // 6
+	//	else if(corEstaEntre(sample, limites_Preto_D)) return Cor::preto; // 1
+	//	else if(corEstaEntre(sample, limites_Branco_D)) return Cor::branco; // 2
+	//	else if(corEstaEntre(sample, limites_Vermelho_D)) return Cor::vermelho; // 3
+	//	else if(corEstaEntre(sample, limites_Verde_D)) return Cor::verde; // 4
+	//	else if(corEstaEntre(sample, limites_Azul_D)) return Cor::azul; // 5
+	//	else return Cor::nda; //0
 }
 
 

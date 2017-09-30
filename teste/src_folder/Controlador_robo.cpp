@@ -58,10 +58,12 @@ void Controlador_robo::girar(int angulo_robo_graus){
 void Controlador_robo::alinhar_para_traz(Sensor_cor *cor){
 	int cor_E;
 	int cor_D;
+	int v = -15;
 	do{
-		andar(-20, 0.01);
+		andar(v, 0.01);
 		cor_E = cor->ler_cor_E();
 		cor_D = cor->ler_cor_D();
+		v = v*(-1);
 	}while(cor_E == Cor::nda || cor_D == Cor::nda);
 	cout<<"alinhando:"<<cor_E<<";"<<cor_D<<endl;
 	motorD->set_duty_cycle_sp(25);
@@ -88,6 +90,7 @@ void Controlador_robo::alinhar_para_traz(Sensor_cor *cor){
 			}
 		}
 	}
+	usleep(1000*300);
 }
 
 
