@@ -3,11 +3,8 @@
 #include <iostream>
 #include <list>
 #include <vector>
-#include <string>
-#include "ev3dev.h"
 #include "Controlador_robo.h"
 #include "Sensor_cor.h"
-#include "Ultra_Som.h"
 #include "Arquivos_mapeamento.h"
 #include "Ultrassom_nxt.h"
 
