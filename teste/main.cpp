@@ -127,6 +127,7 @@ void teste_luana_alinhamento(){
 					robot.andar(-40);
 					usleep(1000*2000);
 					robot.girar(-10);
+					//TODO AQUI ESTÁ DANDO PROBLEMA
 					while(robot.get_estado() == flag_aceleracao::girar);
 					robot.andar(70);
 				}
@@ -137,6 +138,7 @@ void teste_luana_alinhamento(){
 					robot.andar(-40);
 					usleep(1000*2000);
 					robot.girar(10);
+					//TODO AQUI ESTÁ DANDO PROBLEMA
 					while(robot.get_estado() == flag_aceleracao::girar);
 					robot.andar(70);
 				}
