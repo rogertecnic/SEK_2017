@@ -63,13 +63,11 @@ void teste_luana_alinhamento(){
 				count_nda = 0;
 				if(cor.ler_cor_E() == Cor::branco && cor.ler_cor_D() == Cor::branco)
 					estd = estados::faixa;
-				/*
-				else if (cor.ler_cor_E() == Cor::fora || cor.ler_cor_D == Cor::fora)
-					estd = estados::fora;
-				else if( (cor.ler_cor_E() != Cor::branco && cor.ler_cor_E() != nda && cor.ler_cor_E() != fora) &&
-						(cor.ler_cor_D() != Cor::branco && cor.ler_cor_D() != nda && cor.ler_cor_D() != fora) )
+				else if (cor.ler_cor_E() == Cor::fora || cor.ler_cor_D() == Cor::fora)
+					estd = estados::leu_fora;
+				else if( (colorido(cor, "esquerdo")) && (colorido(cor, "direito")) )
 					estd = estados::intersec;
-				 */
+
 			}
 
 			if(count_nda >= 10){
@@ -106,8 +104,7 @@ void teste_luana_alinhamento(){
 				robot.andar(70);
 			}
 
-			if(cor.ler_cor_E() != Cor::fora && cor.ler_cor_D() != Cor::fora)
-				estd = estados::faixa;
+			estd = estados::faixa;
 
 			break;
 
