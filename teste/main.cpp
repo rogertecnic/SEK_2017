@@ -339,7 +339,6 @@ int main(){
 	system("setfont Greek-TerminusBold20x10.psf.gz");
 	teste_luana_alinhamento();
 
-
 	cout << "Teste finalizado. Bye!" << endl;
 	usleep (1000000);
 	return 0;

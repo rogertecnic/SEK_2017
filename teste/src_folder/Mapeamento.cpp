@@ -8,7 +8,7 @@ void Mapeamento::mapeamento(Controlador_robo *robo, Sensor_cor *sensor){
 	while(true){
 
 		if(delay > 10){
-			//TODO
+			//TODO funcao mapeamento: se delay > 10
 		}
 
 
@@ -16,11 +16,11 @@ void Mapeamento::mapeamento(Controlador_robo *robo, Sensor_cor *sensor){
 			continue;
 
 		else if(sensor->ler_cor_D() == Cor::fora || sensor->ler_cor_E() == Cor::fora){
-			//TODO
+			//TODO funcao mapeamento: se ler_cor_D ou E identificar fora
 		}
 
 		else if(sensor->ler_cor_D() == Cor::nda || sensor->ler_cor_E() == Cor::nda){
-			//TODO
+			//TODO funcao mapeamento: se ler_cor_D ou E identificar nda
 		}
 
 		else{
@@ -44,7 +44,7 @@ void Mapeamento::mapeamento(Controlador_robo *robo, Sensor_cor *sensor){
 bool Mapeamento::mapeamento_intersec(Controlador_robo *robo, Sensor_cor *sensor) {
 
 	/*Fim da cidade*/
-	//TODO
+	//TODO detectar fim da cidade, muito facil dar merda, (melhorar logica, testar)
 	if(sensor->ler_cor_D() == Cor::vermelho && sensor->ler_cor_E() == Cor::vermelho) {
 		usleep(delay_f*100000);
 		if(sensor->ler_cor_D() == Cor::azul && sensor->ler_cor_E() == Cor::azul){
@@ -61,7 +61,7 @@ bool Mapeamento::mapeamento_intersec(Controlador_robo *robo, Sensor_cor *sensor)
 
 	/*Primeira intersecção*/
 	if(cor_atual == checkpoint::nda){
-		cor_atual = sensor->ler_cor_D();
+		cor_atual = sensor->ler_cor_D(); //TODO ATENCAO: se o sensor cor ler errado aqui, da merda
 		map_boneco_inicio = true;
 		inicializar_threads_ultra();
 	}
@@ -73,9 +73,9 @@ bool Mapeamento::mapeamento_intersec(Controlador_robo *robo, Sensor_cor *sensor)
 
 		/*Dead-end*/
 		if(sensor->ler_cor_D() == Cor::preto && sensor->ler_cor_E() == Cor::preto){
-			robo->andar(-30);
+			robo->andar(-30); //TODO voltando do deadend eh necessario alinhar?
 
-			//Andar até chegar na última intersecção e mudar status_atual
+			//voltar para a intersecção e mudar status_atual
 			while(true){
 				if(sensor->ler_cor_D() == cor_atual && sensor->ler_cor_E() == cor_atual){
 					usleep(0.2*1000000);
@@ -86,7 +86,7 @@ bool Mapeamento::mapeamento_intersec(Controlador_robo *robo, Sensor_cor *sensor)
 					}
 					else if(status_atual == status::direita){
 						status_atual = status::esquerda;
-						virar_esquerda(sentido_navegacao);
+						virar_esquerda(sentido_navegacao); //TODO lembre-se que aqui ele tem que virar 180 graus
 						break;
 					}
 				}
