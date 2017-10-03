@@ -1,8 +1,6 @@
 #ifndef MAPEAMENTO_H_
 #define MAPEAMENTO_H_
-#include <iostream>
-#include <list>
-#include <vector>
+
 #include "Controlador_robo.h"
 #include "Sensor_cor.h"
 #include "Arquivos_mapeamento.h"
@@ -17,22 +15,7 @@
 
 using namespace std;
 
-enum status{nda1, em_frente, direita, esquerda};
 
-typedef struct status_checkpoint {
-	status checkpoint_vermelho = status::nda1;
-	status checkpoint_verde = status::nda1;
-	status checkpoint_azul = status::nda1;
-
-}status_checkpoint;
-
-typedef struct no_intersec {
-	bool pre, pos;
-	vector<double> posicao_pre_d;
-	vector<double> posicao_pos_d;
-	vector<double> posicao_pre_e;
-	vector<double> posicao_pos_e;
-}no_intersec;
 
 
 class Mapeamento {
@@ -41,6 +24,7 @@ public:
 	bool mapeamento_intersec(Controlador_robo *, Sensor_cor *);
 	void caminho_certo(Controlador_robo *, Sensor_cor *);
 	void ajeita_quadrado(Controlador_robo *);
+	bool fim_da_cidade(Controlador_robo *, Sensor_cor *);
 
 	bool inicializar_threads_ultra();
 	bool finalizar_threads_ultra();
@@ -60,14 +44,8 @@ private:
 	 */
 	int sentido_navegacao = 0;
 
-
-	/*	Checkpoint faz o controle de qual cor estamos avaliando no momento
-	 * Status indica a direção que determinada cor da intersecção indica
-	 */
-	enum checkpoint{nda, vermelho, verde, azul};
-
 	/*Flags mapeamento intersecção*/
-	checkpoint cor_atual = checkpoint::nda;
+	checkpoint cor_atual = checkpoint::nada;
 	status status_atual = status::nda1;
 
 	/*Status de cada intersecção*/
@@ -94,9 +72,8 @@ private:
 	list<no_intersec>::iterator it_no_atual = no.begin();
 	list<no_intersec>::iterator it_no_anterior = no.begin();
 
+	/*Controlador de posição do vector em loop_mapeamento_boneco*/
 	unsigned j;
-
-
 
 	bool interseccao;
 	bool leu_boneco= false;

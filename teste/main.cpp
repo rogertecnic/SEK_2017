@@ -65,7 +65,7 @@ void teste_luana_alinhamento(){
 					estd = estados::faixa;
 				else if (cor.ler_cor_E() == Cor::fora || cor.ler_cor_D() == Cor::fora)
 					estd = estados::leu_fora;
-				else if( (colorido(cor, "esquerdo")) && (colorido(cor, "direito")) )
+				else if( (colorido(cor, "esquerdo")) || (colorido(cor, "direito")) )
 					estd = estados::intersec;
 
 			}

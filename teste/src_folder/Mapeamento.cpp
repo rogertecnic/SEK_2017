@@ -44,24 +44,15 @@ void Mapeamento::mapeamento(Controlador_robo *robo, Sensor_cor *sensor){
 bool Mapeamento::mapeamento_intersec(Controlador_robo *robo, Sensor_cor *sensor) {
 
 	/*Fim da cidade*/
-	//TODO detectar fim da cidade, muito facil dar merda, (melhorar logica, testar)
-	if(sensor->ler_cor_D() == Cor::vermelho && sensor->ler_cor_E() == Cor::vermelho) {
-		usleep(delay_f*100000);
-		if(sensor->ler_cor_D() == Cor::azul && sensor->ler_cor_E() == Cor::azul){
-			usleep(delay_f*100000);
-			if(sensor->ler_cor_D() == Cor::verde && sensor->ler_cor_E() == Cor::verde){
-				usleep(delay_f*100000);
-				if(sensor->ler_cor_D() == Cor::branco && sensor->ler_cor_E() == Cor::branco){
-					sentido_navegacao = -1;
-					return false;
-				}
-			}
-		}
+	if(fim_da_cidade(robo, sensor)) {
+		sentido_navegacao = -1;
+		return false;
 	}
 
 	/*Primeira intersecção*/
-	if(cor_atual == checkpoint::nda){
-		cor_atual = sensor->ler_cor_D(); //TODO ATENCAO: se o sensor cor ler errado aqui, da merda
+	if(cor_atual == checkpoint::nada){
+		if(sensor->ler_cor_D() == sensor->ler_cor_E())
+			cor_atual = sensor->ler_cor_D();
 		map_boneco_inicio = true;
 		inicializar_threads_ultra();
 	}
@@ -73,7 +64,7 @@ bool Mapeamento::mapeamento_intersec(Controlador_robo *robo, Sensor_cor *sensor)
 
 		/*Dead-end*/
 		if(sensor->ler_cor_D() == Cor::preto && sensor->ler_cor_E() == Cor::preto){
-			robo->andar(-30); //TODO voltando do deadend eh necessario alinhar?
+			robo->andar(-30); //TODO voltando do deadend eh necessario alinhar? SIM
 
 			//voltar para a intersecção e mudar status_atual
 			while(true){
@@ -86,7 +77,8 @@ bool Mapeamento::mapeamento_intersec(Controlador_robo *robo, Sensor_cor *sensor)
 					}
 					else if(status_atual == status::direita){
 						status_atual = status::esquerda;
-						virar_esquerda(sentido_navegacao); //TODO lembre-se que aqui ele tem que virar 180 graus
+						virar_esquerda(sentido_navegacao);
+						virar_esquerda(sentido_navegacao);
 						break;
 					}
 				}
@@ -139,7 +131,7 @@ bool Mapeamento::mapeamento_intersec(Controlador_robo *robo, Sensor_cor *sensor)
 }
 
 
-void Mapeamento::caminho_certo (Controlador_robo *robo,Sensor_cor *sensor){
+void Mapeamento::caminho_certo (Controlador_robo *robo, Sensor_cor *sensor){
 
 	if (sensor->ler_cor_E() == Cor::vermelho && sensor->ler_cor_D() == Cor::vermelho){
 		ajeita_quadrado(robo);
@@ -171,11 +163,16 @@ void Mapeamento::caminho_certo (Controlador_robo *robo,Sensor_cor *sensor){
 
 
 void Mapeamento::ajeita_quadrado(Controlador_robo *robo){
+	//TODO
 	posicao_inicial = robo->get_distancia();
 	while(robo->get_distancia() < posicao_inicial+0.19);
 	robo->parar();
 }
 
+bool Mapeamento::fim_da_cidade(Controlador_robo *robo, Sensor_cor *sensor){
+	//TODO
+	return false;
+}
 
 
 bool Mapeamento::inicializar_threads_ultra(){
