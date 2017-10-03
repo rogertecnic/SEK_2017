@@ -16,8 +16,6 @@
 using namespace std;
 
 
-
-
 class Mapeamento {
 public:
 	void mapeamento(Controlador_robo *, Sensor_cor *);

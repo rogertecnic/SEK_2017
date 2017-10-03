@@ -26,6 +26,18 @@ bool colorido(Sensor_cor cor, string lado){
 	return false;
 }
 
+bool colorido(int cor, string lado){
+	if(lado == "esquerdo"){
+		if(cor != Cor::branco && cor != Cor::fora && cor != Cor::nda)
+			return true;
+	}
+	else {
+		if(cor != Cor::branco && cor != Cor::fora && cor != Cor::nda)
+			return true;
+	}
+	return false;
+}
+
 
 void teste_luana_alinhamento(){
 	Controlador_robo robot(true, "fodase.m");
@@ -115,7 +127,7 @@ void teste_luana_alinhamento(){
 			cor_E = cor.ler_cor_E();
 			cor_D = cor.ler_cor_D();
 
-			if( (colorido(cor, "esquerdo")) || (colorido(cor, "esquerdo"))) {
+			if( (colorido(cor_E, "esquerdo")) || (colorido(cor_D, "direito"))) {
 				cout<<"viu cor"<<endl;
 				posicao_inicial = robot.get_distancia();
 				while(robot.get_distancia() < posicao_inicial + 0.04);
@@ -127,7 +139,6 @@ void teste_luana_alinhamento(){
 					robot.andar(-40);
 					usleep(1000*2000);
 					robot.girar(-10);
-					//TODO AQUI ESTÁ DANDO PROBLEMA
 					while(robot.get_estado() == flag_aceleracao::girar);
 					robot.andar(70);
 				}
@@ -138,7 +149,6 @@ void teste_luana_alinhamento(){
 					robot.andar(-40);
 					usleep(1000*2000);
 					robot.girar(10);
-					//TODO AQUI ESTÁ DANDO PROBLEMA
 					while(robot.get_estado() == flag_aceleracao::girar);
 					robot.andar(70);
 				}
