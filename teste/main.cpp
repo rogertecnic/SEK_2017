@@ -206,7 +206,6 @@ void teste_rogerio_alinhamento(){
 
 		robot.andar(70);
 
-		/******************************************/
 		if(cor.ler_cor_E() == Cor::fora){
 			cout<<"saiu E"<<endl;
 			robot.parar();
@@ -227,46 +226,6 @@ void teste_rogerio_alinhamento(){
 			while(robot.get_estado() == flag_aceleracao::girar);
 			robot.andar(70);
 		}
-		/******************************************/
-
-		/******************************************
-		if((cor.ler_cor_E() == Cor::nda || cor.ler_cor_E() == Cor::fora) &&
-				(cor.ler_cor_D() != Cor::branco && cor.ler_cor_D() != Cor::nda && cor.ler_cor_D() != Cor::fora))
-		{
-			usleep(0.5*1000000);
-			if((cor.ler_cor_E() == Cor::nda || cor.ler_cor_E() == Cor::fora) &&
-					(cor.ler_cor_D() != Cor::branco && cor.ler_cor_D() != Cor::nda && cor.ler_cor_D() != Cor::fora))
-			{
-				cout << "Correção intersec" << endl;
-				robot.parar();
-				robot.andar(-40);
-				usleep(1000*1000);
-				robot.girar(-10);
-				while(robot.get_estado() == flag_aceleracao::girar);
-				robot.andar(70);
-			}
-		}
-
-		if((cor.ler_cor_D() == Cor::nda || cor.ler_cor_D() == Cor::fora)&&
-				(cor.ler_cor_E() != Cor::branco || cor.ler_cor_E() != Cor::nda || cor.ler_cor_E() != Cor::fora))
-		{
-
-			usleep(0.5*1000000);
-			if((cor.ler_cor_D() == Cor::nda || cor.ler_cor_D() == Cor::fora)&&
-					(cor.ler_cor_E() != Cor::branco || cor.ler_cor_E() != Cor::nda || cor.ler_cor_E() != Cor::fora))
-			{
-				cout << "Correção intersec" << endl;
-				robot.parar();
-				robot.andar(-40);
-				usleep(1000*1000);
-				robot.girar(10);
-				while(robot.get_estado() == flag_aceleracao::girar);
-				robot.andar(70);
-			}
-		}
-
-		/******************************************/
-
 
 		// alinhar usando o metodo da classe robo
 		int cor_E = cor.ler_cor_E();
