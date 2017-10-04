@@ -43,8 +43,8 @@ private:
 	int sentido_navegacao = 0;
 
 	/*Flags mapeamento intersecção*/
-	checkpoint cor_atual = checkpoint::nada;
-	status status_atual = status::nda1;
+	Cor cor_atual = Cor::ndCor;
+	status status_atual = status::ndStatus;
 
 	/*Status de cada intersecção*/
 	status_checkpoint cp;

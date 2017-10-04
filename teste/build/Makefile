@@ -191,6 +191,21 @@ src_folder/Sensor_cor.s:
 .PHONY : src_folder/Sensor_cor.s
 
 # target to build an object file
+src_folder/Sensor_cor_hsv.o:
+	$(MAKE) -f CMakeFiles/binario.dir/build.make CMakeFiles/binario.dir/src_folder/Sensor_cor_hsv.o
+.PHONY : src_folder/Sensor_cor_hsv.o
+
+# target to preprocess a source file
+src_folder/Sensor_cor_hsv.i:
+	$(MAKE) -f CMakeFiles/binario.dir/build.make CMakeFiles/binario.dir/src_folder/Sensor_cor_hsv.i
+.PHONY : src_folder/Sensor_cor_hsv.i
+
+# target to generate assembly for a file
+src_folder/Sensor_cor_hsv.s:
+	$(MAKE) -f CMakeFiles/binario.dir/build.make CMakeFiles/binario.dir/src_folder/Sensor_cor_hsv.s
+.PHONY : src_folder/Sensor_cor_hsv.s
+
+# target to build an object file
 src_folder/Ultrassom_nxt.o:
 	$(MAKE) -f CMakeFiles/binario.dir/build.make CMakeFiles/binario.dir/src_folder/Ultrassom_nxt.o
 .PHONY : src_folder/Ultrassom_nxt.o
@@ -244,6 +259,9 @@ help:
 	@echo "... src_folder/Sensor_cor.o"
 	@echo "... src_folder/Sensor_cor.i"
 	@echo "... src_folder/Sensor_cor.s"
+	@echo "... src_folder/Sensor_cor_hsv.o"
+	@echo "... src_folder/Sensor_cor_hsv.i"
+	@echo "... src_folder/Sensor_cor_hsv.s"
 	@echo "... src_folder/Ultrassom_nxt.o"
 	@echo "... src_folder/Ultrassom_nxt.i"
 	@echo "... src_folder/Ultrassom_nxt.s"

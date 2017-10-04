@@ -9,6 +9,7 @@ set(CMAKE_DEPENDS_CHECK_CXX
   "/src/src_folder/Controlador_robo.cpp" "/src/build/CMakeFiles/binario.dir/src_folder/Controlador_robo.o"
   "/src/src_folder/M_arquivos.cpp" "/src/build/CMakeFiles/binario.dir/src_folder/M_arquivos.o"
   "/src/src_folder/Sensor_cor.cpp" "/src/build/CMakeFiles/binario.dir/src_folder/Sensor_cor.o"
+  "/src/src_folder/Sensor_cor_hsv.cpp" "/src/build/CMakeFiles/binario.dir/src_folder/Sensor_cor_hsv.o"
   "/src/src_folder/Ultrassom_nxt.cpp" "/src/build/CMakeFiles/binario.dir/src_folder/Ultrassom_nxt.o"
   "/src/src_folder/ev3dev.cpp" "/src/build/CMakeFiles/binario.dir/src_folder/ev3dev.o"
   )

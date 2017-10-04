@@ -19,7 +19,7 @@ void Mapeamento::mapeamento(Controlador_robo *robo, Sensor_cor *sensor){
 			//TODO funcao mapeamento: se ler_cor_D ou E identificar fora
 		}
 
-		else if(sensor->ler_cor_D() == Cor::nda || sensor->ler_cor_E() == Cor::nda){
+		else if(sensor->ler_cor_D() == Cor::ndCor || sensor->ler_cor_E() == Cor::ndCor){
 			//TODO funcao mapeamento: se ler_cor_D ou E identificar nda
 		}
 
@@ -50,7 +50,7 @@ bool Mapeamento::mapeamento_intersec(Controlador_robo *robo, Sensor_cor *sensor)
 	}
 
 	/*Primeira intersecção*/
-	if(cor_atual == checkpoint::nada){
+	if(cor_atual == Cor::ndCor){
 		if(sensor->ler_cor_D() == sensor->ler_cor_E())
 			cor_atual = sensor->ler_cor_D();
 		map_boneco_inicio = true;
@@ -64,7 +64,7 @@ bool Mapeamento::mapeamento_intersec(Controlador_robo *robo, Sensor_cor *sensor)
 
 		/*Dead-end*/
 		if(sensor->ler_cor_D() == Cor::preto && sensor->ler_cor_E() == Cor::preto){
-			robo->andar(-30); //TODO voltando do deadend eh necessario alinhar? SIM
+			robo->andar(-30); //TODO voltando do deadend tem que alinhar
 
 			//voltar para a intersecção e mudar status_atual
 			while(true){
@@ -95,11 +95,11 @@ bool Mapeamento::mapeamento_intersec(Controlador_robo *robo, Sensor_cor *sensor)
 			 */
 			if (sensor->ler_cor_D() == sensor->ler_cor_E() && sensor->ler_cor_D() == cor_atual){
 				if (!confirmacao_status){
-					if(cor_atual == checkpoint::vermelho)
+					if(cor_atual == Cor::vermelho)
 						cp.checkpoint_vermelho = status_atual;
-					else if(cor_atual == checkpoint::verde)
+					else if(cor_atual == Cor::verde)
 						cp.checkpoint_verde = status_atual;
-					else if (cor_atual == checkpoint::azul)
+					else if (cor_atual == Cor::azul)
 						cp.checkpoint_azul = status_atual;
 
 					confirmacao_status = true;
@@ -110,11 +110,11 @@ bool Mapeamento::mapeamento_intersec(Controlador_robo *robo, Sensor_cor *sensor)
 
 
 			if (sensor->ler_cor_D() == sensor->ler_cor_E()){
-				if(cor_atual == checkpoint::vermelho)
+				if(cor_atual == Cor::vermelho)
 					cp.checkpoint_vermelho = status_atual;
-				else if(cor_atual == checkpoint::verde)
+				else if(cor_atual == Cor::verde)
 					cp.checkpoint_verde = status_atual;
-				else if (cor_atual == checkpoint::azul)
+				else if (cor_atual == Cor::azul)
 					cp.checkpoint_azul = status_atual;
 
 
@@ -163,14 +163,14 @@ void Mapeamento::caminho_certo (Controlador_robo *robo, Sensor_cor *sensor){
 
 
 void Mapeamento::ajeita_quadrado(Controlador_robo *robo){
-	//TODO
+	//TODO ajeita_quadrado: o que tem que fazer aqui luana?
 	posicao_inicial = robo->get_distancia();
 	while(robo->get_distancia() < posicao_inicial+0.19);
 	robo->parar();
 }
 
 bool Mapeamento::fim_da_cidade(Controlador_robo *robo, Sensor_cor *sensor){
-	//TODO
+	//TODO fim da cidade: tem que fazer do inicio
 	return false;
 }
 

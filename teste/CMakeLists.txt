@@ -20,6 +20,7 @@ set(LIBS src_folder/ev3dev.cpp)
 list(APPEND LIBS  src_folder/Controlador_motor.cpp)
 list(APPEND LIBS  src_folder/M_arquivos.cpp)
 list(APPEND LIBS  src_folder/Sensor_cor.cpp)
+list(APPEND LIBS  src_folder/Sensor_cor_hsv.cpp)
 list(APPEND LIBS  src_folder/Ultrassom_nxt.cpp)
 list(APPEND LIBS  src_folder/Controlador_robo.cpp)
 

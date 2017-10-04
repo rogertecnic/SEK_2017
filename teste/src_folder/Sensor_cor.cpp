@@ -29,7 +29,7 @@ Cor Sensor_cor::ler_cor_E(){
 		else if(get<0>(sample)<40 &&  get<1>(sample)>60 && get<2>(sample)<40) return Cor::verde;
 		else if(get<0>(sample) < get<1>(sample) && get<0>(sample) < get<2>(sample)) return Cor::azul;
 		else if(get<0>(sample)>170 &&  get<1>(sample)>170 && get<2>(sample)<120) return Cor::branco;
-		else return Cor::nda;
+		else return Cor::ndCor;
 	}
 	else{
 		if(get<0>(sample) > 16 || get<1>(sample) > 16 || get<2>(sample) > 16) return Cor::preto;
@@ -56,7 +56,7 @@ Cor Sensor_cor::ler_cor_D(){
 		else if(get<0>(sample)<70 &&  get<1>(sample)>80 && get<2>(sample)<70) return Cor::verde;
 		else if(get<0>(sample) < get<1>(sample) && get<0>(sample) < get<2>(sample)) return Cor::azul;
 		else if(get<0>(sample)>200 &&  get<1>(sample)>250 && get<2>(sample)<240) return Cor::branco;
-		else return Cor::nda;
+		else return Cor::ndCor;
 	}
 	else{
 		if(get<0>(sample) > 22 || get<1>(sample) > 22 || get<2>(sample) > 22) return Cor::preto;

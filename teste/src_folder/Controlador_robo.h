@@ -5,9 +5,12 @@
 #include <chrono>
 #include <unistd.h>
 #include "ev3dev.h"
+#include <tuple>
 #include "M_arquivos.h"
 #include "Sensor_cor.h"
+#include "Sensor_cor_hsv.h"
 #include "Const.h"
+#include <vector>
 
 
 using namespace std;
@@ -31,6 +34,7 @@ public:
 	flag_aceleracao get_estado();
 	double get_distancia();
 	double get_velocidade();
+	void calibra_sensor_cor(Sensor_cor_hsv *sensor_cor);
 
 
 private:

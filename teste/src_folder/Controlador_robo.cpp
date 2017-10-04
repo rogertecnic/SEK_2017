@@ -65,7 +65,7 @@ void Controlador_robo::alinhar_para_traz(Sensor_cor *cor){
 		cor_E = cor->ler_cor_E();
 		cor_D = cor->ler_cor_D();
 		v = v*(-1);
-	}while(cor_E == Cor::nda || cor_D == Cor::nda);
+	}while(cor_E == Cor::ndCor || cor_D == Cor::ndCor);
 
 	cout<<"alinhando:"<<cor_E<<";"<<cor_D<<endl;
 	motorD->set_duty_cycle_sp(25);
@@ -144,7 +144,7 @@ void Controlador_robo::loop_controle_aceleracao(){
 
 
 		switch(estado){
-		case flag_aceleracao::nd :
+		case flag_aceleracao::ndAcel :
 			usleep(1000*50);
 			break;
 
@@ -215,7 +215,7 @@ void Controlador_robo::loop_controle_aceleracao(){
 			motorD->stop();
 			usleep(1000*300);
 			if(estado == flag_aceleracao::girar) // se o giro terminar a thread fica ociosa
-				estado = flag_aceleracao::nd; // se for interrompida, vai para a proxima acao
+				estado = flag_aceleracao::ndAcel; // se for interrompida, vai para a proxima acao
 			motorE->reset();
 			motorD->reset();
 			motorE->set_stop_action("hold");
@@ -229,7 +229,7 @@ void Controlador_robo::loop_controle_aceleracao(){
 			pwm_retardada = 0.0;
 			pwm = 0;
 			erro = 0;
-			estado = flag_aceleracao::nd;
+			estado = flag_aceleracao::ndAcel;
 			break;
 		}
 	}
@@ -240,4 +240,86 @@ void Controlador_robo::loop_controle_aceleracao(){
 		arquivo->string_arq("plot(t,x4);");
 		arquivo_aberto = false;
 	}
+}
+
+void Controlador_robo::calibra_sensor_cor(Sensor_cor_hsv *sensor_cor) {
+	// referencia dos sensores de cor
+	ev3dev::color_sensor *sensor_E = sensor_cor->get_sensor_E();
+	ev3dev::color_sensor *sensor_D = sensor_cor->get_sensor_D();
+	tuple<int,int,int> sample_E, sample_D; // amostra dos sensores
+
+	/*valores de maximo para o branco e minimo para o preto
+	 */
+	double max_rgb_E[3] = {0,0,0},
+			max_rgb_D[3] = {0,0,0},
+			min_rgb_E[3] = {500,500,500},
+			min_rgb_D[3] = {500,500,500};
+
+
+	// calcula os valores maximos no branco enquanto o robo anda
+	cout << "calibra branco andando" << endl;
+	motorE->set_speed_sp(-200);
+	motorD->set_speed_sp(-200);
+	while(!ev3dev::button::enter.process());
+	usleep(0.3*1000000);
+	ev3dev::button::enter.process();
+	motorE->run_forever();
+	motorD->run_forever();
+	while(!ev3dev::button::enter.process()){
+		sample_E = sensor_E->raw();
+		sample_D = sensor_D->raw();
+		if(max_rgb_E[0] < get<0>(sample_E)) max_rgb_E[0] = get<0>(sample_E);// essa buceta nao funciona dentro de um for
+		if(max_rgb_D[0] < get<0>(sample_D)) max_rgb_D[0] = get<0>(sample_D);
+		if(max_rgb_E[1] < get<1>(sample_E)) max_rgb_E[1] = get<1>(sample_E);
+		if(max_rgb_D[1] < get<1>(sample_D)) max_rgb_D[1] = get<1>(sample_D);
+		if(max_rgb_E[2] < get<2>(sample_E)) max_rgb_E[2] = get<2>(sample_E);
+		if(max_rgb_D[2] < get<2>(sample_D)) max_rgb_D[2] = get<2>(sample_D);
+	}
+	motorE->stop();
+	motorD->stop();
+	cout << endl << endl
+			<< "valores max:"<< endl
+			<< max_rgb_E[0] << ";" << max_rgb_E[1] << ";" << max_rgb_E[2] << ";" << endl
+			<< max_rgb_D[0] << ";" << max_rgb_D[1] << ";" << max_rgb_D[2] << ";" << endl;
+	usleep(0.3*1000000);
+	ev3dev::button::enter.process();
+
+
+	// calibra os valores minimos no preto enquanto o robo anda
+	cout << "calibra preto andando" << endl;
+	while(!ev3dev::button::enter.process());
+	usleep(0.3*1000000);
+	ev3dev::button::enter.process();
+	motorE->run_forever();
+	motorD->run_forever();
+	while(!ev3dev::button::enter.process()){
+		sample_E = sensor_E->raw();
+		sample_D = sensor_D->raw();
+		if(min_rgb_E[0] > get<0>(sample_E)) min_rgb_E[0] = get<0>(sample_E);// essa buceta nao funciona dentro de um for
+		if(min_rgb_D[0] > get<0>(sample_D)) min_rgb_D[0] = get<0>(sample_D);
+		if(min_rgb_E[1] > get<1>(sample_E)) min_rgb_E[1] = get<1>(sample_E);
+		if(min_rgb_D[1] > get<1>(sample_D)) min_rgb_D[1] = get<1>(sample_D);
+		if(min_rgb_E[2] > get<2>(sample_E)) min_rgb_E[2] = get<2>(sample_E);
+		if(min_rgb_D[2] > get<2>(sample_D)) min_rgb_D[2] = get<2>(sample_D);
+	}
+	motorE->stop();
+	motorD->stop();
+	cout << endl << endl
+			<< "valores min:"<< endl
+			<< min_rgb_E[0] << ";" << min_rgb_E[1] << ";" << min_rgb_E[2] << ";" << endl
+			<< min_rgb_D[0] << ";" << min_rgb_D[1] << ";" << min_rgb_D[2] << ";" << endl;
+	usleep(0.3*1000000);
+	ev3dev::button::enter.process();
+
+	motorE->reset();
+	motorD->reset();
+	motorE->set_stop_action("hold");
+	motorD->set_stop_action("hold");
+
+	for(int i = 0; i < 3 ; i++){
+		max_rgb_E[i] = 255/(max_rgb_E[i] - min_rgb_E[i]);
+		max_rgb_D[i] = 255/(max_rgb_D[i] - min_rgb_D[i]);
+	}
+
+	sensor_cor->set_fator_escalimetro_rgb(max_rgb_E, max_rgb_D);
 }

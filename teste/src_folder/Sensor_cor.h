@@ -11,10 +11,9 @@
 #include <tuple>
 #include "ev3dev.h"
 #include <unistd.h>
+#include "Const.h"
 
 using namespace std;
-
-enum Cor{nda, preto, branco, vermelho, verde, azul, fora}; // cores possiveis
 
 struct LimitesCor{
 	int r[3] = {0,0,0},g[3] = {0,0,0}, b[3] = {0,0,0};
