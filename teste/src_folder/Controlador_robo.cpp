@@ -243,6 +243,7 @@ void Controlador_robo::loop_controle_aceleracao(){
 }
 
 void Controlador_robo::calibra_sensor_cor(Sensor_cor_hsv *sensor_cor) {
+	bool usar_minimo = false; // usar o minimo pra calcular o fator?
 	// referencia dos sensores de cor
 	ev3dev::color_sensor *sensor_E = sensor_cor->get_sensor_E();
 	ev3dev::color_sensor *sensor_D = sensor_cor->get_sensor_D();
@@ -252,8 +253,8 @@ void Controlador_robo::calibra_sensor_cor(Sensor_cor_hsv *sensor_cor) {
 	 */
 	double max_rgb_E[3] = {0,0,0},
 			max_rgb_D[3] = {0,0,0},
-			min_rgb_E[3] = {500,500,500},
-			min_rgb_D[3] = {500,500,500};
+			min_rgb_E[3] = {0,0,0},
+			min_rgb_D[3] = {0,0,0};
 
 
 	// calcula os valores maximos no branco enquanto o robo anda
@@ -286,30 +287,37 @@ void Controlador_robo::calibra_sensor_cor(Sensor_cor_hsv *sensor_cor) {
 
 
 	// calibra os valores minimos no preto enquanto o robo anda
-	cout << "calibra preto andando" << endl;
-	while(!ev3dev::button::enter.process());
-	usleep(0.3*1000000);
-	ev3dev::button::enter.process();
-	motorE->run_forever();
-	motorD->run_forever();
-	while(!ev3dev::button::enter.process()){
-		sample_E = sensor_E->raw();
-		sample_D = sensor_D->raw();
-		if(min_rgb_E[0] > get<0>(sample_E)) min_rgb_E[0] = get<0>(sample_E);// essa buceta nao funciona dentro de um for
-		if(min_rgb_D[0] > get<0>(sample_D)) min_rgb_D[0] = get<0>(sample_D);
-		if(min_rgb_E[1] > get<1>(sample_E)) min_rgb_E[1] = get<1>(sample_E);
-		if(min_rgb_D[1] > get<1>(sample_D)) min_rgb_D[1] = get<1>(sample_D);
-		if(min_rgb_E[2] > get<2>(sample_E)) min_rgb_E[2] = get<2>(sample_E);
-		if(min_rgb_D[2] > get<2>(sample_D)) min_rgb_D[2] = get<2>(sample_D);
+	if(usar_minimo){
+		for(int j = 0 ; j < 3 ; j++){
+			min_rgb_E[j] = 500;
+			min_rgb_D[j] = 500;
+		}
+		cout << "calibra preto andando" << endl;
+		while(!ev3dev::button::enter.process());
+		usleep(0.3*1000000);
+		ev3dev::button::enter.process();
+		motorE->run_forever();
+		motorD->run_forever();
+		while(!ev3dev::button::enter.process()){
+			sample_E = sensor_E->raw();
+			sample_D = sensor_D->raw();
+
+			if(min_rgb_E[0] > get<0>(sample_E)) min_rgb_E[0] = get<0>(sample_E);// essa buceta nao funciona dentro de um for
+			if(min_rgb_D[0] > get<0>(sample_D)) min_rgb_D[0] = get<0>(sample_D);
+			if(min_rgb_E[1] > get<1>(sample_E)) min_rgb_E[1] = get<1>(sample_E);
+			if(min_rgb_D[1] > get<1>(sample_D)) min_rgb_D[1] = get<1>(sample_D);
+			if(min_rgb_E[2] > get<2>(sample_E)) min_rgb_E[2] = get<2>(sample_E);
+			if(min_rgb_D[2] > get<2>(sample_D)) min_rgb_D[2] = get<2>(sample_D);
+		}
+		motorE->stop();
+		motorD->stop();
+		cout << endl << endl
+				<< "valores min:"<< endl
+				<< min_rgb_E[0] << ";" << min_rgb_E[1] << ";" << min_rgb_E[2] << ";" << endl
+				<< min_rgb_D[0] << ";" << min_rgb_D[1] << ";" << min_rgb_D[2] << ";" << endl;
+		usleep(0.3*1000000);
+		ev3dev::button::enter.process();
 	}
-	motorE->stop();
-	motorD->stop();
-	cout << endl << endl
-			<< "valores min:"<< endl
-			<< min_rgb_E[0] << ";" << min_rgb_E[1] << ";" << min_rgb_E[2] << ";" << endl
-			<< min_rgb_D[0] << ";" << min_rgb_D[1] << ";" << min_rgb_D[2] << ";" << endl;
-	usleep(0.3*1000000);
-	ev3dev::button::enter.process();
 
 	motorE->reset();
 	motorD->reset();
