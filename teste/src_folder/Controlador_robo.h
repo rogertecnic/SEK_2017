@@ -7,15 +7,13 @@
 #include "ev3dev.h"
 #include "M_arquivos.h"
 #include "Sensor_cor.h"
+#include "Const.h"
 
 
 using namespace std;
 
 
 typedef chrono::high_resolution_clock Time;
-
-
-enum flag_aceleracao{nd, linha_reta, parar, girar};
 
 
 class Controlador_robo {

@@ -8,9 +8,12 @@
 
 using namespace std;
 
-enum status{nda1, em_frente, direita, esquerda};
-enum checkpoint{nada, vermelho, verde, azul};
+enum status{nda1, em_frente, direita, esquerda};// usado na classe MApeamento
+enum checkpoint{nada, vermelho, verde, azul}; // usado na classe MApeamento
+enum flag_aceleracao{nd, linha_reta, parar, girar}; // usado dentro do Controlador_robo
 
+
+// usado na classe MApeamento
 typedef struct status_checkpoint {
 	status checkpoint_vermelho = status::nda1;
 	status checkpoint_verde = status::nda1;
