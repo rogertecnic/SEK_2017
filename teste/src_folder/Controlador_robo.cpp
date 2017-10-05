@@ -376,6 +376,7 @@ void Controlador_robo::calibra_sensor_cor(Sensor_cor_hsv *sensor_cor) {
 	valores_D[0] = 2; // minimo_V_Branco_D
 	valores_D[1] = 0; // maximo_V_Preto_D
 	valores_D[2] = 2; // minimo_V_Preto_D
+	//TODO multiplicar dodos os rgb pelo fator de escala
 	for(int i = 0 ; i < rgb_branco_E.size() ; i++){
 		hsv = sensor_cor->RGBtoHSV(rgb_branco_E[i]);
 		if(valores_E[0] > hsv.v) valores_E[0] = hsv.v;
