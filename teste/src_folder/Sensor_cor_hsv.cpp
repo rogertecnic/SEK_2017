@@ -44,9 +44,9 @@ Cor Sensor_cor_hsv::ler_cor_E() {
 			(double)hsv.h, (double)hsv.s, (double)hsv.v);
 
 	//TODO fazer condicao quando for preto branco ou fora esquerdo
-	if(hsv.h < limite_H_Vermelho_E[0] || hsv.h > limite_H_Vermelho_E[1]) return Cor::vermelho;
-	if(hsv.h > limite_H_Verde_E[0] && hsv.h < limite_H_Verde_E[1]) return Cor::verde;
-	if(hsv.h > limite_H_Azul_E[0] && hsv.h < limite_H_Azul_E[1]) return Cor::azul;
+	if(hsv.h < limites_H_Vermelho_E[0] || hsv.h > limites_H_Vermelho_E[1]) return Cor::vermelho;
+	if(hsv.h > limites_H_Verde_E[0] && hsv.h < limites_H_Verde_E[1]) return Cor::verde;
+	if(hsv.h > limites_H_Azul_E[0] && hsv.h < limites_H_Azul_E[1]) return Cor::azul;
 
 	return Cor::ndCor;
 }
@@ -70,24 +70,37 @@ Cor Sensor_cor_hsv::ler_cor_D() {
 			(double)hsv.h, (double)hsv.s, (double)hsv.v);
 
 	//TODO fazer condicao quando for preto branco ou fora direito
-	if(hsv.h < limite_H_Vermelho_D[0] || hsv.h > limite_H_Vermelho_D[1]) return Cor::vermelho;
-	if(hsv.h > limite_H_Verde_D[0] && hsv.h < limite_H_Verde_D[1]) return Cor::verde;
-	if(hsv.h > limite_H_Azul_D[0] && hsv.h < limite_H_Azul_D[1]) return Cor::azul;
+	if(hsv.h < limites_H_Vermelho_D[0] || hsv.h > limites_H_Vermelho_D[1]) return Cor::vermelho;
+	if(hsv.h > limites_H_Verde_D[0] && hsv.h < limites_H_Verde_D[1]) return Cor::verde;
+	if(hsv.h > limites_H_Azul_D[0] && hsv.h < limites_H_Azul_D[1]) return Cor::azul;
 
 	return Cor::ndCor;
 }
 
-void Sensor_cor_hsv::set_fator_escalimetro_rgb(double *fator_E, double *fator_D) {
-	fator_escalimetro_rgb_E[0] = fator_E[0];
-	fator_escalimetro_rgb_E[1] = fator_E[1];
-	fator_escalimetro_rgb_E[2] = fator_E[2];
+void Sensor_cor_hsv::set_fatores_rgb(double *valores_E, double *valores_D) {
+	fator_escalimetro_rgb_E[0] = valores_E[0];
+	fator_escalimetro_rgb_E[1] = valores_E[1];
+	fator_escalimetro_rgb_E[2] = valores_E[2];
 
-	fator_escalimetro_rgb_D[0] = fator_D[0];
-	fator_escalimetro_rgb_D[1] = fator_D[1];
-	fator_escalimetro_rgb_D[2] = fator_D[2];
+
+	fator_escalimetro_rgb_D[0] = valores_D[0];
+	fator_escalimetro_rgb_D[1] = valores_D[1];
+	fator_escalimetro_rgb_D[2] = valores_D[2];
+
+
 	if(debug)
 		cout << "fatores_r:" << endl
 		<< fator_escalimetro_rgb_E[0] << ";" << fator_escalimetro_rgb_D[0] << endl;
+}
+
+void Sensor_cor_hsv::set_maximos_minimos(double *maximos_E, double *maximos_D){
+	minimo_V_Branco_E  = maximos_E[0];
+	maximo_V_Preto_E  = maximos_E[1];
+	minimo_V_Preto_E = maximos_E[2];
+
+	minimo_V_Branco_D  = maximos_D[0];
+	maximo_V_Preto_D  = maximos_D[1];
+	minimo_V_Preto_D = maximos_D[2];
 }
 
 

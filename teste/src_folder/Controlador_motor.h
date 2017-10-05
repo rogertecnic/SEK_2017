@@ -6,6 +6,7 @@
 #include <math.h>
 #include "M_arquivos.h"
 #include "ev3dev.h"
+#include "vector"
 using namespace std;
 typedef std::chrono::high_resolution_clock Time;
 

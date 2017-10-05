@@ -255,6 +255,8 @@ void Controlador_robo::calibra_sensor_cor(Sensor_cor_hsv *sensor_cor) {
 			max_rgb_D[3] = {0,0,0},
 			min_rgb_E[3] = {0,0,0},
 			min_rgb_D[3] = {0,0,0};
+	vector<RGB> rgb_branco_E, rgb_branco_D, rgb_preto_E, rgb_preto_D;
+
 
 
 	// calcula os valores maximos no branco enquanto o robo anda
@@ -269,6 +271,17 @@ void Controlador_robo::calibra_sensor_cor(Sensor_cor_hsv *sensor_cor) {
 	while(!ev3dev::button::enter.process()){
 		sample_E = sensor_E->raw();
 		sample_D = sensor_D->raw();
+
+		RGB rgbe, rgbd;
+		rgbe.r = get<0>(sample_E);
+		rgbe.g = get<1>(sample_E);
+		rgbe.b = get<2>(sample_E);
+		rgb_branco_E.push_back(rgbe);
+		rgbd.r = get<0>(sample_D);
+		rgbd.g = get<1>(sample_D);
+		rgbd.b = get<2>(sample_D);
+		rgb_branco_D.push_back(rgbd);
+
 		if(max_rgb_E[0] < get<0>(sample_E)) max_rgb_E[0] = get<0>(sample_E);// essa buceta nao funciona dentro de um for
 		if(max_rgb_D[0] < get<0>(sample_D)) max_rgb_D[0] = get<0>(sample_D);
 		if(max_rgb_E[1] < get<1>(sample_E)) max_rgb_E[1] = get<1>(sample_E);
@@ -286,22 +299,35 @@ void Controlador_robo::calibra_sensor_cor(Sensor_cor_hsv *sensor_cor) {
 	ev3dev::button::enter.process();
 
 
+
 	// calibra os valores minimos no preto enquanto o robo anda
+	cout << "calibra preto andando" << endl;
 	if(usar_minimo){
 		for(int j = 0 ; j < 3 ; j++){
 			min_rgb_E[j] = 500;
 			min_rgb_D[j] = 500;
 		}
-		cout << "calibra preto andando" << endl;
-		while(!ev3dev::button::enter.process());
-		usleep(0.3*1000000);
-		ev3dev::button::enter.process();
-		motorE->run_forever();
-		motorD->run_forever();
-		while(!ev3dev::button::enter.process()){
-			sample_E = sensor_E->raw();
-			sample_D = sensor_D->raw();
+	}
+	while(!ev3dev::button::enter.process());
+	usleep(0.3*1000000);
+	ev3dev::button::enter.process();
+	motorE->run_forever();
+	motorD->run_forever();
+	while(!ev3dev::button::enter.process()){
+		sample_E = sensor_E->raw();
+		sample_D = sensor_D->raw();
 
+		RGB rgbe, rgbd;
+		rgbe.r = get<0>(sample_E);
+		rgbe.g = get<1>(sample_E);
+		rgbe.b = get<2>(sample_E);
+		rgb_preto_E.push_back(rgbe);
+		rgbd.r = get<0>(sample_D);
+		rgbd.g = get<1>(sample_D);
+		rgbd.b = get<2>(sample_D);
+		rgb_preto_D.push_back(rgbd);
+
+		if(usar_minimo){
 			if(min_rgb_E[0] > get<0>(sample_E)) min_rgb_E[0] = get<0>(sample_E);// essa buceta nao funciona dentro de um for
 			if(min_rgb_D[0] > get<0>(sample_D)) min_rgb_D[0] = get<0>(sample_D);
 			if(min_rgb_E[1] > get<1>(sample_E)) min_rgb_E[1] = get<1>(sample_E);
@@ -309,25 +335,69 @@ void Controlador_robo::calibra_sensor_cor(Sensor_cor_hsv *sensor_cor) {
 			if(min_rgb_E[2] > get<2>(sample_E)) min_rgb_E[2] = get<2>(sample_E);
 			if(min_rgb_D[2] > get<2>(sample_D)) min_rgb_D[2] = get<2>(sample_D);
 		}
-		motorE->stop();
-		motorD->stop();
-		cout << endl << endl
-				<< "valores min:"<< endl
-				<< min_rgb_E[0] << ";" << min_rgb_E[1] << ";" << min_rgb_E[2] << ";" << endl
-				<< min_rgb_D[0] << ";" << min_rgb_D[1] << ";" << min_rgb_D[2] << ";" << endl;
-		usleep(0.3*1000000);
-		ev3dev::button::enter.process();
 	}
+	motorE->stop();
+	motorD->stop();
+	cout << endl << endl
+			<< "valores min:"<< endl
+			<< min_rgb_E[0] << ";" << min_rgb_E[1] << ";" << min_rgb_E[2] << ";" << endl
+			<< min_rgb_D[0] << ";" << min_rgb_D[1] << ";" << min_rgb_D[2] << ";" << endl;
+	usleep(0.3*1000000);
+	ev3dev::button::enter.process();
 
 	motorE->reset();
 	motorD->reset();
 	motorE->set_stop_action("hold");
 	motorD->set_stop_action("hold");
 
+
+
+	/*
+	 * calcula o fator de escala do rgb dos 2 sensores pra colocar a leitura de 0 a 255 para
+	 * uma correta conversao de rgb pra hsv
+	 */
+	double valores_E[3], valores_D[3];
 	for(int i = 0; i < 3 ; i++){
-		max_rgb_E[i] = 255/(max_rgb_E[i] - min_rgb_E[i]);
-		max_rgb_D[i] = 255/(max_rgb_D[i] - min_rgb_D[i]);
+		valores_E[i] = 255/(max_rgb_E[i] - min_rgb_E[i]);
+		valores_D[i] = 255/(max_rgb_D[i] - min_rgb_D[i]);
+	}
+	sensor_cor->set_fatores_rgb(valores_E, valores_D);
+
+
+
+	/*
+	 * calcula os limites nos valores hsv para ser
+	 * as condicoes de avaliacao da cor quando realizar leitura
+	 */
+	HSV hsv;
+	valores_E[0] = 2; // minimo_V_Branco_E
+	valores_E[1] = 0; // maximo_V_Preto_E
+	valores_E[2] = 2; // minimo_V_Preto_E
+	valores_D[0] = 2; // minimo_V_Branco_D
+	valores_D[1] = 0; // maximo_V_Preto_D
+	valores_D[2] = 2; // minimo_V_Preto_D
+	for(int i = 0 ; i < rgb_branco_E.size() ; i++){
+		hsv = sensor_cor->RGBtoHSV(rgb_branco_E[i]);
+		if(valores_E[0] > hsv.v) valores_E[0] = hsv.v;
+		hsv = sensor_cor->RGBtoHSV(rgb_branco_D[i]);
+		if(valores_D[0] > hsv.v) valores_D[0] = hsv.v;
+	}
+	for(int i = 0 ; i < rgb_preto_E.size() ; i++){
+		hsv = sensor_cor->RGBtoHSV(rgb_preto_E[i]);
+		if(valores_E[1] < hsv.v) valores_E[1] = hsv.v;
+		if(valores_E[2] > hsv.v) valores_E[2] = hsv.v;
+		hsv = sensor_cor->RGBtoHSV(rgb_preto_D[i]);
+		if(valores_D[1] < hsv.v) valores_D[1] = hsv.v;
+		if(valores_D[2] > hsv.v) valores_D[2] = hsv.v;
 	}
 
-	sensor_cor->set_fator_escalimetro_rgb(max_rgb_E, max_rgb_D);
+	valores_E[0] -= 0.05 ; // minimo_V_Branco_E
+	valores_E[1] += 0.05; // maximo_V_Preto_E
+	valores_E[2] -= 0.005; // minimo_V_Preto_E
+
+	valores_D[0] -= 0.05; // minimo_V_Branco_D
+	valores_D[1] += 0.05; // maximo_V_Preto_D
+	valores_D[2] -= 0.005; // minimo_V_Preto_D
+	sensor_cor->set_maximos_minimos(valores_E, valores_D);
+	cout <<"min branco:" << endl << valores_E[0] << ";" << valores_D[0] << endl;
 }

@@ -28,7 +28,8 @@ public:
 	Cor ler_cor_D();
 	ev3dev::color_sensor *get_sensor_E();
 	ev3dev::color_sensor *get_sensor_D();
-	void set_fator_escalimetro_rgb(double *fator_E, double *fator_D);
+	void set_fatores_rgb(double *fatores_E, double *fatores_D);
+	void set_maximos_minimos(double *maximos_E, double *maximos_D);
 	void fecha_arquivo();
 private:
 	bool debug = false;
@@ -44,13 +45,19 @@ private:
 	/*
 	 * pensar na possibilidade de criar um struct com estes limites e colocar na const.h
 	 */
-	double limite_H_Vermelho_E[2] = {30, 330}; // verificar se esta fora
-	double limite_H_Verde_E[2] = {90, 150}; // verificar se esta dentro
-	double limite_H_Azul_E[2] = {120, 270}; // verificar se esta dentro
+	double limites_H_Vermelho_E[2] = {30, 330}; // verificar se esta fora
+	double limites_H_Verde_E[2] = {90, 150}; // verificar se esta dentro
+	double limites_H_Azul_E[2] = {120, 270}; // verificar se esta dentro
+	double minimo_V_Branco_E = 0;
+	double maximo_V_Preto_E = 0;
+	double minimo_V_Preto_E = 0;
 
-	double limite_H_Vermelho_D[2] = {30, 330}; // verificar se esta fora
-	double limite_H_Verde_D[2] = {90, 150}; // verificar se esta dentro
-	double limite_H_Azul_D[2] = {120, 270}; // verificar se esta dentro
+	double limites_H_Vermelho_D[2] = {30, 330}; // verificar se esta fora
+	double limites_H_Verde_D[2] = {90, 150}; // verificar se esta dentro
+	double limites_H_Azul_D[2] = {210, 270}; // verificar se esta dentro
+	double minimo_V_Branco_D = 0;
+	double maximo_V_Preto_D = 0;
+	double minimo_V_Preto_D = 0;
 
 	double fator_escalimetro_rgb_E[3] = {1,1,1}; // mudar o rgb para a escala 0 a 255
 	double fator_escalimetro_rgb_D[3] = {1,1,1}; // mudar o rgb para a escala 0 a 255
