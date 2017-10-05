@@ -66,10 +66,6 @@ vector
 ev3dev.h
 /src/src_folder/ev3dev.h
 
-/src/src_folder/Controlador_robo.cpp
-Controlador_robo.h
-/src/src_folder/Controlador_robo.h
-
 /src/src_folder/Controlador_robo.h
 iostream
 -
@@ -94,18 +90,6 @@ Const.h
 vector
 -
 
-/src/src_folder/M_arquivos.h
-iostream
--
-stdarg.h
--
-fstream
--
-list
--
-string
--
-
 /src/src_folder/Sensor_cor.h
 iostream
 -
@@ -117,10 +101,6 @@ unistd.h
 -
 Const.h
 /src/src_folder/Const.h
-
-/src/src_folder/Sensor_cor_hsv.cpp
-Sensor_cor_hsv.h
-/src/src_folder/Sensor_cor_hsv.h
 
 /src/src_folder/Sensor_cor_hsv.h
 tuple
@@ -135,22 +115,4 @@ M_arquivos.h
 /src/src_folder/M_arquivos.h
 Const.h
 /src/src_folder/Const.h
-
-/src/src_folder/ev3dev.h
-map
--
-set
--
-string
--
-tuple
--
-vector
--
-algorithm
--
-functional
--
-memory
--
 

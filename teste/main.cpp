@@ -15,7 +15,7 @@ enum estados{faixa, leu_nda, leu_fora, intersec};
 
 typedef chrono::high_resolution_clock Time;
 
-bool colorido(Sensor_cor cor, string lado){
+bool colorido(Sensor_cor_hsv cor, string lado){
 	if(lado == "esquerdo"){
 		if(cor.ler_cor_E() != Cor::branco && cor.ler_cor_E() != Cor::fora && cor.ler_cor_E() != Cor::ndCor)
 			return true;
@@ -42,7 +42,8 @@ bool colorido(int cor, string lado){
 
 void teste_luana_alinhamento(){
 	Controlador_robo robot(true, "fodase.m");
-	Sensor_cor cor(ev3dev::INPUT_1, ev3dev::INPUT_2);
+	Sensor_cor_hsv cor(ev3dev::INPUT_1, ev3dev::INPUT_2);
+	robot.calibra_sensor_cor(&cor);
 	robot.inicializar_thread_aceleracao();
 
 	int count_nda = 0;
@@ -51,6 +52,9 @@ void teste_luana_alinhamento(){
 	int cor_E, cor_D;
 	double 	dist = 0, ang_robo = 0, posicao_inicial = 0, posicao_final = 0;
 
+	while(!ev3dev::button::enter.process()){}
+	usleep(1000*800);
+	ev3dev::button::enter.process();
 	robot.andar(70);
 	estd = estados::faixa;
 	while(!ev3dev::button::back.process()){
@@ -229,15 +233,15 @@ void teste_rogerio(){
 	 * pega alguns valores e guarda no arquivo
 	 */
 	//	while(!ev3dev::button::up.process()){
-			while(!ev3dev::button::enter.process()){}
-			usleep(1000*800);
-			ev3dev::button::enter.process();
-			robot.andar(30);
-			while(!ev3dev::button::enter.process())
-				cout<<cor.ler_cor_E()<<";"<<cor.ler_cor_D()<<endl;
-			robot.parar();
-			usleep(1000*800);
-			ev3dev::button::enter.process();
+	while(!ev3dev::button::enter.process()){}
+	usleep(1000*800);
+	ev3dev::button::enter.process();
+	robot.andar(30);
+	while(!ev3dev::button::enter.process())
+		cout<<cor.ler_cor_E()<<";"<<cor.ler_cor_D()<<endl;
+	robot.parar();
+	usleep(1000*800);
+	ev3dev::button::enter.process();
 	//	}
 	cor.fecha_arquivo();
 
@@ -321,7 +325,8 @@ void teste_rogerio(){
 
 void teste_rogerio_alinhamento(){
 	Controlador_robo robot(true, "debug posicao direto no pwm.m"); // fator_croda = 1.005
-	Sensor_cor cor(ev3dev::INPUT_1, ev3dev::INPUT_2);
+	Sensor_cor_hsv cor(ev3dev::INPUT_1, ev3dev::INPUT_2);
+	robot.calibra_sensor_cor(&cor);
 	robot.inicializar_thread_aceleracao();
 
 	double 	dist = 0,
@@ -493,7 +498,8 @@ void teste_rogerio_alinhamento(){
 int main(){
 	system("setfont Greek-TerminusBold20x10.psf.gz");
 	//teste_luana_alinhamento();
-	teste_rogerio();
+	//teste_rogerio();
+	teste_rogerio_alinhamento();
 
 	cout << "Teste finalizado. Bye!" << endl;
 	cout<<"pq vc da um espaco antes e depois do operador <<?"<<endl;

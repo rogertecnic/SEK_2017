@@ -27,7 +27,7 @@ public:
 	void andar(int pwm, double distancia_metros);
 	void parar();
 	void girar(int angulo_robo_graus); // positivo anti-horario
-	void alinhar_para_traz(Sensor_cor *cor);
+	void alinhar_para_traz(Sensor_cor_hsv *cor);
 
 	bool inicializar_thread_aceleracao();
 	bool finalizar_thread_aceleracao();
@@ -61,6 +61,7 @@ private:
 	double raio_robo = 0.156/2; // largura entre os centros das rodas div por 2
 	double angulo_robo_graus = 0; // quanto o robo vai girar quando chamar o metodo girar
 	double distancia_linha_reta = 0; // distancia que  o robo ja andou
+	void reset_motores(); // reseta os motores e a distancia_linha_reta
 
 	/*Variáveis controlador PWM*/
 	double erro = 0.0;

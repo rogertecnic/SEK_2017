@@ -8,10 +8,7 @@ Controlador_robo::Controlador_robo(bool debug, string nome_arquivo)
 	motorE = new ev3dev::large_motor(ev3dev::OUTPUT_A);
 	motorD = new ev3dev::large_motor(ev3dev::OUTPUT_B);
 
-	motorE->reset();
-	motorD->reset();
-	motorE->set_stop_action("hold");
-	motorD->set_stop_action("hold");
+	reset_motores();
 
 
 	if(debug){
@@ -29,14 +26,11 @@ void Controlador_robo::andar (int pwm_sp){
 
 
 void Controlador_robo::andar (int pwm_sp, double distancia){
-	motorE->reset();
-	motorD->reset();
-	motorE->set_stop_action("hold");
-	motorD->set_stop_action("hold");
+	reset_motores();
 	andar(pwm_sp);
-
-	if(pwm_sp > 0) while(get_distancia() < distancia){}
-	if(pwm_sp < 0) while(get_distancia() > -distancia){}
+	double posicao_atual = get_distancia();
+	if(pwm_sp > 0) while(get_distancia() < distancia+posicao_atual){}
+	if(pwm_sp < 0) while(get_distancia() > -distancia+posicao_atual){}
 
 	parar();
 }
@@ -50,12 +44,13 @@ void Controlador_robo::parar () {
 
 void Controlador_robo::girar(int angulo_robo_graus){
 	this->angulo_robo_graus = angulo_robo_graus;
+	reset_motores();
 	estado = flag_aceleracao::girar;
 	usleep(1000*100);
 }
 
 
-void Controlador_robo::alinhar_para_traz(Sensor_cor *cor){
+void Controlador_robo::alinhar_para_traz(Sensor_cor_hsv *cor){
 	int cor_E;
 	int cor_D;
 	int v = -15;
@@ -131,6 +126,16 @@ double Controlador_robo::get_distancia(){
 double Controlador_robo::get_velocidade(){
 	return -(motorE->speed() + motorD->speed())/2*3.141592/180*relacao_engrenagem*raio_roda;
 }
+
+
+void Controlador_robo::reset_motores(){
+	motorE->reset();
+	motorD->reset();
+	motorE->set_stop_action("hold");
+	motorD->set_stop_action("hold");
+	distancia_linha_reta = 0;
+}
+
 
 void Controlador_robo::loop_controle_aceleracao(){
 	thread_rodando = true;
@@ -216,10 +221,7 @@ void Controlador_robo::loop_controle_aceleracao(){
 			usleep(1000*300);
 			if(estado == flag_aceleracao::girar) // se o giro terminar a thread fica ociosa
 				estado = flag_aceleracao::ndAcel; // se for interrompida, vai para a proxima acao
-			motorE->reset();
-			motorD->reset();
-			motorE->set_stop_action("hold");
-			motorD->set_stop_action("hold");
+			reset_motores();
 			break;
 
 		case flag_aceleracao::parar :
@@ -345,10 +347,7 @@ void Controlador_robo::calibra_sensor_cor(Sensor_cor_hsv *sensor_cor) {
 	usleep(0.3*1000000);
 	ev3dev::button::enter.process();
 
-	motorE->reset();
-	motorD->reset();
-	motorE->set_stop_action("hold");
-	motorD->set_stop_action("hold");
+	reset_motores();
 
 
 
@@ -356,12 +355,12 @@ void Controlador_robo::calibra_sensor_cor(Sensor_cor_hsv *sensor_cor) {
 	 * calcula o fator de escala do rgb dos 2 sensores pra colocar a leitura de 0 a 255 para
 	 * uma correta conversao de rgb pra hsv
 	 */
-	double valores_E[3], valores_D[3];
+
 	for(int i = 0; i < 3 ; i++){
-		valores_E[i] = 255/(max_rgb_E[i] - min_rgb_E[i]);
-		valores_D[i] = 255/(max_rgb_D[i] - min_rgb_D[i]);
+		max_rgb_E[i] = 255/(max_rgb_E[i] - min_rgb_E[i]);
+		max_rgb_D[i] = 255/(max_rgb_D[i] - min_rgb_D[i]);
 	}
-	sensor_cor->set_fatores_rgb(valores_E, valores_D);
+	sensor_cor->set_fatores_rgb(max_rgb_E, max_rgb_D);
 
 
 
@@ -370,20 +369,36 @@ void Controlador_robo::calibra_sensor_cor(Sensor_cor_hsv *sensor_cor) {
 	 * as condicoes de avaliacao da cor quando realizar leitura
 	 */
 	HSV hsv;
+	double valores_E[3], valores_D[3];
 	valores_E[0] = 2; // minimo_V_Branco_E
 	valores_E[1] = 0; // maximo_V_Preto_E
 	valores_E[2] = 2; // minimo_V_Preto_E
 	valores_D[0] = 2; // minimo_V_Branco_D
 	valores_D[1] = 0; // maximo_V_Preto_D
 	valores_D[2] = 2; // minimo_V_Preto_D
-	//TODO multiplicar dodos os rgb pelo fator de escala
 	for(int i = 0 ; i < rgb_branco_E.size() ; i++){
+		// muda a escala do rgb antes de converter pra hsv
+		rgb_branco_E[i].r *= max_rgb_E[0];
+		rgb_branco_E[i].g *= max_rgb_E[1];
+		rgb_branco_E[i].b *= max_rgb_E[2];
+		rgb_branco_D[i].r *= max_rgb_D[0];
+		rgb_branco_D[i].g *= max_rgb_D[1];
+		rgb_branco_D[i].b *= max_rgb_D[2];
+
 		hsv = sensor_cor->RGBtoHSV(rgb_branco_E[i]);
 		if(valores_E[0] > hsv.v) valores_E[0] = hsv.v;
 		hsv = sensor_cor->RGBtoHSV(rgb_branco_D[i]);
 		if(valores_D[0] > hsv.v) valores_D[0] = hsv.v;
 	}
 	for(int i = 0 ; i < rgb_preto_E.size() ; i++){
+		// muda a escala do rgb antes de converter pra hsv
+		rgb_preto_E[i].r *= max_rgb_E[0];
+		rgb_preto_E[i].g *= max_rgb_E[1];
+		rgb_preto_E[i].b *= max_rgb_E[2];
+		rgb_preto_D[i].r *= max_rgb_D[0];
+		rgb_preto_D[i].g *= max_rgb_D[1];
+		rgb_preto_D[i].b *= max_rgb_D[2];
+
 		hsv = sensor_cor->RGBtoHSV(rgb_preto_E[i]);
 		if(valores_E[1] < hsv.v) valores_E[1] = hsv.v;
 		if(valores_E[2] > hsv.v) valores_E[2] = hsv.v;

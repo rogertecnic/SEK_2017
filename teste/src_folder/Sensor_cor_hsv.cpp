@@ -9,7 +9,7 @@ static double Max(double a, double b) {
 }
 
 Sensor_cor_hsv::Sensor_cor_hsv(string sensor_port_E, string sensor_port_D,
-		bool debug = false, string nome_arquivo = "")
+		bool debug, string nome_arquivo)
 :sensor_E(ev3dev::color_sensor(sensor_port_E)),
  sensor_D(ev3dev::color_sensor(sensor_port_D)),
  debug(debug)
@@ -43,7 +43,9 @@ Cor Sensor_cor_hsv::ler_cor_E() {
 			(double)rgb.r, (double)rgb.g, (double)rgb.b,
 			(double)hsv.h, (double)hsv.s, (double)hsv.v);
 
-	//TODO fazer condicao quando for preto branco ou fora esquerdo
+	if(hsv.v > minimo_V_Branco_E) return Cor::branco;
+	if(hsv.v > minimo_V_Preto_E && hsv.v < maximo_V_Preto_E) return Cor::preto;
+	if(hsv.v < minimo_V_Preto_E) return Cor::fora;
 	if(hsv.h < limites_H_Vermelho_E[0] || hsv.h > limites_H_Vermelho_E[1]) return Cor::vermelho;
 	if(hsv.h > limites_H_Verde_E[0] && hsv.h < limites_H_Verde_E[1]) return Cor::verde;
 	if(hsv.h > limites_H_Azul_E[0] && hsv.h < limites_H_Azul_E[1]) return Cor::azul;
@@ -69,7 +71,9 @@ Cor Sensor_cor_hsv::ler_cor_D() {
 			(double)rgb.r, (double)rgb.g, (double)rgb.b,
 			(double)hsv.h, (double)hsv.s, (double)hsv.v);
 
-	//TODO fazer condicao quando for preto branco ou fora direito
+	if(hsv.v > minimo_V_Branco_D) return Cor::branco;
+	if(hsv.v > minimo_V_Preto_D && hsv.v < maximo_V_Preto_D) return Cor::preto;
+	if(hsv.v < minimo_V_Preto_D) return Cor::fora;
 	if(hsv.h < limites_H_Vermelho_D[0] || hsv.h > limites_H_Vermelho_D[1]) return Cor::vermelho;
 	if(hsv.h > limites_H_Verde_D[0] && hsv.h < limites_H_Verde_D[1]) return Cor::verde;
 	if(hsv.h > limites_H_Azul_D[0] && hsv.h < limites_H_Azul_D[1]) return Cor::azul;
