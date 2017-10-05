@@ -31,12 +31,13 @@ public:
 	void set_fatores_rgb(double *fatores_E, double *fatores_D);
 	void set_maximos_minimos(double *maximos_E, double *maximos_D);
 	void fecha_arquivo();
+	HSV RGBtoHSV(RGB rgb);
+
 private:
 	bool debug = false;
 	M_arquivos *arquivo_E;
 	M_arquivos *arquivo_D;
 
-	HSV RGBtoHSV(RGB rgb);
 
 	ev3dev::color_sensor sensor_E;
 	ev3dev::color_sensor sensor_D;
