@@ -91,7 +91,7 @@ void Controlador_robo::alinhar_para_traz(Sensor_cor_hsv *cor){
 }
 
 
-void Controlador_robo::alinhar_para_frente(Sensor_cor_hsv *cor){
+void Controlador_robo::alinhar(Sensor_cor_hsv *cor){
 	int cor_E;
 	int cor_D;
 	int v = -15;
