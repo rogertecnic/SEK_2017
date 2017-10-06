@@ -210,9 +210,55 @@ CMakeFiles/binario.dir/src_folder/Controlador_robo.o.provides: CMakeFiles/binari
 
 CMakeFiles/binario.dir/src_folder/Controlador_robo.o.provides.build: CMakeFiles/binario.dir/src_folder/Controlador_robo.o
 
+CMakeFiles/binario.dir/src_folder/Mapeamento.o: CMakeFiles/binario.dir/flags.make
+CMakeFiles/binario.dir/src_folder/Mapeamento.o: ../src_folder/Mapeamento.cpp
+	$(CMAKE_COMMAND) -E cmake_progress_report /src/build/CMakeFiles $(CMAKE_PROGRESS_8)
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Building CXX object CMakeFiles/binario.dir/src_folder/Mapeamento.o"
+	/usr/bin/arm-linux-gnueabi-g++   $(CXX_DEFINES) $(CXX_FLAGS) -o CMakeFiles/binario.dir/src_folder/Mapeamento.o -c /src/src_folder/Mapeamento.cpp
+
+CMakeFiles/binario.dir/src_folder/Mapeamento.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/binario.dir/src_folder/Mapeamento.i"
+	/usr/bin/arm-linux-gnueabi-g++  $(CXX_DEFINES) $(CXX_FLAGS) -E /src/src_folder/Mapeamento.cpp > CMakeFiles/binario.dir/src_folder/Mapeamento.i
+
+CMakeFiles/binario.dir/src_folder/Mapeamento.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/binario.dir/src_folder/Mapeamento.s"
+	/usr/bin/arm-linux-gnueabi-g++  $(CXX_DEFINES) $(CXX_FLAGS) -S /src/src_folder/Mapeamento.cpp -o CMakeFiles/binario.dir/src_folder/Mapeamento.s
+
+CMakeFiles/binario.dir/src_folder/Mapeamento.o.requires:
+.PHONY : CMakeFiles/binario.dir/src_folder/Mapeamento.o.requires
+
+CMakeFiles/binario.dir/src_folder/Mapeamento.o.provides: CMakeFiles/binario.dir/src_folder/Mapeamento.o.requires
+	$(MAKE) -f CMakeFiles/binario.dir/build.make CMakeFiles/binario.dir/src_folder/Mapeamento.o.provides.build
+.PHONY : CMakeFiles/binario.dir/src_folder/Mapeamento.o.provides
+
+CMakeFiles/binario.dir/src_folder/Mapeamento.o.provides.build: CMakeFiles/binario.dir/src_folder/Mapeamento.o
+
+CMakeFiles/binario.dir/src_folder/Arquivos_mapeamento.o: CMakeFiles/binario.dir/flags.make
+CMakeFiles/binario.dir/src_folder/Arquivos_mapeamento.o: ../src_folder/Arquivos_mapeamento.cpp
+	$(CMAKE_COMMAND) -E cmake_progress_report /src/build/CMakeFiles $(CMAKE_PROGRESS_9)
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Building CXX object CMakeFiles/binario.dir/src_folder/Arquivos_mapeamento.o"
+	/usr/bin/arm-linux-gnueabi-g++   $(CXX_DEFINES) $(CXX_FLAGS) -o CMakeFiles/binario.dir/src_folder/Arquivos_mapeamento.o -c /src/src_folder/Arquivos_mapeamento.cpp
+
+CMakeFiles/binario.dir/src_folder/Arquivos_mapeamento.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/binario.dir/src_folder/Arquivos_mapeamento.i"
+	/usr/bin/arm-linux-gnueabi-g++  $(CXX_DEFINES) $(CXX_FLAGS) -E /src/src_folder/Arquivos_mapeamento.cpp > CMakeFiles/binario.dir/src_folder/Arquivos_mapeamento.i
+
+CMakeFiles/binario.dir/src_folder/Arquivos_mapeamento.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/binario.dir/src_folder/Arquivos_mapeamento.s"
+	/usr/bin/arm-linux-gnueabi-g++  $(CXX_DEFINES) $(CXX_FLAGS) -S /src/src_folder/Arquivos_mapeamento.cpp -o CMakeFiles/binario.dir/src_folder/Arquivos_mapeamento.s
+
+CMakeFiles/binario.dir/src_folder/Arquivos_mapeamento.o.requires:
+.PHONY : CMakeFiles/binario.dir/src_folder/Arquivos_mapeamento.o.requires
+
+CMakeFiles/binario.dir/src_folder/Arquivos_mapeamento.o.provides: CMakeFiles/binario.dir/src_folder/Arquivos_mapeamento.o.requires
+	$(MAKE) -f CMakeFiles/binario.dir/build.make CMakeFiles/binario.dir/src_folder/Arquivos_mapeamento.o.provides.build
+.PHONY : CMakeFiles/binario.dir/src_folder/Arquivos_mapeamento.o.provides
+
+CMakeFiles/binario.dir/src_folder/Arquivos_mapeamento.o.provides.build: CMakeFiles/binario.dir/src_folder/Arquivos_mapeamento.o
+
 CMakeFiles/binario.dir/main.o: CMakeFiles/binario.dir/flags.make
 CMakeFiles/binario.dir/main.o: ../main.cpp
-	$(CMAKE_COMMAND) -E cmake_progress_report /src/build/CMakeFiles $(CMAKE_PROGRESS_8)
+	$(CMAKE_COMMAND) -E cmake_progress_report /src/build/CMakeFiles $(CMAKE_PROGRESS_10)
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Building CXX object CMakeFiles/binario.dir/main.o"
 	/usr/bin/arm-linux-gnueabi-g++   $(CXX_DEFINES) $(CXX_FLAGS) -o CMakeFiles/binario.dir/main.o -c /src/main.cpp
 
@@ -242,6 +288,8 @@ binario_OBJECTS = \
 "CMakeFiles/binario.dir/src_folder/Sensor_cor_hsv.o" \
 "CMakeFiles/binario.dir/src_folder/Ultrassom_nxt.o" \
 "CMakeFiles/binario.dir/src_folder/Controlador_robo.o" \
+"CMakeFiles/binario.dir/src_folder/Mapeamento.o" \
+"CMakeFiles/binario.dir/src_folder/Arquivos_mapeamento.o" \
 "CMakeFiles/binario.dir/main.o"
 
 # External object files for target binario
@@ -254,6 +302,8 @@ binario: CMakeFiles/binario.dir/src_folder/Sensor_cor.o
 binario: CMakeFiles/binario.dir/src_folder/Sensor_cor_hsv.o
 binario: CMakeFiles/binario.dir/src_folder/Ultrassom_nxt.o
 binario: CMakeFiles/binario.dir/src_folder/Controlador_robo.o
+binario: CMakeFiles/binario.dir/src_folder/Mapeamento.o
+binario: CMakeFiles/binario.dir/src_folder/Arquivos_mapeamento.o
 binario: CMakeFiles/binario.dir/main.o
 binario: CMakeFiles/binario.dir/build.make
 binario: CMakeFiles/binario.dir/link.txt
@@ -271,6 +321,8 @@ CMakeFiles/binario.dir/requires: CMakeFiles/binario.dir/src_folder/Sensor_cor.o.
 CMakeFiles/binario.dir/requires: CMakeFiles/binario.dir/src_folder/Sensor_cor_hsv.o.requires
 CMakeFiles/binario.dir/requires: CMakeFiles/binario.dir/src_folder/Ultrassom_nxt.o.requires
 CMakeFiles/binario.dir/requires: CMakeFiles/binario.dir/src_folder/Controlador_robo.o.requires
+CMakeFiles/binario.dir/requires: CMakeFiles/binario.dir/src_folder/Mapeamento.o.requires
+CMakeFiles/binario.dir/requires: CMakeFiles/binario.dir/src_folder/Arquivos_mapeamento.o.requires
 CMakeFiles/binario.dir/requires: CMakeFiles/binario.dir/main.o.requires
 .PHONY : CMakeFiles/binario.dir/requires
 

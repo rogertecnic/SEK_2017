@@ -8,7 +8,8 @@
 
 using namespace std;
 
-enum status{ndStatus, em_frente, direita, esquerda};// usado na classe MApeamento
+enum estados{faixa, leu_nda, leu_fora, intersec, terminado}; //usado na classe Mapeamento
+enum status{ndStatus, em_frente, direita, esquerda};// usado na classe Mapeamento
 enum Cor{ndCor, preto, branco, vermelho, verde, azul, fora}; // cores possiveis
 enum flag_aceleracao{ndAcel, linha_reta, parar, girar}; // usado dentro do Controlador_robo
 
@@ -24,21 +25,23 @@ struct HSV{ // utilizado na classe Sensor_cor_hsv
 
 
 // usado na classe MApeamento
-typedef struct status_checkpoint {
-	status checkpoint_vermelho = status::ndStatus;
-	status checkpoint_verde = status::ndStatus;
-	status checkpoint_azul = status::ndStatus;
+struct status_checkpoint {
+	status checkpoint_vermelho;
+	status checkpoint_verde;
+	status checkpoint_azul;
 
-}status_checkpoint;
+};
+
+
 
 // usado na classe MApeamento
-typedef struct no_intersec {
+struct no_intersec {
 	bool pre, pos;
 	vector<double> posicao_pre_d;
 	vector<double> posicao_pos_d;
 	vector<double> posicao_pre_e;
 	vector<double> posicao_pos_e;
-}no_intersec;
+};
 
 
 #endif

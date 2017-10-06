@@ -131,6 +131,21 @@ main.s:
 .PHONY : main.s
 
 # target to build an object file
+src_folder/Arquivos_mapeamento.o:
+	$(MAKE) -f CMakeFiles/binario.dir/build.make CMakeFiles/binario.dir/src_folder/Arquivos_mapeamento.o
+.PHONY : src_folder/Arquivos_mapeamento.o
+
+# target to preprocess a source file
+src_folder/Arquivos_mapeamento.i:
+	$(MAKE) -f CMakeFiles/binario.dir/build.make CMakeFiles/binario.dir/src_folder/Arquivos_mapeamento.i
+.PHONY : src_folder/Arquivos_mapeamento.i
+
+# target to generate assembly for a file
+src_folder/Arquivos_mapeamento.s:
+	$(MAKE) -f CMakeFiles/binario.dir/build.make CMakeFiles/binario.dir/src_folder/Arquivos_mapeamento.s
+.PHONY : src_folder/Arquivos_mapeamento.s
+
+# target to build an object file
 src_folder/Controlador_motor.o:
 	$(MAKE) -f CMakeFiles/binario.dir/build.make CMakeFiles/binario.dir/src_folder/Controlador_motor.o
 .PHONY : src_folder/Controlador_motor.o
@@ -174,6 +189,21 @@ src_folder/M_arquivos.i:
 src_folder/M_arquivos.s:
 	$(MAKE) -f CMakeFiles/binario.dir/build.make CMakeFiles/binario.dir/src_folder/M_arquivos.s
 .PHONY : src_folder/M_arquivos.s
+
+# target to build an object file
+src_folder/Mapeamento.o:
+	$(MAKE) -f CMakeFiles/binario.dir/build.make CMakeFiles/binario.dir/src_folder/Mapeamento.o
+.PHONY : src_folder/Mapeamento.o
+
+# target to preprocess a source file
+src_folder/Mapeamento.i:
+	$(MAKE) -f CMakeFiles/binario.dir/build.make CMakeFiles/binario.dir/src_folder/Mapeamento.i
+.PHONY : src_folder/Mapeamento.i
+
+# target to generate assembly for a file
+src_folder/Mapeamento.s:
+	$(MAKE) -f CMakeFiles/binario.dir/build.make CMakeFiles/binario.dir/src_folder/Mapeamento.s
+.PHONY : src_folder/Mapeamento.s
 
 # target to build an object file
 src_folder/Sensor_cor.o:
@@ -247,6 +277,9 @@ help:
 	@echo "... main.o"
 	@echo "... main.i"
 	@echo "... main.s"
+	@echo "... src_folder/Arquivos_mapeamento.o"
+	@echo "... src_folder/Arquivos_mapeamento.i"
+	@echo "... src_folder/Arquivos_mapeamento.s"
 	@echo "... src_folder/Controlador_motor.o"
 	@echo "... src_folder/Controlador_motor.i"
 	@echo "... src_folder/Controlador_motor.s"
@@ -256,6 +289,9 @@ help:
 	@echo "... src_folder/M_arquivos.o"
 	@echo "... src_folder/M_arquivos.i"
 	@echo "... src_folder/M_arquivos.s"
+	@echo "... src_folder/Mapeamento.o"
+	@echo "... src_folder/Mapeamento.i"
+	@echo "... src_folder/Mapeamento.s"
 	@echo "... src_folder/Sensor_cor.o"
 	@echo "... src_folder/Sensor_cor.i"
 	@echo "... src_folder/Sensor_cor.s"

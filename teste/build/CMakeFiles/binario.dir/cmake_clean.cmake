@@ -6,6 +6,8 @@ file(REMOVE_RECURSE
   "CMakeFiles/binario.dir/src_folder/Sensor_cor_hsv.o"
   "CMakeFiles/binario.dir/src_folder/Ultrassom_nxt.o"
   "CMakeFiles/binario.dir/src_folder/Controlador_robo.o"
+  "CMakeFiles/binario.dir/src_folder/Mapeamento.o"
+  "CMakeFiles/binario.dir/src_folder/Arquivos_mapeamento.o"
   "CMakeFiles/binario.dir/main.o"
   "binario.pdb"
   "binario"

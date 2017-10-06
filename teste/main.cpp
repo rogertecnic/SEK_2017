@@ -7,13 +7,16 @@
 #include "src_folder/Sensor_cor.h"
 #include "src_folder/Sensor_cor_hsv.h"
 #include "src_folder/Controlador_robo.h"
+#include "src_folder/Mapeamento.h"
 
 
 using namespace std;
 
-enum estados{faixa, leu_nda, leu_fora, intersec};
+//enum estados{faixa, leu_nda, leu_fora, intersec};
 
 typedef chrono::high_resolution_clock Time;
+
+/*
 
 bool colorido(Sensor_cor_hsv cor, string lado){
 	if(lado == "esquerdo"){
@@ -41,22 +44,29 @@ bool colorido(int cor, string lado){
 
 
 void teste_luana_alinhamento(){
-	Controlador_robo robot(true, "fodase.m");
+	Controlador_robo robot(true, "debug posicao direto no pwm.m");
 	Sensor_cor_hsv cor(ev3dev::INPUT_1, ev3dev::INPUT_2);
+
 	robot.calibra_sensor_cor(&cor);
 	robot.inicializar_thread_aceleracao();
 
-	int count_nda = 0;
+	cout << "Calibração terminada!" << endl;
+	usleep(2*1000000);
+	while(!ev3dev::button::enter.process());
+	usleep(0.3*1000000);
+	ev3dev::button::enter.process();
+
 	estados estd;
+
+	int count_nda = 0;
 
 	int cor_E, cor_D;
 	double 	dist = 0, ang_robo = 0, posicao_inicial = 0, posicao_final = 0;
 
-	while(!ev3dev::button::enter.process()){}
-	usleep(1000*800);
-	ev3dev::button::enter.process();
+
 	robot.andar(70);
 	estd = estados::faixa;
+
 	while(!ev3dev::button::back.process()){
 		switch (estd){
 		case 0: //Caso estiver andando na faixa
@@ -64,10 +74,12 @@ void teste_luana_alinhamento(){
 			cout << "Estado: " << estd << endl;
 			if (cor.ler_cor_E() == Cor::ndCor || cor.ler_cor_D() == Cor::ndCor)
 				estd = estados::leu_nda;
+			else if( (cor.ler_cor_E() != Cor::fora && cor.ler_cor_E() != Cor::ndCor && cor.ler_cor_E() != Cor::branco) ||
+					(cor.ler_cor_D() != Cor::fora && cor.ler_cor_D() != Cor::ndCor && cor.ler_cor_D() != Cor::branco) )
+				estd = estados::intersec;
 			else if (cor.ler_cor_E() == Cor::fora || cor.ler_cor_D() == Cor::fora)
 				estd = estados::leu_fora;
-			else if( colorido(cor, "esquerdo") || (colorido(cor, "direito")))
-				estd = estados::intersec;
+
 
 			break;
 
@@ -78,12 +90,14 @@ void teste_luana_alinhamento(){
 
 			else{
 				count_nda = 0;
-				if(cor.ler_cor_E() == Cor::branco && cor.ler_cor_D() == Cor::branco)
-					estd = estados::faixa;
-				else if (cor.ler_cor_E() == Cor::fora || cor.ler_cor_D() == Cor::fora)
+
+				if (cor.ler_cor_E() == Cor::fora || cor.ler_cor_D() == Cor::fora)
 					estd = estados::leu_fora;
-				else if( (colorido(cor, "esquerdo")) || (colorido(cor, "direito")) )
+				else if( (cor.ler_cor_E() != Cor::fora && cor.ler_cor_E() != Cor::ndCor && cor.ler_cor_E() != Cor::branco) ||
+						(cor.ler_cor_D() != Cor::fora && cor.ler_cor_D() != Cor::ndCor && cor.ler_cor_D() != Cor::branco) )
 					estd = estados::intersec;
+				else if(cor.ler_cor_E() == Cor::branco || cor.ler_cor_D() == Cor::branco)
+					estd = estados::faixa;
 
 			}
 
@@ -132,7 +146,8 @@ void teste_luana_alinhamento(){
 			cor_E = cor.ler_cor_E();
 			cor_D = cor.ler_cor_D();
 
-			if( (colorido(cor_E, "esquerdo")) || (colorido(cor_D, "direito"))) {
+			if( (cor.ler_cor_E() != Cor::fora && cor.ler_cor_E() != Cor::ndCor && cor.ler_cor_E() != Cor::branco) ||
+					(cor.ler_cor_D() != Cor::fora && cor.ler_cor_D() != Cor::ndCor && cor.ler_cor_D() != Cor::branco) ) {
 				cout<<"viu cor"<<endl;
 				posicao_inicial = robot.get_distancia();
 				while(robot.get_distancia() < posicao_inicial + 0.04);
@@ -165,8 +180,7 @@ void teste_luana_alinhamento(){
 					robot.girar(90);
 					while(robot.get_estado() == flag_aceleracao::girar);
 					usleep(1000*800);
-					robot.andar(70);
-					while(cor.ler_cor_E() != Cor::branco && cor.ler_cor_D() != Cor::branco);
+					robot.andar(50, 0.19);
 					robot.alinhar_para_traz(&cor);
 					robot.andar(70);
 					while(cor.ler_cor_E() == cor_E || cor.ler_cor_D() == cor_D);
@@ -177,15 +191,13 @@ void teste_luana_alinhamento(){
 			}
 
 			break;
-
-
-
 		}
 	}
 
 	robot.finalizar_thread_aceleracao();
-	usleep(0.5*1000000);
+	usleep(0.2*1000000);
 }
+*/
 
 
 void teste_rogerio(){
@@ -494,15 +506,32 @@ void teste_rogerio_alinhamento(){
 	}
 }
 
+void teste_luana_mapeamento(){
+	Controlador_robo robot(true, "debug posicao direto no pwm.m");
+	Sensor_cor_hsv cor(ev3dev::INPUT_1, ev3dev::INPUT_2);
+
+	robot.calibra_sensor_cor(&cor);
+	//robot.inicializar_thread_aceleracao();
+
+	while(!ev3dev::button::enter.process());
+	usleep(0.3*1000000);
+	ev3dev::button::enter.process();
+
+	Mapeamento map;
+
+	map.mapeamento(&robot, &cor);
+
+}
 
 int main(){
 	system("setfont Greek-TerminusBold20x10.psf.gz");
 	//teste_luana_alinhamento();
 	//teste_rogerio();
-	teste_rogerio_alinhamento();
+	//teste_rogerio_alinhamento();
+
+	teste_luana_mapeamento();
 
 	cout << "Teste finalizado. Bye!" << endl;
-	cout<<"pq vc da um espaco antes e depois do operador <<?"<<endl;
 	usleep (1000000);
 	return 0;
 }

@@ -7,7 +7,7 @@ using namespace std;
 
 class Arquivos_mapeamento {
 public:
-	void arquivo_map(status_checkpoint s_cp, list<no_intersec> vet);
+	void arquivo_map(status_checkpoint s_cp);
 
 private:
 	ofstream outfile;

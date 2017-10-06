@@ -23,6 +23,8 @@ list(APPEND LIBS  src_folder/Sensor_cor.cpp)
 list(APPEND LIBS  src_folder/Sensor_cor_hsv.cpp)
 list(APPEND LIBS  src_folder/Ultrassom_nxt.cpp)
 list(APPEND LIBS  src_folder/Controlador_robo.cpp)
+list(APPEND LIBS  src_folder/Mapeamento.cpp)
+list(APPEND LIBS  src_folder/Arquivos_mapeamento.cpp)
 
 # adiciona todos os sources e o main para serem compilados juntos
 add_executable(binario  ${LIBS} main.cpp)
