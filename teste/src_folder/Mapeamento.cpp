@@ -2,7 +2,7 @@
 
 void Mapeamento::mapeamento(Controlador_robo *robo, Sensor_cor_hsv *sensor){
 	robo->andar(70);
-	status_atual = status::em_frente;
+	status_atual = direcao::frente;
 	sentido_navegacao = 1;
 
 	while(estd != estados::terminado){
@@ -213,8 +213,8 @@ void Mapeamento::mapeamento_intersec(Controlador_robo *robo, Sensor_cor_hsv *sen
 				while(robo->get_estado() == flag_aceleracao::girar);
 				usleep(1000*800);
 
-				if (status_atual == status::em_frente) {
-					status_atual = status::direita;
+				if (status_atual == direcao::frente) {
+					status_atual = direcao::direita;
 					virar_direita(sentido_navegacao);
 					while(robo->get_estado() == flag_aceleracao::girar);
 					usleep(1000*800);
@@ -224,8 +224,8 @@ void Mapeamento::mapeamento_intersec(Controlador_robo *robo, Sensor_cor_hsv *sen
 					while(sensor->ler_cor_E() == cor_E || sensor->ler_cor_D() == cor_D);
 					usleep(1000*500);
 				}
-				else if(status_atual == status::direita){
-					status_atual = status::esquerda;
+				else if(status_atual == direcao::direita){
+					status_atual = direcao::esquerda;
 					virar_esquerda(sentido_navegacao);
 					virar_esquerda(sentido_navegacao);
 					while(robo->get_estado() == flag_aceleracao::girar);
@@ -258,7 +258,7 @@ void Mapeamento::mapeamento_intersec(Controlador_robo *robo, Sensor_cor_hsv *sen
 					else cor_atual = sensor->ler_cor_D();
 				}
 
-				status_atual = status::em_frente;
+				status_atual = direcao::frente;
 				confirmacao_status = false;
 				estd = estados::faixa;
 
@@ -331,10 +331,10 @@ void Mapeamento::mapeamento_intersec(Controlador_robo *robo, Sensor_cor_hsv *sen
 void Mapeamento::caminho_certo (Controlador_robo *robo, Sensor_cor_hsv *sensor){
 
 	if (sensor->ler_cor_E() == Cor::vermelho && sensor->ler_cor_D() == Cor::vermelho){
-		if (cp.checkpoint_vermelho == status::direita)
+		if (cp.checkpoint_vermelho == direcao::direita)
 			virar_direita(sentido_navegacao);
 
-		else if (cp.checkpoint_vermelho == status::esquerda)
+		else if (cp.checkpoint_vermelho == direcao::esquerda)
 			virar_esquerda(sentido_navegacao);
 
 		while(robo->get_estado() == flag_aceleracao::girar);
@@ -348,10 +348,10 @@ void Mapeamento::caminho_certo (Controlador_robo *robo, Sensor_cor_hsv *sensor){
 	}
 
 	else if (sensor->ler_cor_E() == Cor::verde && sensor->ler_cor_D() == Cor::verde){
-		if (cp.checkpoint_verde == status::direita)
+		if (cp.checkpoint_verde == direcao::direita)
 			virar_direita(sentido_navegacao);
 
-		else if (cp.checkpoint_verde == status::esquerda)
+		else if (cp.checkpoint_verde == direcao::esquerda)
 			virar_esquerda(sentido_navegacao);
 
 		robo->girar(90);
@@ -366,10 +366,10 @@ void Mapeamento::caminho_certo (Controlador_robo *robo, Sensor_cor_hsv *sensor){
 	}
 
 	else if (sensor->ler_cor_E() == Cor::azul && sensor->ler_cor_D() == Cor::azul){
-		if (cp.checkpoint_azul == status::direita)
+		if (cp.checkpoint_azul == direcao::direita)
 			virar_direita(sentido_navegacao);
 
-		else if (cp.checkpoint_azul == status::esquerda)
+		else if (cp.checkpoint_azul == direcao::esquerda)
 			virar_esquerda(sentido_navegacao);
 
 		robo->girar(90);
@@ -418,15 +418,15 @@ bool Mapeamento::cor_ja_vista(Sensor_cor_hsv cor, string lado){
 	if(lado == "esquerdo"){
 		switch(cor.ler_cor_E()){
 		case 3:
-			if( cp.checkpoint_vermelho != status::ndStatus) return true;
+			if( cp.checkpoint_vermelho != direcao::ndStatus) return true;
 			break;
 
 		case 4:
-			if( cp.checkpoint_verde != status::ndStatus) return true;
+			if( cp.checkpoint_verde != direcao::ndStatus) return true;
 			break;
 
 		case 5:
-			if( cp.checkpoint_azul != status::ndStatus) return true;
+			if( cp.checkpoint_azul != direcao::ndStatus) return true;
 			break;
 
 		}
@@ -435,15 +435,15 @@ bool Mapeamento::cor_ja_vista(Sensor_cor_hsv cor, string lado){
 	else if(lado == "direito"){
 		switch(cor.ler_cor_D()){
 		case 3:
-			if( cp.checkpoint_vermelho != status::ndStatus) return true;
+			if( cp.checkpoint_vermelho != direcao::ndStatus) return true;
 			break;
 
 		case 4:
-			if( cp.checkpoint_verde != status::ndStatus) return true;
+			if( cp.checkpoint_verde != direcao::ndStatus) return true;
 			break;
 
 		case 5:
-			if( cp.checkpoint_azul != status::ndStatus) return true;
+			if( cp.checkpoint_azul != direcao::ndStatus) return true;
 			break;
 
 		}

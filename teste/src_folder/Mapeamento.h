@@ -71,10 +71,10 @@ private:
 
 	/* Flags mapeamento intersecção*/
 	Cor cor_atual = Cor::ndCor;
-	status status_atual = status::ndStatus;
+	direcao status_atual = direcao::ndStatus;
 
 	/* Status de cada intersecção*/
-	status_checkpoint cp = {status::ndStatus, status::ndStatus, status::ndStatus};
+	status_checkpoint cp = {direcao::ndStatus, direcao::ndStatus, direcao::ndStatus};
 
 	/* Variável de controle de posicao na chegada de um quadrado(deadend/intersec)*/
 	//double posicao_inicialt = 0;

@@ -9,7 +9,7 @@
 using namespace std;
 
 enum estados{faixa, leu_nda, leu_fora, intersec, terminado}; //usado na classe Mapeamento
-enum status{ndStatus, em_frente, direita, esquerda};// usado na classe Mapeamento
+enum direcao{ndStatus, frente, direita, esquerda, traz};// usado na classe Mapeamento
 enum Cor{ndCor, preto, branco, vermelho, verde, azul, fora}; // cores possiveis
 enum flag_aceleracao{ndAcel, linha_reta, parar, girar}; // usado dentro do Controlador_robo
 
@@ -26,9 +26,9 @@ struct HSV{ // utilizado na classe Sensor_cor_hsv
 
 // usado na classe MApeamento
 struct status_checkpoint {
-	status checkpoint_vermelho;
-	status checkpoint_verde;
-	status checkpoint_azul;
+	direcao checkpoint_vermelho;
+	direcao checkpoint_verde;
+	direcao checkpoint_azul;
 
 };
 
