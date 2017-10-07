@@ -128,6 +128,15 @@ double Controlador_robo::get_velocidade(){
 }
 
 
+/*
+ * retorna o tamanho do meu pintao
+ * distancia entre o eixo e os sensores de cor
+ */
+double Controlador_robo::get_pintao(){
+	return tamanho_do_pintao;
+}
+
+
 void Controlador_robo::reset_motores(){
 	motorE->reset();
 	motorD->reset();

@@ -16,7 +16,7 @@ using namespace std;
 
 typedef chrono::high_resolution_clock Time;
 
-/*
+
 
 bool colorido(Sensor_cor_hsv cor, string lado){
 	if(lado == "esquerdo"){
@@ -175,13 +175,13 @@ void teste_luana_alinhamento(){
 
 
 				else{ // esta dentro
-					robot.alinhar_para_traz(&cor);
+					robot.alinhar(&cor, direcao::traz);
 					robot.andar(50, 0.195);
 					robot.girar(90);
 					while(robot.get_estado() == flag_aceleracao::girar);
 					usleep(1000*800);
 					robot.andar(50, 0.19);
-					robot.alinhar_para_traz(&cor);
+					robot.alinhar(&cor, direcao::traz);
 					robot.andar(70);
 					while(cor.ler_cor_E() == cor_E || cor.ler_cor_D() == cor_D);
 					usleep(1000*500);
@@ -197,7 +197,7 @@ void teste_luana_alinhamento(){
 	robot.finalizar_thread_aceleracao();
 	usleep(0.2*1000000);
 }
-*/
+
 
 
 void teste_rogerio(){
@@ -507,6 +507,7 @@ void teste_rogerio_alinhamento(){
 	}
 }
 
+/*
 void teste_luana_mapeamento(){
 	Controlador_robo robot(true, "debug posicao direto no pwm.m");
 	Sensor_cor_hsv cor(ev3dev::INPUT_1, ev3dev::INPUT_2);
@@ -523,14 +524,14 @@ void teste_luana_mapeamento(){
 	map.mapear(&robot, &cor);
 
 }
+*/
 
 int main(){
 	system("setfont Greek-TerminusBold20x10.psf.gz");
-	//teste_luana_alinhamento();
+	teste_luana_alinhamento();
 	//teste_rogerio();
 	//teste_rogerio_alinhamento();
-
-	teste_luana_mapeamento();
+	//teste_luana_mapeamento();
 
 	cout << "Teste finalizado. Bye!" << endl;
 	usleep (1000000);
