@@ -20,8 +20,11 @@ using namespace std;
 
 class Mapeamento {
 public:
-	/* Método de controle da jornada do robo pela "cidade" */
-	void mapeamento(Controlador_robo *, Sensor_cor_hsv *);
+	/*
+	 *  Método de controle da jornada do robo pela "cidade"
+	 *  segura a execucao ate terminar a cidade
+	 */
+	void mapear(Controlador_robo *, Sensor_cor_hsv *);
 
 	/* Métodos de controle das Threads de mapeamento dos bonecos (sensor ultrassom)*/
 	bool inicializar_threads_ultra();
@@ -71,7 +74,7 @@ private:
 
 	/* Flags mapeamento intersecção*/
 	Cor cor_atual = Cor::ndCor;
-	direcao status_atual = direcao::ndStatus;
+	direcao direcao_atual = direcao::ndStatus;
 
 	/* Status de cada intersecção*/
 	status_checkpoint cp = {direcao::ndStatus, direcao::ndStatus, direcao::ndStatus};

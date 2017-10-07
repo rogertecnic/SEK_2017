@@ -338,6 +338,7 @@ void teste_rogerio(){
 void teste_rogerio_alinhamento(){
 	Controlador_robo robot(true, "debug posicao direto no pwm.m"); // fator_croda = 1.005
 	Sensor_cor_hsv cor(ev3dev::INPUT_1, ev3dev::INPUT_2);
+
 	robot.calibra_sensor_cor(&cor);
 	robot.inicializar_thread_aceleracao();
 
@@ -467,13 +468,13 @@ void teste_rogerio_alinhamento(){
 					robot.andar(70);
 				}
 				else{ // esta dentro
-					robot.alinhar_para_traz(&cor);
+					robot.alinhar(&cor, direcao::traz);
 					robot.andar(50, 0.195);
 					robot.girar(90);
 					while(robot.get_estado() == flag_aceleracao::girar){}
 					usleep(1000*800);
 					robot.andar(50, 0.19);
-					robot.alinhar_para_traz(&cor);
+					robot.alinhar(&cor, direcao::traz);
 					robot.andar(70);
 					while(cor.ler_cor_E() == cor_E ||
 							cor.ler_cor_D() == cor_D){}
@@ -519,7 +520,7 @@ void teste_luana_mapeamento(){
 
 	Mapeamento map;
 
-	map.mapeamento(&robot, &cor);
+	map.mapear(&robot, &cor);
 
 }
 

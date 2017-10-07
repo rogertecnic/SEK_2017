@@ -1,6 +1,6 @@
 #include <Ultra_Som.h>
 
-//TODO terminar o .cpp do ultrassom, verificar se o ultrassom nxt esta terminado
+
 Ultra_Som::Ultra_Som(string sensor_port, double dist_max, double dist_min)
 : dist_max(dist_max),
   dist_min(dist_min),

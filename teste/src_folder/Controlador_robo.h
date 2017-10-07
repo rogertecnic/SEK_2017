@@ -27,8 +27,7 @@ public:
 	void andar(int pwm, double distancia_metros);
 	void parar();
 	void girar(int angulo_robo_graus); // positivo anti-horario
-	void alinhar_para_traz(Sensor_cor_hsv *cor);
-	void alinhar(Sensor_cor_hsv *cor);
+	void alinhar(Sensor_cor_hsv *cor, direcao direcao);
 
 	bool inicializar_thread_aceleracao();
 	bool finalizar_thread_aceleracao();

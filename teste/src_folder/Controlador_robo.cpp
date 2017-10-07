@@ -50,62 +50,21 @@ void Controlador_robo::girar(int angulo_robo_graus){
 }
 
 
-void Controlador_robo::alinhar_para_traz(Sensor_cor_hsv *cor){
+void Controlador_robo::alinhar(Sensor_cor_hsv *cor, direcao dir){
 	int cor_E;
 	int cor_D;
-	int v = -15;
+	int v_ajuste = -15;
 
 	do{
-		andar(v, 0.01);
+		andar(v_ajuste, 0.01);
 		cor_E = cor->ler_cor_E();
 		cor_D = cor->ler_cor_D();
-		v = v*(-1);
+		v_ajuste = v_ajuste*(-1);
 	}while(cor_E == Cor::ndCor || cor_D == Cor::ndCor);
 
 	cout<<"alinhando:"<<cor_E<<";"<<cor_D<<endl;
-	motorD->set_duty_cycle_sp(25);
-	motorE->set_duty_cycle_sp(25); // sentido inverso devido a reducao de engrenagem
-	motorE->run_direct();
-	motorD->run_direct();
-	bool motorE_parado = false,
-			motorD_parado = false;
-	while(!motorE_parado || !motorD_parado){
-		if(cor->ler_cor_D() != cor_D && !motorD_parado){
-			usleep(1000*80);
-			if(cor->ler_cor_D() != cor_D){
-				motorD->run_forever(); // pra n dar pau no stop
-				motorD->stop();
-				motorD_parado = true;
-			}
-		}
-		if(cor->ler_cor_E() != cor_E && !motorE_parado){
-			usleep(1000*80);
-			if(cor->ler_cor_E() != cor_E){
-				motorE->run_forever(); // pra n dar pau no stop
-				motorE->stop();
-				motorE_parado = true;
-			}
-		}
-	}
-	usleep(1000*300);
-}
-
-
-void Controlador_robo::alinhar(Sensor_cor_hsv *cor){
-	int cor_E;
-	int cor_D;
-	int v = -15;
-
-	do{
-		andar(v, 0.01);
-		cor_E = cor->ler_cor_E();
-		cor_D = cor->ler_cor_D();
-		v = v*(-1);
-	}while(cor_E == Cor::ndCor || cor_D == Cor::ndCor);
-
-	cout<<"alinhando:"<<cor_E<<";"<<cor_D<<endl;
-	motorD->set_duty_cycle_sp(25);
-	motorE->set_duty_cycle_sp(25); // sentido inverso devido a reducao de engrenagem
+	motorD->set_duty_cycle_sp(dir == direcao::traz?25:-25);
+	motorE->set_duty_cycle_sp(dir == direcao::traz?25:-25); // sentido inverso devido a reducao de engrenagem
 	motorE->run_direct();
 	motorD->run_direct();
 	bool motorE_parado = false,

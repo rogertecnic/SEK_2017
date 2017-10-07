@@ -33,7 +33,7 @@ struct status_checkpoint {
 };
 
 
-
+/*
 // usado na classe MApeamento
 struct no_intersec {
 	bool pre, pos;
@@ -42,6 +42,6 @@ struct no_intersec {
 	vector<double> posicao_pre_e;
 	vector<double> posicao_pos_e;
 };
-
+*/
 
 #endif
