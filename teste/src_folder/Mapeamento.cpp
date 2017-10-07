@@ -1,6 +1,14 @@
 #include "Mapeamento.h"
 
-void Mapeamento::mapear(Controlador_robo *robo, Sensor_cor_hsv *sensor){
+Mapeamento::Mapeamento(Controlador_robo *robo, Sensor_cor_hsv *sensor, Ultrassom_nxt *ultraE, Ultrassom_nxt *ultraD)
+:robo(robo), sensor(sensor), ultraE(ultraE), ultraD(ultraD)
+{
+	arq_map = new Arquivos_mapeamento;
+
+}
+
+
+void Mapeamento::mapear(){
 	cout << endl << endl << endl << "bora mapear!!" << endl;
 	robo->andar(70);
 	direcao_atual = direcao::frente;
@@ -125,7 +133,7 @@ void Mapeamento::mapear(Controlador_robo *robo, Sensor_cor_hsv *sensor){
 					robo->andar(50, 0.195);
 					cor_E = sensor->ler_cor_E();
 					cor_D = sensor->ler_cor_D();
-					if(!fim_da_cidade(robo, sensor)) mapeamento_intersec(robo, sensor);
+					if(!fim_da_cidade()) mapeamento_intersec();
 					else {
 						sentido_navegacao = -1;
 						//finalizar_threads_ultra();
@@ -156,11 +164,11 @@ void Mapeamento::mapear(Controlador_robo *robo, Sensor_cor_hsv *sensor){
 
 
 
-void Mapeamento::mapeamento_intersec(Controlador_robo *robo, Sensor_cor_hsv *sensor) {
+void Mapeamento::mapeamento_intersec() {
 	/*Primeira intersecção*/
 	if(cor_atual == Cor::ndCor){
-		if((colorido((*sensor), "esquerdo")) || (colorido((*sensor), "direito"))){
-			if(colorido((*sensor), "esquerdo")) cor_atual = sensor->ler_cor_E();
+		if((colorido("esquerdo")) || (colorido("direito"))){
+			if(colorido("esquerdo")) cor_atual = sensor->ler_cor_E();
 			else cor_atual = sensor->ler_cor_D();
 		}
 
@@ -243,7 +251,7 @@ void Mapeamento::mapeamento_intersec(Controlador_robo *robo, Sensor_cor_hsv *sen
 			}
 
 			else if((!dead_end)&&
-					((!cor_ja_vista((*sensor), "esquerdo")) || (!cor_ja_vista((*sensor), "direito") )))
+					((!cor_ja_vista("esquerdo")) || (!cor_ja_vista("direito") )))
 			{
 				if(cor_atual == Cor::vermelho)
 					cp.checkpoint_vermelho = direcao_atual;
@@ -253,8 +261,8 @@ void Mapeamento::mapeamento_intersec(Controlador_robo *robo, Sensor_cor_hsv *sen
 					cp.checkpoint_azul = direcao_atual;
 
 
-				if((colorido((*sensor), "esquerdo")) || (colorido((*sensor), "direito"))){
-					if(colorido((*sensor), "esquerdo")) cor_atual = sensor->ler_cor_E();
+				if((colorido("esquerdo")) || (colorido("direito"))){
+					if(colorido("esquerdo")) cor_atual = sensor->ler_cor_E();
 					else cor_atual = sensor->ler_cor_D();
 				}
 
@@ -265,8 +273,8 @@ void Mapeamento::mapeamento_intersec(Controlador_robo *robo, Sensor_cor_hsv *sen
 			}
 
 			else if(!dead_end){
-				if((colorido((*sensor), "esquerdo")) || (colorido((*sensor), "direito"))){
-					if(colorido((*sensor), "esquerdo") && sensor->ler_cor_E() == cor_atual){
+				if((colorido("esquerdo")) || (colorido("direito"))){
+					if(colorido("esquerdo") && sensor->ler_cor_E() == cor_atual){
 						if (!confirmacao_status){
 							if(cor_atual == Cor::vermelho)
 								cp.checkpoint_vermelho = direcao_atual;
@@ -278,12 +286,12 @@ void Mapeamento::mapeamento_intersec(Controlador_robo *robo, Sensor_cor_hsv *sen
 							confirmacao_status = true;
 
 						}
-						caminho_certo(robo, sensor);
+						caminho_certo();
 						estd = estados::faixa;
 
 					}
 
-					else if(colorido((*sensor), "direito") && sensor->ler_cor_D() == cor_atual) {
+					else if(colorido("direito") && sensor->ler_cor_D() == cor_atual) {
 						if (!confirmacao_status){
 							if(cor_atual == Cor::vermelho)
 								cp.checkpoint_vermelho = direcao_atual;
@@ -295,12 +303,12 @@ void Mapeamento::mapeamento_intersec(Controlador_robo *robo, Sensor_cor_hsv *sen
 							confirmacao_status = true;
 
 						}
-						caminho_certo(robo, sensor);
+						caminho_certo();
 						estd = estados::faixa;
 
 					}
 
-					else if((!cor_ja_vista((*sensor), "esquerdo")) || (!cor_ja_vista((*sensor), "direito") ))
+					else if((!cor_ja_vista("esquerdo")) || (!cor_ja_vista("direito") ))
 					{
 						if (!confirmacao_status){
 							if(cor_atual == Cor::vermelho)
@@ -313,7 +321,7 @@ void Mapeamento::mapeamento_intersec(Controlador_robo *robo, Sensor_cor_hsv *sen
 							confirmacao_status = true;
 
 						}
-						caminho_certo(robo, sensor);
+						caminho_certo();
 						estd = estados::faixa;
 
 					}
@@ -328,7 +336,7 @@ void Mapeamento::mapeamento_intersec(Controlador_robo *robo, Sensor_cor_hsv *sen
 }
 
 
-void Mapeamento::caminho_certo (Controlador_robo *robo, Sensor_cor_hsv *sensor){
+void Mapeamento::caminho_certo (){
 
 	if (sensor->ler_cor_E() == Cor::vermelho && sensor->ler_cor_D() == Cor::vermelho){
 		if (cp.checkpoint_vermelho == direcao::direita)
@@ -384,7 +392,7 @@ void Mapeamento::caminho_certo (Controlador_robo *robo, Sensor_cor_hsv *sensor){
 }
 
 
-bool Mapeamento::fim_da_cidade(Controlador_robo *robo, Sensor_cor_hsv *sensor){
+bool Mapeamento::fim_da_cidade(){
 	robo->andar(30, 0.040);
 	if (sensor->ler_cor_E() != cor_E && sensor->ler_cor_D() != cor_D){
 		cor_E = sensor->ler_cor_E();
@@ -398,13 +406,13 @@ bool Mapeamento::fim_da_cidade(Controlador_robo *robo, Sensor_cor_hsv *sensor){
 }
 
 
-bool Mapeamento::colorido(Sensor_cor_hsv cor, string lado){
+bool Mapeamento::colorido(string lado){
 	if(lado == "esquerdo"){
-		if(cor.ler_cor_E() != Cor::branco && cor.ler_cor_E() != Cor::fora && cor.ler_cor_E() != Cor::ndCor)
+		if((*sensor).ler_cor_E() != Cor::branco && (*sensor).ler_cor_E() != Cor::fora && (*sensor).ler_cor_E() != Cor::ndCor)
 			return true;
 	}
 	else {
-		if(cor.ler_cor_D() != Cor::branco && cor.ler_cor_D() != Cor::fora && cor.ler_cor_D() != Cor::ndCor)
+		if((*sensor).ler_cor_D() != Cor::branco && (*sensor).ler_cor_D() != Cor::fora && (*sensor).ler_cor_D() != Cor::ndCor)
 			return true;
 	}
 	return false;
@@ -414,9 +422,9 @@ bool Mapeamento::colorido(Sensor_cor_hsv cor, string lado){
  * Verde == 4
  * Azul == 5
  */
-bool Mapeamento::cor_ja_vista(Sensor_cor_hsv cor, string lado){
+bool Mapeamento::cor_ja_vista(string lado){
 	if(lado == "esquerdo"){
-		switch(cor.ler_cor_E()){
+		switch((*sensor).ler_cor_E()){
 		case 3:
 			if( cp.checkpoint_vermelho != direcao::ndStatus) return true;
 			break;
@@ -433,7 +441,7 @@ bool Mapeamento::cor_ja_vista(Sensor_cor_hsv cor, string lado){
 	}
 
 	else if(lado == "direito"){
-		switch(cor.ler_cor_D()){
+		switch((*sensor).ler_cor_D()){
 		case 3:
 			if( cp.checkpoint_vermelho != direcao::ndStatus) return true;
 			break;
@@ -453,9 +461,8 @@ bool Mapeamento::cor_ja_vista(Sensor_cor_hsv cor, string lado){
 }
 
 
-/*
-
 bool Mapeamento::inicializar_threads_ultra(){
+
 	mapeamento_bonecoD = thread(&Mapeamento::loop_mapeamento_bonecoD, this);
 	mapeamento_bonecoD.detach();
 	usleep(100000);
@@ -464,107 +471,106 @@ bool Mapeamento::inicializar_threads_ultra(){
 	mapeamento_bonecoE.detach();
 	usleep(100000);
 
-	return thread_rodando;
+	return thread_rodando_bonecos;
 }
 
 
 bool Mapeamento::finalizar_threads_ultra(){
-	if(thread_rodando)
-		thread_rodando = false;
+	if(thread_rodando_bonecos)
+		thread_rodando_bonecos = false;
 
 	usleep(1000*100);
 	return true;
-}*/
-
-//FIXME arrumar o loop de mapeamento do boneco, precisa de 2 funcoes mesmo?
-//void Mapeamento::loop_mapeamento_bonecoE(Controlador_robo *robo, Ultrassom_nxt *ultraE){
-//	while(thread_rodando){
-//		if(estd == estados::intersec) interseccao = true;
-//		else interseccao = false;
-//
-//		//Primeiro nó(intersecção)
-//		if(interseccao && map_boneco_inicio){
-//			(*it_no_atual).pre = false;
-//			map_boneco_inicio = false;
-//		}
-//
-//		//Se chegar numa intersecção sem bonecos detectados no caminho
-//		else if(!map_boneco_inicio && interseccao && !leu_boneco){
-//			it_no_atual++;
-//			(*it_no_atual).pre = false;
-//			(*it_no_anterior).pos = false;
-//		}
-//
-//		//Se chegar numa intersecção com um boneco detectado no caminho até lá
-//		else if(!map_boneco_inicio && interseccao && leu_boneco){
-//			it_no_atual++;
-//			posicao_intersec = robo->get_distancia();
-//
-//			(*it_no_atual).pre = true;
-//
-//			j = (*it_no_anterior).posicao_pos_e.size() - 1;
-//			for(unsigned i = 0; i < (*it_no_anterior).posicao_pos_e.size(); i++){
-//				(*it_no_atual).posicao_pre_e[i] = ( posicao_intersec - (*it_no_anterior).posicao_pos_e[j] );
-//				j--;
-//
-//			}
-//		}
-//
-//		//Entre intersecções
-//		else if(!map_boneco_inicio&& !interseccao){
-//			if(ultraE->le_centimetro() <= distancia_boneco){
-//				(*it_no_atual).posicao_pos_e.push_back(robo->get_distancia());
-//				if(!leu_boneco){
-//					leu_boneco = true;
-//					(*it_no_atual).pos = true;
-//				}
-//			}
-//		}
-//	}
-//}
+}
 
 
-//void Mapeamento::loop_mapeamento_bonecoD(Controlador_robo *robo, Ultrassom_nxt *ultraD){
-//	//Primeiro nó(intersecção)
-//	if(estd == estados::intersec) interseccao = true;
-//	else interseccao = false;
-//
-//	if(interseccao && map_boneco_inicio){
-//		(*it_no_atual).pre = false;
-//		map_boneco_inicio = false;
-//	}
-//
-//	//Se chegar numa intersecção sem bonecos detectados no caminho
-//	else if(!map_boneco_inicio && interseccao && !leu_boneco){
-//		(*it_no_atual).pre = false;
-//		(*it_no_anterior).pos = false;
-//	}
-//
-//	//Se chegar numa intersecção com um boneco detectado no caminho até lá
-//	else if(!map_boneco_inicio && interseccao && leu_boneco){
-//
-//		posicao_intersec = robo->get_distancia();
-//
-//		(*it_no_atual).pre = true;
-//
-//		j = (*it_no_anterior).posicao_pos_d.size() - 1;
-//		for(unsigned i = 0; i < (*it_no_anterior).posicao_pos_d.size(); i++){
-//			(*it_no_atual).posicao_pre_d[i] = ( posicao_intersec - (*it_no_anterior).posicao_pos_d[j] );
-//			j--;
-//
-//		}
-//	}
-//
-//	//Entre intersecções
-//	else if(!map_boneco_inicio&& !interseccao){
-//		if(ultraD->le_centimetro() <= distancia_boneco){
-//			(*it_no_atual).posicao_pos_d.push_back(robo->get_distancia());
-//			if(!leu_boneco){
-//				leu_boneco = true;
-//				(*it_no_atual).pos = true;
-//			}
-//		}
-//	}
-//}
+void Mapeamento::loop_mapeamento_bonecoE(){
+	while(thread_rodando_bonecos){
+		if(estd == estados::intersec) interseccao = true;
+		else interseccao = false;
+
+		//Primeiro nó(intersecção)
+		if(interseccao && map_boneco_inicio){
+			(*it_no_atual).pre = false;
+			map_boneco_inicio = false;
+		}
+
+		//Se chegar numa intersecção sem bonecos detectados no caminho
+		else if(!map_boneco_inicio && interseccao && !leu_boneco){
+			it_no_atual++;
+			(*it_no_atual).pre = false;
+			(*it_no_anterior).pos = false;
+		}
+
+		//Se chegar numa intersecção com um boneco detectado no caminho até lá
+		else if(!map_boneco_inicio && interseccao && leu_boneco){
+			it_no_atual++;
+			posicao_intersec = robo->get_distancia();
+
+			(*it_no_atual).pre = true;
+
+			j = (*it_no_anterior).posicao_pos_e.size() - 1;
+			for(unsigned i = 0; i < (*it_no_anterior).posicao_pos_e.size(); i++){
+				(*it_no_atual).posicao_pre_e[i] = ( posicao_intersec - (*it_no_anterior).posicao_pos_e[j] );
+				j--;
+
+			}
+		}
+
+		//Entre intersecções
+		else if(!map_boneco_inicio&& !interseccao){
+
+			if(ultraE->le_centimetro() <= distancia_boneco){
+				(*it_no_atual).posicao_pos_e.push_back(robo->get_distancia());
+				if(!leu_boneco){
+					leu_boneco = true;
+					(*it_no_atual).pos = true;
+				}
+			}
+		}
+	}
+}
+
+void Mapeamento::loop_mapeamento_bonecoD(){
+	//Primeiro nó(intersecção)
+	if(estd == estados::intersec) interseccao = true;
+	else interseccao = false;
+
+	if(interseccao && map_boneco_inicio){
+		(*it_no_atual).pre = false;
+		map_boneco_inicio = false;
+	}
+	//Se chegar numa intersecção sem bonecos detectados no caminho
+	else if(!map_boneco_inicio && interseccao && !leu_boneco){
+		(*it_no_atual).pre = false;
+		(*it_no_anterior).pos = false;
+	}
+
+	//Se chegar numa intersecção com um boneco detectado no caminho até lá
+	else if(!map_boneco_inicio && interseccao && leu_boneco){
+
+		posicao_intersec = robo->get_distancia();
+
+		(*it_no_atual).pre = true;
+
+		j = (*it_no_anterior).posicao_pos_d.size() - 1;
+		for(unsigned i = 0; i < (*it_no_anterior).posicao_pos_d.size(); i++){
+			(*it_no_atual).posicao_pre_d[i] = ( posicao_intersec - (*it_no_anterior).posicao_pos_d[j] );
+			j--;
+
+		}
+	}
+
+	//Entre intersecções
+	else if(!map_boneco_inicio&& !interseccao){
+		if(ultraD->le_centimetro() <= distancia_boneco){
+			(*it_no_atual).posicao_pos_d.push_back(robo->get_distancia());
+			if(!leu_boneco){
+				leu_boneco = true;
+				(*it_no_atual).pos = true;
+			}
+		}
+	}
+}
 
 
