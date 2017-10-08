@@ -106,7 +106,7 @@ private:
 	int cor_E = 0, cor_D = 0;
 	double 	dist = 0, ang_robo = 0, posicao_inicial = 0, posicao_final = 0;
 
-	estados estd = estados::faixa;
+	estados_Mapeamento estd = estados_Mapeamento::faixa;
 
 
 	/********************Mapeamento dos bonecos************************/

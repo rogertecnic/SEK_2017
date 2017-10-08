@@ -8,7 +8,7 @@
 
 using namespace std;
 
-enum estados{faixa, leu_nda, leu_fora, intersec, terminado}; //usado na classe Mapeamento
+enum estados_Mapeamento{faixa, leu_fora, leu_nda, intersec, terminado, atencao}; //usado na classe Mapeamento
 enum direcao{ndStatus, frente, direita, esquerda, traz};// usado na classe Mapeamento
 enum Cor{ndCor, preto, branco, vermelho, verde, azul, fora}; // cores possiveis
 enum flag_aceleracao{ndAcel, linha_reta, parar, girar}; // usado dentro do Controlador_robo
