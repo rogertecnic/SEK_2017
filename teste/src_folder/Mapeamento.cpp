@@ -54,39 +54,42 @@ void Mapeamento::mapear(){
 			if(corE == Cor::ndCor || corD == Cor::ndCor){
 				break;
 			}
+			if (corE == Cor::ndCor || corD == Cor::ndCor)
+				estd = estados_Mapeamento::leu_nda;
+
 			estd = estados_Mapeamento::intersec;
-				break;
+			break;
 
 
 			/* Caso ler nada*/
-			//		case estados_Mapeamento::leu_nda:
-			//			cout << "Estado: " << estd << endl;
-			//			if(corD == Cor::ndCor || corE == Cor::ndCor)
-			//				count_nda ++;
-			//
-			//			else{
-			//				count_nda = 0;
-			//
-			//				if (corE == Cor::fora || corD == Cor::fora)
-			//					estd = estados_Mapeamento::leu_fora;
-			//				else if( (corE != Cor::fora && corE != Cor::ndCor && corE != Cor::branco) ||
-			//						(corD != Cor::fora && corD != Cor::ndCor && corD != Cor::branco) )
-			//					estd = estados_Mapeamento::intersec;
-			//				else if(corE == Cor::branco || corD == Cor::branco)
-			//					estd = estados_Mapeamento::faixa;
-			//
-			//			}
-			//
-			//			if(count_nda >= 10){
-			//				cout<<"viu nda 10"<<endl;
-			//				robo->parar();
-			//				robo->andar(-100);
-			//				usleep(1000*800);
-			//				robo->girar(30);
-			//				robo->andar(70);
-			//			}
-			//
-			//			break;
+		case estados_Mapeamento::leu_nda:
+			cout << "Estado: " << estd << endl;
+			if(corD == Cor::ndCor || corE == Cor::ndCor)
+				count_nda ++;
+
+			else{
+				count_nda = 0;
+
+				if (corE == Cor::fora || corD == Cor::fora)
+					estd = estados_Mapeamento::leu_fora;
+				else if( (corE != Cor::fora && corE != Cor::ndCor && corE != Cor::branco) ||
+						(corD != Cor::fora && corD != Cor::ndCor && corD != Cor::branco) )
+					estd = estados_Mapeamento::intersec;
+				else if(corE == Cor::branco || corD == Cor::branco)
+					estd = estados_Mapeamento::faixa;
+
+			}
+
+			if(count_nda >= 10){
+				cout<<"viu nda 10"<<endl;
+				robo->parar();
+				robo->andar(-100);
+				usleep(1000*800);
+				robo->girar(30);
+				robo->andar(70);
+			}
+
+			break;
 
 
 			/* Caso ler fora*/
