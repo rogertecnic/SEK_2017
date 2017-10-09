@@ -9,34 +9,61 @@ Mapeamento::Mapeamento(Controlador_robo *robo, Sensor_cor_hsv *sensor, Ultrassom
 
 
 void Mapeamento::mapear(){
+	//TODO verificar se eh necessario tratar os problemas a mais
 	cout << endl << endl << endl << "bora mapear!!" << endl;
-	direcao_atual = direcao::frente;
+	direcao_atual = direcao::ndStatus;
 	sentido_navegacao = 1;
 	Cor corE, corD;
-	int count_ndCor = 0;
+	int count_ndCor = 0,
+			cout_intersec = 0;
 
 	while(estd != estados_Mapeamento::terminado){
 		corE = sensor->ler_cor_E();
 		corD = sensor->ler_cor_D();
 
 		switch (estd){
-		/* Caso estiver andando na faixa*/
-		case estados_Mapeamento::faixa:
-			count_ndCor = 0;
-			robo->andar(70);
-			cout << "Estado: " << "rua" << endl;
-			if (corE != Cor::branco || corD == Cor::branco)
-				estd = estados_Mapeamento::atencao;
-			//				estd = estados_Mapeamento::leu_nda;
-			//			else if( (corE != Cor::fora && corE != Cor::ndCor && corE != Cor::branco) ||
-			//					(corD != Cor::fora && corD != Cor::ndCor && corD != Cor::branco) )
-			//				estd = estados_Mapeamento::intersec;
-			//			else if (corE == Cor::fora || corD == Cor::fora)
-			//				estd = estados_Mapeamento::leu_fora;
+		case estados_Mapeamento::leu_fora:
+			cout << "fora:";
+			cout_intersec = 0;
+			if(corE == Cor::fora)
+				realinha(direcao::esquerda);
+			else if (corD == Cor::fora)
+				realinha(direcao::direita);
+			else estd = estados_Mapeamento::atencao;
 
 			break;
 
-		case estados_Mapeamento::atencao: // algum sensor viu algo que nao era branco
+
+		case estados_Mapeamento::intersec:
+			cout << "intersec" << endl;
+			intersec();
+			if(corE == Cor::branco && corD == Cor::branco)
+			{
+				estd = estados_Mapeamento::faixa;
+				break;
+			} else {
+				robo->parar();
+				cout << "o robo terminou a intersecao e nao esta no branco" << endl;
+				// colocar uma espera de botao
+			}
+			break;
+
+
+		case estados_Mapeamento::faixa:
+			cout << "faixa" << endl;
+			count_ndCor = 0;
+			cout_intersec = 0;
+			robo->andar(70);
+			if (corE != Cor::branco || corD != Cor::branco)
+				estd = estados_Mapeamento::atencao;
+
+			break;
+
+
+		case estados_Mapeamento::atencao:
+			/* TODO fazer tratamento do caso que sensor fique muito tempo em uma interface
+			 */
+			cout << "atencao" << endl;
 			robo->andar(30);
 			if(corE == Cor::branco && corD == Cor::branco)
 			{
@@ -48,144 +75,15 @@ void Mapeamento::mapear(){
 				estd = estados_Mapeamento::leu_fora;
 				break;
 			}
-			/* se os 2 nao foram branco e um ou outro n foi fora entao um deles
-			 * viu cor (rgbp) ou ndCor, logo qual deles nao viu branco?
-			 */
-			if(corE == Cor::ndCor || corD == Cor::ndCor){
-				break;
-			}
-			if (corE == Cor::ndCor || corD == Cor::ndCor)
-				estd = estados_Mapeamento::leu_nda;
-
-			estd = estados_Mapeamento::intersec;
-			break;
-
-
-			/* Caso ler nada*/
-		case estados_Mapeamento::leu_nda:
-			cout << "Estado: " << estd << endl;
-			if(corD == Cor::ndCor || corE == Cor::ndCor)
-				count_nda ++;
-
-			else{
-				count_nda = 0;
-
-				if (corE == Cor::fora || corD == Cor::fora)
-					estd = estados_Mapeamento::leu_fora;
-				else if( (corE != Cor::fora && corE != Cor::ndCor && corE != Cor::branco) ||
-						(corD != Cor::fora && corD != Cor::ndCor && corD != Cor::branco) )
-					estd = estados_Mapeamento::intersec;
-				else if(corE == Cor::branco || corD == Cor::branco)
-					estd = estados_Mapeamento::faixa;
-
-			}
-
-			if(count_nda >= 10){
-				cout<<"viu nda 10"<<endl;
-				robo->parar();
-				robo->andar(-100);
-				usleep(1000*800);
-				robo->girar(30);
-				robo->andar(70);
-			}
-
-			break;
-
-
-			/* Caso ler fora*/
-		case estados_Mapeamento::leu_fora:
-			count_ndCor = 0;
-			cout << "Estado: " << "fora" << endl;
-			if(corE == Cor::fora && corD == Cor::branco){
-				cout<<"saiu E"<<endl;
-				robo->parar();
-				robo->andar(-40);
-				usleep(1000*1000);
-				robo->girar(-10);
-				while(robo->get_estado() == flag_aceleracao::girar);
-				robo->andar(70);
-			}
-
-
-			else if(corD == Cor::fora && corE == Cor::branco){
-				cout<<"saiu D"<<endl;
-				robo->parar();
-				robo->andar(-40);
-				usleep(1000*1000);
-				robo->girar(10);
-				while(robo->get_estado() == flag_aceleracao::girar);
-				robo->andar(70);
-			}
-
-			estd = estados_Mapeamento::faixa;
-
-			break;
-
-			/* Caso entrar em uma intersecção*/
-		case estados_Mapeamento::intersec:
-			cout << "Estado: " << estd << endl;
-			robo->andar(30);
-			usleep(1000*100);
-			cor_E = corE;
-			cor_D = corD;
-
-			if( (corE != Cor::fora && corE != Cor::ndCor && corE != Cor::branco) ||
-					(corD != Cor::fora && corD != Cor::ndCor && corD != Cor::branco) )
+			if((corE == Cor::vermelho && corD == Cor::vermelho) ||
+					(corE == Cor::verde && corD == Cor::verde) ||
+					(corE == Cor::azul && corD == Cor::azul) ||
+					(corE == Cor::preto && corD == Cor::preto))
 			{
-				cout<<"viu cor"<<endl;
-
-				posicao_inicial = robo->get_distancia();
-				while(robo->get_distancia() < posicao_inicial + 0.04);
-				robo->parar();
-
-				if(corE != cor_E){
-					cout<<"saiu E"<<endl;
-					robo->parar();
-					robo->andar(-40);
-					usleep(1000*2000);
-					robo->girar(-10);
-					while(robo->get_estado() == flag_aceleracao::girar);
-					robo->andar(70);
-				}
-
-				else if(corD != cor_D){
-					cout<<"saiu D"<<endl;
-					robo->parar();
-					robo->andar(-40);
-					usleep(1000*2000);
-					robo->girar(10);
-					while(robo->get_estado() == flag_aceleracao::girar);
-					robo->andar(70);
-				}
-
-
-				else{ // esta dentro
-					robo->alinhar(sensor, direcao::traz);
-					robo->andar(50, 0.195);
-					cor_E = corE;
-					cor_D = corD;
-					if(!fim_da_cidade()) mapeamento_intersec();
-					else {
-						sentido_navegacao = -1;
-						//finalizar_threads_ultra();
-						arq_map->arquivo_map(cp);
-						estd = estados_Mapeamento::terminado;
-						break;
-					}
-					/*
-					robo->girar(90);
-					while(robo->get_estado() == flag_aceleracao::girar);
-					usleep(1000*800);
-					robo->andar(70);
-					while(corE != Cor::branco && corD != Cor::branco);
-					robo->alinhar(sensor, direcao::traz);
-					robo->andar(70);
-					while(corE == cor_E || corD == cor_D);
-					usleep(1000*500);
-
-					estd = estados::faixa;
-					 */
-				}
+				cout_intersec ++;
+				if(cout_intersec >= 3)
+					estd = estados_Mapeamento::intersec;
+				break;
 			}
 
 			break;
@@ -196,16 +94,31 @@ void Mapeamento::mapear(){
 
 
 void Mapeamento::mapeamento_intersec() {
+	if(cor_E != cor_D)
+	{
+		robo->parar();
+		cout << "mapeamento_intersec sensores com leituras diferentes, press enter" << endl;
+		while(!ev3dev::button::enter.process());
+		usleep(1000000*0.1);
+		while(!ev3dev::button::enter.process());
+	}
+
 	/*Primeira intersecção*/
 	if(cor_atual == Cor::ndCor){
-		if((colorido("esquerdo")) || (colorido("direito"))){
-			if(colorido("esquerdo")) cor_atual = sensor->ler_cor_E();
-			else cor_atual = sensor->ler_cor_D();
-		}
+		// o robo esta com os 2 sensores no colorido
+		//		if((colorido("esquerdo")) || (colorido("direito"))){
+		//			if(colorido("esquerdo")) cor_atual = sensor->ler_cor_E();
+		//			else cor_atual = sensor->ler_cor_D();
+		//		}
 
+		cout << "primeira intersec" << endl;
+		cor_atual = sensor->ler_cor_D();
+		direcao_atual = direcao::direita;
 		usleep(1000*800);
-		robo->andar(50, 0.19);
-		robo->alinhar(sensor, direcao::traz);
+		//		robo->andar(50, 0.19);
+		//		robo->alinhar(sensor, direcao::traz);
+		robo->girar(-90);
+		while(robo->get_estado() == flag_aceleracao::girar);
 		robo->andar(70);
 		while(sensor->ler_cor_E() == cor_E || sensor->ler_cor_D() == cor_D);
 		usleep(1000*500);
@@ -221,12 +134,11 @@ void Mapeamento::mapeamento_intersec() {
 	else{
 
 		/*Dead-end*/
+		cout << "cheguei Dead-end" << endl;
 		if(sensor->ler_cor_D() == Cor::preto || sensor->ler_cor_E() == Cor::preto){
-			robo->girar(360);
+			robo->girar(180);
 			while(robo->get_estado() == flag_aceleracao::girar);
-			usleep(1000*800);
-			robo->andar(50, 0.19);
-			robo->alinhar(sensor, direcao::traz);
+			robo->alinhar(sensor, direcao::frente);
 			robo->andar(70);
 			while(sensor->ler_cor_E() == cor_E || sensor->ler_cor_D() == cor_D);
 			usleep(1000*500);
@@ -240,37 +152,29 @@ void Mapeamento::mapeamento_intersec() {
 
 			/*
 			 * Se não for a primeira intersecção nem dead-end, nem a volta de um dead-end tempos três opções:
+			 * 1- Se for a volta de um dead-end tratar o "giro" para a proxima opção de caminho
+			 * 2- De já ser uma cor conhecida
+			 *
+			 *
 			 * 1- De ser uma cor que não foi "enxergada" antes (OK)
 			 * 2- De ser a mesma cor que a anterior (OK)
 			 * 3- De já ser uma cor conhecida (OK)
-			 *
-			 * Se for a volta de um dead-end tratar o "giro" para a proxima opção de caminho (OK)
+			 * 4- Se for a volta de um dead-end tratar o "giro" para a proxima opção de caminho (OK)
 			 *
 			 */
 			if(dead_end){
-				robo->girar(360);
+				cout << "voltei Dead-end" << endl;
+				robo->girar(-90);
 				while(robo->get_estado() == flag_aceleracao::girar);
-				usleep(1000*800);
 
-				if (direcao_atual == direcao::frente) {
-					direcao_atual = direcao::direita;
-					virar_direita(sentido_navegacao);
-					while(robo->get_estado() == flag_aceleracao::girar);
-					usleep(1000*800);
-					robo->andar(50, 0.19);
-					robo->alinhar(sensor, direcao::traz);
+				if (direcao_atual == direcao::direita) {
+					direcao_atual = direcao::frente;
 					robo->andar(70);
 					while(sensor->ler_cor_E() == cor_E || sensor->ler_cor_D() == cor_D);
 					usleep(1000*500);
 				}
-				else if(direcao_atual == direcao::direita){
+				else if(direcao_atual == direcao::frente){
 					direcao_atual = direcao::esquerda;
-					virar_esquerda(sentido_navegacao);
-					virar_esquerda(sentido_navegacao);
-					while(robo->get_estado() == flag_aceleracao::girar);
-					usleep(1000*800);
-					robo->andar(50, 0.19);
-					robo->alinhar(sensor, direcao::traz);
 					robo->andar(70);
 					while(sensor->ler_cor_E() == cor_E || sensor->ler_cor_D() == cor_D);
 					usleep(1000*500);
@@ -284,6 +188,7 @@ void Mapeamento::mapeamento_intersec() {
 			else if((!dead_end)&&
 					((!cor_ja_vista("esquerdo")) || (!cor_ja_vista("direito") )))
 			{
+				cout << "cor ja conhecida" << endl;
 				if(cor_atual == Cor::vermelho)
 					cp.checkpoint_vermelho = direcao_atual;
 				else if(cor_atual == Cor::verde)
@@ -604,4 +509,130 @@ void Mapeamento::loop_mapeamento_bonecoD(){
 	}
 }
 
+
+
+
+/*******************************************************/
+// 	INICIO MINHAS ALTERACOES
+/*******************************************************/
+void Mapeamento::realinha(direcao lado_saindo) {
+	double pwm_sp = robo->get_pwm_sp();
+	if(lado_saindo == direcao::esquerda)
+	{
+		cout<<"saiu E"<<endl;
+		robo->parar();
+		robo->andar(-80,0.08);
+		robo->girar(-10);
+		while(robo->get_estado() == flag_aceleracao::girar);
+		robo->andar(80, 0.08);
+		robo->andar(pwm_sp);
+	}
+
+	else if(lado_saindo == direcao::direita)
+	{
+		cout<<"saiu D"<<endl;
+		robo->parar();
+		robo->andar(-80,0.08);
+		robo->girar(10);
+		while(robo->get_estado() == flag_aceleracao::girar);
+		robo->andar(80, 0.08);
+		robo->andar(pwm_sp);
+	}
+	else{
+		cout << "realinha argumento errado" << endl;
+		robo->parar();
+		usleep(1000000*5);
+	}
+	usleep(1000000*0.3);
+}
+
+
+void Mapeamento::intersec() {
+	cor_E = sensor->ler_cor_E();
+	cor_D = sensor->ler_cor_D();
+
+	posicao_inicial = robo->get_distancia();
+	while(robo->get_distancia() < posicao_inicial + 0.04);
+	robo->parar();
+
+	if(sensor->ler_cor_E() != cor_E){
+		realinha(direcao::esquerda);
+	}
+
+	else if(sensor->ler_cor_D() != cor_D){
+		realinha(direcao::direita);
+	}
+
+	else{ // esta dentro, tora o pau meu filho
+		robo->alinhar(sensor, direcao::traz);
+		robo->andar(50, 0.15 + robo->get_pintao()); // vai pro meio do quadrado
+		// TODO fazer o fim da cidade (rampa)
+		cor_E = sensor->ler_cor_E();
+		cor_D = sensor->ler_cor_D();
+		if(true) mapeamento_intersec();
+		else {
+			sentido_navegacao = -1;
+			//finalizar_threads_ultra();
+			arq_map->arquivo_map(cp);
+			estd = estados_Mapeamento::terminado;
+		}
+		/*
+						robo->girar(90);
+						while(robo->get_estado() == flag_aceleracao::girar);
+						usleep(1000*800);
+						robo->andar(70);
+						while(sensor->ler_cor_E() != Cor::branco && sensor->ler_cor_D() != Cor::branco);
+						robo->alinhar(sensor, direcao::traz);
+						robo->andar(70);
+						while(sensor->ler_cor_E() == cor_E || sensor->ler_cor_D() == cor_D);
+						usleep(1000*500);
+
+						estd = estados::faixa;
+		 */
+	}
+}
+
+void PROBLEMAS_NO_MAPEAMENTO(){
+	/* dentro do mapeamento_intersec quando ve o deadend esta girando 360 e alinhando para traz
+	 *
+	 * numa intercecao o robo alinha 2 vezes antes de sair dela
+	 *
+	 * quando o robo volta de um deadend ele gira 360 denovo
+	 *
+	 * na proxima intersecao ele nao virou pro lado certo
+	 *
+	 *
+	 *
+	 * no metodo intersec verifica se os sensores
+	 * estao vendo cor para ver se o robo esta mesmo numa intersecao,
+	 * logo em baixo dentro do metodo mapeamento_intersec verifica denovo,
+	 * tambem esta alinhando 2 vezes e com 2 movimentos para frente antes do alinhamento
+	 *
+	 * pra arrumar isso eu tirei a verificacao de dentro do metodo intersec, e passei pra dentro
+	 * do mapear, quando chamar o metodo intersec eh porque o eh certeza
+	 * do robo estar dentro do quadrado,
+	 *
+	 *  eu tirei o alinhar dentro do mapeamento_intersec tbm, quando chamar o mapeamento_intersec
+	 *  eh porque o robo esta no meio do quadrado ja
+	 *
+	 *
+	 * sujestao, quando o robo voltar do deadend ja fazer um giro pra ele parar onde deve parar
+	 * e mapear pela direita, pois assim sempre que ele voltar de um deadend ele vira a mesma coisa
+	 *
+	 * o metodo fim da cidade nao verifica apenas se eh o fim da cidade, ele faz o robo andar e alinhar
+	 * isso ta fazendo o robo alinhar e andar 2 vezes dentro da intersecao dentro do metodo intersec
+	 * eu so coloquei um true no lugar, mas para arrumar vc pode verificar dentro do metodo se ja passou
+	 * pelo menos 6 intersec, so depois de 6 intersec o robo comeca a procurar se eh o final da cidade
+	 */
+
+	/*
+	 * ja arrumei o tamanho do pintao
+	 *
+	 * pra arrumar aquela trela que ele sai loucao depois de alinhar eh so chamar o metodo
+	 * reset_motores no case parar dentro do loop controlador do robo no lugar daqueles motores stop
+	 */
+}
+/*******************************************************/
+// 	FIM MINHAS ALTERACOES
+/*******************************************************/
 

@@ -35,6 +35,7 @@ public:
 	double get_distancia();
 	double get_velocidade();
 	double get_pintao();
+	double get_pwm_sp();
 	void calibra_sensor_cor(Sensor_cor_hsv *sensor_cor);
 
 
@@ -58,7 +59,7 @@ private:
 	double delay = 5.0;//Em miliseg
 	double aceleracao = 700.0;//Em pwm/seg
 	double raio_roda = 0.0538/2; // metros
-	double tamanho_do_pintao = 0.1; // TODO calcular o tamanho do pintao: distancia do eixo ao sensor de cor
+	double tamanho_do_pintao = 0.058; // calculado com pwm de 50
 	double relacao_engrenagem = 0.5; // 2 volta motor equivale 1 voltas roda
 	double raio_robo = 0.156/2; // largura entre os centros das rodas div por 2
 	double angulo_robo_graus = 0; // quanto o robo vai girar quando chamar o metodo girar

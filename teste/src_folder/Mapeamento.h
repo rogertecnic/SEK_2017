@@ -36,6 +36,20 @@ public:
 
 
 private:
+	/*******************************************************/
+	// 	INICIO MINHAS ALTERACOES
+	/*******************************************************/
+	// acoes dos cases dentro do mapear:
+	// obs case faixa nao tem necessidade
+	// obs case deadend eh tratado dentro do intersec
+	void realinha(direcao lado_saindo);
+	void intersec();
+
+
+	/*******************************************************/
+	// 	FIM MINHAS ALTERACOES
+	/*******************************************************/
+
 
 	Controlador_robo *robo;
 	Sensor_cor_hsv *sensor;

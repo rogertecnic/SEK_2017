@@ -51,16 +51,18 @@ void Controlador_robo::girar(int angulo_robo_graus){
 
 
 void Controlador_robo::alinhar(Sensor_cor_hsv *cor, direcao dir){
+	//FIXME alinhamento, o robo da um tranco ao sair depois de alinhar
+	parar();
 	int cor_E;
 	int cor_D;
 	int v_ajuste = -15;
 
-	do{
-		andar(v_ajuste, 0.01);
-		cor_E = cor->ler_cor_E();
-		cor_D = cor->ler_cor_D();
-		v_ajuste = v_ajuste*(-1);
-	}while(cor_E == Cor::ndCor || cor_D == Cor::ndCor);
+	//	while(cor_E == Cor::ndCor || cor_D == Cor::ndCor){
+	//		andar(v_ajuste, 0.01);
+			cor_E = cor->ler_cor_E();
+			cor_D = cor->ler_cor_D();
+	//		v_ajuste = v_ajuste*(-1);
+	//	}
 
 	cout<<"alinhando:"<<cor_E<<";"<<cor_D<<endl;
 	motorD->set_duty_cycle_sp(dir == direcao::traz?25:-25);
@@ -87,7 +89,7 @@ void Controlador_robo::alinhar(Sensor_cor_hsv *cor, direcao dir){
 			}
 		}
 	}
-	usleep(1000*300);
+	parar();
 }
 
 
@@ -137,6 +139,13 @@ double Controlador_robo::get_pintao(){
 }
 
 
+/*
+ * retorna o pwm_sp considerando positivo para frente
+ */
+double Controlador_robo::get_pwm_sp(){
+	return -pwm_sp;
+}
+
 void Controlador_robo::reset_motores(){
 	motorE->reset();
 	motorD->reset();
@@ -154,6 +163,7 @@ void Controlador_robo::loop_controle_aceleracao(){
 		delta_t = t_final - t_inicial;
 		t_inicial = t_final;
 		tempo += delta_t.count();
+		if(debug)
 		arquivo->elementos_arq(tempo, (double)motorE->position(), (double)motorD->position(), erro, pwm);
 
 
@@ -236,10 +246,13 @@ void Controlador_robo::loop_controle_aceleracao(){
 		case flag_aceleracao::parar :
 			motorE->stop();
 			motorD->stop();
+			reset_motores();
 			pwm_sp = 0;
 			pwm_retardada = 0.0;
 			pwm = 0;
 			erro = 0;
+			erro_anterior = 0;
+			pid = 0;
 			estado = flag_aceleracao::ndAcel;
 			break;
 		}

@@ -201,17 +201,26 @@ void teste_luana_alinhamento(){
 
 
 void teste_rogerio(){
-	Controlador_robo robot(true, "debug posicao direto no pwm.m"); // fator_croda = 1.005
+	Controlador_robo robot(false, "debug posicao direto no pwm.m"); // fator_croda = 1.005
 	//Sensor_cor cor(ev3dev::INPUT_1, ev3dev::INPUT_2);
-	Sensor_cor_hsv cor(ev3dev::INPUT_1, ev3dev::INPUT_2,true,"leitura_sensor_cor_hsv");
+	Sensor_cor_hsv cor(ev3dev::INPUT_1, ev3dev::INPUT_2,false,"leitura_sensor_cor_hsv");
+	Mapeamento mapa(&robot, &cor, nullptr, nullptr);
+
 	robot.calibra_sensor_cor(&cor);
 	robot.inicializar_thread_aceleracao();
 	/*
 	 * teste da classe controlador_robo
 	 */
-	//robot.andar(50);
+	while(!ev3dev::button::enter.process());
+	usleep(1000000*0.1);
+	while(!ev3dev::button::enter.process());
+	robot.andar(30);
+	usleep(1000000*0.5);
+	robot.alinhar(&cor, direcao::frente);
+	robot.andar(100);
+	//	robot.andar(50);
 	//	while(!ev3dev::button::enter.process())
-	//	cout<<robot.get_velocidade()<<endl;
+	//		cout<<robot.get_velocidade()<<endl;
 	//	usleep(1000*2000);
 	//	robot.girar(360*2);
 	//	usleep(1000*2000);
@@ -220,7 +229,28 @@ void teste_rogerio(){
 	//	robot.andar(-50);
 	//	usleep(1000*2000);
 	//	robot.girar(-360);
-	//	while(!ev3dev::button::enter.process()){}
+	//	while(!ev3dev::button::enter.process());
+
+	/*
+	 * teste classe controlador_robo medir o tamanho do pintao
+	 */
+	//	while(!ev3dev::button::enter.process());
+	//	usleep(1000000*0.1);
+	//	while(!ev3dev::button::enter.process());
+	//	robot.andar(50);
+	//	while(cor.ler_cor_E() == Cor::branco);
+	//	robot.parar();
+	//	robot.andar(20, 0.058); // o tamanho do pintao eh 0.058
+	//	robot.andar(20, 0.15); // testando se ele vai parar no meio mesmo
+	//	robot.girar(-90);
+
+	/*
+	 * teste classe mapeamento com classe sensor cor hsv
+	 */
+	//	while(!ev3dev::button::enter.process());
+	//	usleep(1000000*0.1);
+	//	while(!ev3dev::button::enter.process());
+	//	mapa.mapear();
 
 	/*
 	 * teste da classe sensor_cor
@@ -245,17 +275,17 @@ void teste_rogerio(){
 	 * pega alguns valores e guarda no arquivo
 	 */
 	//	while(!ev3dev::button::up.process()){
-	while(!ev3dev::button::enter.process()){}
-	usleep(1000*800);
-	ev3dev::button::enter.process();
-	robot.andar(30);
-	while(!ev3dev::button::enter.process())
-		cout<<cor.ler_cor_E()<<";"<<cor.ler_cor_D()<<endl;
-	robot.parar();
-	usleep(1000*800);
-	ev3dev::button::enter.process();
+	//	while(!ev3dev::button::enter.process()){}
+	//	usleep(1000*800);
+	//	ev3dev::button::enter.process();
+	//	robot.andar(30);
+	//	while(!ev3dev::button::enter.process())
+	//		cout<<cor.ler_cor_E()<<";"<<cor.ler_cor_D()<<endl;
+	//	robot.parar();
+	//	usleep(1000*800);
+	//	ev3dev::button::enter.process();
 	//	}
-	cor.fecha_arquivo();
+	//cor.fecha_arquivo();
 
 	/*
 	 * teste da classe de cor
@@ -328,7 +358,7 @@ void teste_rogerio(){
 	//		usleep(1000*3000);
 	//	}
 
-	while(!ev3dev::button::enter.process()){}
+	while(!ev3dev::button::enter.process());
 	robot.parar();
 	usleep(1000*500);
 	robot.finalizar_thread_aceleracao();
@@ -528,8 +558,8 @@ void teste_luana_mapeamento(){
 
 int main(){
 	system("setfont Greek-TerminusBold20x10.psf.gz");
-	teste_luana_alinhamento();
-	//teste_rogerio();
+	//teste_luana_alinhamento();
+	teste_rogerio();
 	//teste_rogerio_alinhamento();
 	//teste_luana_mapeamento();
 
