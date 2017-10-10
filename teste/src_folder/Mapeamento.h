@@ -80,7 +80,7 @@ private:
 	bool colorido(string lado);
 
 	/**/
-	bool cor_ja_vista(string lado);
+	bool cor_ja_mapeada(string lado);
 
 	/* Variável de controle de start do mapeamento dos bonecos */
 	bool map_boneco_inicio = false;
