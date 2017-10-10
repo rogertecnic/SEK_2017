@@ -8,6 +8,7 @@
 
 
 #define virar_direita(i) robo->girar(-90*i)
+
 #define virar_esquerda(i) robo->girar(90*i)
 
 
@@ -117,7 +118,7 @@ private:
 
 	int count_nda = 0;
 
-	int cor_E = 0, cor_D = 0;
+	Cor cor_E = Cor::ndCor, cor_D = Cor::ndCor;
 	double 	dist = 0, ang_robo = 0, posicao_inicial = 0, posicao_final = 0;
 
 	estados_Mapeamento estd = estados_Mapeamento::faixa;

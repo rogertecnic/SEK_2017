@@ -29,8 +29,8 @@ void Controlador_robo::andar (int pwm_sp, double distancia){
 	reset_motores();
 	andar(pwm_sp);
 	double posicao_atual = get_distancia();
-	if(pwm_sp > 0) while(get_distancia() < distancia+posicao_atual){}
-	if(pwm_sp < 0) while(get_distancia() > -distancia+posicao_atual){}
+	if(pwm_sp > 0) while(get_distancia() < distancia+posicao_atual);
+	if(pwm_sp < 0) while(get_distancia() > -distancia+posicao_atual);
 
 	parar();
 }
@@ -65,8 +65,8 @@ void Controlador_robo::alinhar(Sensor_cor_hsv *cor, direcao dir){
 	//	}
 
 	cout<<"alinhando:"<<cor_E<<";"<<cor_D<<endl;
-	motorD->set_duty_cycle_sp(dir == direcao::traz?25:-25);
-	motorE->set_duty_cycle_sp(dir == direcao::traz?25:-25); // sentido inverso devido a reducao de engrenagem
+	motorD->set_duty_cycle_sp(dir == direcao::traz?20:-20);
+	motorE->set_duty_cycle_sp(dir == direcao::traz?20:-20); // sentido inverso devido a reducao de engrenagem
 	motorE->run_direct();
 	motorD->run_direct();
 	bool motorE_parado = false,

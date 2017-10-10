@@ -211,13 +211,13 @@ void teste_rogerio(){
 	/*
 	 * teste da classe controlador_robo
 	 */
-	while(!ev3dev::button::enter.process());
-	usleep(1000000*0.1);
-	while(!ev3dev::button::enter.process());
-	robot.andar(30);
-	usleep(1000000*0.5);
-	robot.alinhar(&cor, direcao::frente);
-	robot.andar(100);
+	//	while(!ev3dev::button::enter.process());
+	//	usleep(1000000*0.1);
+	//	while(!ev3dev::button::enter.process());
+	//	robot.andar(30);
+	//	usleep(1000000*0.5);
+	//	robot.alinhar(&cor, direcao::frente);
+	//	robot.andar(100);
 	//	robot.andar(50);
 	//	while(!ev3dev::button::enter.process())
 	//		cout<<robot.get_velocidade()<<endl;
@@ -247,10 +247,10 @@ void teste_rogerio(){
 	/*
 	 * teste classe mapeamento com classe sensor cor hsv
 	 */
-	//	while(!ev3dev::button::enter.process());
-	//	usleep(1000000*0.1);
-	//	while(!ev3dev::button::enter.process());
-	//	mapa.mapear();
+	while(!ev3dev::button::enter.process());
+	usleep(1000000*0.1);
+	while(!ev3dev::button::enter.process());
+	mapa.mapear();
 
 	/*
 	 * teste da classe sensor_cor
@@ -554,7 +554,7 @@ void teste_luana_mapeamento(){
 	map.mapear(&robot, &cor);
 
 }
-*/
+ */
 
 int main(){
 	system("setfont Greek-TerminusBold20x10.psf.gz");

@@ -13,21 +13,20 @@ void Mapeamento::mapear(){
 	cout << endl << endl << endl << "bora mapear!!" << endl;
 	direcao_atual = direcao::ndStatus;
 	sentido_navegacao = 1;
-	Cor corE, corD;
 	int count_ndCor = 0,
 			cout_intersec = 0;
 
 	while(estd != estados_Mapeamento::terminado){
-		corE = sensor->ler_cor_E();
-		corD = sensor->ler_cor_D();
+		cor_E = sensor->ler_cor_E();
+		cor_D = sensor->ler_cor_D();
 
 		switch (estd){
 		case estados_Mapeamento::leu_fora:
 			cout << "fora:";
 			cout_intersec = 0;
-			if(corE == Cor::fora)
+			if(cor_E == Cor::fora)
 				realinha(direcao::esquerda);
-			else if (corD == Cor::fora)
+			else if (cor_D == Cor::fora)
 				realinha(direcao::direita);
 			else estd = estados_Mapeamento::atencao;
 
@@ -37,7 +36,7 @@ void Mapeamento::mapear(){
 		case estados_Mapeamento::intersec:
 			cout << "intersec" << endl;
 			intersec();
-			if(corE == Cor::branco && corD == Cor::branco)
+			if(cor_E == Cor::branco && cor_D == Cor::branco)
 			{
 				estd = estados_Mapeamento::faixa;
 				break;
@@ -54,7 +53,7 @@ void Mapeamento::mapear(){
 			count_ndCor = 0;
 			cout_intersec = 0;
 			robo->andar(70);
-			if (corE != Cor::branco || corD != Cor::branco)
+			if (cor_E != Cor::branco || cor_D != Cor::branco)
 				estd = estados_Mapeamento::atencao;
 
 			break;
@@ -64,22 +63,24 @@ void Mapeamento::mapear(){
 			/* TODO fazer tratamento do caso que sensor fique muito tempo em uma interface
 			 */
 			cout << "atencao" << endl;
-			robo->andar(30);
-			if(corE == Cor::branco && corD == Cor::branco)
+			if(cout_intersec == 0)
+				robo->andar(30);
+			if(cor_E == Cor::branco && cor_D == Cor::branco)
 			{
 				estd = estados_Mapeamento::faixa;
 				break;
 			}
-			if (corE == Cor::fora || corD == Cor::fora)
+			if (cor_E == Cor::fora || cor_D == Cor::fora)
 			{
 				estd = estados_Mapeamento::leu_fora;
 				break;
 			}
-			if((corE == Cor::vermelho && corD == Cor::vermelho) ||
-					(corE == Cor::verde && corD == Cor::verde) ||
-					(corE == Cor::azul && corD == Cor::azul) ||
-					(corE == Cor::preto && corD == Cor::preto))
+			if((cor_E == Cor::vermelho && cor_D == Cor::vermelho) ||
+					(cor_E == Cor::verde && cor_D == Cor::verde) ||
+					(cor_E == Cor::azul && cor_D == Cor::azul) ||
+					(cor_E == Cor::preto && cor_D == Cor::preto))
 			{
+				robo->andar(20);
 				cout_intersec ++;
 				if(cout_intersec >= 3)
 					estd = estados_Mapeamento::intersec;
@@ -202,8 +203,11 @@ void Mapeamento::mapeamento_intersec() {
 			/*Cor ja mapeada, pode ser igual a atual ou outra cor*/
 			else {
 				if (!confirmacao_status){
-					if(cor_atual == Cor::vermelho)
+					if(cor_atual == Cor::vermelho){
 						cp.checkpoint_vermelho = direcao_atual;
+						cout << "mapeei vermelho:" << endl << direcao_atual << endl;
+						usleep(1000000*5);
+					}
 					else if(cor_atual == Cor::verde)
 						cp.checkpoint_verde = direcao_atual;
 					else if (cor_atual == Cor::azul)
@@ -217,6 +221,7 @@ void Mapeamento::mapeamento_intersec() {
 				else{
 					cout << "mesma cor, seguir" << endl;
 				}
+
 				caminho_certo();
 				confirmacao_status = true;
 
@@ -235,57 +240,68 @@ void Mapeamento::mapeamento_intersec() {
 
 
 void Mapeamento::caminho_certo (){
-
 	if (sensor->ler_cor_E() == Cor::vermelho && sensor->ler_cor_D() == Cor::vermelho){
-		if (cp.checkpoint_vermelho == direcao::direita)
+		if (cp.checkpoint_vermelho == direcao::direita){
 			virar_direita(sentido_navegacao);
+			while(robo->get_estado() == flag_aceleracao::girar);
+		}
 
-		else if (cp.checkpoint_vermelho == direcao::esquerda)
+		else if (cp.checkpoint_vermelho == direcao::esquerda){
 			virar_esquerda(sentido_navegacao);
+			while(robo->get_estado() == flag_aceleracao::girar);
+		}
 
-		while(robo->get_estado() == flag_aceleracao::girar);
-		usleep(1000*800);
-		robo->andar(50, 0.19);
-		robo->alinhar(sensor, direcao::traz);
-		robo->andar(70);
-		while(sensor->ler_cor_E() == cor_E || sensor->ler_cor_D() == cor_D);
-		usleep(1000*500);
+		//		while(robo->get_estado() == flag_aceleracao::girar);
+		//		usleep(1000*800);
+		//		robo->andar(50, 0.19);
+		//		robo->alinhar(sensor, direcao::traz);
+		//		robo->andar(70);
+		//		while(sensor->ler_cor_E() == cor_E || sensor->ler_cor_D() == cor_D);
+		//		usleep(1000*500);
 
 	}
 
 	else if (sensor->ler_cor_E() == Cor::verde && sensor->ler_cor_D() == Cor::verde){
-		if (cp.checkpoint_verde == direcao::direita)
+		if (cp.checkpoint_verde == direcao::direita){
 			virar_direita(sentido_navegacao);
+			while(robo->get_estado() == flag_aceleracao::girar);
+		}
 
-		else if (cp.checkpoint_verde == direcao::esquerda)
+		else if (cp.checkpoint_verde == direcao::esquerda){
 			virar_esquerda(sentido_navegacao);
+			while(robo->get_estado() == flag_aceleracao::girar);
+		}
 
-		robo->girar(90);
-		while(robo->get_estado() == flag_aceleracao::girar);
-		usleep(1000*800);
-		robo->andar(50, 0.19);
-		robo->alinhar(sensor, direcao::traz);
-		robo->andar(70);
-		while(sensor->ler_cor_E() == cor_E || sensor->ler_cor_D() == cor_D);
-		usleep(1000*500);
+		//		robo->girar(90);
+		//		while(robo->get_estado() == flag_aceleracao::girar);
+		//		usleep(1000*800);
+		//		robo->andar(50, 0.19);
+		//		robo->alinhar(sensor, direcao::traz);
+		//		robo->andar(70);
+		//		while(sensor->ler_cor_E() == cor_E || sensor->ler_cor_D() == cor_D);
+		//		usleep(1000*500);
 
 	}
 
 	else if (sensor->ler_cor_E() == Cor::azul && sensor->ler_cor_D() == Cor::azul){
-		if (cp.checkpoint_azul == direcao::direita)
+		if (cp.checkpoint_azul == direcao::direita){
 			virar_direita(sentido_navegacao);
+			while(robo->get_estado() == flag_aceleracao::girar);
+		}
 
-		else if (cp.checkpoint_azul == direcao::esquerda)
+		else if (cp.checkpoint_azul == direcao::esquerda){
 			virar_esquerda(sentido_navegacao);
+			while(robo->get_estado() == flag_aceleracao::girar);
+		}
 
-		robo->girar(90);
-		while(robo->get_estado() == flag_aceleracao::girar);
-		usleep(1000*800);
-		robo->andar(50, 0.19);
-		robo->alinhar(sensor, direcao::traz);
-		robo->andar(70);
-		while(sensor->ler_cor_E() == cor_E || sensor->ler_cor_D() == cor_D);
-		usleep(1000*500);
+		//		robo->girar(90);
+		//		while(robo->get_estado() == flag_aceleracao::girar);
+		//		usleep(1000*800);
+		//		robo->andar(50, 0.19);
+		//		robo->alinhar(sensor, direcao::traz);
+		//		robo->andar(70);
+		//		while(sensor->ler_cor_E() == cor_E || sensor->ler_cor_D() == cor_D);
+		//		usleep(1000*500);
 	}
 }
 
@@ -479,12 +495,13 @@ void Mapeamento::loop_mapeamento_bonecoD(){
 /*******************************************************/
 void Mapeamento::realinha(direcao lado_saindo) {
 	double pwm_sp = robo->get_pwm_sp();
+	int grau = 15;
 	if(lado_saindo == direcao::esquerda)
 	{
 		cout<<"saiu E"<<endl;
 		robo->parar();
 		robo->andar(-80,0.08);
-		robo->girar(-10);
+		robo->girar(-grau);
 		while(robo->get_estado() == flag_aceleracao::girar);
 		robo->andar(80, 0.08);
 		robo->andar(pwm_sp);
@@ -495,7 +512,7 @@ void Mapeamento::realinha(direcao lado_saindo) {
 		cout<<"saiu D"<<endl;
 		robo->parar();
 		robo->andar(-80,0.08);
-		robo->girar(10);
+		robo->girar(grau);
 		while(robo->get_estado() == flag_aceleracao::girar);
 		robo->andar(80, 0.08);
 		robo->andar(pwm_sp);
@@ -510,10 +527,9 @@ void Mapeamento::realinha(direcao lado_saindo) {
 
 
 void Mapeamento::intersec() {
-	cor_E = sensor->ler_cor_E();
-	cor_D = sensor->ler_cor_D();
+	usleep(1000000*0.5); // pra dar tempo do robo entrar um pouco na intersecao
 
-	robo->andar(50, 0.04);
+
 
 	while(true){
 		if(sensor->ler_cor_E() != cor_E){
