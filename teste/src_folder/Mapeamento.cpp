@@ -11,8 +11,8 @@ Mapeamento::Mapeamento(Controlador_robo *robo, Sensor_cor_hsv *sensor, Ultrassom
 void Mapeamento::mapear(){
 	//TODO verificar se eh necessario tratar os problemas a mais
 	cout << endl << endl << endl << "bora mapear!!" << endl;
-	direcao_atual = direcao::ndStatus;
-	sentido_navegacao = 1;
+	direcao_atual = direcao::ndDirecao;
+
 	int count_ndCor = 0,
 			cout_intersec = 0;
 
@@ -43,7 +43,7 @@ void Mapeamento::mapear(){
 			} else {
 				robo->parar();
 				cout << "o robo terminou a intersecao e nao esta no branco" << endl;
-				// colocar uma espera de botao
+				// TODO o robo terminou a intersecao e nao esta no branco
 			}
 			break;
 
@@ -168,7 +168,7 @@ void Mapeamento::mapeamento_intersec() {
 			}
 
 			/*Cor nao mapeada, pode ser igual a atual ou outra cor*/
-			else if(!cor_ja_mapeada("esquerdo"))
+			else if(!cor_ja_mapeada())
 			{
 				if(!confirmacao_status){ // se cor atual nao foi mapeada preveamente mapeia
 					if(cor_atual == Cor::vermelho)
@@ -233,76 +233,43 @@ void Mapeamento::mapeamento_intersec() {
 			}
 		}
 	}
-
-	//interseccao = false;
-	//it_no_anterior++;
+	interseccao = false;
+		//it_no_anterior++;
 }
 
 
 void Mapeamento::caminho_certo (){
-	if (sensor->ler_cor_E() == Cor::vermelho && sensor->ler_cor_D() == Cor::vermelho){
+	if (cor_E == Cor::vermelho && cor_D == Cor::vermelho){
 		if (cp.checkpoint_vermelho == direcao::direita){
-			virar_direita(sentido_navegacao);
-			while(robo->get_estado() == flag_aceleracao::girar);
+			virar_direita();
 		}
 
 		else if (cp.checkpoint_vermelho == direcao::esquerda){
-			virar_esquerda(sentido_navegacao);
-			while(robo->get_estado() == flag_aceleracao::girar);
+			virar_esquerda();
 		}
-
-		//		while(robo->get_estado() == flag_aceleracao::girar);
-		//		usleep(1000*800);
-		//		robo->andar(50, 0.19);
-		//		robo->alinhar(sensor, direcao::traz);
-		//		robo->andar(70);
-		//		while(sensor->ler_cor_E() == cor_E || sensor->ler_cor_D() == cor_D);
-		//		usleep(1000*500);
-
 	}
 
-	else if (sensor->ler_cor_E() == Cor::verde && sensor->ler_cor_D() == Cor::verde){
+	else if (cor_E == Cor::verde && cor_D == Cor::verde){
 		if (cp.checkpoint_verde == direcao::direita){
 			virar_direita(sentido_navegacao);
-			while(robo->get_estado() == flag_aceleracao::girar);
 		}
 
 		else if (cp.checkpoint_verde == direcao::esquerda){
 			virar_esquerda(sentido_navegacao);
-			while(robo->get_estado() == flag_aceleracao::girar);
 		}
-
-		//		robo->girar(90);
-		//		while(robo->get_estado() == flag_aceleracao::girar);
-		//		usleep(1000*800);
-		//		robo->andar(50, 0.19);
-		//		robo->alinhar(sensor, direcao::traz);
-		//		robo->andar(70);
-		//		while(sensor->ler_cor_E() == cor_E || sensor->ler_cor_D() == cor_D);
-		//		usleep(1000*500);
-
 	}
 
-	else if (sensor->ler_cor_E() == Cor::azul && sensor->ler_cor_D() == Cor::azul){
+	else if (cor_E == Cor::azul && cor_D == Cor::azul){
 		if (cp.checkpoint_azul == direcao::direita){
 			virar_direita(sentido_navegacao);
-			while(robo->get_estado() == flag_aceleracao::girar);
 		}
 
 		else if (cp.checkpoint_azul == direcao::esquerda){
 			virar_esquerda(sentido_navegacao);
-			while(robo->get_estado() == flag_aceleracao::girar);
 		}
-
-		//		robo->girar(90);
-		//		while(robo->get_estado() == flag_aceleracao::girar);
-		//		usleep(1000*800);
-		//		robo->andar(50, 0.19);
-		//		robo->alinhar(sensor, direcao::traz);
-		//		robo->andar(70);
-		//		while(sensor->ler_cor_E() == cor_E || sensor->ler_cor_D() == cor_D);
-		//		usleep(1000*500);
 	}
+
+	while(robo->get_estado() == flag_aceleracao::girar);
 }
 
 
@@ -320,59 +287,88 @@ bool Mapeamento::fim_da_cidade(){
 }
 
 
-bool Mapeamento::colorido(string lado){
-	if(lado == "esquerdo"){
-		if((*sensor).ler_cor_E() != Cor::branco && (*sensor).ler_cor_E() != Cor::fora && (*sensor).ler_cor_E() != Cor::ndCor)
-			return true;
+bool Mapeamento::cor_ja_mapeada(){
+		switch(cor_E){
+		case Cor::vermelho:
+			if( cp.checkpoint_vermelho != direcao::ndDirecao) return true;
+			break;
+
+		case Cor::verde:
+			if( cp.checkpoint_verde != direcao::ndDirecao) return true;
+			break;
+
+		case Cor::azul:
+			if( cp.checkpoint_azul != direcao::ndDirecao) return true;
+			break;
+
+		}
+	return false;
+}
+
+
+void Mapeamento::realinha(direcao lado_saindo) {
+	double pwm_sp = robo->get_pwm_sp();
+	int grau = 12;
+	if(lado_saindo == direcao::esquerda)
+	{
+		cout<<"saiu E"<<endl;
+		robo->parar();
+		robo->andar(-80,0.08);
+		robo->girar(-grau);
+		while(robo->get_estado() == flag_aceleracao::girar);
+		robo->andar(80, 0.08);
+		robo->andar(pwm_sp);
 	}
+
+	else if(lado_saindo == direcao::direita)
+	{
+		cout<<"saiu D"<<endl;
+		robo->parar();
+		robo->andar(-80,0.08);
+		robo->girar(grau);
+		while(robo->get_estado() == flag_aceleracao::girar);
+		robo->andar(80, 0.08);
+		robo->andar(pwm_sp);
+	}
+	else{
+		cout << "realinha argumento errado" << endl;
+		robo->parar();
+		usleep(1000000*5);
+	}
+	usleep(1000000*0.3);
+}
+
+
+void Mapeamento::intersec() {
+	usleep(1000000*0.5); // pra dar tempo do robo entrar um pouco na intersecao
+
+
+
+	while(true){
+		if(sensor->ler_cor_E() != cor_E){
+			realinha(direcao::esquerda);
+		}
+		else if(sensor->ler_cor_D() != cor_D){
+			realinha(direcao::direita);
+		}
+		else
+			break;
+	}
+
+	// esta dentro, tora o pau meu filho
+	robo->alinhar(sensor, direcao::traz);
+	robo->andar(50, 0.15 + robo->get_pintao()); // vai pro meio do quadrado
+	// TODO leitura de cor necessaria somente pra verificar se o robo ainda ta dentro da intersecao
+	cor_E = sensor->ler_cor_E();
+	cor_D = sensor->ler_cor_D();
+	// TODO fazer o fim da cidade (rampa)
+	if(true) mapeamento_intersec(); // quando terminar o mapeamento retorna false
 	else {
-		if((*sensor).ler_cor_D() != Cor::branco && (*sensor).ler_cor_D() != Cor::fora && (*sensor).ler_cor_D() != Cor::ndCor)
-			return true;
+		arq_map->arquivo_map(cp);
+		estd = estados_Mapeamento::terminado;
 	}
-	return false;
 }
 
-/* Vermelho == 3
- * Verde == 4
- * Azul == 5
- */
-bool Mapeamento::cor_ja_mapeada(string lado){
-	if(lado == "esquerdo"){
-		switch((*sensor).ler_cor_E()){
-		case Cor::vermelho:
-			if( cp.checkpoint_vermelho != direcao::ndStatus) return true;
-			break;
-
-		case Cor::verde:
-			if( cp.checkpoint_verde != direcao::ndStatus) return true;
-			break;
-
-		case Cor::azul:
-			if( cp.checkpoint_azul != direcao::ndStatus) return true;
-			break;
-
-		}
-	}
-
-	else if(lado == "direito"){
-		switch((*sensor).ler_cor_D()){
-		case Cor::vermelho:
-			if( cp.checkpoint_vermelho != direcao::ndStatus) return true;
-			break;
-
-		case Cor::verde:
-			if( cp.checkpoint_verde != direcao::ndStatus) return true;
-			break;
-
-		case Cor::azul:
-			if( cp.checkpoint_azul != direcao::ndStatus) return true;
-			break;
-
-		}
-
-	}
-	return false;
-}
 
 
 bool Mapeamento::inicializar_threads_ultra(){
@@ -490,86 +486,10 @@ void Mapeamento::loop_mapeamento_bonecoD(){
 
 
 
-/*******************************************************/
-// 	INICIO MINHAS ALTERACOES
-/*******************************************************/
-void Mapeamento::realinha(direcao lado_saindo) {
-	double pwm_sp = robo->get_pwm_sp();
-	int grau = 15;
-	if(lado_saindo == direcao::esquerda)
-	{
-		cout<<"saiu E"<<endl;
-		robo->parar();
-		robo->andar(-80,0.08);
-		robo->girar(-grau);
-		while(robo->get_estado() == flag_aceleracao::girar);
-		robo->andar(80, 0.08);
-		robo->andar(pwm_sp);
-	}
-
-	else if(lado_saindo == direcao::direita)
-	{
-		cout<<"saiu D"<<endl;
-		robo->parar();
-		robo->andar(-80,0.08);
-		robo->girar(grau);
-		while(robo->get_estado() == flag_aceleracao::girar);
-		robo->andar(80, 0.08);
-		robo->andar(pwm_sp);
-	}
-	else{
-		cout << "realinha argumento errado" << endl;
-		robo->parar();
-		usleep(1000000*5);
-	}
-	usleep(1000000*0.3);
-}
-
-
-void Mapeamento::intersec() {
-	usleep(1000000*0.5); // pra dar tempo do robo entrar um pouco na intersecao
 
 
 
-	while(true){
-		if(sensor->ler_cor_E() != cor_E){
-			realinha(direcao::esquerda);
-		}
-		else if(sensor->ler_cor_D() != cor_D){
-			realinha(direcao::direita);
-		}
-		else
-			break;
-	}
 
-	// esta dentro, tora o pau meu filho
-	robo->alinhar(sensor, direcao::traz);
-	robo->andar(50, 0.15 + robo->get_pintao()); // vai pro meio do quadrado
-	cor_E = sensor->ler_cor_E();
-	cor_D = sensor->ler_cor_D();
-	// TODO fazer o fim da cidade (rampa)
-	if(true) mapeamento_intersec(); // quando terminar o mapeamento retorna false
-	else {
-		sentido_navegacao = -1;
-		//finalizar_threads_ultra();
-		arq_map->arquivo_map(cp);
-		estd = estados_Mapeamento::terminado;
-	}
-	/*
-						robo->girar(90);
-						while(robo->get_estado() == flag_aceleracao::girar);
-						usleep(1000*800);
-						robo->andar(70);
-						while(sensor->ler_cor_E() != Cor::branco && sensor->ler_cor_D() != Cor::branco);
-						robo->alinhar(sensor, direcao::traz);
-						robo->andar(70);
-						while(sensor->ler_cor_E() == cor_E || sensor->ler_cor_D() == cor_D);
-						usleep(1000*500);
-
-						estd = estados::faixa;
-	 */
-
-}
 
 void PROBLEMAS_NO_MAPEAMENTO(){
 	/* dentro do mapeamento_intersec quando ve o deadend esta girando 360 e alinhando para traz
@@ -614,7 +534,4 @@ void PROBLEMAS_NO_MAPEAMENTO(){
 	 * reset_motores no case parar dentro do loop controlador do robo no lugar daqueles motores stop
 	 */
 }
-/*******************************************************/
-// 	FIM MINHAS ALTERACOES
-/*******************************************************/
 

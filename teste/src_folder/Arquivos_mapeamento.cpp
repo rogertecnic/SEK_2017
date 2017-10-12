@@ -1,6 +1,6 @@
 #include "Arquivos_mapeamento.h"
 
-void Arquivos_mapeamento::arquivo_map(status_checkpoint s_cp){
+void Arquivos_mapeamento::arquivo_map(direcao_checkpoint s_cp){
 	//list<no_intersec>::iterator it1 = vet.begin();
 	int count = 1;
 

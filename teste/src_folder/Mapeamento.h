@@ -1,15 +1,23 @@
+//TODO fazer fim_cidade
+//TODO tirar verificacao do 3 checkpoint de forma que fique facil voltar
+//TODO tirar entrada do deadend
+//TODO reverificar calibragem
+/*TODO verificar todos os lugares onde ele chama o metodo realinhar,
+ * em algum lugar o robo viu cores diferentes com os sensores e entrou em um loop onde
+ * ele ficava somente realinhando
+ */
+
 #ifndef MAPEAMENTO_H_
 #define MAPEAMENTO_H_
 
 #include "Controlador_robo.h"
 #include "Sensor_cor_hsv.h"
 #include "Arquivos_mapeamento.h"
-#include "Ultrassom_nxt.h"
+#include  "Ultrassom_nxt.h"
 
+#define virar_direita(i) robo->girar(-90)
 
-#define virar_direita(i) robo->girar(-90*i)
-
-#define virar_esquerda(i) robo->girar(90*i)
+#define virar_esquerda(i) robo->girar(90)
 
 
 #define distancia_boneco 5 //MODIFICAR DEPOIS
@@ -37,25 +45,15 @@ public:
 
 
 private:
-	/*******************************************************/
-	// 	INICIO MINHAS ALTERACOES
-	/*******************************************************/
-	// acoes dos cases dentro do mapear:
-	// obs case faixa nao tem necessidade
-	// obs case deadend eh tratado dentro do intersec
-	void realinha(direcao lado_saindo);
-	void intersec();
-
-
-	/*******************************************************/
-	// 	FIM MINHAS ALTERACOES
-	/*******************************************************/
-
-
 	Controlador_robo *robo;
 	Sensor_cor_hsv *sensor;
 	Ultrassom_nxt *ultraE;
 	Ultrassom_nxt *ultraD;
+
+	// quando o robo estiver saindo de um lado ele volta e realinha
+	void realinha(direcao lado_saindo);
+	// quando o robo chegar em uma intersec (vermelho, verde, azul ou preto)
+	void intersec();
 
 	/* Método de mapemento das direções das intersecções*/
 	void mapeamento_intersec();
@@ -75,13 +73,8 @@ private:
 	bool fim_da_cidade();
 
 
-	/* Método para definir se a cor lida está entre as cores:
-	 * Vermelho, azul, verde e preto
-	 */
-	bool colorido(string lado);
-
-	/**/
-	bool cor_ja_mapeada(string lado);
+	/*verifica se a cor que o robo esta sobre quando chamar o metodo ja foi mapeada*/
+	bool cor_ja_mapeada();
 
 	/* Variável de controle de start do mapeamento dos bonecos */
 	bool map_boneco_inicio = false;
@@ -90,41 +83,44 @@ private:
 	Arquivos_mapeamento *arq_map;
 
 
+	/*************************flags controle do mapeamento******************************/
+	/***********************************************************************************/
+	// cor que o referente a intersecao que o robo acabou de sair
+	Cor cor_atual = Cor::ndCor;
+
+	// direcao referente a intersecao que o robo acabou de sair
+	direcao direcao_atual = direcao::ndDirecao;
+
+	// direcao correta de cada intersecao
+	direcao_checkpoint cp = {direcao::ndDirecao, direcao::ndDirecao, direcao::ndDirecao};
+
+	//	intersecao atual ja foi mapeada? se nao,
+	//  quando encontrar uma nova intersecao mapear a atual
+	bool confirmacao_status = false;
+
+	// robo esta voltando de um dead-end?
+	bool dead_end = false;
+
+	//flags para salvar ultima leitura da cor quando necessario
+	Cor cor_E = Cor::ndCor;
+	Cor	cor_D = Cor::ndCor;
+
+	// flag que controla o comportamento do robo de acordo com onde ele esta
+	estados_Mapeamento estd = estados_Mapeamento::faixa;
+
+
+	/********************Mapeamento dos bonecos************************/
 	/* == 1 se estiver indo do ponto de start para a rampa
 	 * == -1 se estiver indo da rampa para o ponto de start
 	 */
 	int sentido_navegacao = 0;
 
-	/* Flags mapeamento intersecção*/
-	Cor cor_atual = Cor::ndCor;
-	direcao direcao_atual = direcao::ndStatus;
-
-	/* Status de cada intersecção*/
-	status_checkpoint cp = {direcao::ndStatus, direcao::ndStatus, direcao::ndStatus};
 
 	/* Variável de controle de posicao na chegada de um quadrado(deadend/intersec)*/
-	//double posicao_inicialt = 0;
+	double posicao_inicialt = 0;
 
 	/* Variável de controle de correção de rota*/
 	int delay = 0;
-
-	/* Variável de controle se a intersecção já foi mapeada*/
-	bool confirmacao_status = false;
-
-	bool dead_end = false;
-
-
-	/*************************Alinhamento******************************/
-
-	int count_nda = 0;
-
-	Cor cor_E = Cor::ndCor, cor_D = Cor::ndCor;
-	double 	dist = 0, ang_robo = 0, posicao_inicial = 0, posicao_final = 0;
-
-	estados_Mapeamento estd = estados_Mapeamento::faixa;
-
-
-	/********************Mapeamento dos bonecos************************/
 
 	/* Variável de controle da thread*/
 	bool thread_rodando_bonecos = false;
@@ -157,6 +153,8 @@ private:
 
 	/* Distância total entre uma intersecção e outra*/
 	double posicao_intersec = 0.0;
+
+
 
 };
 
