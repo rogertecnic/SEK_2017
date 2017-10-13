@@ -29,7 +29,6 @@ struct direcao_checkpoint {
 	direcao checkpoint_vermelho;
 	direcao checkpoint_verde;
 	direcao checkpoint_azul;
-
 };
 
 
@@ -43,7 +42,6 @@ struct no_intersec {
 	vector<double> posicao_pos_e;
 };
 
-
-
+const bool automapear_3_checkpoint = true;
 
 #endif

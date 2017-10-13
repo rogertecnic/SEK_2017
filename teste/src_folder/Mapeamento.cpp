@@ -130,7 +130,7 @@ void Mapeamento::mapeamento_intersec() {
 			cout << "cheguei Dead-end" << endl;
 			robo->girar(180);
 			while(robo->get_estado() == flag_aceleracao::girar);
-			robo->alinhar(sensor, direcao::frente);
+			robo->alinhar(sensor, direcao::traz);
 			robo->andar(70);
 			while(sensor->ler_cor_E() == cor_E || sensor->ler_cor_D() == cor_D);
 			usleep(1000000*0.3);
@@ -177,9 +177,43 @@ void Mapeamento::mapeamento_intersec() {
 						cp.checkpoint_verde = direcao_atual;
 					else if (cor_atual == Cor::azul)
 						cp.checkpoint_azul = direcao_atual;
+					qnt_cores_mapeadas ++;
 				}
 
-				if(cor_E != cor_atual){
+				// se sim, seta a ultima direcao quando terminar de mapear a segunda
+				// funcionamento: cada direcao eh um numero de 1 a 3,
+				// se eu somar as duas primeiras direcoes ja conhecidas e diminuir de 6
+				// eu saberei qual a direcao que falta, pra eu saber qual cor que nao foi
+				// mapeada eh so eu pegar o endereco da cor que nao foi mapeada
+				// entao se a cor for mapeada eu somo, se nao foi mapeada eu pego o endereco dela
+				// no final eu verifico se realmente falta somente uma direcao/cor e atribuo a direcao
+				if(automapear_3_checkpoint && qnt_cores_mapeadas == 2){
+					int soma_direcoes = 0; // define qual direcao nao foi mapeada
+					direcao * ultimo_checkpoint = nullptr;
+					if( cp.checkpoint_vermelho != direcao::ndDirecao){
+						soma_direcoes += cp.checkpoint_vermelho;
+					}
+					else  ultimo_checkpoint = &cp.checkpoint_vermelho;
+
+					if( cp.checkpoint_verde != direcao::ndDirecao){
+						soma_direcoes += cp.checkpoint_verde;
+					}
+					else  ultimo_checkpoint = &cp.checkpoint_verde;
+
+					if( cp.checkpoint_azul != direcao::ndDirecao){
+						soma_direcoes += cp.checkpoint_azul;
+					}
+					else  ultimo_checkpoint = &cp.checkpoint_azul;
+
+					*ultimo_checkpoint = (direcao)(6-soma_direcoes);
+					cout <<endl << endl << endl << "ultima direcao:"<< *ultimo_checkpoint << endl;
+					usleep(1000000*5);
+					cout << "ultima cor, seguir" << endl;
+					caminho_certo();
+					confirmacao_status = true;
+					qnt_cores_mapeadas ++;
+				}
+				else if(cor_E != cor_atual){
 					cout << "cor desconhecida" << endl;
 					cor_atual = cor_E;
 					direcao_atual = direcao::direita;
@@ -203,15 +237,13 @@ void Mapeamento::mapeamento_intersec() {
 			/*Cor ja mapeada, pode ser igual a atual ou outra cor*/
 			else {
 				if (!confirmacao_status){
-					if(cor_atual == Cor::vermelho){
+					if(cor_atual == Cor::vermelho)
 						cp.checkpoint_vermelho = direcao_atual;
-						cout << "mapeei vermelho:" << endl << direcao_atual << endl;
-						usleep(1000000*5);
-					}
 					else if(cor_atual == Cor::verde)
 						cp.checkpoint_verde = direcao_atual;
 					else if (cor_atual == Cor::azul)
 						cp.checkpoint_azul = direcao_atual;
+					qnt_cores_mapeadas ++;
 				}
 
 				if(cor_E != cor_atual){
@@ -234,7 +266,7 @@ void Mapeamento::mapeamento_intersec() {
 		}
 	}
 	interseccao = false;
-		//it_no_anterior++;
+	//it_no_anterior++;
 }
 
 
@@ -288,20 +320,20 @@ bool Mapeamento::fim_da_cidade(){
 
 
 bool Mapeamento::cor_ja_mapeada(){
-		switch(cor_E){
-		case Cor::vermelho:
-			if( cp.checkpoint_vermelho != direcao::ndDirecao) return true;
-			break;
+	switch(cor_E){
+	case Cor::vermelho:
+		if( cp.checkpoint_vermelho != direcao::ndDirecao) return true;
+		break;
 
-		case Cor::verde:
-			if( cp.checkpoint_verde != direcao::ndDirecao) return true;
-			break;
+	case Cor::verde:
+		if( cp.checkpoint_verde != direcao::ndDirecao) return true;
+		break;
 
-		case Cor::azul:
-			if( cp.checkpoint_azul != direcao::ndDirecao) return true;
-			break;
+	case Cor::azul:
+		if( cp.checkpoint_azul != direcao::ndDirecao) return true;
+		break;
 
-		}
+	}
 	return false;
 }
 
@@ -340,6 +372,10 @@ void Mapeamento::realinha(direcao lado_saindo) {
 
 
 void Mapeamento::intersec() {
+	/*
+	 * quando entrar neste metodo o robo esta no inicio de uma intersecao
+	 * mas somente com os sensores dentro da intersecao
+	 */
 	usleep(1000000*0.5); // pra dar tempo do robo entrar um pouco na intersecao
 
 
@@ -355,9 +391,11 @@ void Mapeamento::intersec() {
 			break;
 	}
 
-	// esta dentro, tora o pau meu filho
-	robo->alinhar(sensor, direcao::traz);
-	robo->andar(50, 0.15 + robo->get_pintao()); // vai pro meio do quadrado
+	//fazer esse alinhamento somente se nao for preto, se for preto ja entrar no intersec
+	if(cor_E != Cor::preto){
+		robo->alinhar(sensor, direcao::traz);
+		robo->andar(50, 0.15 + robo->get_pintao()); // vai pro meio do quadrado
+	}
 	// TODO leitura de cor necessaria somente pra verificar se o robo ainda ta dentro da intersecao
 	cor_E = sensor->ler_cor_E();
 	cor_D = sensor->ler_cor_D();

@@ -1,6 +1,6 @@
 //TODO fazer fim_cidade
-//TODO tirar verificacao do 3 checkpoint de forma que fique facil voltar
-//TODO tirar entrada do deadend
+//TODO (testado uma vez)tirar verificacao do 3 checkpoint de forma que fique facil voltar
+//TODO (funcionando)tirar entrada do deadend
 //TODO reverificar calibragem
 /*TODO verificar todos os lugares onde ele chama o metodo realinhar,
  * em algum lugar o robo viu cores diferentes com os sensores e entrou em um loop onde
@@ -14,6 +14,7 @@
 #include "Sensor_cor_hsv.h"
 #include "Arquivos_mapeamento.h"
 #include  "Ultrassom_nxt.h"
+#include "Const.h"
 
 #define virar_direita(i) robo->girar(-90)
 
@@ -107,6 +108,9 @@ private:
 
 	// flag que controla o comportamento do robo de acordo com onde ele esta
 	estados_Mapeamento estd = estados_Mapeamento::faixa;
+
+	// contador de quantas cores ja mapeou
+	int qnt_cores_mapeadas = 0;
 
 
 	/********************Mapeamento dos bonecos************************/
