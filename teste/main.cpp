@@ -540,8 +540,8 @@ void teste_rogerio_alinhamento(){
 
 
 void teste_luana_mapeamento(){
-	Controlador_robo robot(true, "debug posicao direto no pwm.m");
-	Sensor_cor_hsv cor(ev3dev::INPUT_1, ev3dev::INPUT_2);
+	Controlador_robo robot(false, "debug posicao direto no pwm.m");
+	Sensor_cor_hsv cor(ev3dev::INPUT_1, ev3dev::INPUT_2, false, "");
 	Ultrassom_nxt ultraE(ev3dev::INPUT_3);
 	Ultrassom_nxt ultraD(ev3dev::INPUT_4);
 

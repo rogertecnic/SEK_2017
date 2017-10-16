@@ -29,12 +29,10 @@ void Controlador_robo::andar (int pwm_sp, double distancia){
 	reset_motores();
 	andar(pwm_sp);
 	double posicao_atual = get_distancia_linha_reta();
-	if(pwm_sp > 0) while(get_distancia_linha_reta() < distancia+posicao_atual){
-		cout << get_distancia_absoluta() << ";" << get_distancia_linha_reta() << endl;
-	}
-	if(pwm_sp < 0) while(get_distancia_linha_reta() > -distancia+posicao_atual){
-		cout << get_distancia_absoluta() << ";" << get_distancia_linha_reta() << endl;
-	}
+	if(pwm_sp > 0)
+		while(get_distancia_linha_reta() < distancia+posicao_atual);
+	if(pwm_sp < 0)
+		while(get_distancia_linha_reta() > -distancia+posicao_atual);
 
 	parar();
 }

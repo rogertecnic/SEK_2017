@@ -49,11 +49,11 @@ const bool automapear_3_checkpoint = true;
 /* == 1 se estiver indo do ponto de start para a rampa
  * == -1 se estiver indo da rampa para o ponto de start
  */
-int sentido_navegacao = 0;
+extern int sentido_navegacao;
 
 
 /* Variaveis de mapeamento de intersecção e de bonecos*/
-list<no_intersec> no;
-direcao_checkpoint cp = {direcao::ndDirecao, direcao::ndDirecao, direcao::ndDirecao};
+extern list<no_intersec> no;
+extern direcao_checkpoint cp;
 
 #endif
