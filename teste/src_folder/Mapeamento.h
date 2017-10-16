@@ -45,7 +45,6 @@ private:
 	/* == 1 se estiver indo do ponto de start para a rampa
 	 * == -1 se estiver indo da rampa para o ponto de start
 	 */
-	int sentido_navegacao = 0; // FIXME sentido_navegacao deixar aqui ou levar pra outro lugar?
 
 	//Variável de controle de posicao na chegada de um quadrado(deadend/intersec)
 	double posicao_inicialt = 0;
@@ -71,7 +70,7 @@ private:
 	 * Cada nó trata-se de uma intersecção
 	 * Cada intersecção deve conter as posições dos bonecos antes e depois dela (se houver)
 	 */
-	list<no_intersec> no;
+	//list<no_intersec> no;
 	list<no_intersec>::iterator it_no_atual = no.begin();
 	list<no_intersec>::iterator it_no_anterior = no.begin();
 
@@ -117,9 +116,6 @@ private:
 	// direcao referente a intersecao que o robo acabou de sair
 	direcao direcao_atual = direcao::ndDirecao;
 
-	// direcao correta de cada intersecao
-	direcao_checkpoint cp = {direcao::ndDirecao, direcao::ndDirecao, direcao::ndDirecao};
-
 	//	intersecao atual ja foi mapeada? se nao,
 	//  quando encontrar uma nova intersecao mapear a atual
 	bool confirmacao_status = false;
@@ -132,7 +128,7 @@ private:
 	Cor	cor_D = Cor::ndCor;
 
 	// flag que controla o comportamento do robo de acordo com onde ele esta
-	estados_Mapeamento estd = estados_Mapeamento::faixa;
+	estados_arena estd = estados_arena::faixa;
 
 	// contador de quantas cores ja mapeou
 	int qnt_cores_mapeadas = 0;

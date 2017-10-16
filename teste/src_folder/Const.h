@@ -8,7 +8,7 @@
 
 using namespace std;
 
-enum estados_Mapeamento{faixa, leu_fora, leu_nda, intersec, terminado, atencao}; //usado na classe Mapeamento
+enum estados_arena{faixa, leu_fora, leu_nda, intersec, terminado, atencao}; //usado na classe Mapeamento
 enum direcao{ndDirecao, frente, direita, esquerda, traz};// usado na classe Mapeamento
 enum Cor{ndCor, preto, branco, vermelho, verde, azul, fora}; // cores possiveis
 enum flag_aceleracao{ndAcel, linha_reta, parar, girar}; // usado dentro do Controlador_robo
@@ -43,5 +43,15 @@ struct no_intersec {
 };
 
 const bool automapear_3_checkpoint = true;
+
+/* == 1 se estiver indo do ponto de start para a rampa
+ * == -1 se estiver indo da rampa para o ponto de start
+ */
+int sentido_navegacao = 0;
+
+
+/* Variaveis de mapeamento de intersecção e de bonecos*/
+list<no_intersec> no;
+direcao_checkpoint cp = {direcao::ndDirecao, direcao::ndDirecao, direcao::ndDirecao};
 
 #endif

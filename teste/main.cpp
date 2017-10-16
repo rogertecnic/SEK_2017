@@ -56,7 +56,7 @@ void teste_luana_alinhamento(){
 	usleep(0.3*1000000);
 	ev3dev::button::enter.process();
 
-	estados_Mapeamento estd;
+	estados_arena estd;
 
 	int count_nda = 0;
 
@@ -65,7 +65,7 @@ void teste_luana_alinhamento(){
 
 
 	robot.andar(70);
-	estd = estados_Mapeamento::faixa;
+	estd = estados_arena::faixa;
 
 	while(!ev3dev::button::back.process()){
 		switch (estd){
@@ -73,12 +73,12 @@ void teste_luana_alinhamento(){
 			robot.andar(70);
 			cout << "Estado: " << estd << endl;
 			if (cor.ler_cor_E() == Cor::ndCor || cor.ler_cor_D() == Cor::ndCor)
-				estd = estados_Mapeamento::leu_nda;
+				estd = estados_arena::leu_nda;
 			else if( (cor.ler_cor_E() != Cor::fora && cor.ler_cor_E() != Cor::ndCor && cor.ler_cor_E() != Cor::branco) ||
 					(cor.ler_cor_D() != Cor::fora && cor.ler_cor_D() != Cor::ndCor && cor.ler_cor_D() != Cor::branco) )
-				estd = estados_Mapeamento::intersec;
+				estd = estados_arena::intersec;
 			else if (cor.ler_cor_E() == Cor::fora || cor.ler_cor_D() == Cor::fora)
-				estd = estados_Mapeamento::leu_fora;
+				estd = estados_arena::leu_fora;
 
 
 			break;
@@ -92,12 +92,12 @@ void teste_luana_alinhamento(){
 				count_nda = 0;
 
 				if (cor.ler_cor_E() == Cor::fora || cor.ler_cor_D() == Cor::fora)
-					estd = estados_Mapeamento::leu_fora;
+					estd = estados_arena::leu_fora;
 				else if( (cor.ler_cor_E() != Cor::fora && cor.ler_cor_E() != Cor::ndCor && cor.ler_cor_E() != Cor::branco) ||
 						(cor.ler_cor_D() != Cor::fora && cor.ler_cor_D() != Cor::ndCor && cor.ler_cor_D() != Cor::branco) )
-					estd = estados_Mapeamento::intersec;
+					estd = estados_arena::intersec;
 				else if(cor.ler_cor_E() == Cor::branco || cor.ler_cor_D() == Cor::branco)
-					estd = estados_Mapeamento::faixa;
+					estd = estados_arena::faixa;
 
 			}
 
@@ -135,7 +135,7 @@ void teste_luana_alinhamento(){
 				robot.andar(70);
 			}
 
-			estd = estados_Mapeamento::faixa;
+			estd = estados_arena::faixa;
 
 			break;
 
@@ -186,7 +186,7 @@ void teste_luana_alinhamento(){
 					while(cor.ler_cor_E() == cor_E || cor.ler_cor_D() == cor_D);
 					usleep(1000*500);
 
-					estd = estados_Mapeamento::faixa;
+					estd = estados_arena::faixa;
 				}
 			}
 
