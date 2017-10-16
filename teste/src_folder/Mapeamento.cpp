@@ -450,6 +450,8 @@ bool Mapeamento::finalizar_threads_ultra(){
 }
 
 
+//TODO Arrumar forma como pego a distancia da interseccao ao boneco
+
 void Mapeamento::loop_mapeamento_bonecoE(){
 	while(thread_rodando_bonecos){
 		if(estd == estados_arena::intersec) interseccao = true;
