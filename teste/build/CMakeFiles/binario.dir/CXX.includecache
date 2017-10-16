@@ -76,6 +76,10 @@ vector
 ev3dev.h
 /src/src_folder/ev3dev.h
 
+/src/src_folder/Controlador_robo.cpp
+Controlador_robo.h
+/src/src_folder/Controlador_robo.h
+
 /src/src_folder/Controlador_robo.h
 iostream
 -

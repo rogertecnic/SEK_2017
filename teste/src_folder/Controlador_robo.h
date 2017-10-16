@@ -32,7 +32,9 @@ public:
 	bool inicializar_thread_aceleracao();
 	bool finalizar_thread_aceleracao();
 	flag_aceleracao get_estado();
-	double get_distancia();
+	double get_distancia_linha_reta();
+	double get_distancia_absoluta();
+	void reset_distancia_absoluta();
 	double get_velocidade();
 	double get_pintao();
 	double get_pwm_sp();
@@ -64,6 +66,7 @@ private:
 	double raio_robo = 0.156/2; // largura entre os centros das rodas div por 2
 	double angulo_robo_graus = 0; // quanto o robo vai girar quando chamar o metodo girar
 	double distancia_linha_reta = 0; // distancia que  o robo ja andou
+	double distancia_absoluta = 0; // distancia absoluta que o robo andou
 	void reset_motores(); // reseta os motores e a distancia_linha_reta
 
 	/*Variáveis controlador PWM*/

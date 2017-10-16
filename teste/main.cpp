@@ -149,8 +149,8 @@ void teste_luana_alinhamento(){
 			if( (cor.ler_cor_E() != Cor::fora && cor.ler_cor_E() != Cor::ndCor && cor.ler_cor_E() != Cor::branco) ||
 					(cor.ler_cor_D() != Cor::fora && cor.ler_cor_D() != Cor::ndCor && cor.ler_cor_D() != Cor::branco) ) {
 				cout<<"viu cor"<<endl;
-				posicao_inicial = robot.get_distancia();
-				while(robot.get_distancia() < posicao_inicial + 0.04);
+				posicao_inicial = robot.get_distancia_linha_reta();
+				while(robot.get_distancia_linha_reta() < posicao_inicial + 0.04);
 				robot.parar();
 
 				if(cor.ler_cor_E() != cor_E){
@@ -206,19 +206,19 @@ void teste_rogerio(){
 	Sensor_cor_hsv cor(ev3dev::INPUT_1, ev3dev::INPUT_2,false,"leitura_sensor_cor_hsv");
 	Mapeamento mapa(&robot, &cor, nullptr, nullptr);
 
-	robot.calibra_sensor_cor(&cor);
+
 	robot.inicializar_thread_aceleracao();
 	/*
 	 * teste da classe controlador_robo
 	 */
-	//	while(!ev3dev::button::enter.process());
-	//	usleep(1000000*0.1);
-	//	while(!ev3dev::button::enter.process());
-	//	robot.andar(30);
-	//	usleep(1000000*0.5);
-	//	robot.alinhar(&cor, direcao::frente);
-	//	robot.andar(100);
-	//	robot.andar(50);
+	while(!ev3dev::button::enter.process());
+	usleep(1000000*0.1);
+	while(!ev3dev::button::enter.process());
+	robot.andar(50, 0.3);
+	cout << robot.get_distancia_absoluta() << ";" << robot.get_distancia_linha_reta() << endl;
+	usleep(1000000*5);
+	robot.andar(50, 0.3);
+	cout << robot.get_distancia_absoluta() << ";" << robot.get_distancia_linha_reta() << endl;
 	//	while(!ev3dev::button::enter.process())
 	//		cout<<robot.get_velocidade()<<endl;
 	//	usleep(1000*2000);
@@ -229,7 +229,7 @@ void teste_rogerio(){
 	//	robot.andar(-50);
 	//	usleep(1000*2000);
 	//	robot.girar(-360);
-	//	while(!ev3dev::button::enter.process());
+	while(!ev3dev::button::enter.process());
 
 	/*
 	 * teste classe controlador_robo medir o tamanho do pintao
@@ -247,10 +247,11 @@ void teste_rogerio(){
 	/*
 	 * teste classe mapeamento com classe sensor cor hsv
 	 */
-	while(!ev3dev::button::enter.process());
-	usleep(1000000*0.1);
-	while(!ev3dev::button::enter.process());
-	mapa.mapear();
+	//	robot.calibra_sensor_cor(&cor);
+	//	while(!ev3dev::button::enter.process());
+	//	usleep(1000000*0.1);
+	//	while(!ev3dev::button::enter.process());
+	//	mapa.mapear();
 
 	/*
 	 * teste da classe sensor_cor
@@ -476,8 +477,8 @@ void teste_rogerio_alinhamento(){
 			if( (cor_E != Cor::branco && cor_E != Cor::fora && cor_E != Cor::ndCor) ||
 					(cor_D != Cor::branco && cor_D != Cor::fora && cor_D != Cor::ndCor)){
 				cout<<"viu cor"<<endl;
-				posicao_inicial = robot.get_distancia();
-				while(robot.get_distancia() < posicao_inicial + 0.04){}
+				posicao_inicial = robot.get_distancia_linha_reta();
+				while(robot.get_distancia_linha_reta() < posicao_inicial + 0.04){}
 				robot.parar();
 
 				if(cor.ler_cor_E() != cor_E){

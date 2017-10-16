@@ -470,7 +470,7 @@ void Mapeamento::loop_mapeamento_bonecoE(){
 		//Se chegar numa intersecção com um boneco detectado no caminho até lá
 		else if(!map_boneco_inicio && interseccao && leu_boneco){
 			it_no_atual++;
-			posicao_intersec = robo->get_distancia();
+			posicao_intersec = robo->get_distancia_linha_reta();
 
 			(*it_no_atual).pre = true;
 
@@ -486,7 +486,7 @@ void Mapeamento::loop_mapeamento_bonecoE(){
 		else if(!map_boneco_inicio&& !interseccao){
 
 			if(ultraE->le_centimetro() <= distancia_boneco){
-				(*it_no_atual).posicao_pos_e.push_back(robo->get_distancia());
+				(*it_no_atual).posicao_pos_e.push_back(robo->get_distancia_linha_reta());
 				if(!leu_boneco){
 					leu_boneco = true;
 					(*it_no_atual).pos = true;
@@ -514,7 +514,7 @@ void Mapeamento::loop_mapeamento_bonecoD(){
 	//Se chegar numa intersecção com um boneco detectado no caminho até lá
 	else if(!map_boneco_inicio && interseccao && leu_boneco){
 
-		posicao_intersec = robo->get_distancia();
+		posicao_intersec = robo->get_distancia_linha_reta();
 
 		(*it_no_atual).pre = true;
 
@@ -529,7 +529,7 @@ void Mapeamento::loop_mapeamento_bonecoD(){
 	//Entre intersecções
 	else if(!map_boneco_inicio&& !interseccao){
 		if(ultraD->le_centimetro() <= distancia_boneco){
-			(*it_no_atual).posicao_pos_d.push_back(robo->get_distancia());
+			(*it_no_atual).posicao_pos_d.push_back(robo->get_distancia_linha_reta());
 			if(!leu_boneco){
 				leu_boneco = true;
 				(*it_no_atual).pos = true;

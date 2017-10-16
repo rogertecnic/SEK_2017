@@ -28,9 +28,13 @@ void Controlador_robo::andar (int pwm_sp){
 void Controlador_robo::andar (int pwm_sp, double distancia){
 	reset_motores();
 	andar(pwm_sp);
-	double posicao_atual = get_distancia();
-	if(pwm_sp > 0) while(get_distancia() < distancia+posicao_atual);
-	if(pwm_sp < 0) while(get_distancia() > -distancia+posicao_atual);
+	double posicao_atual = get_distancia_linha_reta();
+	if(pwm_sp > 0) while(get_distancia_linha_reta() < distancia+posicao_atual){
+		cout << get_distancia_absoluta() << ";" << get_distancia_linha_reta() << endl;
+	}
+	if(pwm_sp < 0) while(get_distancia_linha_reta() > -distancia+posicao_atual){
+		cout << get_distancia_absoluta() << ";" << get_distancia_linha_reta() << endl;
+	}
 
 	parar();
 }
@@ -38,7 +42,7 @@ void Controlador_robo::andar (int pwm_sp, double distancia){
 
 void Controlador_robo::parar () {
 	estado = flag_aceleracao::parar;
-	usleep(1000*200);
+	while(estado != flag_aceleracao::ndAcel);
 }
 
 
@@ -51,18 +55,14 @@ void Controlador_robo::girar(int angulo_robo_graus){
 
 
 void Controlador_robo::alinhar(Sensor_cor_hsv *cor, direcao dir){
-	//FIXME alinhamento, o robo da um tranco ao sair depois de alinhar
 	parar();
 	int cor_E;
 	int cor_D;
 	int v_ajuste = -15;
 
-	//	while(cor_E == Cor::ndCor || cor_D == Cor::ndCor){
-	//		andar(v_ajuste, 0.01);
-			cor_E = cor->ler_cor_E();
-			cor_D = cor->ler_cor_D();
-	//		v_ajuste = v_ajuste*(-1);
-	//	}
+	cor_E = cor->ler_cor_E();
+	cor_D = cor->ler_cor_D();
+
 
 	cout<<"alinhando:"<<cor_E<<";"<<cor_D<<endl;
 	motorD->set_duty_cycle_sp(dir == direcao::traz?20:-20);
@@ -110,17 +110,41 @@ bool Controlador_robo::finalizar_thread_aceleracao(){
 	return true;
 }
 
+
+/*
+ * retorna o atual estado de movimento do robo,
+ * flag_aceleracao{ndAcel, linha_reta, parar, girar};
+ */
 flag_aceleracao Controlador_robo::get_estado(){
 	return estado;
 }
+
 
 /*
  *  retorna a distancia em linha reta que o robo andou
  * ATENCAO: toda vez que o robo girar os tacometros sao resetados
  */
-double Controlador_robo::get_distancia(){
+double Controlador_robo::get_distancia_linha_reta(){
 	return distancia_linha_reta;
 }
+
+
+/*
+ * retorna a distancia absoluta que o robo andou total
+ * desde o inicio do codigo ou desde o ultimo reset_distancia_absoluta
+ */
+double Controlador_robo::get_distancia_absoluta(){
+	return distancia_absoluta + distancia_linha_reta;
+}
+
+
+/*
+ * reseta a distancia_absoluta
+ */
+void Controlador_robo::reset_distancia_absoluta(){
+	distancia_absoluta = 0;
+}
+
 
 /*
  * retorna a velocidade do robo em m/s
@@ -151,6 +175,7 @@ void Controlador_robo::reset_motores(){
 	motorD->reset();
 	motorE->set_stop_action("hold");
 	motorD->set_stop_action("hold");
+	distancia_absoluta += distancia_linha_reta;
 	distancia_linha_reta = 0;
 }
 
@@ -164,7 +189,7 @@ void Controlador_robo::loop_controle_aceleracao(){
 		t_inicial = t_final;
 		tempo += delta_t.count();
 		if(debug)
-		arquivo->elementos_arq(tempo, (double)motorE->position(), (double)motorD->position(), erro, pwm);
+			arquivo->elementos_arq(tempo, (double)motorE->position(), (double)motorD->position(), erro, pwm);
 
 
 		switch(estado){
@@ -246,6 +271,7 @@ void Controlador_robo::loop_controle_aceleracao(){
 		case flag_aceleracao::parar :
 			motorE->stop();
 			motorD->stop();
+			usleep(1000000*0.1);
 			reset_motores();
 			pwm_sp = 0;
 			pwm_retardada = 0.0;
