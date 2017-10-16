@@ -459,13 +459,13 @@ void Mapeamento::realinha(direcao lado_saindo) {
 
 bool Mapeamento::inicializar_threads_ultra(){
 	thread_rodando_bonecos = true;
-//	mapeamento_bonecoD = thread(&Mapeamento::loop_mapeamento_bonecoD, this);
-//	mapeamento_bonecoD.detach();
-//	usleep(100000);
+	mapeamento_bonecoD = thread(&Mapeamento::loop_mapeamento_bonecoD, this);
+	mapeamento_bonecoD.detach();
+	usleep(100000);
 
 	mapeamento_bonecoE = thread(&Mapeamento::loop_mapeamento_bonecoE, this);
 	mapeamento_bonecoE.detach();
-	usleep(100000*10);
+	usleep(100000);
 
 	return thread_rodando_bonecos;
 }
@@ -483,20 +483,9 @@ bool Mapeamento::finalizar_threads_ultra(){
 //TODO Arrumar forma como pego a distancia da interseccao ao boneco
 
 void Mapeamento::loop_mapeamento_bonecoE(){
-	cout << "thread on:" << endl;
-	usleep(1000000*1);
-	(*it_no_atual).pre = false;
-	cout << "nao chrechei :)" << endl;
-		usleep(1000000*1);
 	while(thread_rodando_bonecos){
-		if(estd == estados_arena::intersec) interseccao = true;
-		else interseccao = false;
-
-		//Primeiro nó(intersecção)
-		if(interseccao && map_boneco_inicio){
+		if (map_boneco_inicio)
 			(*it_no_atual).pre = false;
-			map_boneco_inicio = false;
-		}
 
 		//Se chegar numa intersecção sem bonecos detectados no caminho
 		else if(!map_boneco_inicio && interseccao && !leu_boneco){
@@ -521,7 +510,7 @@ void Mapeamento::loop_mapeamento_bonecoE(){
 		}
 
 		//Entre intersecções
-		else if(!map_boneco_inicio&& !interseccao){
+		else if(!map_boneco_inicio && !interseccao){
 
 			if(ultraE->le_centimetro() <= distancia_boneco){
 				(*it_no_atual).posicao_pos_e.push_back(robo->get_distancia_absoluta());
@@ -537,15 +526,11 @@ void Mapeamento::loop_mapeamento_bonecoE(){
 void Mapeamento::loop_mapeamento_bonecoD(){
 	//Primeiro nó(intersecção)
 	while(thread_rodando_bonecos){
-		if(estd == estados_arena::intersec) interseccao = true;
-		else interseccao = false;
-
-		if(interseccao && map_boneco_inicio){
+		if(map_boneco_inicio)
 			(*it_no_atual).pre = false;
-			map_boneco_inicio = false;
-		}
+
 		//Se chegar numa intersecção sem bonecos detectados no caminho
-		else if(!map_boneco_inicio && interseccao && !leu_boneco){
+		if(!map_boneco_inicio && interseccao && !leu_boneco){
 			(*it_no_atual).pre = false;
 			(*it_no_anterior).pos = false;
 		}
@@ -566,7 +551,7 @@ void Mapeamento::loop_mapeamento_bonecoD(){
 		}
 
 		//Entre intersecções
-		else if(!map_boneco_inicio&& !interseccao){
+		else if(!map_boneco_inicio && !interseccao){
 			if(ultraD->le_centimetro() <= distancia_boneco){
 				(*it_no_atual).posicao_pos_d.push_back(robo->get_distancia_absoluta());
 				if(!leu_boneco){
