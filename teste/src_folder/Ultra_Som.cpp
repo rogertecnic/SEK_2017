@@ -1,5 +1,4 @@
-#include <Ultra_Som.h>
-
+#include "Ultra_Som.h"
 
 Ultra_Som::Ultra_Som(string sensor_port, double dist_max, double dist_min)
 : dist_max(dist_max),

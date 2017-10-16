@@ -7,14 +7,16 @@ Mapeamento::Mapeamento(Controlador_robo *robo, Sensor_cor_hsv *sensor, Ultrassom
 
 }
 
-
+/* rotina de mapeamento, controla o robo inteiro enquanto mapeia as cores
+ * e faz o controle das threads de mapear os bonecos
+ */
 void Mapeamento::mapear(){
-	//TODO verificar se eh necessario tratar os problemas a mais
+	//TODO ROGERIO: verificar se eh necessario tratar os problemas a mais
 	cout << endl << endl << endl << "bora mapear!!" << endl;
 	direcao_atual = direcao::ndDirecao;
 
-	int count_ndCor = 0,
-			cout_intersec = 0;
+	int count_ndCor = 0; //FIXME count_ndCor nao usado, vai ser necessario?
+	int cout_intersec = 0;
 
 	while(estd != estados_Mapeamento::terminado){
 		cor_E = sensor->ler_cor_E();
@@ -33,8 +35,22 @@ void Mapeamento::mapear(){
 			break;
 
 
-		case estados_Mapeamento::intersec:
-			cout << "intersec" << endl;
+		case estados_Mapeamento::intersec: // TODO testar nova verificacao de entrada de intersec
+			cout << "intersec?";
+			while(true){
+				if(sensor->ler_cor_E() != cor_E){
+					realinha(direcao::esquerda);
+				}
+				else if(sensor->ler_cor_D() != cor_D){
+					realinha(direcao::direita);
+				}
+				else
+					break;
+				cout << "nao, loop infinito?" << endl;
+				robo->alinhar(sensor, direcao::frente);
+				robo->andar(30, 0.02);
+			}
+			cout << "SIM" << endl << endl;
 			intersec();
 			if(cor_E == Cor::branco && cor_D == Cor::branco)
 			{
@@ -43,14 +59,13 @@ void Mapeamento::mapear(){
 			} else {
 				robo->parar();
 				cout << "o robo terminou a intersecao e nao esta no branco" << endl;
-				// TODO o robo terminou a intersecao e nao esta no branco
 			}
+
 			break;
 
 
 		case estados_Mapeamento::faixa:
 			cout << "faixa" << endl;
-			count_ndCor = 0;
 			cout_intersec = 0;
 			robo->andar(70);
 			if (cor_E != Cor::branco || cor_D != Cor::branco)
@@ -84,6 +99,7 @@ void Mapeamento::mapear(){
 				cout_intersec ++;
 				if(cout_intersec >= 3)
 					estd = estados_Mapeamento::intersec;
+				usleep(1000000*0.7); // para o robo entrar um pouquinho na intersecao
 				break;
 			}
 
@@ -92,8 +108,34 @@ void Mapeamento::mapear(){
 	}
 }
 
+/* quando o robo entra em uma intersecao dentro do metodo mapear chama-se esse metodo.
+ * considera-se dentro da intersecao quando os 2 sensores detectarem a mudanca de cor e fizer
+ * 3 leituras para confirmar essa intersecao, equivale aos sensores de cor entrar dentro da incersecao
+ * mais ou menos 2 cm na velocidade de atencao (30) e as rodas ainda continuam pra fora, o robo pode estar
+ * desalinhado
+ */
+void Mapeamento::intersec() {
+	//fazer esse alinhamento somente se nao for preto, se for preto ja entrar no mapeamento_intersec
+	if(cor_E != Cor::preto){
+		robo->alinhar(sensor, direcao::traz);
+		robo->andar(50, 0.15 + robo->get_pintao()); // vai pro meio do quadrado
+	}
+	cor_E = sensor->ler_cor_E();
+	cor_D = sensor->ler_cor_D();
+	if(true) mapeamento_intersec();// verificar se eh o fim da cidade
+	else {
+		arq_map->arquivo_map(cp);
+		estd = estados_Mapeamento::terminado;
+	}
+}
 
 
+	/* mapeia aquela cor e faz a proxima movimentacao do robo, se for a primeira intersecao inicializa a thread
+	 * de boneco, se nao, verifica se eh um dead-end ou outra intersecao, se for outra intersecao mapeia a atual
+	 * se necessario e verifica se ja eh uma intersecao conhecida ou nao, se for conhecida segue pro caminho certo,
+	 * se nao for conhecida a nova intersecao passa a ser a atual e o robo comeca a mapea-la, se mapear duas intersecoes
+	 * a terceira ja eh mapeada automaticamente
+	 */
 void Mapeamento::mapeamento_intersec() {
 	if(cor_E != cor_D) // verifica se esta como precisto, se nao da um aviso e nao continua
 	{
@@ -119,8 +161,6 @@ void Mapeamento::mapeamento_intersec() {
 		//map_boneco_inicio = true;
 		//inicializar_threads_ultra();
 	}
-
-
 	/*Depois da primeira intersecção*/
 	else{
 
@@ -269,42 +309,49 @@ void Mapeamento::mapeamento_intersec() {
 	//it_no_anterior++;
 }
 
-
+/* O robo gira pra direcao certa da nova cor, ou seja, intersecao que
+ * ele esta sobre quando o metodo eh chamado, lembrando que a variavel cor_atual guarda a cor
+ * da intersecao que o robo esta vindo e esta mapeando no momento
+ */
 void Mapeamento::caminho_certo (){
 	if (cor_E == Cor::vermelho && cor_D == Cor::vermelho){
 		if (cp.checkpoint_vermelho == direcao::direita){
-			virar_direita();
+			robo->girar(-90);;
 		}
 
 		else if (cp.checkpoint_vermelho == direcao::esquerda){
-			virar_esquerda();
+			robo->girar(90);
 		}
 	}
 
 	else if (cor_E == Cor::verde && cor_D == Cor::verde){
 		if (cp.checkpoint_verde == direcao::direita){
-			virar_direita(sentido_navegacao);
+			robo->girar(-90);
 		}
 
 		else if (cp.checkpoint_verde == direcao::esquerda){
-			virar_esquerda(sentido_navegacao);
+			robo->girar(90);
 		}
 	}
 
 	else if (cor_E == Cor::azul && cor_D == Cor::azul){
 		if (cp.checkpoint_azul == direcao::direita){
-			virar_direita(sentido_navegacao);
+			robo->girar(-90);
 		}
 
 		else if (cp.checkpoint_azul == direcao::esquerda){
-			virar_esquerda(sentido_navegacao);
+			robo->girar(90);
 		}
 	}
 
 	while(robo->get_estado() == flag_aceleracao::girar);
 }
 
-
+/* TODO verifica se eh o final da cidade, se for entao retorna true, temos um problema
+ * esse metodo eh chamado quando o robo detecta uma intersecao, se ele chegar na rampa e nao detectar
+ * uma intersecao por causa da inclinacao da rampa (distancia entre o chao e o sensor de cor varia)
+ * isso deve ser tratado dentro da deteccao da intersecao dentro do metodo mapear
+ */
 bool Mapeamento::fim_da_cidade(){
 	robo->andar(30, 0.040);
 	if (sensor->ler_cor_E() != cor_E && sensor->ler_cor_D() != cor_D){
@@ -318,7 +365,11 @@ bool Mapeamento::fim_da_cidade(){
 	return false;
 }
 
-
+/*
+ * Retorna true se a nova cor ja estiver sido mapeada anteriormente, se for a mesma da cor atual
+ * o metodo vai retornar false, pois a atribuicao de direcao eh feito depois do uso desse metodo
+ * logo duas cores iguais seguidas mas nao mapeada anteriormente retorna false
+ */
 bool Mapeamento::cor_ja_mapeada(){
 	switch(cor_E){
 	case Cor::vermelho:
@@ -337,7 +388,10 @@ bool Mapeamento::cor_ja_mapeada(){
 	return false;
 }
 
-
+/*
+ * quando eh necessario voltar e girar pra casos como o robo saindo da pista por exemplo
+ * isso nao implica que o robo vai ficar reto, ele so "para de sair" da pista
+ */
 void Mapeamento::realinha(direcao lado_saindo) {
 	double pwm_sp = robo->get_pwm_sp();
 	int grau = 12;
@@ -348,7 +402,7 @@ void Mapeamento::realinha(direcao lado_saindo) {
 		robo->andar(-80,0.08);
 		robo->girar(-grau);
 		while(robo->get_estado() == flag_aceleracao::girar);
-		robo->andar(80, 0.08);
+		//robo->andar(80, 0.07); // anda pra frente necessario?
 		robo->andar(pwm_sp);
 	}
 
@@ -359,7 +413,7 @@ void Mapeamento::realinha(direcao lado_saindo) {
 		robo->andar(-80,0.08);
 		robo->girar(grau);
 		while(robo->get_estado() == flag_aceleracao::girar);
-		robo->andar(80, 0.08);
+		//robo->andar(80, 0.08); // anda pra frente necessario?
 		robo->andar(pwm_sp);
 	}
 	else{
@@ -368,43 +422,6 @@ void Mapeamento::realinha(direcao lado_saindo) {
 		usleep(1000000*5);
 	}
 	usleep(1000000*0.3);
-}
-
-
-void Mapeamento::intersec() {
-	/*
-	 * quando entrar neste metodo o robo esta no inicio de uma intersecao
-	 * mas somente com os sensores dentro da intersecao
-	 */
-	usleep(1000000*0.5); // pra dar tempo do robo entrar um pouco na intersecao
-
-
-
-	while(true){
-		if(sensor->ler_cor_E() != cor_E){
-			realinha(direcao::esquerda);
-		}
-		else if(sensor->ler_cor_D() != cor_D){
-			realinha(direcao::direita);
-		}
-		else
-			break;
-	}
-
-	//fazer esse alinhamento somente se nao for preto, se for preto ja entrar no intersec
-	if(cor_E != Cor::preto){
-		robo->alinhar(sensor, direcao::traz);
-		robo->andar(50, 0.15 + robo->get_pintao()); // vai pro meio do quadrado
-	}
-	// TODO leitura de cor necessaria somente pra verificar se o robo ainda ta dentro da intersecao
-	cor_E = sensor->ler_cor_E();
-	cor_D = sensor->ler_cor_D();
-	// TODO fazer o fim da cidade (rampa)
-	if(true) mapeamento_intersec(); // quando terminar o mapeamento retorna false
-	else {
-		arq_map->arquivo_map(cp);
-		estd = estados_Mapeamento::terminado;
-	}
 }
 
 
