@@ -18,24 +18,24 @@ void Mapeamento::mapear(){
 	int count_ndCor = 0; //FIXME count_ndCor nao usado, vai ser necessario?
 	int cout_intersec = 0;
 
-	while(estd != estados_Mapeamento::terminado){
+	while(estd != estados_arena::terminado){
 		cor_E = sensor->ler_cor_E();
 		cor_D = sensor->ler_cor_D();
 
 		switch (estd){
-		case estados_Mapeamento::leu_fora:
+		case estados_arena::leu_fora:
 			cout << "fora:";
 			cout_intersec = 0;
 			if(cor_E == Cor::fora)
 				realinha(direcao::esquerda);
 			else if (cor_D == Cor::fora)
 				realinha(direcao::direita);
-			else estd = estados_Mapeamento::atencao;
+			else estd = estados_arena::atencao;
 
 			break;
 
 
-		case estados_Mapeamento::intersec: // TODO testar nova verificacao de entrada de intersec
+		case estados_arena::intersec: // TODO testar nova verificacao de entrada de intersec
 			cout << "intersec?";
 			while(true){
 				if(sensor->ler_cor_E() != cor_E){
@@ -54,7 +54,7 @@ void Mapeamento::mapear(){
 			intersec();
 			if(cor_E == Cor::branco && cor_D == Cor::branco)
 			{
-				estd = estados_Mapeamento::faixa;
+				estd = estados_arena::faixa;
 				break;
 			} else {
 				robo->parar();
@@ -64,17 +64,17 @@ void Mapeamento::mapear(){
 			break;
 
 
-		case estados_Mapeamento::faixa:
+		case estados_arena::faixa:
 			cout << "faixa" << endl;
 			cout_intersec = 0;
 			robo->andar(70);
 			if (cor_E != Cor::branco || cor_D != Cor::branco)
-				estd = estados_Mapeamento::atencao;
+				estd = estados_arena::atencao;
 
 			break;
 
 
-		case estados_Mapeamento::atencao:
+		case estados_arena::atencao:
 			/* TODO fazer tratamento do caso que sensor fique muito tempo em uma interface
 			 */
 			cout << "atencao" << endl;
@@ -82,12 +82,12 @@ void Mapeamento::mapear(){
 				robo->andar(30);
 			if(cor_E == Cor::branco && cor_D == Cor::branco)
 			{
-				estd = estados_Mapeamento::faixa;
+				estd = estados_arena::faixa;
 				break;
 			}
 			if (cor_E == Cor::fora || cor_D == Cor::fora)
 			{
-				estd = estados_Mapeamento::leu_fora;
+				estd = estados_arena::leu_fora;
 				break;
 			}
 			if((cor_E == Cor::vermelho && cor_D == Cor::vermelho) ||
@@ -98,7 +98,7 @@ void Mapeamento::mapear(){
 				robo->andar(20);
 				cout_intersec ++;
 				if(cout_intersec >= 3)
-					estd = estados_Mapeamento::intersec;
+					estd = estados_arena::intersec;
 				usleep(1000000*0.7); // para o robo entrar um pouquinho na intersecao
 				break;
 			}
@@ -125,7 +125,7 @@ void Mapeamento::intersec() {
 	if(true) mapeamento_intersec();// verificar se eh o fim da cidade
 	else {
 		arq_map->arquivo_map(cp);
-		estd = estados_Mapeamento::terminado;
+		estd = estados_arena::terminado;
 	}
 }
 
@@ -157,7 +157,7 @@ void Mapeamento::mapeamento_intersec() {
 		while(sensor->ler_cor_E() == cor_E || sensor->ler_cor_D() == cor_D);
 		usleep(1000000*0.3);
 
-		estd = estados_Mapeamento::faixa;
+		estd = estados_arena::faixa;
 		//map_boneco_inicio = true;
 		//inicializar_threads_ultra();
 	}
@@ -174,7 +174,7 @@ void Mapeamento::mapeamento_intersec() {
 			robo->andar(70);
 			while(sensor->ler_cor_E() == cor_E || sensor->ler_cor_D() == cor_D);
 			usleep(1000000*0.3);
-			estd = estados_Mapeamento::faixa;
+			estd = estados_arena::faixa;
 		}
 
 		/*Encontro de outra intersecção*/
@@ -203,7 +203,7 @@ void Mapeamento::mapeamento_intersec() {
 				robo->andar(70);
 				while(sensor->ler_cor_E() == cor_E || sensor->ler_cor_D() == cor_D);
 				usleep(1000000*0.3);
-				estd = estados_Mapeamento::faixa;
+				estd = estados_arena::faixa;
 				dead_end = false;
 			}
 
@@ -271,7 +271,7 @@ void Mapeamento::mapeamento_intersec() {
 				while(sensor->ler_cor_E() == cor_E || sensor->ler_cor_D() == cor_D);
 				usleep(1000000*0.3);
 				dead_end = false;
-				estd = estados_Mapeamento::faixa;
+				estd = estados_arena::faixa;
 			}
 
 			/*Cor ja mapeada, pode ser igual a atual ou outra cor*/
@@ -301,7 +301,7 @@ void Mapeamento::mapeamento_intersec() {
 				while(sensor->ler_cor_E() == cor_E || sensor->ler_cor_D() == cor_D);
 				usleep(1000000*0.3);
 				dead_end = false;
-				estd = estados_Mapeamento::faixa;
+				estd = estados_arena::faixa;
 			}
 		}
 	}
@@ -451,7 +451,7 @@ bool Mapeamento::finalizar_threads_ultra(){
 
 void Mapeamento::loop_mapeamento_bonecoE(){
 	while(thread_rodando_bonecos){
-		if(estd == estados_Mapeamento::intersec) interseccao = true;
+		if(estd == estados_arena::intersec) interseccao = true;
 		else interseccao = false;
 
 		//Primeiro nó(intersecção)
@@ -498,7 +498,7 @@ void Mapeamento::loop_mapeamento_bonecoE(){
 
 void Mapeamento::loop_mapeamento_bonecoD(){
 	//Primeiro nó(intersecção)
-	if(estd == estados_Mapeamento::intersec) interseccao = true;
+	if(estd == estados_arena::intersec) interseccao = true;
 	else interseccao = false;
 
 	if(interseccao && map_boneco_inicio){
