@@ -37,7 +37,8 @@ private:
 	Ultrassom_nxt *ultraE;
 	Ultrassom_nxt *ultraD;
 
-
+	//FIXME deletar variaveis abaixo, criadas somente pra simular o fim_da_cidade
+	int iterador_fim_cidade = 0;
 
 	/*********************************************************************************************/
 	/*************************VARIAVEIS DO MAPEAMENTO DE BONECO***********************************/

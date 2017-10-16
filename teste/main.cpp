@@ -538,31 +538,33 @@ void teste_rogerio_alinhamento(){
 	}
 }
 
-/*
+
 void teste_luana_mapeamento(){
 	Controlador_robo robot(true, "debug posicao direto no pwm.m");
 	Sensor_cor_hsv cor(ev3dev::INPUT_1, ev3dev::INPUT_2);
+	Ultrassom_nxt ultraE(ev3dev::INPUT_3);
+	Ultrassom_nxt ultraD(ev3dev::INPUT_4);
 
 	robot.calibra_sensor_cor(&cor);
-	//robot.inicializar_thread_aceleracao();
+	robot.inicializar_thread_aceleracao();
 
 	while(!ev3dev::button::enter.process());
 	usleep(0.3*1000000);
 	ev3dev::button::enter.process();
 
-	Mapeamento map;
+	Mapeamento map(&robot, &cor, &ultraE, &ultraD);
 
-	map.mapear(&robot, &cor);
+	map.mapear();
 
 }
- */
+
 
 int main(){
 	system("setfont Greek-TerminusBold20x10.psf.gz");
 	//teste_luana_alinhamento();
-	teste_rogerio();
+	//teste_rogerio();
 	//teste_rogerio_alinhamento();
-	//teste_luana_mapeamento();
+	teste_luana_mapeamento();
 
 	cout << "Teste finalizado. Bye!" << endl;
 	usleep (1000000);

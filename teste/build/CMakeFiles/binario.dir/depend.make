@@ -44,12 +44,6 @@ CMakeFiles/binario.dir/src_folder/Mapeamento.o: ../src_folder/Sensor_cor_hsv.h
 CMakeFiles/binario.dir/src_folder/Mapeamento.o: ../src_folder/Ultrassom_nxt.h
 CMakeFiles/binario.dir/src_folder/Mapeamento.o: ../src_folder/ev3dev.h
 
-CMakeFiles/binario.dir/src_folder/Sensor_cor.o: ../src_folder/Const.h
-CMakeFiles/binario.dir/src_folder/Sensor_cor.o: ../src_folder/M_arquivos.h
-CMakeFiles/binario.dir/src_folder/Sensor_cor.o: ../src_folder/Sensor_cor.cpp
-CMakeFiles/binario.dir/src_folder/Sensor_cor.o: ../src_folder/Sensor_cor.h
-CMakeFiles/binario.dir/src_folder/Sensor_cor.o: ../src_folder/ev3dev.h
-
 CMakeFiles/binario.dir/src_folder/Sensor_cor_hsv.o: ../src_folder/Const.h
 CMakeFiles/binario.dir/src_folder/Sensor_cor_hsv.o: ../src_folder/M_arquivos.h
 CMakeFiles/binario.dir/src_folder/Sensor_cor_hsv.o: ../src_folder/Sensor_cor_hsv.cpp

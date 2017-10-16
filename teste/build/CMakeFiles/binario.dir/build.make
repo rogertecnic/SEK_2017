@@ -118,32 +118,9 @@ CMakeFiles/binario.dir/src_folder/M_arquivos.o.provides: CMakeFiles/binario.dir/
 
 CMakeFiles/binario.dir/src_folder/M_arquivos.o.provides.build: CMakeFiles/binario.dir/src_folder/M_arquivos.o
 
-CMakeFiles/binario.dir/src_folder/Sensor_cor.o: CMakeFiles/binario.dir/flags.make
-CMakeFiles/binario.dir/src_folder/Sensor_cor.o: ../src_folder/Sensor_cor.cpp
-	$(CMAKE_COMMAND) -E cmake_progress_report /src/build/CMakeFiles $(CMAKE_PROGRESS_4)
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Building CXX object CMakeFiles/binario.dir/src_folder/Sensor_cor.o"
-	/usr/bin/arm-linux-gnueabi-g++   $(CXX_DEFINES) $(CXX_FLAGS) -o CMakeFiles/binario.dir/src_folder/Sensor_cor.o -c /src/src_folder/Sensor_cor.cpp
-
-CMakeFiles/binario.dir/src_folder/Sensor_cor.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/binario.dir/src_folder/Sensor_cor.i"
-	/usr/bin/arm-linux-gnueabi-g++  $(CXX_DEFINES) $(CXX_FLAGS) -E /src/src_folder/Sensor_cor.cpp > CMakeFiles/binario.dir/src_folder/Sensor_cor.i
-
-CMakeFiles/binario.dir/src_folder/Sensor_cor.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/binario.dir/src_folder/Sensor_cor.s"
-	/usr/bin/arm-linux-gnueabi-g++  $(CXX_DEFINES) $(CXX_FLAGS) -S /src/src_folder/Sensor_cor.cpp -o CMakeFiles/binario.dir/src_folder/Sensor_cor.s
-
-CMakeFiles/binario.dir/src_folder/Sensor_cor.o.requires:
-.PHONY : CMakeFiles/binario.dir/src_folder/Sensor_cor.o.requires
-
-CMakeFiles/binario.dir/src_folder/Sensor_cor.o.provides: CMakeFiles/binario.dir/src_folder/Sensor_cor.o.requires
-	$(MAKE) -f CMakeFiles/binario.dir/build.make CMakeFiles/binario.dir/src_folder/Sensor_cor.o.provides.build
-.PHONY : CMakeFiles/binario.dir/src_folder/Sensor_cor.o.provides
-
-CMakeFiles/binario.dir/src_folder/Sensor_cor.o.provides.build: CMakeFiles/binario.dir/src_folder/Sensor_cor.o
-
 CMakeFiles/binario.dir/src_folder/Sensor_cor_hsv.o: CMakeFiles/binario.dir/flags.make
 CMakeFiles/binario.dir/src_folder/Sensor_cor_hsv.o: ../src_folder/Sensor_cor_hsv.cpp
-	$(CMAKE_COMMAND) -E cmake_progress_report /src/build/CMakeFiles $(CMAKE_PROGRESS_5)
+	$(CMAKE_COMMAND) -E cmake_progress_report /src/build/CMakeFiles $(CMAKE_PROGRESS_4)
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Building CXX object CMakeFiles/binario.dir/src_folder/Sensor_cor_hsv.o"
 	/usr/bin/arm-linux-gnueabi-g++   $(CXX_DEFINES) $(CXX_FLAGS) -o CMakeFiles/binario.dir/src_folder/Sensor_cor_hsv.o -c /src/src_folder/Sensor_cor_hsv.cpp
 
@@ -166,7 +143,7 @@ CMakeFiles/binario.dir/src_folder/Sensor_cor_hsv.o.provides.build: CMakeFiles/bi
 
 CMakeFiles/binario.dir/src_folder/Ultrassom_nxt.o: CMakeFiles/binario.dir/flags.make
 CMakeFiles/binario.dir/src_folder/Ultrassom_nxt.o: ../src_folder/Ultrassom_nxt.cpp
-	$(CMAKE_COMMAND) -E cmake_progress_report /src/build/CMakeFiles $(CMAKE_PROGRESS_6)
+	$(CMAKE_COMMAND) -E cmake_progress_report /src/build/CMakeFiles $(CMAKE_PROGRESS_5)
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Building CXX object CMakeFiles/binario.dir/src_folder/Ultrassom_nxt.o"
 	/usr/bin/arm-linux-gnueabi-g++   $(CXX_DEFINES) $(CXX_FLAGS) -o CMakeFiles/binario.dir/src_folder/Ultrassom_nxt.o -c /src/src_folder/Ultrassom_nxt.cpp
 
@@ -189,7 +166,7 @@ CMakeFiles/binario.dir/src_folder/Ultrassom_nxt.o.provides.build: CMakeFiles/bin
 
 CMakeFiles/binario.dir/src_folder/Controlador_robo.o: CMakeFiles/binario.dir/flags.make
 CMakeFiles/binario.dir/src_folder/Controlador_robo.o: ../src_folder/Controlador_robo.cpp
-	$(CMAKE_COMMAND) -E cmake_progress_report /src/build/CMakeFiles $(CMAKE_PROGRESS_7)
+	$(CMAKE_COMMAND) -E cmake_progress_report /src/build/CMakeFiles $(CMAKE_PROGRESS_6)
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Building CXX object CMakeFiles/binario.dir/src_folder/Controlador_robo.o"
 	/usr/bin/arm-linux-gnueabi-g++   $(CXX_DEFINES) $(CXX_FLAGS) -o CMakeFiles/binario.dir/src_folder/Controlador_robo.o -c /src/src_folder/Controlador_robo.cpp
 
@@ -212,7 +189,7 @@ CMakeFiles/binario.dir/src_folder/Controlador_robo.o.provides.build: CMakeFiles/
 
 CMakeFiles/binario.dir/src_folder/Mapeamento.o: CMakeFiles/binario.dir/flags.make
 CMakeFiles/binario.dir/src_folder/Mapeamento.o: ../src_folder/Mapeamento.cpp
-	$(CMAKE_COMMAND) -E cmake_progress_report /src/build/CMakeFiles $(CMAKE_PROGRESS_8)
+	$(CMAKE_COMMAND) -E cmake_progress_report /src/build/CMakeFiles $(CMAKE_PROGRESS_7)
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Building CXX object CMakeFiles/binario.dir/src_folder/Mapeamento.o"
 	/usr/bin/arm-linux-gnueabi-g++   $(CXX_DEFINES) $(CXX_FLAGS) -o CMakeFiles/binario.dir/src_folder/Mapeamento.o -c /src/src_folder/Mapeamento.cpp
 
@@ -235,7 +212,7 @@ CMakeFiles/binario.dir/src_folder/Mapeamento.o.provides.build: CMakeFiles/binari
 
 CMakeFiles/binario.dir/src_folder/Arquivos_mapeamento.o: CMakeFiles/binario.dir/flags.make
 CMakeFiles/binario.dir/src_folder/Arquivos_mapeamento.o: ../src_folder/Arquivos_mapeamento.cpp
-	$(CMAKE_COMMAND) -E cmake_progress_report /src/build/CMakeFiles $(CMAKE_PROGRESS_9)
+	$(CMAKE_COMMAND) -E cmake_progress_report /src/build/CMakeFiles $(CMAKE_PROGRESS_8)
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Building CXX object CMakeFiles/binario.dir/src_folder/Arquivos_mapeamento.o"
 	/usr/bin/arm-linux-gnueabi-g++   $(CXX_DEFINES) $(CXX_FLAGS) -o CMakeFiles/binario.dir/src_folder/Arquivos_mapeamento.o -c /src/src_folder/Arquivos_mapeamento.cpp
 
@@ -258,7 +235,7 @@ CMakeFiles/binario.dir/src_folder/Arquivos_mapeamento.o.provides.build: CMakeFil
 
 CMakeFiles/binario.dir/main.o: CMakeFiles/binario.dir/flags.make
 CMakeFiles/binario.dir/main.o: ../main.cpp
-	$(CMAKE_COMMAND) -E cmake_progress_report /src/build/CMakeFiles $(CMAKE_PROGRESS_10)
+	$(CMAKE_COMMAND) -E cmake_progress_report /src/build/CMakeFiles $(CMAKE_PROGRESS_9)
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Building CXX object CMakeFiles/binario.dir/main.o"
 	/usr/bin/arm-linux-gnueabi-g++   $(CXX_DEFINES) $(CXX_FLAGS) -o CMakeFiles/binario.dir/main.o -c /src/main.cpp
 
@@ -284,7 +261,6 @@ binario_OBJECTS = \
 "CMakeFiles/binario.dir/src_folder/ev3dev.o" \
 "CMakeFiles/binario.dir/src_folder/Controlador_motor.o" \
 "CMakeFiles/binario.dir/src_folder/M_arquivos.o" \
-"CMakeFiles/binario.dir/src_folder/Sensor_cor.o" \
 "CMakeFiles/binario.dir/src_folder/Sensor_cor_hsv.o" \
 "CMakeFiles/binario.dir/src_folder/Ultrassom_nxt.o" \
 "CMakeFiles/binario.dir/src_folder/Controlador_robo.o" \
@@ -298,7 +274,6 @@ binario_EXTERNAL_OBJECTS =
 binario: CMakeFiles/binario.dir/src_folder/ev3dev.o
 binario: CMakeFiles/binario.dir/src_folder/Controlador_motor.o
 binario: CMakeFiles/binario.dir/src_folder/M_arquivos.o
-binario: CMakeFiles/binario.dir/src_folder/Sensor_cor.o
 binario: CMakeFiles/binario.dir/src_folder/Sensor_cor_hsv.o
 binario: CMakeFiles/binario.dir/src_folder/Ultrassom_nxt.o
 binario: CMakeFiles/binario.dir/src_folder/Controlador_robo.o
@@ -317,7 +292,6 @@ CMakeFiles/binario.dir/build: binario
 CMakeFiles/binario.dir/requires: CMakeFiles/binario.dir/src_folder/ev3dev.o.requires
 CMakeFiles/binario.dir/requires: CMakeFiles/binario.dir/src_folder/Controlador_motor.o.requires
 CMakeFiles/binario.dir/requires: CMakeFiles/binario.dir/src_folder/M_arquivos.o.requires
-CMakeFiles/binario.dir/requires: CMakeFiles/binario.dir/src_folder/Sensor_cor.o.requires
 CMakeFiles/binario.dir/requires: CMakeFiles/binario.dir/src_folder/Sensor_cor_hsv.o.requires
 CMakeFiles/binario.dir/requires: CMakeFiles/binario.dir/src_folder/Ultrassom_nxt.o.requires
 CMakeFiles/binario.dir/requires: CMakeFiles/binario.dir/src_folder/Controlador_robo.o.requires

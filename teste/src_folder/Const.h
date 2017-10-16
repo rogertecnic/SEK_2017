@@ -33,7 +33,9 @@ struct direcao_checkpoint {
 
 
 
-// usado na classe MApeamento
+/*
+ * posicao do boneco relativa a intersecao pre ou pos
+ */
 struct no_intersec {
 	bool pre, pos;
 	vector<double> posicao_pre_d;

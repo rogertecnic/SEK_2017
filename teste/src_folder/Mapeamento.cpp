@@ -122,20 +122,21 @@ void Mapeamento::intersec() {
 	}
 	cor_E = sensor->ler_cor_E();
 	cor_D = sensor->ler_cor_D();
-	if(true) mapeamento_intersec();// verificar se eh o fim da cidade
+	if(!fim_da_cidade()) mapeamento_intersec();// verificar se eh o fim da cidade
 	else {
-		arq_map->arquivo_map(cp);
+		robo->parar();
+		arq_map->arquivo_map(cp, no);
 		estd = estados_arena::terminado;
 	}
 }
 
 
-	/* mapeia aquela cor e faz a proxima movimentacao do robo, se for a primeira intersecao inicializa a thread
-	 * de boneco, se nao, verifica se eh um dead-end ou outra intersecao, se for outra intersecao mapeia a atual
-	 * se necessario e verifica se ja eh uma intersecao conhecida ou nao, se for conhecida segue pro caminho certo,
-	 * se nao for conhecida a nova intersecao passa a ser a atual e o robo comeca a mapea-la, se mapear duas intersecoes
-	 * a terceira ja eh mapeada automaticamente
-	 */
+/* mapeia aquela cor e faz a proxima movimentacao do robo, se for a primeira intersecao inicializa a thread
+ * de boneco, se nao, verifica se eh um dead-end ou outra intersecao, se for outra intersecao mapeia a atual
+ * se necessario e verifica se ja eh uma intersecao conhecida ou nao, se for conhecida segue pro caminho certo,
+ * se nao for conhecida a nova intersecao passa a ser a atual e o robo comeca a mapea-la, se mapear duas intersecoes
+ * a terceira ja eh mapeada automaticamente
+ */
 void Mapeamento::mapeamento_intersec() {
 	if(cor_E != cor_D) // verifica se esta como precisto, se nao da um aviso e nao continua
 	{
@@ -158,8 +159,8 @@ void Mapeamento::mapeamento_intersec() {
 		usleep(1000000*0.3);
 
 		estd = estados_arena::faixa;
-		//map_boneco_inicio = true;
-		//inicializar_threads_ultra();
+		map_boneco_inicio = true;
+		inicializar_threads_ultra(); // robo acabou de sair da intersecao
 	}
 	/*Depois da primeira intersecção*/
 	else{
@@ -307,7 +308,7 @@ void Mapeamento::mapeamento_intersec() {
 		}
 	}
 	interseccao = false;
-	//it_no_anterior++;
+	it_no_anterior++;
 }
 
 /* O robo gira pra direcao certa da nova cor, ou seja, intersecao que
@@ -354,16 +355,21 @@ void Mapeamento::caminho_certo (){
  * isso deve ser tratado dentro da deteccao da intersecao dentro do metodo mapear
  */
 bool Mapeamento::fim_da_cidade(){
-	robo->andar(30, 0.040);
-	if (sensor->ler_cor_E() != cor_E && sensor->ler_cor_D() != cor_D){
-		cor_E = sensor->ler_cor_E();
-		cor_D = sensor->ler_cor_D();
-		robo->andar(30, 0.040);
-		if (sensor->ler_cor_E() != cor_E && sensor->ler_cor_D() != cor_D) return true;
-	}
-	robo->alinhar(sensor, direcao::traz);
-	robo->andar(50, 0.195);
-	return false;
+	iterador_fim_cidade ++;
+	if(iterador_fim_cidade < 2){
+		iterador_fim_cidade ++;
+		return false;
+	} else return true;
+	//	robo->andar(30, 0.040);
+	//	if (sensor->ler_cor_E() != cor_E && sensor->ler_cor_D() != cor_D){
+	//		cor_E = sensor->ler_cor_E();
+	//		cor_D = sensor->ler_cor_D();
+	//		robo->andar(30, 0.040);
+	//		if (sensor->ler_cor_E() != cor_E && sensor->ler_cor_D() != cor_D) return true;
+	//	}
+	//	robo->alinhar(sensor, direcao::traz);
+	//	robo->andar(50, 0.195);
+	//	return false;
 }
 
 /*
@@ -428,7 +434,7 @@ void Mapeamento::realinha(direcao lado_saindo) {
 
 
 bool Mapeamento::inicializar_threads_ultra(){
-
+	thread_rodando_bonecos = true;
 	mapeamento_bonecoD = thread(&Mapeamento::loop_mapeamento_bonecoD, this);
 	mapeamento_bonecoD.detach();
 	usleep(100000);
@@ -453,6 +459,7 @@ bool Mapeamento::finalizar_threads_ultra(){
 //TODO Arrumar forma como pego a distancia da interseccao ao boneco
 
 void Mapeamento::loop_mapeamento_bonecoE(){
+	(*it_no_atual).pre = false;
 	while(thread_rodando_bonecos){
 		if(estd == estados_arena::intersec) interseccao = true;
 		else interseccao = false;
@@ -473,7 +480,7 @@ void Mapeamento::loop_mapeamento_bonecoE(){
 		//Se chegar numa intersecção com um boneco detectado no caminho até lá
 		else if(!map_boneco_inicio && interseccao && leu_boneco){
 			it_no_atual++;
-			posicao_intersec = robo->get_distancia_linha_reta();
+			posicao_intersec = robo->get_distancia_absoluta();
 
 			(*it_no_atual).pre = true;
 
@@ -489,7 +496,7 @@ void Mapeamento::loop_mapeamento_bonecoE(){
 		else if(!map_boneco_inicio&& !interseccao){
 
 			if(ultraE->le_centimetro() <= distancia_boneco){
-				(*it_no_atual).posicao_pos_e.push_back(robo->get_distancia_linha_reta());
+				(*it_no_atual).posicao_pos_e.push_back(robo->get_distancia_absoluta());
 				if(!leu_boneco){
 					leu_boneco = true;
 					(*it_no_atual).pos = true;
@@ -501,41 +508,43 @@ void Mapeamento::loop_mapeamento_bonecoE(){
 
 void Mapeamento::loop_mapeamento_bonecoD(){
 	//Primeiro nó(intersecção)
-	if(estd == estados_arena::intersec) interseccao = true;
-	else interseccao = false;
+	while(thread_rodando_bonecos){
+		if(estd == estados_arena::intersec) interseccao = true;
+		else interseccao = false;
 
-	if(interseccao && map_boneco_inicio){
-		(*it_no_atual).pre = false;
-		map_boneco_inicio = false;
-	}
-	//Se chegar numa intersecção sem bonecos detectados no caminho
-	else if(!map_boneco_inicio && interseccao && !leu_boneco){
-		(*it_no_atual).pre = false;
-		(*it_no_anterior).pos = false;
-	}
-
-	//Se chegar numa intersecção com um boneco detectado no caminho até lá
-	else if(!map_boneco_inicio && interseccao && leu_boneco){
-
-		posicao_intersec = robo->get_distancia_linha_reta();
-
-		(*it_no_atual).pre = true;
-
-		j = (*it_no_anterior).posicao_pos_d.size() - 1;
-		for(unsigned i = 0; i < (*it_no_anterior).posicao_pos_d.size(); i++){
-			(*it_no_atual).posicao_pre_d[i] = ( posicao_intersec - (*it_no_anterior).posicao_pos_d[j] );
-			j--;
-
+		if(interseccao && map_boneco_inicio){
+			(*it_no_atual).pre = false;
+			map_boneco_inicio = false;
 		}
-	}
+		//Se chegar numa intersecção sem bonecos detectados no caminho
+		else if(!map_boneco_inicio && interseccao && !leu_boneco){
+			(*it_no_atual).pre = false;
+			(*it_no_anterior).pos = false;
+		}
 
-	//Entre intersecções
-	else if(!map_boneco_inicio&& !interseccao){
-		if(ultraD->le_centimetro() <= distancia_boneco){
-			(*it_no_atual).posicao_pos_d.push_back(robo->get_distancia_linha_reta());
-			if(!leu_boneco){
-				leu_boneco = true;
-				(*it_no_atual).pos = true;
+		//Se chegar numa intersecção com um boneco detectado no caminho até lá
+		else if(!map_boneco_inicio && interseccao && leu_boneco){
+
+			posicao_intersec = robo->get_distancia_absoluta();
+
+			(*it_no_atual).pre = true;
+
+			j = (*it_no_anterior).posicao_pos_d.size() - 1;
+			for(unsigned i = 0; i < (*it_no_anterior).posicao_pos_d.size(); i++){
+				(*it_no_atual).posicao_pre_d[i] = ( posicao_intersec - (*it_no_anterior).posicao_pos_d[j] );
+				j--;
+
+			}
+		}
+
+		//Entre intersecções
+		else if(!map_boneco_inicio&& !interseccao){
+			if(ultraD->le_centimetro() <= distancia_boneco){
+				(*it_no_atual).posicao_pos_d.push_back(robo->get_distancia_absoluta());
+				if(!leu_boneco){
+					leu_boneco = true;
+					(*it_no_atual).pos = true;
+				}
 			}
 		}
 	}
