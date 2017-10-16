@@ -127,7 +127,7 @@ void Mapeamento::intersec() {
 	if(cor_E != Cor::preto){
 		robo->alinhar(sensor, direcao::traz);
 		robo->andar(50, 0.15 + robo->get_pintao()); // vai pro meio do quadrado
-		if(dead_end)
+		if(!dead_end)
 			interseccao = true;
 	}
 	cor_E = sensor->ler_cor_E();
@@ -165,6 +165,9 @@ void Mapeamento::mapeamento_intersec() {
 
 	/*Primeira intersecção*/
 	if(cor_atual == Cor::ndCor){
+		inicializar_threads_ultra();
+		map_boneco_inicio = true;
+		interseccao = true;
 		cout << "primeira intersec" << endl;
 		cor_atual = sensor->ler_cor_D();
 		direcao_atual = direcao::direita;
@@ -175,9 +178,8 @@ void Mapeamento::mapeamento_intersec() {
 		usleep(1000000*0.3);
 
 		//estd = estados_arena::faixa;
-		map_boneco_inicio = true;
-		inicializar_threads_ultra(); // robo acabou de sair da intersecao
 		interseccao = false;
+		map_boneco_inicio = false;
 	}
 	/*Depois da primeira intersecção*/
 	else{
@@ -457,13 +459,13 @@ void Mapeamento::realinha(direcao lado_saindo) {
 
 bool Mapeamento::inicializar_threads_ultra(){
 	thread_rodando_bonecos = true;
-	mapeamento_bonecoD = thread(&Mapeamento::loop_mapeamento_bonecoD, this);
-	mapeamento_bonecoD.detach();
-	usleep(100000);
+//	mapeamento_bonecoD = thread(&Mapeamento::loop_mapeamento_bonecoD, this);
+//	mapeamento_bonecoD.detach();
+//	usleep(100000);
 
 	mapeamento_bonecoE = thread(&Mapeamento::loop_mapeamento_bonecoE, this);
 	mapeamento_bonecoE.detach();
-	usleep(100000);
+	usleep(100000*10);
 
 	return thread_rodando_bonecos;
 }
@@ -481,7 +483,11 @@ bool Mapeamento::finalizar_threads_ultra(){
 //TODO Arrumar forma como pego a distancia da interseccao ao boneco
 
 void Mapeamento::loop_mapeamento_bonecoE(){
+	cout << "thread on:" << endl;
+	usleep(1000000*1);
 	(*it_no_atual).pre = false;
+	cout << "nao chrechei :)" << endl;
+		usleep(1000000*1);
 	while(thread_rodando_bonecos){
 		if(estd == estados_arena::intersec) interseccao = true;
 		else interseccao = false;

@@ -71,7 +71,6 @@ private:
 	 * Cada nó trata-se de uma intersecção
 	 * Cada intersecção deve conter as posições dos bonecos antes e depois dela (se houver)
 	 */
-	//list<no_intersec> no;
 	list<no_intersec>::iterator it_no_atual = no.begin();
 	list<no_intersec>::iterator it_no_anterior = no.begin();
 
