@@ -76,6 +76,7 @@ private:
 
 	/* Controlador de posição do vector em loop_mapeamento_boneco*/
 	unsigned j = 0;
+	unsigned j2 = 0;
 
 	/* Demarca se o robo está dentro de uma interseccao ou não*/
 	bool interseccao = false;

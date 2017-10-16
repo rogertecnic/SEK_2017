@@ -73,7 +73,7 @@ void Mapeamento::mapear(){
 
 
 		case estados_arena::faixa:
-			cout << "faixa" << endl;
+			//cout << "faixa" << endl;
 			cout_intersec = 0;
 			robo->andar(70);
 			if (cor_E != Cor::branco || cor_D != Cor::branco)
@@ -85,7 +85,7 @@ void Mapeamento::mapear(){
 		case estados_arena::atencao:
 			/* TODO fazer tratamento do caso que sensor fique muito tempo em uma interface
 			 */
-			cout << "atencao" << endl;
+			//cout << "atencao" << endl;
 			if(cout_intersec == 0)
 				robo->andar(30);
 			if(cor_E == Cor::branco && cor_D == Cor::branco)
@@ -165,8 +165,8 @@ void Mapeamento::mapeamento_intersec() {
 
 	/*Primeira intersecção*/
 	if(cor_atual == Cor::ndCor){
-		inicializar_threads_ultra();
 		map_boneco_inicio = true;
+		inicializar_threads_ultra();
 		interseccao = true;
 		cout << "primeira intersec" << endl;
 		cor_atual = sensor->ler_cor_D();
@@ -459,13 +459,13 @@ void Mapeamento::realinha(direcao lado_saindo) {
 
 bool Mapeamento::inicializar_threads_ultra(){
 	thread_rodando_bonecos = true;
-	mapeamento_bonecoD = thread(&Mapeamento::loop_mapeamento_bonecoD, this);
-	mapeamento_bonecoD.detach();
-	usleep(100000);
+	//	mapeamento_bonecoD = thread(&Mapeamento::loop_mapeamento_bonecoD, this);
+	//	mapeamento_bonecoD.detach();
+	//	usleep(100000);
 
 	mapeamento_bonecoE = thread(&Mapeamento::loop_mapeamento_bonecoE, this);
 	mapeamento_bonecoE.detach();
-	usleep(100000);
+	usleep(1000000*1);
 
 	return thread_rodando_bonecos;
 }
@@ -486,7 +486,6 @@ void Mapeamento::loop_mapeamento_bonecoE(){
 	while(thread_rodando_bonecos){
 		if (map_boneco_inicio)
 			(*it_no_atual).pre = false;
-
 		//Se chegar numa intersecção sem bonecos detectados no caminho
 		else if(!map_boneco_inicio && interseccao && !leu_boneco){
 			it_no_atual++;
@@ -511,7 +510,7 @@ void Mapeamento::loop_mapeamento_bonecoE(){
 
 		//Entre intersecções
 		else if(!map_boneco_inicio && !interseccao){
-
+			usleep(1000000*0.01);
 			if(ultraE->le_centimetro() <= distancia_boneco){
 				(*it_no_atual).posicao_pos_e.push_back(robo->get_distancia_absoluta());
 				if(!leu_boneco){
@@ -542,10 +541,10 @@ void Mapeamento::loop_mapeamento_bonecoD(){
 
 			(*it_no_atual).pre = true;
 
-			j = (*it_no_anterior).posicao_pos_d.size() - 1;
+			j2 = (*it_no_anterior).posicao_pos_d.size() - 1;
 			for(unsigned i = 0; i < (*it_no_anterior).posicao_pos_d.size(); i++){
-				(*it_no_atual).posicao_pre_d[i] = ( posicao_intersec - (*it_no_anterior).posicao_pos_d[j] );
-				j--;
+				(*it_no_atual).posicao_pre_d[i] = ( posicao_intersec - (*it_no_anterior).posicao_pos_d[j2] );
+				j2--;
 
 			}
 		}
