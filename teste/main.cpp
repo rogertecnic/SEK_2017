@@ -211,14 +211,14 @@ void teste_rogerio(){
 	/*
 	 * teste da classe controlador_robo
 	 */
-	while(!ev3dev::button::enter.process());
-	usleep(1000000*0.1);
-	while(!ev3dev::button::enter.process());
-	robot.andar(50, 0.3);
-	cout << robot.get_distancia_absoluta() << ";" << robot.get_distancia_linha_reta() << endl;
-	usleep(1000000*5);
-	robot.andar(50, 0.3);
-	cout << robot.get_distancia_absoluta() << ";" << robot.get_distancia_linha_reta() << endl;
+	//	while(!ev3dev::button::enter.process());
+	//	usleep(1000000*0.1);
+	//	while(!ev3dev::button::enter.process());
+	//	robot.andar(50, 0.3);
+	//	cout << robot.get_distancia_absoluta() << ";" << robot.get_distancia_linha_reta() << endl;
+	//	usleep(1000000*5);
+	//	robot.andar(50, 0.3);
+	//	cout << robot.get_distancia_absoluta() << ";" << robot.get_distancia_linha_reta() << endl;
 	//	while(!ev3dev::button::enter.process())
 	//		cout<<robot.get_velocidade()<<endl;
 	//	usleep(1000*2000);
@@ -229,7 +229,7 @@ void teste_rogerio(){
 	//	robot.andar(-50);
 	//	usleep(1000*2000);
 	//	robot.girar(-360);
-	while(!ev3dev::button::enter.process());
+	//while(!ev3dev::button::enter.process());
 
 	/*
 	 * teste classe controlador_robo medir o tamanho do pintao
@@ -247,11 +247,11 @@ void teste_rogerio(){
 	/*
 	 * teste classe mapeamento com classe sensor cor hsv
 	 */
-	//	robot.calibra_sensor_cor(&cor);
-	//	while(!ev3dev::button::enter.process());
-	//	usleep(1000000*0.1);
-	//	while(!ev3dev::button::enter.process());
-	//	mapa.mapear();
+		robot.calibra_sensor_cor(&cor);
+		while(!ev3dev::button::enter.process());
+		usleep(1000000*0.1);
+		while(!ev3dev::button::enter.process());
+		mapa.mapear();
 
 	/*
 	 * teste da classe sensor_cor
@@ -562,9 +562,9 @@ void teste_luana_mapeamento(){
 int main(){
 	system("setfont Greek-TerminusBold20x10.psf.gz");
 	//teste_luana_alinhamento();
-	//teste_rogerio();
+	teste_rogerio();
 	//teste_rogerio_alinhamento();
-	teste_luana_mapeamento();
+	//teste_luana_mapeamento();
 
 	cout << "Teste finalizado. Bye!" << endl;
 	usleep (1000000);
