@@ -15,7 +15,7 @@
 #include "Const.h"
 
 //FIXME distancia_boneco e delay_f deixar aqui ou levar pra outro lugar?
-#define distancia_boneco 5 //MODIFICAR DEPOIS
+#define distancia_boneco 18 //MODIFICAR DEPOIS
 #define delay_f 5 //Usado na detecção do final da cidade
 
 
@@ -37,11 +37,15 @@ private:
 	Ultrassom_nxt *ultraE;
 	Ultrassom_nxt *ultraD;
 
-
+	//FIXME deletar variaveis abaixo, criadas somente pra simular o fim_da_cidade
+	int iterador_fim_cidade = 0;
 
 	/*********************************************************************************************/
 	/*************************VARIAVEIS DO MAPEAMENTO DE BONECO***********************************/
 	/*********************************************************************************************/
+	/* == 1 se estiver indo do ponto de start para a rampa
+	 * == -1 se estiver indo da rampa para o ponto de start
+	 */
 
 	//Variável de controle de posicao na chegada de um quadrado(deadend/intersec)
 	double posicao_inicialt = 0;
@@ -67,12 +71,12 @@ private:
 	 * Cada nó trata-se de uma intersecção
 	 * Cada intersecção deve conter as posições dos bonecos antes e depois dela (se houver)
 	 */
-	//list<no_intersec> no;
 	list<no_intersec>::iterator it_no_atual = no.begin();
 	list<no_intersec>::iterator it_no_anterior = no.begin();
 
 	/* Controlador de posição do vector em loop_mapeamento_boneco*/
 	unsigned j = 0;
+	unsigned j2 = 0;
 
 	/* Demarca se o robo está dentro de uma interseccao ou não*/
 	bool interseccao = false;

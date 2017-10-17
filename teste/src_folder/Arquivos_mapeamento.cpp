@@ -1,7 +1,7 @@
 #include "Arquivos_mapeamento.h"
 
-void Arquivos_mapeamento::arquivo_map(direcao_checkpoint s_cp){
-	//list<no_intersec>::iterator it1 = vet.begin();
+void Arquivos_mapeamento::arquivo_map(direcao_checkpoint s_cp, list<no_intersec> vet){
+	list<no_intersec>::iterator it1 = vet.begin();
 	int count = 1;
 
 	outfile.open("mapeamento.txt", ios::out);
@@ -13,7 +13,7 @@ void Arquivos_mapeamento::arquivo_map(direcao_checkpoint s_cp){
 		outfile << s_cp.checkpoint_azul << endl;
 
 		outfile << "\nPosições bonecos" << endl;
-		/*
+
 
 		while(it1 != vet.end()){
 			outfile << "Intersecção: " << count << endl;
@@ -45,7 +45,7 @@ void Arquivos_mapeamento::arquivo_map(direcao_checkpoint s_cp){
 			it1++;
 			count++;
 
-		}*/
+		}
 
 
 		outfile << "\n\nFim do arquivo!";
