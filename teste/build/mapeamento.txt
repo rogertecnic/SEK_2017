@@ -1,0 +1,21 @@
+Intersecções
+direcao do vermelho: 0
+direcao do verde: 0
+direcao do azul: 2
+
+Posições bonecos
+Intersecção: 1
+Posição pre d:
+Posição pos d:
+Posição pre e:
+Posição pos e:0.383811 
+
+Intersecção: 2
+Posição pre d:
+Posição pos d:
+Posição pre e:0.798139 
+Posição pos e:
+
+
+
+Fim do arquivo!

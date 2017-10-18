@@ -204,7 +204,9 @@ void teste_rogerio(){
 	Controlador_robo robot(false, "debug posicao direto no pwm.m"); // fator_croda = 1.005
 	//Sensor_cor cor(ev3dev::INPUT_1, ev3dev::INPUT_2);
 	Sensor_cor_hsv cor(ev3dev::INPUT_1, ev3dev::INPUT_2,false,"leitura_sensor_cor_hsv");
-	Mapeamento mapa(&robot, &cor, nullptr, nullptr);
+	Ultrassom_nxt ultraE(ev3dev::INPUT_3);
+	Ultrassom_nxt ultraD(ev3dev::INPUT_4);
+	Mapeamento mapa(&robot, &cor, &ultraE, &ultraD);
 
 
 	robot.inicializar_thread_aceleracao();
@@ -247,11 +249,11 @@ void teste_rogerio(){
 	/*
 	 * teste classe mapeamento com classe sensor cor hsv
 	 */
-		robot.calibra_sensor_cor(&cor);
-		while(!ev3dev::button::enter.process());
-		usleep(1000000*0.1);
-		while(!ev3dev::button::enter.process());
-		mapa.mapear();
+	robot.calibra_sensor_cor(&cor);
+	while(!ev3dev::button::enter.process());
+	usleep(1000000*0.1);
+	while(!ev3dev::button::enter.process());
+	mapa.mapear();
 
 	/*
 	 * teste da classe sensor_cor

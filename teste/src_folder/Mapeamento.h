@@ -13,6 +13,7 @@
 #include "Arquivos_mapeamento.h"
 #include  "Ultrassom_nxt.h"
 #include "Const.h"
+#include <vector>
 
 //FIXME distancia_boneco e delay_f deixar aqui ou levar pra outro lugar?
 #define distancia_boneco 18 //MODIFICAR DEPOIS
@@ -47,11 +48,9 @@ private:
 	 * == -1 se estiver indo da rampa para o ponto de start
 	 */
 
-	//Variável de controle de posicao na chegada de um quadrado(deadend/intersec)
-	double posicao_inicialt = 0;
-
-	/* Variável de controle de correção de rota*/
-	int delay = 0;
+	// posicao em que o robo sai de uma intersec
+	double posicao_saiu_intersec = 0;
+	double posicao_chegou_intersec = 0;
 
 	/* Variável de controle da thread*/
 	bool thread_rodando_bonecos = false;
@@ -59,9 +58,6 @@ private:
 	/* Uma thread para cada sensor ultrassom: esquerdo e direito*/
 	thread mapeamento_bonecoE;
 	thread mapeamento_bonecoD;
-
-	//Variável de controle de start do mapeamento dos bonecos
-	bool map_boneco_inicio = false;
 
 	//Arquivo para salvar as informações de mapeamento
 	Arquivos_mapeamento *arq_map;
@@ -71,22 +67,7 @@ private:
 	 * Cada nó trata-se de uma intersecção
 	 * Cada intersecção deve conter as posições dos bonecos antes e depois dela (se houver)
 	 */
-	list<no_intersec>::iterator it_no_atual = no.begin();
-	list<no_intersec>::iterator it_no_anterior = no.begin();
-
-	/* Controlador de posição do vector em loop_mapeamento_boneco*/
-	unsigned j = 0;
-	unsigned j2 = 0;
-
-	/* Demarca se o robo está dentro de uma interseccao ou não*/
-	bool interseccao = false;
-
-	/* Controla se houve leitura de bonecos entre uma intersecção e outra*/
-	bool leu_boneco = false;
-
-	/* Distância total entre uma intersecção e outra*/
-	double posicao_intersec = 0.0;
-
+	int it_no = 0;
 	/*-------------------------------------------------------------------------------------------*/
 	/*------------------------FIM VARIAVEIS DO MAPEAMENTO DE BONECO------------------------------*/
 	/*-------------------------------------------------------------------------------------------*/
@@ -103,6 +84,10 @@ private:
 	void loop_mapeamento_bonecoE();
 	void loop_mapeamento_bonecoD();
 
+	/* atribui o vector pre a uma intersecao que o robo acabou de chegar
+	 * utilizar quando o robo sair da intersecao
+	 */
+	void novo_no_map_boneco();
 	/*-------------------------------------------------------------------------------------------*/
 	/*-------------------------FIM METODOS DO MAPEAMENTO DE BONECO-------------------------------*/
 	/*-------------------------------------------------------------------------------------------*/

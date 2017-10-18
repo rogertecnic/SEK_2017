@@ -7,7 +7,7 @@ using namespace std;
 
 class Arquivos_mapeamento {
 public:
-	void arquivo_map(direcao_checkpoint, list<no_intersec> );
+	void arquivo_map();
 
 private:
 	ofstream outfile;

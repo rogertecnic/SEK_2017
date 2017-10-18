@@ -2,7 +2,6 @@
 #define CONST_H_
 
 #include <iostream>
-#include <list>
 #include <vector>
 #include "ev3dev.h"
 
@@ -37,7 +36,6 @@ struct direcao_checkpoint {
  * posicao do boneco relativa a intersecao pre ou pos
  */
 struct no_intersec {
-	bool pre, pos;
 	vector<double> posicao_pre_d;
 	vector<double> posicao_pos_d;
 	vector<double> posicao_pre_e;
@@ -52,8 +50,10 @@ const bool automapear_3_checkpoint = true;
 extern int sentido_navegacao;
 
 
-/* Variaveis de mapeamento de intersecção e de bonecos*/
-extern list<no_intersec> no;
-extern direcao_checkpoint cp;
+/* Variaveis de mapeamento de intersecção e de bonecos
+ * inicializadas no inicio do arquivo Mapeamento.cpp
+ * */
+extern vector<no_intersec> no; // bonecos
+extern direcao_checkpoint cp; // intersecao
 
 #endif
