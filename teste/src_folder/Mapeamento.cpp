@@ -172,14 +172,18 @@ void Mapeamento::intersec() {
 	if(cor_E != Cor::preto){
 		robo->alinhar(sensor, direcao::traz);
 		robo->andar(50, 0.15 + robo->get_pintao()); // vai pro meio do quadrado
-		if(!dead_end)
+		if(!dead_end){
+			if(!map_boneco_inicio) it_no_atual++;
 			interseccao = true;
+		}
+
 	}
 	cor_E = sensor->ler_cor_E();
 	cor_D = sensor->ler_cor_D();
 	if(!fim_da_cidade())
 		mapeamento_intersec();// verificar se eh o fim da cidade
 	else {
+		it_no_atual++;
 		interseccao = true;
 		robo->parar();
 		usleep(1000000*0.8);
@@ -211,7 +215,7 @@ void Mapeamento::mapeamento_intersec() {
 	/*Primeira intersecção*/
 	if(cor_atual == Cor::ndCor){
 		map_boneco_inicio = true;
-		//inicializar_threads_ultra();
+		inicializar_threads_ultra();
 		interseccao = true;
 		cout << "primeira intersec" << endl;
 		cor_atual = sensor->ler_cor_D();
@@ -504,13 +508,13 @@ void Mapeamento::realinha(direcao lado_saindo) {
 
 bool Mapeamento::inicializar_threads_ultra(){
 	thread_rodando_bonecos = true;
-	//	mapeamento_bonecoD = thread(&Mapeamento::loop_mapeamento_bonecoD, this);
-	//	mapeamento_bonecoD.detach();
-	//	usleep(100000);
-
+	
 	mapeamento_bonecoE = thread(&Mapeamento::loop_mapeamento_bonecoE, this);
 	mapeamento_bonecoE.detach();
-	usleep(1000000*1);
+
+	mapeamento_bonecoD = thread(&Mapeamento::loop_mapeamento_bonecoD, this);
+	mapeamento_bonecoD.detach();
+	usleep(100000);
 
 	return thread_rodando_bonecos;
 }
@@ -533,14 +537,12 @@ void Mapeamento::loop_mapeamento_bonecoE(){
 			(*it_no_atual).pre = false;
 		//Se chegar numa intersecção sem bonecos detectados no caminho
 		else if(!map_boneco_inicio && interseccao && !leu_boneco){
-			it_no_atual++;
 			(*it_no_atual).pre = false;
 			(*it_no_anterior).pos = false;
 		}
 
 		//Se chegar numa intersecção com um boneco detectado no caminho até lá
 		else if(!map_boneco_inicio && interseccao && leu_boneco){
-			it_no_atual++;
 			posicao_intersec = robo->get_distancia_absoluta();
 
 			(*it_no_atual).pre = true;
@@ -563,6 +565,7 @@ void Mapeamento::loop_mapeamento_bonecoE(){
 					(*it_no_atual).pos = true;
 				}
 			}
+			while(ultraE->le_centimetro() <= distancia_boneco);
 		}
 	}
 }
@@ -603,6 +606,7 @@ void Mapeamento::loop_mapeamento_bonecoD(){
 					(*it_no_atual).pos = true;
 				}
 			}
+			while(ultraD->le_centimetro() <= distancia_boneco);
 		}
 	}
 }
@@ -659,7 +663,3 @@ void PROBLEMAS_NO_MAPEAMENTO(){
 	 * reset_motores no case parar dentro do loop controlador do robo no lugar daqueles motores stop
 	 */
 }
-
-
-
-
