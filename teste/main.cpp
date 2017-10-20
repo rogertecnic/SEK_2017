@@ -204,8 +204,8 @@ void teste_rogerio(){
 	Controlador_robo robot(false, "debug posicao direto no pwm.m"); // fator_croda = 1.005
 	//Sensor_cor cor(ev3dev::INPUT_1, ev3dev::INPUT_2);
 	Sensor_cor_hsv cor(ev3dev::INPUT_1, ev3dev::INPUT_2,false,"leitura_sensor_cor_hsv");
-	Ultrassom_nxt ultraE(ev3dev::INPUT_3);
-	Ultrassom_nxt ultraD(ev3dev::INPUT_4);
+	Ultrassom_nxt ultraE(Ultrassom_nxt::INPUT_3);
+	Ultrassom_nxt ultraD(Ultrassom_nxt::INPUT_4);
 	Mapeamento mapa(&robot, &cor, &ultraE, &ultraD);
 
 
@@ -216,22 +216,53 @@ void teste_rogerio(){
 	//	while(!ev3dev::button::enter.process());
 	//	usleep(1000000*0.1);
 	//	while(!ev3dev::button::enter.process());
-	//	robot.andar(50, 0.3);
-	//	cout << robot.get_distancia_absoluta() << ";" << robot.get_distancia_linha_reta() << endl;
+	//	robot.andar(50, 0.2);
+	//	cout <<"20 cm: "<< robot.get_distancia_absoluta() << endl;
 	//	usleep(1000000*5);
-	//	robot.andar(50, 0.3);
-	//	cout << robot.get_distancia_absoluta() << ";" << robot.get_distancia_linha_reta() << endl;
-	//	while(!ev3dev::button::enter.process())
-	//		cout<<robot.get_velocidade()<<endl;
-	//	usleep(1000*2000);
-	//	robot.girar(360*2);
-	//	usleep(1000*2000);
+	//
 	//	robot.andar(50);
-	//	usleep(1000*2000);
+	//	usleep(1000000*2);
+	//	robot.parar();
+	//	cout <<"2 seg: "<< robot.get_distancia_absoluta() << endl;
+	//	usleep(1000000*5);
+	//
+	//	robot.girar(360);
+	//	while(robot.get_estado() == flag_aceleracao::girar);
+	//	cout <<"g 180: "<< robot.get_distancia_absoluta() << endl;
+	//	usleep(1000000*5);
+	//
+	//	robot.andar(50);
+	//	usleep(1000000*2);
+	//	robot.parar();
+	//	cout <<"2 seg: "<< robot.get_distancia_absoluta() << endl;
+	//	usleep(1000000*5);
+	//
 	//	robot.andar(-50);
-	//	usleep(1000*2000);
-	//	robot.girar(-360);
-	//while(!ev3dev::button::enter.process());
+	//	usleep(1000000*5);
+	//	robot.parar();
+	//	cout <<"re2 seg: "<< robot.get_distancia_absoluta() << endl;
+	//	usleep(1000000*5);
+	//
+	//	robot.girar(180);
+	//	usleep(1000000*1);
+	//	robot.parar();
+	//	cout <<"g interr: "<< robot.get_distancia_absoluta() << endl;
+	//	usleep(1000000*5);
+	//
+	//	robot.andar(-50);
+	//	usleep(1000000*2);
+	//	robot.parar();
+	//	cout <<"re2 seg: "<< robot.get_distancia_absoluta() << endl;
+	//	usleep(1000000*5);
+	//	while(!ev3dev::button::enter.process());
+
+	/*
+	 * teste classe ultrassom_nxt
+	 */
+	//		while(!ev3dev::button::enter.process())
+	//			cout << ultraE.le_centimetro() << " ; " << ultraD.le_centimetro() << endl;
+
+
 
 	/*
 	 * teste classe controlador_robo medir o tamanho do pintao
@@ -249,11 +280,12 @@ void teste_rogerio(){
 	/*
 	 * teste classe mapeamento com classe sensor cor hsv
 	 */
-	robot.calibra_sensor_cor(&cor);
-	while(!ev3dev::button::enter.process());
-	usleep(1000000*0.1);
-	while(!ev3dev::button::enter.process());
-	mapa.mapear();
+		robot.calibra_sensor_cor(&cor);
+		while(!ev3dev::button::enter.process());
+		usleep(1000000*0.1);
+		while(!ev3dev::button::enter.process());
+		mapa.mapear();
+		//mapa.testar_map_boneco();
 
 	/*
 	 * teste da classe sensor_cor

@@ -29,6 +29,10 @@ Ultrassom_nxt::Ultrassom_nxt(string porta, int dist_min, int dist_max)
 		}
 		is.close();
 	}
+	if(conectado == false){
+		cout << endl << endl << endl << "US NAO ENCONTRADO!!!!!"<< endl << endl;
+		usleep(1000000*10);
+	}
 }
 
 

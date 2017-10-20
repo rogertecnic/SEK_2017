@@ -29,7 +29,7 @@ public:
 
 	// inicia rotina de mapeamento
 	void mapear();
-
+	void testar_map_boneco();//FIXME deletar, marco de teste
 
 private:
 	// objetos utilizadospara controlar o hardware
@@ -38,8 +38,8 @@ private:
 	Ultrassom_nxt *ultraE;
 	Ultrassom_nxt *ultraD;
 
-	//FIXME deletar variaveis abaixo, criadas somente pra simular o fim_da_cidade
-	int iterador_fim_cidade = 0;
+
+	int iterador_fim_cidade = 0;//FIXME deletar, marco de teste
 
 	/*********************************************************************************************/
 	/*************************VARIAVEIS DO MAPEAMENTO DE BONECO***********************************/

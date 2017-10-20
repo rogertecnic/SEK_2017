@@ -159,12 +159,6 @@ void Mapeamento::mapear(){
 	cout << "fim da arena" << endl<< endl;
 	robo->parar();
 	finalizar_threads_ultra();
-	usleep(1000000*3);
-	cout << "criando aruquivo map" << endl << endl;
-	usleep(1000000*3);
-	arq_map->arquivo_map();
-	cout << "CRIADO!!" << endl << endl;
-	usleep(1000000*8);
 }
 
 /* quando o robo entra em uma intersecao dentro do metodo mapear chama-se esse metodo.
@@ -175,6 +169,7 @@ void Mapeamento::mapear(){
  */
 void Mapeamento::intersec() {
 	posicao_chegou_intersec = robo->get_distancia_absoluta();
+
 	//fazer esse alinhamento somente se nao for preto, se for preto ja entrar no mapeamento_intersec
 	if(cor_E != Cor::preto){
 		robo->alinhar(sensor, direcao::traz);
@@ -185,15 +180,7 @@ void Mapeamento::intersec() {
 	cor_D = sensor->ler_cor_D();
 	if(true)
 		mapeamento_intersec();// verificar se eh o fim da cidade
-	else {
 
-		robo->parar();
-		usleep(1000000*0.8);
-		//it_no_anterior++;
-		usleep(1000000*0.8);
-		//arq_map->arquivo_map(cp, no);
-		estd = estados_arena::terminado;
-	}
 	posicao_saiu_intersec = robo->get_distancia_absoluta();
 }
 
@@ -216,8 +203,6 @@ void Mapeamento::mapeamento_intersec() {
 
 	/*Primeira intersecção*/
 	if(cor_atual == Cor::ndCor){
-		no_intersec primeiro_no{};
-		no.push_back(primeiro_no);
 		inicializar_threads_ultra();
 
 		cout << "primeira intersec" << endl;
@@ -501,6 +486,8 @@ void Mapeamento::realinha(direcao lado_saindo) {
 
 
 bool Mapeamento::inicializar_threads_ultra(){
+	no_intersec novo_no;
+	no.push_back(novo_no);
 	thread_rodando_bonecos = true;
 
 	mapeamento_bonecoE = thread(&Mapeamento::loop_mapeamento_bonecoE, this);
@@ -518,7 +505,12 @@ bool Mapeamento::finalizar_threads_ultra(){
 	if(thread_rodando_bonecos)
 		thread_rodando_bonecos = false;
 
-	usleep(1000000*0.1);
+	usleep(1000000*3);
+	cout << "criando aruquivo map" << endl << endl;
+	usleep(1000000*3);
+	arq_map->arquivo_map();
+	cout << "CRIADO!!" << endl << endl;
+	usleep(1000000*8);
 	return true;
 }
 
@@ -535,6 +527,7 @@ void Mapeamento::loop_mapeamento_bonecoE(){
 		if( dist_boneco < 16){ // estou vendo um boneco
 
 			if(!estou_vendo_boneco){ // comecei agora a ver o boneco
+				cout << "BONECO: " <<robo->get_distancia_absoluta()<< endl;
 				double dist_boneco_pos = robo->get_distancia_absoluta()-posicao_saiu_intersec;
 				no.at(it_no).posicao_pos_e.push_back(dist_boneco_pos);
 			}
@@ -549,30 +542,29 @@ void Mapeamento::loop_mapeamento_bonecoE(){
 		}
 		usleep(1000000*0.1);
 	}
-
-
-
-
-
-
-
 }
+
 
 void Mapeamento::loop_mapeamento_bonecoD(){
 
 }
 
+
 /*
  * metodo chamado sempre quando for necessario incrementar mais um no, ou seja, mais uma intersecao
  */
 void Mapeamento::novo_no_map_boneco(){
-	no_intersec novo_no{};
+	no_intersec novo_no;
 	no.push_back(novo_no);
 	it_no ++;
 	double dist_boneco_pre = 0;
+	robo->parar();
+		cout << "sai:"<< posicao_saiu_intersec<< endl;
+		cout << "cheguei:"<< posicao_chegou_intersec << endl;
+		usleep(1000000*5);
 	for(int i = no.at(it_no-1).posicao_pos_e.size()-1 ; i >=0 ; i--){
-		dist_boneco_pre =posicao_saiu_intersec - posicao_chegou_intersec; // dist entre intesrsec
-		dist_boneco_pre = no.at(it_no-1).posicao_pos_e.at(i)-dist_boneco_pre; // dist do ultimo boneco
+		dist_boneco_pre = posicao_chegou_intersec - posicao_saiu_intersec; // dist entre intesrsec
+		dist_boneco_pre = dist_boneco_pre - no.at(it_no-1).posicao_pos_e.at(i); // dist do ultimo boneco
 		no.at(it_no).posicao_pre_e.push_back(dist_boneco_pre);
 	}
 }
@@ -580,6 +572,18 @@ void Mapeamento::novo_no_map_boneco(){
 
 
 
+
+void Mapeamento::testar_map_boneco(){
+	cout << "testando" << endl;
+	inicializar_threads_ultra();
+	while(!ev3dev::button::enter.process()){
+		usleep(1000000*10);
+		novo_no_map_boneco();
+		cout << "novo no" << endl;
+	}
+	cout << "teste concluido" << endl;
+	finalizar_threads_ultra();
+}
 
 
 void PROBLEMAS_NO_MAPEAMENTO(){
