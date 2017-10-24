@@ -5,20 +5,39 @@ Resgate::Resgate(Controlador_robo *robo, Sensor_cor_hsv *sensor, Ultrassom_nxt *
 :robo(robo), sensor(sensor), ultraE(ultraE), ultraD(ultraD){}
 
 void Resgate::resgatar(){
+	cout << endl << endl << endl << "RESGATAR!!" << endl;
+	robo->girar(180);
+	while(robo->get_estado() == flag_aceleracao::girar);
+	robo->alinhar(sensor, direcao::traz);
+	robo->andar(60);
+	usleep(1000000*0.5); // so pra sair da cor que ele alinhou
 
-	while(estd_resgate != estados_arena::terminado){
+
+	int count_intersec = 0;
+	int count_branco_apos_intersec = 0;
+	Cor corE_corD_iguais = Cor::ndCor;
+	int mudanca_cor_fim_cidade = 0;
+
+	while(true){
 		cor_E = sensor->ler_cor_E();
 		cor_D = sensor->ler_cor_D();
+		//TODO ler os ultras aqui
 
-		switch (estd_resgate){
+		switch (estd){
 		case estados_arena::leu_fora:
 			cout << "fora:";
-
+			count_intersec = 0;
+			count_branco_apos_intersec = 0;
+			corE_corD_iguais = Cor::ndCor;
+			mudanca_cor_fim_cidade = 0;
 			if(cor_E == Cor::fora)
 				realinha(direcao::esquerda);
 			else if (cor_D == Cor::fora)
 				realinha(direcao::direita);
-			else estd_resgate = estados_arena::atencao;
+			else {
+				estd = estados_arena::atencao;
+				cout << "ATENCAO!!" << endl;
+			}
 
 			break;
 
@@ -26,69 +45,111 @@ void Resgate::resgatar(){
 		case estados_arena::intersec:
 			cout << "intersec?";
 			while(true){
-				if(sensor->ler_cor_E() != cor_E)
+				if(sensor->ler_cor_E() != cor_E){
 					realinha(direcao::esquerda);
-
-				else if(sensor->ler_cor_D() != cor_D)
+				}
+				else if(sensor->ler_cor_D() != cor_D){
 					realinha(direcao::direita);
-
-				else break;
-
+				}
+				else
+					break;
+				cout << "nao, loop infinito?" << endl;//FIXME tratar
 				robo->alinhar(sensor, direcao::frente);
 				robo->andar(30, 0.02);
 			}
-
+			cout << "SIM" << endl;
 			intersec();
-			if(cor_E == Cor::branco && cor_D == Cor::branco) {
-				estd_resgate = estados_arena::faixa;
-				break;
+			while( !(sensor->ler_cor_E() == Cor::branco) || !(sensor->ler_cor_D() == Cor::branco))
+			{
+				count_branco_apos_intersec ++;
+				if(count_branco_apos_intersec >=5){
+					robo->parar();
+					cout << "o robo terminou a intersecao e nao esta no branco" << endl;
+					cout << "esperando 10 seg" << endl;
+					usleep(1000000*10);
+					estd = estados_arena::faixa;
+				}
 			}
-			else {
-				robo->parar();
-				cout << "o robo terminou a intersecao e nao esta no branco" << endl;
-			}
-
+			estd = estados_arena::faixa;
+			cout << "FAIXA!!" << endl;
 			break;
 
 
 		case estados_arena::faixa:
-			cout << "faixa" << endl;
-
+			//cout << "faixa" << endl;
+			count_intersec = 0;
+			count_branco_apos_intersec = 0;
+			corE_corD_iguais = Cor::ndCor;
+			mudanca_cor_fim_cidade = 0;
 			robo->andar(70);
-			if (cor_E != Cor::branco || cor_D != Cor::branco)
-				estd_resgate = estados_arena::atencao;
+			if (cor_E != Cor::branco || cor_D != Cor::branco){
+				estd = estados_arena::atencao;
+				cout << "ATENCAO!!" << endl;
+			}
 
 			break;
 
 
 		case estados_arena::atencao:
-			cout << "atencao" << endl;
+			/* TODO fazer tratamento do caso que sensor fique muito tempo em uma interface
+			 */
+			//cout << "atencao" << endl;
+			if(count_intersec == 0)
+				robo->andar(30);
 
-			if(cor_E == Cor::branco && cor_D == Cor::branco) {
-				estd_resgate = estados_arena::faixa;
+			if(cor_E == Cor::branco && cor_D == Cor::branco)
+			{
+				estd = estados_arena::faixa;
+				cout << "FAIXA!!" << endl;
 				break;
 			}
-
-			if (cor_E == Cor::fora || cor_D == Cor::fora){
-				estd_resgate = estados_arena::leu_fora;
+			if (cor_E == Cor::fora || cor_D == Cor::fora)
+			{
+				estd = estados_arena::leu_fora;
+				cout << "FORA!!" << endl;
 				break;
 			}
-
 			if((cor_E == Cor::vermelho && cor_D == Cor::vermelho) ||
 					(cor_E == Cor::verde && cor_D == Cor::verde) ||
 					(cor_E == Cor::azul && cor_D == Cor::azul) ||
 					(cor_E == Cor::preto && cor_D == Cor::preto))
 			{
 				robo->andar(20);
-				estd_resgate = estados_arena::intersec;
-				usleep(1000000*0.7); // para o robo entrar um pouquinho na intersecao
-				break;
+				if(corE_corD_iguais != cor_E){
+					corE_corD_iguais = cor_E;
+					mudanca_cor_fim_cidade ++;
+					cout << "INTERFACE" << endl;
+					count_intersec = 0;
+				}else
+					count_intersec ++;
+
+				switch(mudanca_cor_fim_cidade){
+				case 1:
+					if(count_intersec >= 8) // robo desacelerando, passa a cor rapido
+						estd = estados_arena::intersec;
+
+					break;
+				case 2:
+					//					if(count_intersec >= 25) // robo ja devagar, demora mais pra passar a cor
+					//						estd = estados_arena::intersec;
+					//					break;
+					//				case 3:
+					estd = estados_arena::terminado;
+					cout << "MAP TERMINADO!!" << endl;
+					break;
+				}
+				usleep(1000000*0.08);
 			}
 
-			break;
-		}
+			break; // 	FIM DO case estados_arena::atencao:
 
-	}
+
+		} //FIM DO switch (estd){
+	} // FIM DO while(estd != estados_arena::terminado){
+
+	cout << "fim da arena" << endl;
+	robo->parar();
+	usleep(1000000*8);
 }
 
 void Resgate::intersec() {

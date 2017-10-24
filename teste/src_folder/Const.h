@@ -8,7 +8,7 @@
 
 using namespace std;
 
-enum estados_arena{faixa, leu_fora, leu_nda, intersec, terminado, atencao}; //usado na classe Mapeamento
+enum estados_arena{faixa, leu_fora, leu_nda, intersec, terminado, atencao, captura, salva}; //usado na classe Mapeamento
 enum direcao{ndDirecao, frente, direita, esquerda, traz};// usado na classe Mapeamento
 enum Cor{ndCor, preto, branco, vermelho, verde, azul, fora}; // cores possiveis
 enum flag_aceleracao{ndAcel, linha_reta, parar, girar}; // usado dentro do Controlador_robo
@@ -55,5 +55,9 @@ extern int sentido_navegacao;
 /* Variaveis de mapeamento de intersecção e de bonecos*/
 extern list<no_intersec> no;
 extern direcao_checkpoint cp;
+
+// resgate simples (leitoado)
+extern int qnt_cruzamentos;
+
 
 #endif

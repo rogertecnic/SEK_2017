@@ -4,6 +4,7 @@
 int sentido_navegacao = 0;
 list<no_intersec> no;
 direcao_checkpoint cp = {direcao::ndDirecao, direcao::ndDirecao, direcao::ndDirecao};
+int qnt_cruzamentos = 0;
 //********************VARIAVEIS GLOBAIS DECLARADAS DENTRO DO CONST**********//
 
 
@@ -134,15 +135,15 @@ void Mapeamento::mapear(){
 
 				switch(mudanca_cor_fim_cidade){
 				case 1:
-					if(count_intersec >= 6) // robo desacelerando, passa a cor rapido
+					if(count_intersec >= 8) // robo desacelerando, passa a cor rapido
 						estd = estados_arena::intersec;
 
 					break;
 				case 2:
-					if(count_intersec >= 18) // robo ja devagar, demora mais pra passar a cor
-						estd = estados_arena::intersec;
-					break;
-				case 3:
+					//					if(count_intersec >= 25) // robo ja devagar, demora mais pra passar a cor
+					//						estd = estados_arena::intersec;
+					//					break;
+					//				case 3:
 					estd = estados_arena::terminado;
 					cout << "MAP TERMINADO!!" << endl;
 					break;
@@ -168,6 +169,7 @@ void Mapeamento::mapear(){
  * desalinhado
  */
 void Mapeamento::intersec() {
+	qnt_cruzamentos ++;
 	//fazer esse alinhamento somente se nao for preto, se for preto ja entrar no mapeamento_intersec
 	if(cor_E != Cor::preto){
 		robo->alinhar(sensor, direcao::traz);
@@ -215,7 +217,7 @@ void Mapeamento::mapeamento_intersec() {
 	/*Primeira intersecção*/
 	if(cor_atual == Cor::ndCor){
 		map_boneco_inicio = true;
-		inicializar_threads_ultra();
+		//inicializar_threads_ultra();
 		interseccao = true;
 		cout << "primeira intersec" << endl;
 		cor_atual = sensor->ler_cor_D();
