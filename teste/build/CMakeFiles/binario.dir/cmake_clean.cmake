@@ -7,6 +7,7 @@ file(REMOVE_RECURSE
   "CMakeFiles/binario.dir/src_folder/Controlador_robo.o"
   "CMakeFiles/binario.dir/src_folder/Mapeamento.o"
   "CMakeFiles/binario.dir/src_folder/Arquivos_mapeamento.o"
+  "CMakeFiles/binario.dir/src_folder/Garra.o"
   "CMakeFiles/binario.dir/main.o"
   "binario.pdb"
   "binario"

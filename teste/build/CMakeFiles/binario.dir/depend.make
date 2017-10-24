@@ -7,6 +7,7 @@ CMakeFiles/binario.dir/main.o: ../main.cpp
 CMakeFiles/binario.dir/main.o: ../src_folder/Arquivos_mapeamento.h
 CMakeFiles/binario.dir/main.o: ../src_folder/Const.h
 CMakeFiles/binario.dir/main.o: ../src_folder/Controlador_robo.h
+CMakeFiles/binario.dir/main.o: ../src_folder/Garra.h
 CMakeFiles/binario.dir/main.o: ../src_folder/Mapeamento.h
 CMakeFiles/binario.dir/main.o: ../src_folder/Sensor_cor.h
 CMakeFiles/binario.dir/main.o: ../src_folder/Sensor_cor_hsv.h
@@ -29,6 +30,11 @@ CMakeFiles/binario.dir/src_folder/Controlador_robo.o: ../src_folder/M_arquivos.h
 CMakeFiles/binario.dir/src_folder/Controlador_robo.o: ../src_folder/Sensor_cor.h
 CMakeFiles/binario.dir/src_folder/Controlador_robo.o: ../src_folder/Sensor_cor_hsv.h
 CMakeFiles/binario.dir/src_folder/Controlador_robo.o: ../src_folder/ev3dev.h
+
+CMakeFiles/binario.dir/src_folder/Garra.o: ../src_folder/Const.h
+CMakeFiles/binario.dir/src_folder/Garra.o: ../src_folder/Garra.cpp
+CMakeFiles/binario.dir/src_folder/Garra.o: ../src_folder/Garra.h
+CMakeFiles/binario.dir/src_folder/Garra.o: ../src_folder/ev3dev.h
 
 CMakeFiles/binario.dir/src_folder/M_arquivos.o: ../src_folder/M_arquivos.cpp
 CMakeFiles/binario.dir/src_folder/M_arquivos.o: ../src_folder/M_arquivos.h

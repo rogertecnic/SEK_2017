@@ -9,19 +9,29 @@ void Resgate::resgatar(){
 	robo->girar(180);
 	while(robo->get_estado() == flag_aceleracao::girar);
 	robo->alinhar(sensor, direcao::traz);
-	robo->andar(60);
-	usleep(1000000*0.5); // so pra sair da cor que ele alinhou
+	robo->andar(pwm_busca);
+	usleep(1000000*0.5); // esperar sair da cor que ele alinhou
 
 
-	int count_intersec = 0;
-	int count_branco_apos_intersec = 0;
-	Cor corE_corD_iguais = Cor::ndCor;
-	int mudanca_cor_fim_cidade = 0;
+	int dist_boneco_E = 999; // dist do ultra pro boneco_E
+	int dist_boneco_D = 999; // dist do ultra pro boneco_D
+	bool vi_boneco = false; // viu boneco na leitura do ultra
+	bool vi_boneco0 = false; // viu boneco na leitura anterior do ultra
+	int cont = 0; // contador para confirmar a leitura do ultra
+	int count_intersec = 0; // contador para confirmar quando entrar na intersecao
+	int count_branco_apos_intersec = 0; // contador para confirmar a saida da intersecao
+	Cor corE_corD_iguais = Cor::ndCor; // quando os sensores lerem a mesma cor, para comparacao
+	int mudanca_cor_fim_cidade = 0; // contador para confirmar o fim da cidade na mudanca da cor
 
 	while(true){
 		cor_E = sensor->ler_cor_E();
 		cor_D = sensor->ler_cor_D();
-		//TODO ler os ultras aqui
+		dist_boneco_E = ultraE->le_centimetro();
+		dist_boneco_D = ultraD->le_centimetro();
+		if(dist_boneco_E <= distancia_boneco || dist_boneco_D <= distancia_boneco){
+			robo->andar(20);
+			estd = estados_arena::captura;
+		}
 
 		switch (estd){
 		case estados_arena::leu_fora:
@@ -39,7 +49,7 @@ void Resgate::resgatar(){
 				cout << "ATENCAO!!" << endl;
 			}
 
-			break;
+			break; // FIM CASE leu_fora:
 
 
 		case estados_arena::intersec:
@@ -53,7 +63,7 @@ void Resgate::resgatar(){
 				}
 				else
 					break;
-				cout << "nao, loop infinito?" << endl;//FIXME tratar
+				cout << "nao, loop infinito?" << endl;
 				robo->alinhar(sensor, direcao::frente);
 				robo->andar(30, 0.02);
 			}
@@ -72,11 +82,11 @@ void Resgate::resgatar(){
 			}
 			estd = estados_arena::faixa;
 			cout << "FAIXA!!" << endl;
-			break;
+
+			break; // FIM CASE intersec:
 
 
 		case estados_arena::faixa:
-			//cout << "faixa" << endl;
 			count_intersec = 0;
 			count_branco_apos_intersec = 0;
 			corE_corD_iguais = Cor::ndCor;
@@ -87,7 +97,7 @@ void Resgate::resgatar(){
 				cout << "ATENCAO!!" << endl;
 			}
 
-			break;
+			break; // FIM CASE faixa:
 
 
 		case estados_arena::atencao:
@@ -144,6 +154,46 @@ void Resgate::resgatar(){
 			break; // 	FIM DO case estados_arena::atencao:
 
 
+		case estados_arena::captura: // caso ver algum boneco
+			cout << "BONECO?" << endl;
+			dist_boneco_E = ultraE->le_centimetro();
+			dist_boneco_D = ultraD->le_centimetro();
+			if(dist_boneco_E <= distancia_boneco){ // viu boneco a esquerda
+				robo->parar();
+				// TODO abrir a garra
+				robo->girar(90);
+				robo->andar(30);
+				while(sensor->get_sensor_E() != Cor::fora &&
+						sensor->get_sensor_D() != Cor::fora);
+				// TODO fechar a garra
+				robo->andar(-40, 0.2);
+			}
+			else if(dist_boneco_D <= distancia_boneco){ // viu boneco a direita
+				robo->parar();
+				// TODO abrir a garra
+				robo->girar(-90);
+				robo->andar(30);
+				while(sensor->get_sensor_E() != Cor::fora &&
+						sensor->get_sensor_D() != Cor::fora);
+				// TODO fechar a garra
+				robo->andar(-40, 0.2);
+			}
+			else{
+				estd = estados_arena::faixa;
+				break;
+			}
+
+			// TODO o robo esta no meio da pista com o boneco, virar ele pro lado certo
+
+
+			break; // FIM CASE captura:
+
+
+		case estados_arena::salva: // caso esteja com boneco e ja esteja no fim
+
+			break;// FIM CASE salva:
+
+
 		} //FIM DO switch (estd){
 	} // FIM DO while(estd != estados_arena::terminado){
 
@@ -166,7 +216,7 @@ void Resgate::intersec() {
 		arq_map->arquivo_map(cp);
 		estd = estados_arena::terminado;
 	}
-	*/
+	 */
 }
 
 
@@ -206,10 +256,6 @@ void Resgate::realinha(direcao lado_saindo) {
 
 
 
-void Resgate::inverter_ponteiros_pos(){
-
-
-}
 
 
 void Resgate::caminho_certo (){

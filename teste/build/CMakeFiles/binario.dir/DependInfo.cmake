@@ -8,6 +8,7 @@ set(CMAKE_DEPENDS_CHECK_CXX
   "/src/src_folder/Arquivos_mapeamento.cpp" "/src/build/CMakeFiles/binario.dir/src_folder/Arquivos_mapeamento.o"
   "/src/src_folder/Controlador_motor.cpp" "/src/build/CMakeFiles/binario.dir/src_folder/Controlador_motor.o"
   "/src/src_folder/Controlador_robo.cpp" "/src/build/CMakeFiles/binario.dir/src_folder/Controlador_robo.o"
+  "/src/src_folder/Garra.cpp" "/src/build/CMakeFiles/binario.dir/src_folder/Garra.o"
   "/src/src_folder/M_arquivos.cpp" "/src/build/CMakeFiles/binario.dir/src_folder/M_arquivos.o"
   "/src/src_folder/Mapeamento.cpp" "/src/build/CMakeFiles/binario.dir/src_folder/Mapeamento.o"
   "/src/src_folder/Sensor_cor_hsv.cpp" "/src/build/CMakeFiles/binario.dir/src_folder/Sensor_cor_hsv.o"

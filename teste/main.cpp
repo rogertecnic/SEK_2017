@@ -8,6 +8,7 @@
 #include "src_folder/Sensor_cor_hsv.h"
 #include "src_folder/Controlador_robo.h"
 #include "src_folder/Mapeamento.h"
+#include "src_folder/Garra.h"
 
 
 using namespace std;
@@ -247,11 +248,28 @@ void teste_rogerio(){
 	/*
 	 * teste classe mapeamento com classe sensor cor hsv
 	 */
-		robot.calibra_sensor_cor(&cor);
-		while(!ev3dev::button::enter.process());
-		usleep(1000000*0.1);
-		while(!ev3dev::button::enter.process());
-		mapa.mapear();
+	//		robot.calibra_sensor_cor(&cor);
+	//		while(!ev3dev::button::enter.process());
+	//		usleep(1000000*0.1);
+	//		while(!ev3dev::button::enter.process());
+	//		mapa.mapear();
+
+	/*
+	 * teste classe Garra
+	 */
+	Garra garra(ev3dev::OUTPUT_D, 45);
+	while(!ev3dev::button::enter.process());
+	usleep(1000000*0.1);
+	while(!ev3dev::button::enter.process());
+	garra.abrir();
+	usleep(1000000*1);
+	garra.fechar();
+	usleep(1000000*1);
+	robot.andar(60);
+	while(!ev3dev::button::enter.process());
+	usleep(1000000*0.1);
+	while(!ev3dev::button::enter.process());
+	robot.parar();
 
 	/*
 	 * teste da classe sensor_cor

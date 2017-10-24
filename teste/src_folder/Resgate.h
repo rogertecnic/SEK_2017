@@ -27,14 +27,14 @@ private:
 	// pwm principal, quando o robo esta andando e procurando
 	int pwm_busca = 60;
 
+	int carga_bonecos = 0;
+
+	direcao direcao_boneco = direcao::ndDirecao;
 	// cor que o referente a intersecao que o robo acabou de sair
-	Cor cor_atual = Cor::ndCor;
+	//Cor cor_atual = Cor::ndCor;
 
 	// direcao referente a intersecao que o robo acabou de sair
-	direcao direcao_atual = direcao::ndDirecao;
-
-	// robo esta voltando de um dead-end?
-	bool dead_end = false;
+	//direcao direcao_atual = direcao::ndDirecao;
 
 	//flags para salvar ultima leitura da cor quando necessario
 	Cor cor_E = Cor::ndCor;
