@@ -1,7 +1,7 @@
 #include "Arquivos_mapeamento.h"
 
-void Arquivos_mapeamento::arquivo_map(direcao_checkpoint s_cp, list<no_intersec> vet){
-	list<no_intersec>::iterator it1 = vet.begin();
+void Arquivos_mapeamento::arquivo_map(direcao_checkpoint s_cp, vector<no_intersec> vet){
+	vector<no_intersec>::iterator it1 = vet.begin();
 	int count = 1;
 
 	outfile.open("mapeamento.txt", ios::out);
@@ -17,17 +17,6 @@ void Arquivos_mapeamento::arquivo_map(direcao_checkpoint s_cp, list<no_intersec>
 
 		while(it1 != vet.end()){
 			outfile << "Intersecção: " << count << endl;
-
-			outfile << "Posição pre d:";
-			for(unsigned i = 0; i < (*it1).posicao_pre_d.size(); i++)
-				outfile << (*it1).posicao_pre_d[i] << " ";
-
-			outfile << endl;
-
-			outfile << "Posição pos d:";
-			for(unsigned i = 0; i < (*it1).posicao_pos_d.size(); i++)
-				outfile << (*it1).posicao_pre_d[i] << " ";
-
 			outfile << endl;
 
 			outfile << "Posição pre e:";
@@ -36,9 +25,22 @@ void Arquivos_mapeamento::arquivo_map(direcao_checkpoint s_cp, list<no_intersec>
 
 			outfile << endl;
 
+			outfile << "Posição pre d:";
+			for(unsigned i = 0; i < (*it1).posicao_pre_d.size(); i++)
+				outfile << (*it1).posicao_pre_d[i] << " ";
+
+			outfile << endl;
+
 			outfile << "Posição pos e:";
 			for(unsigned i = 0; i < (*it1).posicao_pos_e.size(); i++)
 				outfile << (*it1).posicao_pre_d[i] << " ";
+
+			outfile << endl;
+
+			outfile << "Posição pos d:";
+			for(unsigned i = 0; i < (*it1).posicao_pos_d.size(); i++)
+				outfile << (*it1).posicao_pre_d[i] << " ";
+
 
 			outfile << "\n\n";
 

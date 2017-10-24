@@ -2,9 +2,11 @@
 #define CONST_H_
 
 #include <iostream>
-#include <list>
 #include <vector>
+#include <thread>
+#include <string>
 #include "ev3dev.h"
+
 
 using namespace std;
 
@@ -53,7 +55,7 @@ extern int sentido_navegacao;
 
 
 /* Variaveis de mapeamento de intersecção e de bonecos*/
-extern list<no_intersec> no;
+extern vector<no_intersec> no;
 extern direcao_checkpoint cp;
 
 #endif
