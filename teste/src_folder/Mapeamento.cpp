@@ -518,7 +518,6 @@ bool Mapeamento::finalizar_threads_ultra(){
 //TODO Arrumar forma como pego a distancia da interseccao ao boneco
 
 void Mapeamento::loop_mapeamento_bonecoE(){
-	// http://www.cplusplus.com/reference/list/list/begin/
 	bool estou_vendo_boneco = false;
 	int dist_boneco;
 	while(thread_rodando_bonecos){
@@ -527,7 +526,7 @@ void Mapeamento::loop_mapeamento_bonecoE(){
 		if( dist_boneco < 16){ // estou vendo um boneco
 
 			if(!estou_vendo_boneco){ // comecei agora a ver o boneco
-				cout << "BONECO: " <<robo->get_distancia_absoluta()<< endl;
+				cout << "BONECO_E: " <<robo->get_distancia_absoluta()<< endl;
 				double dist_boneco_pos = robo->get_distancia_absoluta()-posicao_saiu_intersec;
 				no.at(it_no).posicao_pos_e.push_back(dist_boneco_pos);
 			}
@@ -546,7 +545,29 @@ void Mapeamento::loop_mapeamento_bonecoE(){
 
 
 void Mapeamento::loop_mapeamento_bonecoD(){
+	bool estou_vendo_boneco = false;
+		int dist_boneco;
+		while(thread_rodando_bonecos){
+			dist_boneco = ultraD->le_centimetro();
 
+			if( dist_boneco < 16){ // estou vendo um boneco
+
+				if(!estou_vendo_boneco){ // comecei agora a ver o boneco
+					cout << "BONECO_D: " <<robo->get_distancia_absoluta()<< endl;
+					double dist_boneco_pos = robo->get_distancia_absoluta()-posicao_saiu_intersec;
+					no.at(it_no).posicao_pos_d.push_back(dist_boneco_pos);
+				}
+				estou_vendo_boneco = true;
+
+			}
+			else{ // nao estou vendo um boneco
+				if(estou_vendo_boneco) // estava vendo um boneco na leitura anterior
+					usleep(1000000*0.5);
+
+				estou_vendo_boneco = false;
+			}
+			usleep(1000000*0.1);
+		}
 }
 
 
@@ -558,15 +579,19 @@ void Mapeamento::novo_no_map_boneco(){
 	no.push_back(novo_no);
 	it_no ++;
 	double dist_boneco_pre = 0;
-	robo->parar();
-		cout << "sai:"<< posicao_saiu_intersec<< endl;
-		cout << "cheguei:"<< posicao_chegou_intersec << endl;
-		usleep(1000000*5);
+	// vector pre salva do mais proximo ao mais distante tendo como referencia
+	// o no pelo qual os bonecos sao pre posicionados
 	for(int i = no.at(it_no-1).posicao_pos_e.size()-1 ; i >=0 ; i--){
 		dist_boneco_pre = posicao_chegou_intersec - posicao_saiu_intersec; // dist entre intesrsec
 		dist_boneco_pre = dist_boneco_pre - no.at(it_no-1).posicao_pos_e.at(i); // dist do ultimo boneco
 		no.at(it_no).posicao_pre_e.push_back(dist_boneco_pre);
 	}
+
+	for(int i = no.at(it_no-1).posicao_pos_d.size()-1 ; i >=0 ; i--){
+			dist_boneco_pre = posicao_chegou_intersec - posicao_saiu_intersec; // dist entre intesrsec
+			dist_boneco_pre = dist_boneco_pre - no.at(it_no-1).posicao_pos_d.at(i); // dist do ultimo boneco
+			no.at(it_no).posicao_pre_d.push_back(dist_boneco_pre);
+		}
 }
 
 
