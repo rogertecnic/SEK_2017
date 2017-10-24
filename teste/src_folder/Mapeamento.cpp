@@ -493,8 +493,8 @@ bool Mapeamento::inicializar_threads_ultra(){
 	mapeamento_bonecoE = thread(&Mapeamento::loop_mapeamento_bonecoE, this);
 	mapeamento_bonecoE.detach();
 
-	//	mapeamento_bonecoD = thread(&Mapeamento::loop_mapeamento_bonecoD, this);
-	//	mapeamento_bonecoD.detach();
+		mapeamento_bonecoD = thread(&Mapeamento::loop_mapeamento_bonecoD, this);
+		mapeamento_bonecoD.detach();
 	usleep(100000);
 
 	return thread_rodando_bonecos;
@@ -519,11 +519,31 @@ bool Mapeamento::finalizar_threads_ultra(){
 
 void Mapeamento::loop_mapeamento_bonecoE(){
 	bool estou_vendo_boneco = false;
-	int dist_boneco;
-	while(thread_rodando_bonecos){
-		dist_boneco = ultraE->le_centimetro();
 
-		if( dist_boneco < 16){ // estou vendo um boneco
+	int dist_boneco;
+	bool vi_boneco = false;
+	bool vi_boneco0 = false;
+	int cont = 0; // para confirmar a leitura do sensor
+	while(thread_rodando_bonecos){
+		while(true){ // para excluir leituras falsas
+			dist_boneco = ultraE->le_centimetro();
+			if(dist_boneco < 16)
+				vi_boneco = true;
+			else
+				vi_boneco = false;
+
+			if(vi_boneco == vi_boneco0){
+				cont ++;
+				if(cont >= 3)
+					break;
+			}
+			else{
+				cont = 0;
+				vi_boneco0 = vi_boneco;
+			}
+		}// FIM WHILE: para excluir leituras falsas
+
+		if(vi_boneco){ // estou vendo um boneco
 
 			if(!estou_vendo_boneco){ // comecei agora a ver o boneco
 				cout << "BONECO_E: " <<robo->get_distancia_absoluta()<< endl;
@@ -546,28 +566,48 @@ void Mapeamento::loop_mapeamento_bonecoE(){
 
 void Mapeamento::loop_mapeamento_bonecoD(){
 	bool estou_vendo_boneco = false;
-		int dist_boneco;
-		while(thread_rodando_bonecos){
-			dist_boneco = ultraD->le_centimetro();
 
-			if( dist_boneco < 16){ // estou vendo um boneco
+	int dist_boneco;
+	bool vi_boneco = false;
+	bool vi_boneco0 = false;
+	int cont = 0; // para confirmar a leitura do sensor
+	while(thread_rodando_bonecos){
+		while(true){ // para excluir leituras falsas
+			dist_boneco = ultraE->le_centimetro();
+			if(dist_boneco < 16)
+				vi_boneco = true;
+			else
+				vi_boneco = false;
 
-				if(!estou_vendo_boneco){ // comecei agora a ver o boneco
-					cout << "BONECO_D: " <<robo->get_distancia_absoluta()<< endl;
-					double dist_boneco_pos = robo->get_distancia_absoluta()-posicao_saiu_intersec;
-					no.at(it_no).posicao_pos_d.push_back(dist_boneco_pos);
-				}
-				estou_vendo_boneco = true;
-
+			if(vi_boneco == vi_boneco0){
+				cont ++;
+				if(cont >= 3)
+					break;
 			}
-			else{ // nao estou vendo um boneco
-				if(estou_vendo_boneco) // estava vendo um boneco na leitura anterior
-					usleep(1000000*0.5);
-
-				estou_vendo_boneco = false;
+			else{
+				cont = 0;
+				vi_boneco0 = vi_boneco;
 			}
-			usleep(1000000*0.1);
+		}// FIM WHILE: para excluir leituras falsas
+
+		if(vi_boneco){ // estou vendo um boneco
+
+			if(!estou_vendo_boneco){ // comecei agora a ver o boneco
+				cout << "BONECO_D: " <<robo->get_distancia_absoluta()<< endl;
+				double dist_boneco_pos = robo->get_distancia_absoluta()-posicao_saiu_intersec;
+				no.at(it_no).posicao_pos_d.push_back(dist_boneco_pos);
+			}
+			estou_vendo_boneco = true;
+
 		}
+		else{ // nao estou vendo um boneco
+			if(estou_vendo_boneco) // estava vendo um boneco na leitura anterior
+				usleep(1000000*0.5);
+
+			estou_vendo_boneco = false;
+		}
+		usleep(1000000*0.1);
+	}
 }
 
 

@@ -6,6 +6,14 @@
 
 #IncludeRegexTransform: 
 
+/src/src_folder/Arquivos_mapeamento.h
+iostream
+-
+fstream
+-
+Const.h
+/src/src_folder/Const.h
+
 /src/src_folder/Const.h
 iostream
 -
@@ -13,10 +21,6 @@ vector
 -
 ev3dev.h
 /src/src_folder/ev3dev.h
-
-/src/src_folder/Controlador_robo.cpp
-Controlador_robo.h
-/src/src_folder/Controlador_robo.h
 
 /src/src_folder/Controlador_robo.h
 iostream
@@ -54,6 +58,24 @@ list
 string
 -
 
+/src/src_folder/Mapeamento.cpp
+Mapeamento.h
+/src/src_folder/Mapeamento.h
+
+/src/src_folder/Mapeamento.h
+Controlador_robo.h
+/src/src_folder/Controlador_robo.h
+Sensor_cor_hsv.h
+/src/src_folder/Sensor_cor_hsv.h
+Arquivos_mapeamento.h
+/src/src_folder/Arquivos_mapeamento.h
+Ultrassom_nxt.h
+/src/src_folder/Ultrassom_nxt.h
+Const.h
+/src/src_folder/Const.h
+vector
+-
+
 /src/src_folder/Sensor_cor.h
 iostream
 -
@@ -79,6 +101,14 @@ M_arquivos.h
 /src/src_folder/M_arquivos.h
 Const.h
 /src/src_folder/Const.h
+
+/src/src_folder/Ultrassom_nxt.h
+iostream
+-
+string
+-
+unistd.h
+-
 
 /src/src_folder/ev3dev.h
 map

@@ -1,19 +1,61 @@
 Intersecções
 direcao do vermelho: 0
 direcao do verde: 0
-direcao do azul: 2
+direcao do azul: 0
 
 Posições bonecos
 Intersecção: 1
 Posição pre d:
-Posição pos d:
+Posição pos d:0 0 0 
 Posição pre e:
-Posição pos e:0.255639 
+Posição pos e:0 
 
 Intersecção: 2
-Posição pre d:
+Posição pre d:0 0 0 
+Posição pos d:0 0 0 
+Posição pre e:0 
+Posição pos e:
+
+Intersecção: 3
+Posição pre d:0 0 0 
 Posição pos d:
-Posição pre e:0.159863 
+Posição pre e:
+Posição pos e:0 0 0 
+
+Intersecção: 4
+Posição pre d:
+Posição pos d:0 
+Posição pre e:0 0 0 
+Posição pos e:0 
+
+Intersecção: 5
+Posição pre d:0 
+Posição pos d:0 0 0 0 
+Posição pre e:0 
+Posição pos e:
+
+Intersecção: 6
+Posição pre d:0 0 0 0 
+Posição pos d:0 
+Posição pre e:
+Posição pos e:0 0 0 
+
+Intersecção: 7
+Posição pre d:0 
+Posição pos d:0 0 
+Posição pre e:0 0 0 
+Posição pos e:0 
+
+Intersecção: 8
+Posição pre d:0 0 
+Posição pos d:0 
+Posição pre e:0 
+Posição pos e:0 
+
+Intersecção: 9
+Posição pre d:0 
+Posição pos d:
+Posição pre e:0 
 Posição pos e:
 
 
