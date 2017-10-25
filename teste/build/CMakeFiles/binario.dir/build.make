@@ -256,9 +256,32 @@ CMakeFiles/binario.dir/src_folder/Garra.o.provides: CMakeFiles/binario.dir/src_f
 
 CMakeFiles/binario.dir/src_folder/Garra.o.provides.build: CMakeFiles/binario.dir/src_folder/Garra.o
 
+CMakeFiles/binario.dir/src_folder/Resgate.o: CMakeFiles/binario.dir/flags.make
+CMakeFiles/binario.dir/src_folder/Resgate.o: ../src_folder/Resgate.cpp
+	$(CMAKE_COMMAND) -E cmake_progress_report /src/build/CMakeFiles $(CMAKE_PROGRESS_10)
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Building CXX object CMakeFiles/binario.dir/src_folder/Resgate.o"
+	/usr/bin/arm-linux-gnueabi-g++   $(CXX_DEFINES) $(CXX_FLAGS) -o CMakeFiles/binario.dir/src_folder/Resgate.o -c /src/src_folder/Resgate.cpp
+
+CMakeFiles/binario.dir/src_folder/Resgate.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/binario.dir/src_folder/Resgate.i"
+	/usr/bin/arm-linux-gnueabi-g++  $(CXX_DEFINES) $(CXX_FLAGS) -E /src/src_folder/Resgate.cpp > CMakeFiles/binario.dir/src_folder/Resgate.i
+
+CMakeFiles/binario.dir/src_folder/Resgate.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/binario.dir/src_folder/Resgate.s"
+	/usr/bin/arm-linux-gnueabi-g++  $(CXX_DEFINES) $(CXX_FLAGS) -S /src/src_folder/Resgate.cpp -o CMakeFiles/binario.dir/src_folder/Resgate.s
+
+CMakeFiles/binario.dir/src_folder/Resgate.o.requires:
+.PHONY : CMakeFiles/binario.dir/src_folder/Resgate.o.requires
+
+CMakeFiles/binario.dir/src_folder/Resgate.o.provides: CMakeFiles/binario.dir/src_folder/Resgate.o.requires
+	$(MAKE) -f CMakeFiles/binario.dir/build.make CMakeFiles/binario.dir/src_folder/Resgate.o.provides.build
+.PHONY : CMakeFiles/binario.dir/src_folder/Resgate.o.provides
+
+CMakeFiles/binario.dir/src_folder/Resgate.o.provides.build: CMakeFiles/binario.dir/src_folder/Resgate.o
+
 CMakeFiles/binario.dir/main.o: CMakeFiles/binario.dir/flags.make
 CMakeFiles/binario.dir/main.o: ../main.cpp
-	$(CMAKE_COMMAND) -E cmake_progress_report /src/build/CMakeFiles $(CMAKE_PROGRESS_10)
+	$(CMAKE_COMMAND) -E cmake_progress_report /src/build/CMakeFiles $(CMAKE_PROGRESS_11)
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Building CXX object CMakeFiles/binario.dir/main.o"
 	/usr/bin/arm-linux-gnueabi-g++   $(CXX_DEFINES) $(CXX_FLAGS) -o CMakeFiles/binario.dir/main.o -c /src/main.cpp
 
@@ -290,6 +313,7 @@ binario_OBJECTS = \
 "CMakeFiles/binario.dir/src_folder/Mapeamento.o" \
 "CMakeFiles/binario.dir/src_folder/Arquivos_mapeamento.o" \
 "CMakeFiles/binario.dir/src_folder/Garra.o" \
+"CMakeFiles/binario.dir/src_folder/Resgate.o" \
 "CMakeFiles/binario.dir/main.o"
 
 # External object files for target binario
@@ -304,6 +328,7 @@ binario: CMakeFiles/binario.dir/src_folder/Controlador_robo.o
 binario: CMakeFiles/binario.dir/src_folder/Mapeamento.o
 binario: CMakeFiles/binario.dir/src_folder/Arquivos_mapeamento.o
 binario: CMakeFiles/binario.dir/src_folder/Garra.o
+binario: CMakeFiles/binario.dir/src_folder/Resgate.o
 binario: CMakeFiles/binario.dir/main.o
 binario: CMakeFiles/binario.dir/build.make
 binario: CMakeFiles/binario.dir/link.txt
@@ -323,6 +348,7 @@ CMakeFiles/binario.dir/requires: CMakeFiles/binario.dir/src_folder/Controlador_r
 CMakeFiles/binario.dir/requires: CMakeFiles/binario.dir/src_folder/Mapeamento.o.requires
 CMakeFiles/binario.dir/requires: CMakeFiles/binario.dir/src_folder/Arquivos_mapeamento.o.requires
 CMakeFiles/binario.dir/requires: CMakeFiles/binario.dir/src_folder/Garra.o.requires
+CMakeFiles/binario.dir/requires: CMakeFiles/binario.dir/src_folder/Resgate.o.requires
 CMakeFiles/binario.dir/requires: CMakeFiles/binario.dir/main.o.requires
 .PHONY : CMakeFiles/binario.dir/requires
 

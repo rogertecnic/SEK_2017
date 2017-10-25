@@ -5,13 +5,14 @@
 #include "Sensor_cor_hsv.h"
 #include  "Ultrassom_nxt.h"
 #include "Const.h"
+#include "Garra.h"
 
-#define distancia_boneco 18 //MODIFICAR DEPOIS
+#define distancia_boneco 16 //MODIFICAR DEPOIS
 
 class Resgate {
 public:
 
-	Resgate(Controlador_robo *, Sensor_cor_hsv *, Ultrassom_nxt *, Ultrassom_nxt *);
+	Resgate(Controlador_robo *, Sensor_cor_hsv *, Ultrassom_nxt *, Ultrassom_nxt *, string porta_garra);
 	void resgatar();
 
 private:
@@ -19,6 +20,7 @@ private:
 	Sensor_cor_hsv *sensor;
 	Ultrassom_nxt *ultraE;
 	Ultrassom_nxt *ultraD;
+	Garra garra;
 	//ev3dev::large_motor *motorCancela;
 
 	/*********************************************************************************************/
@@ -87,4 +89,5 @@ private:
 	/*--------------------------------FIM METODOS DO RESGATE-------------------------------------*/
 	/*-------------------------------------------------------------------------------------------*/
 
-};;
+};
+#endif

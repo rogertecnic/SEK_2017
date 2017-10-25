@@ -15,7 +15,7 @@
 #include "Const.h"
 
 //FIXME distancia_boneco e delay_f deixar aqui ou levar pra outro lugar?
-#define distancia_boneco 18 //MODIFICAR DEPOIS
+#define distancia_boneco 16 //MODIFICAR DEPOIS
 #define delay_f 5 //Usado na detecção do final da cidade
 
 

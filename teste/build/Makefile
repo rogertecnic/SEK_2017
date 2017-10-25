@@ -221,6 +221,21 @@ src_folder/Mapeamento.s:
 .PHONY : src_folder/Mapeamento.s
 
 # target to build an object file
+src_folder/Resgate.o:
+	$(MAKE) -f CMakeFiles/binario.dir/build.make CMakeFiles/binario.dir/src_folder/Resgate.o
+.PHONY : src_folder/Resgate.o
+
+# target to preprocess a source file
+src_folder/Resgate.i:
+	$(MAKE) -f CMakeFiles/binario.dir/build.make CMakeFiles/binario.dir/src_folder/Resgate.i
+.PHONY : src_folder/Resgate.i
+
+# target to generate assembly for a file
+src_folder/Resgate.s:
+	$(MAKE) -f CMakeFiles/binario.dir/build.make CMakeFiles/binario.dir/src_folder/Resgate.s
+.PHONY : src_folder/Resgate.s
+
+# target to build an object file
 src_folder/Sensor_cor_hsv.o:
 	$(MAKE) -f CMakeFiles/binario.dir/build.make CMakeFiles/binario.dir/src_folder/Sensor_cor_hsv.o
 .PHONY : src_folder/Sensor_cor_hsv.o
@@ -295,6 +310,9 @@ help:
 	@echo "... src_folder/Mapeamento.o"
 	@echo "... src_folder/Mapeamento.i"
 	@echo "... src_folder/Mapeamento.s"
+	@echo "... src_folder/Resgate.o"
+	@echo "... src_folder/Resgate.i"
+	@echo "... src_folder/Resgate.s"
 	@echo "... src_folder/Sensor_cor_hsv.o"
 	@echo "... src_folder/Sensor_cor_hsv.i"
 	@echo "... src_folder/Sensor_cor_hsv.s"

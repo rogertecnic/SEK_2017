@@ -8,7 +8,7 @@
 #include "src_folder/Sensor_cor_hsv.h"
 #include "src_folder/Controlador_robo.h"
 #include "src_folder/Mapeamento.h"
-#include "src_folder/Garra.h"
+#include "src_folder/Resgate.h"
 
 
 using namespace std;
@@ -205,7 +205,10 @@ void teste_rogerio(){
 	Controlador_robo robot(false, "debug posicao direto no pwm.m"); // fator_croda = 1.005
 	//Sensor_cor cor(ev3dev::INPUT_1, ev3dev::INPUT_2);
 	Sensor_cor_hsv cor(ev3dev::INPUT_1, ev3dev::INPUT_2,false,"leitura_sensor_cor_hsv");
-	Mapeamento mapa(&robot, &cor, nullptr, nullptr);
+	Ultrassom_nxt ultraE(Ultrassom_nxt::INPUT_3);
+	Ultrassom_nxt ultraD(Ultrassom_nxt::INPUT_4);
+	Mapeamento mapa(&robot, &cor, &ultraE, &ultraD);
+	Resgate resgate(&robot, &cor, &ultraE, &ultraD, ev3dev::OUTPUT_D);
 
 
 	robot.inicializar_thread_aceleracao();
@@ -248,28 +251,40 @@ void teste_rogerio(){
 	/*
 	 * teste classe mapeamento com classe sensor cor hsv
 	 */
-	//		robot.calibra_sensor_cor(&cor);
-	//		while(!ev3dev::button::enter.process());
-	//		usleep(1000000*0.1);
-	//		while(!ev3dev::button::enter.process());
-	//		mapa.mapear();
+	//			robot.calibra_sensor_cor(&cor);
+	//			while(!ev3dev::button::enter.process());
+	//			usleep(1000000*0.1);
+	//			while(!ev3dev::button::enter.process());
+	//			mapa.mapear();
+	//			resgate.resgatar();
+
+
+	/*
+	 * teste do alinhamento do portal
+	 */
+	robot.calibra_sensor_cor(&cor);
+	while(!ev3dev::button::enter.process());
+	usleep(1000000*0.1);
+	while(!ev3dev::button::enter.process());
+	robot.alinha_portal(&cor);
+
 
 	/*
 	 * teste classe Garra
 	 */
-	Garra garra(ev3dev::OUTPUT_D, 45);
-	while(!ev3dev::button::enter.process());
-	usleep(1000000*0.1);
-	while(!ev3dev::button::enter.process());
-	garra.abrir();
-	usleep(1000000*1);
-	garra.fechar();
-	usleep(1000000*1);
-	robot.andar(60);
-	while(!ev3dev::button::enter.process());
-	usleep(1000000*0.1);
-	while(!ev3dev::button::enter.process());
-	robot.parar();
+	//	Garra garra(ev3dev::OUTPUT_D, 45);
+	//	while(!ev3dev::button::enter.process());
+	//	usleep(1000000*0.1);
+	//	while(!ev3dev::button::enter.process());
+	//	garra.abrir();
+	//	usleep(1000000*1);
+	//	garra.fechar();
+	//	usleep(1000000*1);
+	//	robot.andar(60);
+	//	while(!ev3dev::button::enter.process());
+	//	usleep(1000000*0.1);
+	//	while(!ev3dev::button::enter.process());
+	//	robot.parar();
 
 	/*
 	 * teste da classe sensor_cor

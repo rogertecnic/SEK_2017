@@ -159,7 +159,7 @@ void Mapeamento::mapear(){
 
 	cout << "fim da arena" << endl;
 	robo->parar();
-	usleep(1000000*8);
+	sentido_navegacao = -1;
 }
 
 /* quando o robo entra em uma intersecao dentro do metodo mapear chama-se esse metodo.
@@ -427,24 +427,7 @@ void Mapeamento::caminho_certo (){
  * isso deve ser tratado dentro da deteccao da intersecao dentro do metodo mapear
  */
 bool Mapeamento::fim_da_cidade(){
-	if(iterador_fim_cidade < 4){
-		iterador_fim_cidade ++;
 		return false;
-	} else{
-		//cout <<endl << endl << "fim city moda foca" << endl;
-		//usleep(1000000*5);
-		return false;
-	}
-	//	robo->andar(30, 0.040);
-	//	if (sensor->ler_cor_E() != cor_E && sensor->ler_cor_D() != cor_D){
-	//		cor_E = sensor->ler_cor_E();
-	//		cor_D = sensor->ler_cor_D();
-	//		robo->andar(30, 0.040);
-	//		if (sensor->ler_cor_E() != cor_E && sensor->ler_cor_D() != cor_D) return true;
-	//	}
-	//	robo->alinhar(sensor, direcao::traz);
-	//	robo->andar(50, 0.195);
-	//	return false;
 }
 
 /*

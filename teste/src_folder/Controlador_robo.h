@@ -39,6 +39,7 @@ public:
 	double get_pintao();
 	double get_pwm_sp();
 	void calibra_sensor_cor(Sensor_cor_hsv *sensor_cor);
+	void alinha_portal(Sensor_cor_hsv *sensor_cor);
 
 
 private:
