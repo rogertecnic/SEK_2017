@@ -18,187 +18,6 @@ typedef chrono::high_resolution_clock Time;
 
 
 
-bool colorido(Sensor_cor_hsv cor, string lado){
-	if(lado == "esquerdo"){
-		if(cor.ler_cor_E() != Cor::branco && cor.ler_cor_E() != Cor::fora && cor.ler_cor_E() != Cor::ndCor)
-			return true;
-	}
-	else {
-		if(cor.ler_cor_D() != Cor::branco && cor.ler_cor_D() != Cor::fora && cor.ler_cor_D() != Cor::ndCor)
-			return true;
-	}
-	return false;
-}
-
-bool colorido(int cor, string lado){
-	if(lado == "esquerdo"){
-		if(cor != Cor::branco && cor != Cor::fora && cor != Cor::ndCor)
-			return true;
-	}
-	else {
-		if(cor != Cor::branco && cor != Cor::fora && cor != Cor::ndCor)
-			return true;
-	}
-	return false;
-}
-
-
-void teste_luana_alinhamento(){
-	Controlador_robo robot(true, "debug posicao direto no pwm.m");
-	Sensor_cor_hsv cor(ev3dev::INPUT_1, ev3dev::INPUT_2);
-
-	robot.calibra_sensor_cor(&cor);
-	robot.inicializar_thread_aceleracao();
-
-	cout << "Calibração terminada!" << endl;
-	usleep(2*1000000);
-	while(!ev3dev::button::enter.process());
-	usleep(0.3*1000000);
-	ev3dev::button::enter.process();
-
-	estados_arena estd;
-
-	int count_nda = 0;
-
-	int cor_E, cor_D;
-	double 	dist = 0, ang_robo = 0, posicao_inicial = 0, posicao_final = 0;
-
-
-	robot.andar(70);
-	estd = estados_arena::faixa;
-
-	while(!ev3dev::button::back.process()){
-		switch (estd){
-		case 0: //Caso estiver andando na faixa
-			robot.andar(70);
-			cout << "Estado: " << estd << endl;
-			if (cor.ler_cor_E() == Cor::ndCor || cor.ler_cor_D() == Cor::ndCor)
-				estd = estados_arena::leu_nda;
-			else if( (cor.ler_cor_E() != Cor::fora && cor.ler_cor_E() != Cor::ndCor && cor.ler_cor_E() != Cor::branco) ||
-					(cor.ler_cor_D() != Cor::fora && cor.ler_cor_D() != Cor::ndCor && cor.ler_cor_D() != Cor::branco) )
-				estd = estados_arena::intersec;
-			else if (cor.ler_cor_E() == Cor::fora || cor.ler_cor_D() == Cor::fora)
-				estd = estados_arena::leu_fora;
-
-
-			break;
-
-		case 1: //Caso ler nada
-			cout << "Estado: " << estd << endl;
-			if(cor.ler_cor_D() == Cor::ndCor || cor.ler_cor_E() == Cor::ndCor)
-				count_nda ++;
-
-			else{
-				count_nda = 0;
-
-				if (cor.ler_cor_E() == Cor::fora || cor.ler_cor_D() == Cor::fora)
-					estd = estados_arena::leu_fora;
-				else if( (cor.ler_cor_E() != Cor::fora && cor.ler_cor_E() != Cor::ndCor && cor.ler_cor_E() != Cor::branco) ||
-						(cor.ler_cor_D() != Cor::fora && cor.ler_cor_D() != Cor::ndCor && cor.ler_cor_D() != Cor::branco) )
-					estd = estados_arena::intersec;
-				else if(cor.ler_cor_E() == Cor::branco || cor.ler_cor_D() == Cor::branco)
-					estd = estados_arena::faixa;
-
-			}
-
-			if(count_nda >= 10){
-				cout<<"viu nda 10"<<endl;
-				robot.parar();
-				robot.andar(-100);
-				usleep(1000*800);
-				robot.girar(30);
-				robot.andar(70);
-			}
-
-			break;
-
-		case 2: //Caso ler fora
-			cout << "Estado: " << estd << endl;
-			if(cor.ler_cor_E() == Cor::fora && cor.ler_cor_D() == Cor::branco){
-				cout<<"saiu E"<<endl;
-				robot.parar();
-				robot.andar(-40);
-				usleep(1000*1000);
-				robot.girar(-10);
-				while(robot.get_estado() == flag_aceleracao::girar);
-				robot.andar(70);
-			}
-
-
-			else if(cor.ler_cor_D() == Cor::fora && cor.ler_cor_E() == Cor::branco){
-				cout<<"saiu D"<<endl;
-				robot.parar();
-				robot.andar(-40);
-				usleep(1000*1000);
-				robot.girar(10);
-				while(robot.get_estado() == flag_aceleracao::girar);
-				robot.andar(70);
-			}
-
-			estd = estados_arena::faixa;
-
-			break;
-
-		case 3: //Caso entrar em uma intersecção
-			cout << "Estado: " << estd << endl;
-			robot.andar(30);
-			usleep(1000*100);
-			cor_E = cor.ler_cor_E();
-			cor_D = cor.ler_cor_D();
-
-			if( (cor.ler_cor_E() != Cor::fora && cor.ler_cor_E() != Cor::ndCor && cor.ler_cor_E() != Cor::branco) ||
-					(cor.ler_cor_D() != Cor::fora && cor.ler_cor_D() != Cor::ndCor && cor.ler_cor_D() != Cor::branco) ) {
-				cout<<"viu cor"<<endl;
-				posicao_inicial = robot.get_distancia_linha_reta();
-				while(robot.get_distancia_linha_reta() < posicao_inicial + 0.04);
-				robot.parar();
-
-				if(cor.ler_cor_E() != cor_E){
-					cout<<"saiu E"<<endl;
-					robot.parar();
-					robot.andar(-40);
-					usleep(1000*2000);
-					robot.girar(-10);
-					while(robot.get_estado() == flag_aceleracao::girar);
-					robot.andar(70);
-				}
-
-				else if(cor.ler_cor_D() != cor_D){
-					cout<<"saiu D"<<endl;
-					robot.parar();
-					robot.andar(-40);
-					usleep(1000*2000);
-					robot.girar(10);
-					while(robot.get_estado() == flag_aceleracao::girar);
-					robot.andar(70);
-				}
-
-
-				else{ // esta dentro
-					robot.alinhar(&cor, direcao::traz);
-					robot.andar(50, 0.195);
-					robot.girar(90);
-					while(robot.get_estado() == flag_aceleracao::girar);
-					usleep(1000*800);
-					robot.andar(50, 0.19);
-					robot.alinhar(&cor, direcao::traz);
-					robot.andar(70);
-					while(cor.ler_cor_E() == cor_E || cor.ler_cor_D() == cor_D);
-					usleep(1000*500);
-
-					estd = estados_arena::faixa;
-				}
-			}
-
-			break;
-		}
-	}
-
-	robot.finalizar_thread_aceleracao();
-	usleep(0.2*1000000);
-}
-
-
 
 void teste_rogerio(){
 	Controlador_robo robot(false, "debug posicao direto no pwm.m"); // fator_croda = 1.005
@@ -556,6 +375,60 @@ void teste_luana_mapeamento(){
 
 }
  */
+
+
+void teste_alinhamento_rampa(){
+	Controlador_robo robo(false, "");
+	Sensor_cor_hsv cor(ev3dev::INPUT_1, ev3dev::INPUT_2);
+
+	int corE, corD;
+	double teta = 15;
+
+	double deslocacao;
+
+	robo.calibra_sensor_cor(&cor);
+	robo.inicializar_thread_aceleracao();
+	robo.andar(70);
+
+	while(!ev3dev::button::enter.process()){
+		corE = cor.ler_cor_E();
+		corD = cor.ler_cor_D();
+
+		if((corE == Cor::vermelho && corD == Cor::vermelho) ||
+				(corE == Cor::verde && corD == Cor::verde) ||
+				(corE == Cor::azul && corD == Cor::azul))
+		{
+			robo.andar(30);
+			while(cor.ler_cor_E() != Cor::branco || cor.ler_cor_D() != Cor::branco);
+			robo.alinhar(&cor, direcao::traz);
+			robo.andar(50, 0.1);
+			corE = cor.ler_cor_E();
+			corD = cor.ler_cor_D();
+
+		}
+
+		robo.parar();
+
+
+		robo.girar(teta);
+
+		while(cor.ler_cor_E() != Cor::branco){
+			robo.andar(-30, 0.02);
+			robo.girar(-teta);
+			robo.girar(teta);
+		}
+
+		robo.andar(30);
+		while(cor.ler_cor_E() == Cor::branco);
+		robo.parar();
+		deslocacao = (7.5/cos(teta)) - robo.get_pintao();
+		robo.andar(-30, deslocacao/100);
+		//TODO método que gira com uma roda travada
+
+
+
+	}
+}
 
 int main(){
 	system("setfont Greek-TerminusBold20x10.psf.gz");
