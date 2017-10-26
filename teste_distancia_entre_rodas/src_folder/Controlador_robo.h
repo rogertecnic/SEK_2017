@@ -7,10 +7,7 @@
 #include "ev3dev.h"
 #include <tuple>
 #include "M_arquivos.h"
-#include "Sensor_cor.h"
-#include "Sensor_cor_hsv.h"
 #include "Const.h"
-#include <vector>
 
 
 using namespace std;
@@ -27,7 +24,7 @@ public:
 	void andar(int pwm, double distancia_metros);
 	void parar();
 	void girar(int angulo_robo_graus); // positivo anti-horario
-	void alinhar(Sensor_cor_hsv *cor, direcao direcao);
+
 
 	bool inicializar_thread_aceleracao();
 	bool finalizar_thread_aceleracao();
@@ -38,8 +35,7 @@ public:
 	double get_velocidade();
 	double get_pintao();
 	double get_pwm_sp();
-	void calibra_sensor_cor(Sensor_cor_hsv *sensor_cor);
-	void alinha_portal(Sensor_cor_hsv *sensor_cor);
+
 
 
 private:

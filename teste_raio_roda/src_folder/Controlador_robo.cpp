@@ -176,8 +176,8 @@ void Controlador_robo::loop_controle_aceleracao(){
 			usleep(1000*300);
 			motorE->set_position_sp((angulo_robo_graus*raio_robo/raio_roda)/relacao_engrenagem);
 			motorD->set_position_sp(-(angulo_robo_graus*raio_robo/raio_roda)/relacao_engrenagem);
-			motorE->set_speed_sp(300);
-			motorD->set_speed_sp(300);
+			motorE->set_speed_sp(200);
+			motorD->set_speed_sp(200);
 			motorE->run_to_rel_pos();
 			motorD->run_to_rel_pos();
 			usleep(1000*100);

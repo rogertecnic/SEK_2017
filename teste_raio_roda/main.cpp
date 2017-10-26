@@ -1,5 +1,5 @@
-/* main.cpp:
- *
+/* Projeto teste_raio_roda, main.cpp:
+ * anda 2 metros, para verificar o raio da roda;,
  */
 
 #include <iostream>
