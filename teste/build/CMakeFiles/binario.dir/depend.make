@@ -19,11 +19,6 @@ CMakeFiles/binario.dir/src_folder/Arquivos_mapeamento.o: ../src_folder/Arquivos_
 CMakeFiles/binario.dir/src_folder/Arquivos_mapeamento.o: ../src_folder/Const.h
 CMakeFiles/binario.dir/src_folder/Arquivos_mapeamento.o: ../src_folder/ev3dev.h
 
-CMakeFiles/binario.dir/src_folder/Controlador_motor.o: ../src_folder/Controlador_motor.cpp
-CMakeFiles/binario.dir/src_folder/Controlador_motor.o: ../src_folder/Controlador_motor.h
-CMakeFiles/binario.dir/src_folder/Controlador_motor.o: ../src_folder/M_arquivos.h
-CMakeFiles/binario.dir/src_folder/Controlador_motor.o: ../src_folder/ev3dev.h
-
 CMakeFiles/binario.dir/src_folder/Controlador_robo.o: ../src_folder/Const.h
 CMakeFiles/binario.dir/src_folder/Controlador_robo.o: ../src_folder/Controlador_robo.cpp
 CMakeFiles/binario.dir/src_folder/Controlador_robo.o: ../src_folder/Controlador_robo.h

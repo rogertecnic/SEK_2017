@@ -146,21 +146,6 @@ src_folder/Arquivos_mapeamento.s:
 .PHONY : src_folder/Arquivos_mapeamento.s
 
 # target to build an object file
-src_folder/Controlador_motor.o:
-	$(MAKE) -f CMakeFiles/binario.dir/build.make CMakeFiles/binario.dir/src_folder/Controlador_motor.o
-.PHONY : src_folder/Controlador_motor.o
-
-# target to preprocess a source file
-src_folder/Controlador_motor.i:
-	$(MAKE) -f CMakeFiles/binario.dir/build.make CMakeFiles/binario.dir/src_folder/Controlador_motor.i
-.PHONY : src_folder/Controlador_motor.i
-
-# target to generate assembly for a file
-src_folder/Controlador_motor.s:
-	$(MAKE) -f CMakeFiles/binario.dir/build.make CMakeFiles/binario.dir/src_folder/Controlador_motor.s
-.PHONY : src_folder/Controlador_motor.s
-
-# target to build an object file
 src_folder/Controlador_robo.o:
 	$(MAKE) -f CMakeFiles/binario.dir/build.make CMakeFiles/binario.dir/src_folder/Controlador_robo.o
 .PHONY : src_folder/Controlador_robo.o
@@ -295,9 +280,6 @@ help:
 	@echo "... src_folder/Arquivos_mapeamento.o"
 	@echo "... src_folder/Arquivos_mapeamento.i"
 	@echo "... src_folder/Arquivos_mapeamento.s"
-	@echo "... src_folder/Controlador_motor.o"
-	@echo "... src_folder/Controlador_motor.i"
-	@echo "... src_folder/Controlador_motor.s"
 	@echo "... src_folder/Controlador_robo.o"
 	@echo "... src_folder/Controlador_robo.i"
 	@echo "... src_folder/Controlador_robo.s"

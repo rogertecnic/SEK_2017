@@ -48,10 +48,10 @@ private:
 
 
 	/*Variaveis caracteristica do robo*/
-	double fator_croda = 0.997;
+	double fator_croda = 1.005;// 1.005 maior pende p esquerda
 	double delay = 5.0;//Em miliseg
 	double aceleracao = 700.0;//Em pwm/seg
-	double raio_roda = 0.0538/2; // metros
+	double raio_roda = 0.02695; // metros 0.02695 menor robo para antes
 	double tamanho_do_pintao = 0.062; // 0.062 melhor
 	double relacao_engrenagem = 0.5; // 2 volta motor equivale 1 voltas roda
 	double raio_robo = 0.156/2; // largura entre os centros das rodas div por 2

@@ -17,14 +17,12 @@ include_directories(src_folder)
 set(LIBS src_folder/ev3dev.cpp)
 
 # adiciona a variavel todos os sources do nosso codigo
-list(APPEND LIBS  src_folder/Controlador_motor.cpp)
 list(APPEND LIBS  src_folder/M_arquivos.cpp)
-#list(APPEND LIBS  src_folder/Sensor_cor.cpp)
+list(APPEND LIBS  src_folder/Arquivos_mapeamento.cpp)
 list(APPEND LIBS  src_folder/Sensor_cor_hsv.cpp)
 list(APPEND LIBS  src_folder/Ultrassom_nxt.cpp)
 list(APPEND LIBS  src_folder/Controlador_robo.cpp)
 list(APPEND LIBS  src_folder/Mapeamento.cpp)
-list(APPEND LIBS  src_folder/Arquivos_mapeamento.cpp)
 list(APPEND LIBS  src_folder/Garra.cpp)
 list(APPEND LIBS  src_folder/Resgate.cpp)
 

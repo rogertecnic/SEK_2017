@@ -145,7 +145,9 @@ HSV Sensor_cor_hsv::RGBtoHSV(RGB rgb){
 void Sensor_cor_hsv::fecha_arquivo(){
 	if(debug){
 		arquivo_E->fecha_arq();
+		arquivo_E->string_arq("%vetores: 0,r,g,b,h,s,v");
 		arquivo_D->fecha_arq();
+		arquivo_D->string_arq("%vetores: 0,r,g,b,h,s,v");
 	}
 	debug = false;
 }
