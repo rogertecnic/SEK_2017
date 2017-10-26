@@ -6,6 +6,7 @@ Resgate::Resgate(Controlador_robo *robo, Sensor_cor_hsv *sensor, Ultrassom_nxt *
  garra(Garra(porta_garra, 45)){}
 
 void Resgate::resgatar(){
+	sentido_navegacao = -1;
 	cout << endl << endl << endl << "RESGATAR!!" << endl;
 	robo->girar(180);
 	while(robo->get_estado() == flag_aceleracao::girar);
@@ -144,10 +145,6 @@ void Resgate::resgatar(){
 
 					break;
 				case 2:
-					//					if(count_intersec >= 25) // robo ja devagar, demora mais pra passar a cor
-					//						estd = estados_arena::intersec;
-					//					break;
-					//				case 3:
 					estd = estados_arena::terminado;
 					cout << "MAP TERMINADO!!" << endl;
 					break;
@@ -172,13 +169,13 @@ void Resgate::resgatar(){
 				garra.fechar();
 				robo->andar(-40, 0.2);
 				carga_bonecos ++;
-				if(carga_bonecos >=3){
+				if(carga_bonecos >=capacidade_bonecos){ // cheio, salva
 					robo->girar(90);
 					while(robo->get_estado() == flag_aceleracao::girar);
 					sentido_navegacao = 1;
 					estd = estados_arena::salva;
 				}
-				else{
+				else{ // ainda nao cheio, continuar a procurar
 					robo->girar(-90);
 					while(robo->get_estado() == flag_aceleracao::girar);
 					estd = estados_arena::faixa;
@@ -194,13 +191,14 @@ void Resgate::resgatar(){
 				robo->andar(30, 0.2);
 				garra.fechar();
 				robo->andar(-40, 0.2);
-				if(carga_bonecos >=3){
+				carga_bonecos ++;
+				if(carga_bonecos >=capacidade_bonecos){ // cheio, saiva
 					robo->girar(-90);
 					while(robo->get_estado() == flag_aceleracao::girar);
 					sentido_navegacao = 1;
 					estd = estados_arena::salva;
 				}
-				else{
+				else{ // ainda nao cheio, continuar a procurar
 					robo->girar(90);
 					while(robo->get_estado() == flag_aceleracao::girar);
 					estd = estados_arena::faixa;
@@ -211,9 +209,6 @@ void Resgate::resgatar(){
 				estd = estados_arena::faixa;
 				break;
 			}
-
-			// TODO o robo esta no meio da pista com o boneco, virar ele pro lado certo
-
 
 			break; // FIM CASE captura:
 

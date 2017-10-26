@@ -30,6 +30,7 @@ private:
 	int pwm_busca = 60;
 
 	int carga_bonecos = 0;
+	int capacidade_bonecos = 2;
 
 	direcao direcao_boneco = direcao::ndDirecao;
 	// cor que o referente a intersecao que o robo acabou de sair
