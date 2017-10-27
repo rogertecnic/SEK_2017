@@ -251,22 +251,22 @@ void teste_rogerio(){
 	/*
 	 * teste classe mapeamento com classe sensor cor hsv
 	 */
-	//			robot.calibra_sensor_cor(&cor);
-	//			while(!ev3dev::button::enter.process());
-	//			usleep(1000000*0.1);
-	//			while(!ev3dev::button::enter.process());
-	//			mapa.mapear();
-	//			resgate.resgatar();
+				robot.calibra_sensor_cor(&cor);
+				while(!ev3dev::button::enter.process());
+				usleep(1000000*0.1);
+				while(!ev3dev::button::enter.process());
+				mapa.mapear();
+				resgate.resgatar();
 
 
 	/*
 	 * teste do alinhamento do portal
 	 */
-	robot.calibra_sensor_cor(&cor);
-	while(!ev3dev::button::enter.process());
-	usleep(1000000*0.1);
-	while(!ev3dev::button::enter.process());
-	robot.alinha_portal(&cor);
+	//	robot.calibra_sensor_cor(&cor);
+	//	while(!ev3dev::button::enter.process());
+	//	usleep(1000000*0.1);
+	//	while(!ev3dev::button::enter.process());
+	//	robot.alinha_portal(&cor);
 
 
 	/*
@@ -308,17 +308,17 @@ void teste_rogerio(){
 	 * teste da classe sensor_cor_hsv
 	 * pega alguns valores e guarda no arquivo
 	 */
-	//	while(!ev3dev::button::up.process()){
-	//	while(!ev3dev::button::enter.process()){}
-	//	usleep(1000*800);
-	//	ev3dev::button::enter.process();
-	//	robot.andar(30);
-	//	while(!ev3dev::button::enter.process())
-	//		cout<<cor.ler_cor_E()<<";"<<cor.ler_cor_D()<<endl;
-	//	robot.parar();
-	//	usleep(1000*800);
-	//	ev3dev::button::enter.process();
-	//	}
+	//		while(!ev3dev::button::up.process()){
+	//		while(!ev3dev::button::enter.process()){}
+	//		usleep(1000*800);
+	//		ev3dev::button::enter.process();
+	//		robot.andar(30);
+	//		while(!ev3dev::button::enter.process());
+	//		//	cout<<cor.ler_cor_E()<<";"<<cor.ler_cor_D()<<endl;
+	//		robot.parar();
+	//		usleep(1000*800);
+	//		ev3dev::button::enter.process();
+	//		}
 	//cor.fecha_arquivo();
 
 	/*
