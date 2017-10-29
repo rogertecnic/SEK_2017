@@ -1,3 +1,5 @@
+cmake_minimum_required(VERSION 3.0)
+
 set(CMAKE_C_COMPILER "arm-linux-gnueabi-gcc")
 set(CMAKE_CXX_COMPILER "arm-linux-gnueabi-g++")
 
@@ -17,14 +19,13 @@ include_directories(src_folder)
 set(LIBS src_folder/ev3dev.cpp)
 
 # adiciona a variavel todos os sources do nosso codigo
-list(APPEND LIBS  src_folder/Controlador_motor.cpp)
 list(APPEND LIBS  src_folder/M_arquivos.cpp)
-list(APPEND LIBS  src_folder/Sensor_cor.cpp)
 list(APPEND LIBS  src_folder/Sensor_cor_hsv.cpp)
 list(APPEND LIBS  src_folder/Ultrassom_nxt.cpp)
 list(APPEND LIBS  src_folder/Controlador_robo.cpp)
 list(APPEND LIBS  src_folder/Mapeamento.cpp)
 list(APPEND LIBS  src_folder/Arquivos_mapeamento.cpp)
+list(APPEND LIBS  src_folder/Garra.cpp)
 
 # adiciona todos os sources e o main para serem compilados juntos
 add_executable(binario  ${LIBS} main.cpp)

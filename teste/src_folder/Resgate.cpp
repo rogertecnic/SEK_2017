@@ -4,7 +4,7 @@
 Resgate::Resgate(Controlador_robo *robo, Sensor_cor_hsv *sensor, Ultrassom_nxt *ultraE, Ultrassom_nxt *ultraD)
 :robo(robo), sensor(sensor), ultraE(ultraE), ultraD(ultraD)
 {
-	motorCancela = new ev3dev::large_motor(ev3dev::OUTPUT_C);
+	garra = new Garra(ev3dev::OUTPUT_C, -42);
 }
 
 
@@ -140,6 +140,7 @@ void Resgate::intersec() {
 	else {
 		sentido_navegacao = 1;
 		robo->girar(180);
+		while(robo->get_estado() == flag_aceleracao::girar);
 		fim_resg = true;
 	}
 }
@@ -184,18 +185,21 @@ void Resgate::just_do_it(){
 		while(ultraE->le_centimetro() > distancia_boneco);
 		robo->parar();
 		robo->girar(90);
-		//TODO abrir cancela
+		while(robo->get_estado() == flag_aceleracao::girar);
+		garra->abrir();
 		//TODO andar uma distancia x
-		//TODO fechar cancela
+		garra->fechar();
 		//TODO voltar uma distancia x
 		contador_bonecos++;
 
-		if(contador_bonecos == 3){
+		if(contador_bonecos == BONECOS){
 			robo->girar(90);
+			while(robo->get_estado() == flag_aceleracao::girar);
 			sentido_navegacao = 1;
 		}
 		else{
 			robo->girar(-90);
+			while(robo->get_estado() == flag_aceleracao::girar);
 			get_distancia_boneco();
 		}
 
@@ -214,18 +218,21 @@ void Resgate::just_do_it(){
 		while(ultraE->le_centimetro() > distancia_boneco);
 		robo->parar();
 		robo->girar(-90);
-		//TODO abrir cancela
+		while(robo->get_estado() == flag_aceleracao::girar);
+		garra->abrir();
 		//TODO andar uma distancia x
-		//TODO fechar cancela
+		garra->fechar();
 		//TODO voltar uma distancia x
 		contador_bonecos++;
 
-		if(contador_bonecos == 3){
+		if(contador_bonecos == BONECOS){
 			robo->girar(-90);
+			while(robo->get_estado() == flag_aceleracao::girar);
 			sentido_navegacao = 1;
 		}
 		else {
 			robo->girar(90);
+			while(robo->get_estado() == flag_aceleracao::girar);
 			get_distancia_boneco();
 		}
 
@@ -240,8 +247,52 @@ void Resgate::just_do_it(){
 }
 
 
+
+//TODO
 void Resgate::goto_plaza(){
-	//TODO
+	int corE, corD;
+	double teta = 45;
+	double deslocacao;
+
+	while(true){
+		corE = sensor->ler_cor_E();
+		corD = sensor->ler_cor_D();
+
+		if((corE == Cor::vermelho && corD == Cor::vermelho) ||
+				(corE == Cor::verde && corD == Cor::verde) ||
+				(corE == Cor::azul && corD == Cor::azul))
+		{
+			robo->andar(30);
+			while(sensor->ler_cor_E() != Cor::branco || sensor->ler_cor_D() != Cor::branco);
+			robo->alinhar(sensor, direcao::traz);
+			robo->andar(50, 0.1);
+
+			break;
+		}
+	}
+
+	robo->parar();
+
+
+	robo->girar(teta);
+	while(robo->get_estado() == flag_aceleracao::girar);
+
+	while(sensor->ler_cor_E() != Cor::branco){
+		robo->andar(-30, 0.02);
+		robo->girar(-teta);
+		while(robo->get_estado() == flag_aceleracao::girar);
+
+		robo->girar(teta);
+		while(robo->get_estado() == flag_aceleracao::girar);
+	}
+
+	robo->andar(30);
+	while(sensor->ler_cor_E() == Cor::branco);
+	robo->parar();
+	deslocacao = (7.5/cos(teta)) - robo->get_pintao();
+	robo->andar(-30, deslocacao/100);
+	//TODO método que gira com uma roda travada
+
 }
 
 
@@ -276,7 +327,7 @@ void Resgate::realinha(direcao lado_saindo) {
 void Resgate::caminho_certo (){
 	if (sensor->ler_cor_E() == Cor::vermelho && sensor->ler_cor_D() == Cor::vermelho){
 		if (cp.checkpoint_vermelho == direcao::direita){
-			if (sentido_navegacao == 1) robo->girar(-90);
+			if (sentido_navegacao == 1)robo->girar(-90);
 			else robo->girar(90);
 		}
 
@@ -331,6 +382,7 @@ void Resgate::inverter_ponteiros(){
 		(*it).posicao_pre_d.swap((*it).posicao_pos_d);
 		it++;
 	}
+
 
 	if(sentido_navegacao == 1){
 		it = no.begin();

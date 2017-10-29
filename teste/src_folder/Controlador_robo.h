@@ -57,7 +57,7 @@ private:
 	double delay = 5.0;//Em miliseg
 	double aceleracao = 700.0;//Em pwm/seg
 	double raio_roda = 0.0538/2; // metros
-	double tamanho_do_pintao = 0.062; // 0.062 melhor
+	double tamanho_do_pintao = 0.1; // 0.062 melhor
 	double relacao_engrenagem = 0.5; // 2 volta motor equivale 1 voltas roda
 	double raio_robo = 0.156/2; // largura entre os centros das rodas div por 2
 	double angulo_robo_graus = 0; // quanto o robo vai girar quando chamar o metodo girar

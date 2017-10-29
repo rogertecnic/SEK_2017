@@ -4,8 +4,10 @@
 #include "Const.h"
 #include "Controlador_robo.h"
 #include "Ultrassom_nxt.h"
+#include "Garra.h"
 
 #define distancia_boneco 18
+#define BONECOS 2
 
 enum lado_ultra {ndaLado, dir, esq};
 
@@ -19,7 +21,8 @@ private:
 	Sensor_cor_hsv *sensor;
 	Ultrassom_nxt *ultraE;
 	Ultrassom_nxt *ultraD;
-	ev3dev::large_motor *motorCancela;
+	Garra *garra;
+
 
 	estados_arena estd_resgate = estados_arena::faixa;
 	Cor cor_E = Cor::ndCor;
@@ -32,6 +35,7 @@ private:
 
 	int contador_bonecos = 0;
 	double gdistancia_boneco = -1;
+
 
 	int pos_e = 0,
 		pre_e = 0,

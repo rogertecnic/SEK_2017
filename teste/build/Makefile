@@ -115,155 +115,221 @@ binario/fast:
 	$(MAKE) -f CMakeFiles/binario.dir/build.make CMakeFiles/binario.dir/build
 .PHONY : binario/fast
 
-# target to build an object file
-main.o:
-	$(MAKE) -f CMakeFiles/binario.dir/build.make CMakeFiles/binario.dir/main.o
+main.o: main.cpp.o
 .PHONY : main.o
 
-# target to preprocess a source file
-main.i:
-	$(MAKE) -f CMakeFiles/binario.dir/build.make CMakeFiles/binario.dir/main.i
+# target to build an object file
+main.cpp.o:
+	$(MAKE) -f CMakeFiles/binario.dir/build.make CMakeFiles/binario.dir/main.cpp.o
+.PHONY : main.cpp.o
+
+main.i: main.cpp.i
 .PHONY : main.i
 
-# target to generate assembly for a file
-main.s:
-	$(MAKE) -f CMakeFiles/binario.dir/build.make CMakeFiles/binario.dir/main.s
+# target to preprocess a source file
+main.cpp.i:
+	$(MAKE) -f CMakeFiles/binario.dir/build.make CMakeFiles/binario.dir/main.cpp.i
+.PHONY : main.cpp.i
+
+main.s: main.cpp.s
 .PHONY : main.s
 
-# target to build an object file
-src_folder/Arquivos_mapeamento.o:
-	$(MAKE) -f CMakeFiles/binario.dir/build.make CMakeFiles/binario.dir/src_folder/Arquivos_mapeamento.o
+# target to generate assembly for a file
+main.cpp.s:
+	$(MAKE) -f CMakeFiles/binario.dir/build.make CMakeFiles/binario.dir/main.cpp.s
+.PHONY : main.cpp.s
+
+src_folder/Arquivos_mapeamento.o: src_folder/Arquivos_mapeamento.cpp.o
 .PHONY : src_folder/Arquivos_mapeamento.o
 
-# target to preprocess a source file
-src_folder/Arquivos_mapeamento.i:
-	$(MAKE) -f CMakeFiles/binario.dir/build.make CMakeFiles/binario.dir/src_folder/Arquivos_mapeamento.i
+# target to build an object file
+src_folder/Arquivos_mapeamento.cpp.o:
+	$(MAKE) -f CMakeFiles/binario.dir/build.make CMakeFiles/binario.dir/src_folder/Arquivos_mapeamento.cpp.o
+.PHONY : src_folder/Arquivos_mapeamento.cpp.o
+
+src_folder/Arquivos_mapeamento.i: src_folder/Arquivos_mapeamento.cpp.i
 .PHONY : src_folder/Arquivos_mapeamento.i
 
-# target to generate assembly for a file
-src_folder/Arquivos_mapeamento.s:
-	$(MAKE) -f CMakeFiles/binario.dir/build.make CMakeFiles/binario.dir/src_folder/Arquivos_mapeamento.s
+# target to preprocess a source file
+src_folder/Arquivos_mapeamento.cpp.i:
+	$(MAKE) -f CMakeFiles/binario.dir/build.make CMakeFiles/binario.dir/src_folder/Arquivos_mapeamento.cpp.i
+.PHONY : src_folder/Arquivos_mapeamento.cpp.i
+
+src_folder/Arquivos_mapeamento.s: src_folder/Arquivos_mapeamento.cpp.s
 .PHONY : src_folder/Arquivos_mapeamento.s
 
-# target to build an object file
-src_folder/Controlador_motor.o:
-	$(MAKE) -f CMakeFiles/binario.dir/build.make CMakeFiles/binario.dir/src_folder/Controlador_motor.o
-.PHONY : src_folder/Controlador_motor.o
-
-# target to preprocess a source file
-src_folder/Controlador_motor.i:
-	$(MAKE) -f CMakeFiles/binario.dir/build.make CMakeFiles/binario.dir/src_folder/Controlador_motor.i
-.PHONY : src_folder/Controlador_motor.i
-
 # target to generate assembly for a file
-src_folder/Controlador_motor.s:
-	$(MAKE) -f CMakeFiles/binario.dir/build.make CMakeFiles/binario.dir/src_folder/Controlador_motor.s
-.PHONY : src_folder/Controlador_motor.s
+src_folder/Arquivos_mapeamento.cpp.s:
+	$(MAKE) -f CMakeFiles/binario.dir/build.make CMakeFiles/binario.dir/src_folder/Arquivos_mapeamento.cpp.s
+.PHONY : src_folder/Arquivos_mapeamento.cpp.s
 
-# target to build an object file
-src_folder/Controlador_robo.o:
-	$(MAKE) -f CMakeFiles/binario.dir/build.make CMakeFiles/binario.dir/src_folder/Controlador_robo.o
+src_folder/Controlador_robo.o: src_folder/Controlador_robo.cpp.o
 .PHONY : src_folder/Controlador_robo.o
 
-# target to preprocess a source file
-src_folder/Controlador_robo.i:
-	$(MAKE) -f CMakeFiles/binario.dir/build.make CMakeFiles/binario.dir/src_folder/Controlador_robo.i
+# target to build an object file
+src_folder/Controlador_robo.cpp.o:
+	$(MAKE) -f CMakeFiles/binario.dir/build.make CMakeFiles/binario.dir/src_folder/Controlador_robo.cpp.o
+.PHONY : src_folder/Controlador_robo.cpp.o
+
+src_folder/Controlador_robo.i: src_folder/Controlador_robo.cpp.i
 .PHONY : src_folder/Controlador_robo.i
 
-# target to generate assembly for a file
-src_folder/Controlador_robo.s:
-	$(MAKE) -f CMakeFiles/binario.dir/build.make CMakeFiles/binario.dir/src_folder/Controlador_robo.s
+# target to preprocess a source file
+src_folder/Controlador_robo.cpp.i:
+	$(MAKE) -f CMakeFiles/binario.dir/build.make CMakeFiles/binario.dir/src_folder/Controlador_robo.cpp.i
+.PHONY : src_folder/Controlador_robo.cpp.i
+
+src_folder/Controlador_robo.s: src_folder/Controlador_robo.cpp.s
 .PHONY : src_folder/Controlador_robo.s
 
+# target to generate assembly for a file
+src_folder/Controlador_robo.cpp.s:
+	$(MAKE) -f CMakeFiles/binario.dir/build.make CMakeFiles/binario.dir/src_folder/Controlador_robo.cpp.s
+.PHONY : src_folder/Controlador_robo.cpp.s
+
+src_folder/Garra.o: src_folder/Garra.cpp.o
+.PHONY : src_folder/Garra.o
+
 # target to build an object file
-src_folder/M_arquivos.o:
-	$(MAKE) -f CMakeFiles/binario.dir/build.make CMakeFiles/binario.dir/src_folder/M_arquivos.o
+src_folder/Garra.cpp.o:
+	$(MAKE) -f CMakeFiles/binario.dir/build.make CMakeFiles/binario.dir/src_folder/Garra.cpp.o
+.PHONY : src_folder/Garra.cpp.o
+
+src_folder/Garra.i: src_folder/Garra.cpp.i
+.PHONY : src_folder/Garra.i
+
+# target to preprocess a source file
+src_folder/Garra.cpp.i:
+	$(MAKE) -f CMakeFiles/binario.dir/build.make CMakeFiles/binario.dir/src_folder/Garra.cpp.i
+.PHONY : src_folder/Garra.cpp.i
+
+src_folder/Garra.s: src_folder/Garra.cpp.s
+.PHONY : src_folder/Garra.s
+
+# target to generate assembly for a file
+src_folder/Garra.cpp.s:
+	$(MAKE) -f CMakeFiles/binario.dir/build.make CMakeFiles/binario.dir/src_folder/Garra.cpp.s
+.PHONY : src_folder/Garra.cpp.s
+
+src_folder/M_arquivos.o: src_folder/M_arquivos.cpp.o
 .PHONY : src_folder/M_arquivos.o
 
-# target to preprocess a source file
-src_folder/M_arquivos.i:
-	$(MAKE) -f CMakeFiles/binario.dir/build.make CMakeFiles/binario.dir/src_folder/M_arquivos.i
+# target to build an object file
+src_folder/M_arquivos.cpp.o:
+	$(MAKE) -f CMakeFiles/binario.dir/build.make CMakeFiles/binario.dir/src_folder/M_arquivos.cpp.o
+.PHONY : src_folder/M_arquivos.cpp.o
+
+src_folder/M_arquivos.i: src_folder/M_arquivos.cpp.i
 .PHONY : src_folder/M_arquivos.i
 
-# target to generate assembly for a file
-src_folder/M_arquivos.s:
-	$(MAKE) -f CMakeFiles/binario.dir/build.make CMakeFiles/binario.dir/src_folder/M_arquivos.s
+# target to preprocess a source file
+src_folder/M_arquivos.cpp.i:
+	$(MAKE) -f CMakeFiles/binario.dir/build.make CMakeFiles/binario.dir/src_folder/M_arquivos.cpp.i
+.PHONY : src_folder/M_arquivos.cpp.i
+
+src_folder/M_arquivos.s: src_folder/M_arquivos.cpp.s
 .PHONY : src_folder/M_arquivos.s
 
-# target to build an object file
-src_folder/Mapeamento.o:
-	$(MAKE) -f CMakeFiles/binario.dir/build.make CMakeFiles/binario.dir/src_folder/Mapeamento.o
+# target to generate assembly for a file
+src_folder/M_arquivos.cpp.s:
+	$(MAKE) -f CMakeFiles/binario.dir/build.make CMakeFiles/binario.dir/src_folder/M_arquivos.cpp.s
+.PHONY : src_folder/M_arquivos.cpp.s
+
+src_folder/Mapeamento.o: src_folder/Mapeamento.cpp.o
 .PHONY : src_folder/Mapeamento.o
 
-# target to preprocess a source file
-src_folder/Mapeamento.i:
-	$(MAKE) -f CMakeFiles/binario.dir/build.make CMakeFiles/binario.dir/src_folder/Mapeamento.i
+# target to build an object file
+src_folder/Mapeamento.cpp.o:
+	$(MAKE) -f CMakeFiles/binario.dir/build.make CMakeFiles/binario.dir/src_folder/Mapeamento.cpp.o
+.PHONY : src_folder/Mapeamento.cpp.o
+
+src_folder/Mapeamento.i: src_folder/Mapeamento.cpp.i
 .PHONY : src_folder/Mapeamento.i
 
-# target to generate assembly for a file
-src_folder/Mapeamento.s:
-	$(MAKE) -f CMakeFiles/binario.dir/build.make CMakeFiles/binario.dir/src_folder/Mapeamento.s
+# target to preprocess a source file
+src_folder/Mapeamento.cpp.i:
+	$(MAKE) -f CMakeFiles/binario.dir/build.make CMakeFiles/binario.dir/src_folder/Mapeamento.cpp.i
+.PHONY : src_folder/Mapeamento.cpp.i
+
+src_folder/Mapeamento.s: src_folder/Mapeamento.cpp.s
 .PHONY : src_folder/Mapeamento.s
 
-# target to build an object file
-src_folder/Sensor_cor.o:
-	$(MAKE) -f CMakeFiles/binario.dir/build.make CMakeFiles/binario.dir/src_folder/Sensor_cor.o
-.PHONY : src_folder/Sensor_cor.o
-
-# target to preprocess a source file
-src_folder/Sensor_cor.i:
-	$(MAKE) -f CMakeFiles/binario.dir/build.make CMakeFiles/binario.dir/src_folder/Sensor_cor.i
-.PHONY : src_folder/Sensor_cor.i
-
 # target to generate assembly for a file
-src_folder/Sensor_cor.s:
-	$(MAKE) -f CMakeFiles/binario.dir/build.make CMakeFiles/binario.dir/src_folder/Sensor_cor.s
-.PHONY : src_folder/Sensor_cor.s
+src_folder/Mapeamento.cpp.s:
+	$(MAKE) -f CMakeFiles/binario.dir/build.make CMakeFiles/binario.dir/src_folder/Mapeamento.cpp.s
+.PHONY : src_folder/Mapeamento.cpp.s
 
-# target to build an object file
-src_folder/Sensor_cor_hsv.o:
-	$(MAKE) -f CMakeFiles/binario.dir/build.make CMakeFiles/binario.dir/src_folder/Sensor_cor_hsv.o
+src_folder/Sensor_cor_hsv.o: src_folder/Sensor_cor_hsv.cpp.o
 .PHONY : src_folder/Sensor_cor_hsv.o
 
-# target to preprocess a source file
-src_folder/Sensor_cor_hsv.i:
-	$(MAKE) -f CMakeFiles/binario.dir/build.make CMakeFiles/binario.dir/src_folder/Sensor_cor_hsv.i
+# target to build an object file
+src_folder/Sensor_cor_hsv.cpp.o:
+	$(MAKE) -f CMakeFiles/binario.dir/build.make CMakeFiles/binario.dir/src_folder/Sensor_cor_hsv.cpp.o
+.PHONY : src_folder/Sensor_cor_hsv.cpp.o
+
+src_folder/Sensor_cor_hsv.i: src_folder/Sensor_cor_hsv.cpp.i
 .PHONY : src_folder/Sensor_cor_hsv.i
 
-# target to generate assembly for a file
-src_folder/Sensor_cor_hsv.s:
-	$(MAKE) -f CMakeFiles/binario.dir/build.make CMakeFiles/binario.dir/src_folder/Sensor_cor_hsv.s
+# target to preprocess a source file
+src_folder/Sensor_cor_hsv.cpp.i:
+	$(MAKE) -f CMakeFiles/binario.dir/build.make CMakeFiles/binario.dir/src_folder/Sensor_cor_hsv.cpp.i
+.PHONY : src_folder/Sensor_cor_hsv.cpp.i
+
+src_folder/Sensor_cor_hsv.s: src_folder/Sensor_cor_hsv.cpp.s
 .PHONY : src_folder/Sensor_cor_hsv.s
 
-# target to build an object file
-src_folder/Ultrassom_nxt.o:
-	$(MAKE) -f CMakeFiles/binario.dir/build.make CMakeFiles/binario.dir/src_folder/Ultrassom_nxt.o
+# target to generate assembly for a file
+src_folder/Sensor_cor_hsv.cpp.s:
+	$(MAKE) -f CMakeFiles/binario.dir/build.make CMakeFiles/binario.dir/src_folder/Sensor_cor_hsv.cpp.s
+.PHONY : src_folder/Sensor_cor_hsv.cpp.s
+
+src_folder/Ultrassom_nxt.o: src_folder/Ultrassom_nxt.cpp.o
 .PHONY : src_folder/Ultrassom_nxt.o
 
-# target to preprocess a source file
-src_folder/Ultrassom_nxt.i:
-	$(MAKE) -f CMakeFiles/binario.dir/build.make CMakeFiles/binario.dir/src_folder/Ultrassom_nxt.i
+# target to build an object file
+src_folder/Ultrassom_nxt.cpp.o:
+	$(MAKE) -f CMakeFiles/binario.dir/build.make CMakeFiles/binario.dir/src_folder/Ultrassom_nxt.cpp.o
+.PHONY : src_folder/Ultrassom_nxt.cpp.o
+
+src_folder/Ultrassom_nxt.i: src_folder/Ultrassom_nxt.cpp.i
 .PHONY : src_folder/Ultrassom_nxt.i
 
-# target to generate assembly for a file
-src_folder/Ultrassom_nxt.s:
-	$(MAKE) -f CMakeFiles/binario.dir/build.make CMakeFiles/binario.dir/src_folder/Ultrassom_nxt.s
+# target to preprocess a source file
+src_folder/Ultrassom_nxt.cpp.i:
+	$(MAKE) -f CMakeFiles/binario.dir/build.make CMakeFiles/binario.dir/src_folder/Ultrassom_nxt.cpp.i
+.PHONY : src_folder/Ultrassom_nxt.cpp.i
+
+src_folder/Ultrassom_nxt.s: src_folder/Ultrassom_nxt.cpp.s
 .PHONY : src_folder/Ultrassom_nxt.s
 
-# target to build an object file
-src_folder/ev3dev.o:
-	$(MAKE) -f CMakeFiles/binario.dir/build.make CMakeFiles/binario.dir/src_folder/ev3dev.o
+# target to generate assembly for a file
+src_folder/Ultrassom_nxt.cpp.s:
+	$(MAKE) -f CMakeFiles/binario.dir/build.make CMakeFiles/binario.dir/src_folder/Ultrassom_nxt.cpp.s
+.PHONY : src_folder/Ultrassom_nxt.cpp.s
+
+src_folder/ev3dev.o: src_folder/ev3dev.cpp.o
 .PHONY : src_folder/ev3dev.o
 
-# target to preprocess a source file
-src_folder/ev3dev.i:
-	$(MAKE) -f CMakeFiles/binario.dir/build.make CMakeFiles/binario.dir/src_folder/ev3dev.i
+# target to build an object file
+src_folder/ev3dev.cpp.o:
+	$(MAKE) -f CMakeFiles/binario.dir/build.make CMakeFiles/binario.dir/src_folder/ev3dev.cpp.o
+.PHONY : src_folder/ev3dev.cpp.o
+
+src_folder/ev3dev.i: src_folder/ev3dev.cpp.i
 .PHONY : src_folder/ev3dev.i
 
-# target to generate assembly for a file
-src_folder/ev3dev.s:
-	$(MAKE) -f CMakeFiles/binario.dir/build.make CMakeFiles/binario.dir/src_folder/ev3dev.s
+# target to preprocess a source file
+src_folder/ev3dev.cpp.i:
+	$(MAKE) -f CMakeFiles/binario.dir/build.make CMakeFiles/binario.dir/src_folder/ev3dev.cpp.i
+.PHONY : src_folder/ev3dev.cpp.i
+
+src_folder/ev3dev.s: src_folder/ev3dev.cpp.s
 .PHONY : src_folder/ev3dev.s
+
+# target to generate assembly for a file
+src_folder/ev3dev.cpp.s:
+	$(MAKE) -f CMakeFiles/binario.dir/build.make CMakeFiles/binario.dir/src_folder/ev3dev.cpp.s
+.PHONY : src_folder/ev3dev.cpp.s
 
 # Help Target
 help:
@@ -280,21 +346,18 @@ help:
 	@echo "... src_folder/Arquivos_mapeamento.o"
 	@echo "... src_folder/Arquivos_mapeamento.i"
 	@echo "... src_folder/Arquivos_mapeamento.s"
-	@echo "... src_folder/Controlador_motor.o"
-	@echo "... src_folder/Controlador_motor.i"
-	@echo "... src_folder/Controlador_motor.s"
 	@echo "... src_folder/Controlador_robo.o"
 	@echo "... src_folder/Controlador_robo.i"
 	@echo "... src_folder/Controlador_robo.s"
+	@echo "... src_folder/Garra.o"
+	@echo "... src_folder/Garra.i"
+	@echo "... src_folder/Garra.s"
 	@echo "... src_folder/M_arquivos.o"
 	@echo "... src_folder/M_arquivos.i"
 	@echo "... src_folder/M_arquivos.s"
 	@echo "... src_folder/Mapeamento.o"
 	@echo "... src_folder/Mapeamento.i"
 	@echo "... src_folder/Mapeamento.s"
-	@echo "... src_folder/Sensor_cor.o"
-	@echo "... src_folder/Sensor_cor.i"
-	@echo "... src_folder/Sensor_cor.s"
 	@echo "... src_folder/Sensor_cor_hsv.o"
 	@echo "... src_folder/Sensor_cor_hsv.i"
 	@echo "... src_folder/Sensor_cor_hsv.s"

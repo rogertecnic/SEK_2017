@@ -31,8 +31,9 @@ private:
 
 	/********************************* MAPEAMENTO DE BONECOS***********************************/
 
-	/* Variável de controle de posição de chegada de um quadrado(deadend/intersec) */
-	double posicao_inicialt = 0;
+	/* Variável de controle de posição de chegada/saída de um quadrado(deadend/intersec) */
+	double posicao_saiu_intersec = 0;
+	double posicao_chegou_intersec = 0;
 
 	/* Variável de controle de correção de rota*/
 	int delay = 0;
@@ -56,13 +57,9 @@ private:
 	 * Cada intersecção deve conter as posições dos bonecos antes e depois dela (se houver)
 	 */
 	//list<no_intersec>::iterator it_no_atual = no.begin();
-	vector<no_intersec>::iterator it_no_anterior = no.begin();
-	no_intersec aux;
-
-
-	/* Controlador de posição do vector em loop_mapeamento_boneco*/
-	unsigned j = 0;
-	unsigned j2 = 0;
+	//vector<no_intersec>::iterator it_no_anterior = no.begin();
+	//no_intersec aux;
+	int it_no = 0;
 
 	/* Demarca se o robo está dentro de uma interseccao ou não*/
 	bool interseccao = false;
@@ -134,6 +131,7 @@ private:
 
 
 	void destructor_vector();
+	void novo_no_map_boneco();
 };
 
 
