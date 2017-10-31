@@ -56,10 +56,10 @@ private:
 	double fator_croda = 0.997;
 	double delay = 5.0;//Em miliseg
 	double aceleracao = 700.0;//Em pwm/seg
-	double raio_roda = 0.0538/2; // metros
-	double tamanho_do_pintao = 0.1; // 0.062 melhor
+	double raio_roda = 0.0538/2.0; // metros
+	double tamanho_do_pintao = 0.089; // 0.062 melhor
 	double relacao_engrenagem = 0.5; // 2 volta motor equivale 1 voltas roda
-	double raio_robo = 0.156/2; // largura entre os centros das rodas div por 2
+	double raio_robo = 0.137/2.0; // largura entre os centros das rodas div por 2 0.132
 	double angulo_robo_graus = 0; // quanto o robo vai girar quando chamar o metodo girar
 	double distancia_linha_reta = 0; // distancia que  o robo ja andou
 	double distancia_absoluta = 0; // distancia absoluta que o robo andou

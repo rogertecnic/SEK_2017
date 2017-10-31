@@ -253,8 +253,7 @@ void Controlador_robo::loop_controle_aceleracao(){
 			motorE->run_to_rel_pos();
 			motorD->run_to_rel_pos();
 			usleep(1000*100);
-			while((motorE->speed() > 2 || motorE->speed() < -2) &&
-					estado == flag_aceleracao::girar){ }
+			while((motorE->speed() > 2 || motorE->speed() < -2) && estado == flag_aceleracao::girar);
 
 			motorE->run_forever(); // so funciona se chamar o run_forever
 			motorD->run_forever(); // antes de parar, caso contrario o robo fica louco

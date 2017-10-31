@@ -21,6 +21,7 @@ void Mapeamento::mapear(){
 	int count_branco_apos_intersec = 0;
 	Cor corE_corD_iguais = Cor::ndCor;
 	int mudanca_cor_fim_cidade = 0;
+	int count_fora = 0;
 
 	while(estd_map != estados_arena::terminado){
 		cor_E = sensor->ler_cor_E();
@@ -44,6 +45,8 @@ void Mapeamento::mapear(){
 		case estados_arena::intersec:
 			cout << "intersec?";
 
+
+			/*
 			while(true){
 				if(sensor->ler_cor_E() != cor_E) realinha(direcao::esquerda);
 				else if(sensor->ler_cor_D() != cor_D) realinha(direcao::direita);
@@ -54,6 +57,8 @@ void Mapeamento::mapear(){
 				robo->andar(30, 0.02);
 			}
 			cout << "SIM" << endl;
+			 */
+
 
 			intersec();
 
@@ -126,6 +131,15 @@ void Mapeamento::mapear(){
 				usleep(1000000*0.08);
 			}
 
+			if((cor_E == Cor::preto && cor_D == Cor::branco) || (cor_D == Cor::preto && cor_E == Cor::branco)){
+				count_fora++;
+				if (count_fora >= 5) {
+					estd_map = estados_arena::leu_fora;
+					count_fora = 0;
+				}
+				break;
+			}
+
 			break;
 
 
@@ -141,7 +155,7 @@ void Mapeamento::mapear(){
 	robo->parar();
 
 	no.at(it_no).pos = false;
-	finalizar_threads_ultra();
+	//finalizar_threads_ultra();
 	cout << "Gerando arquivo" << endl;
 	arq_map->arquivo_map(cp, no);
 
@@ -152,13 +166,11 @@ void Mapeamento::mapear(){
 
 void Mapeamento::intersec() {
 	// Fazer esse alinhamento somente se não for preto, se for preto já entrar no mapeamento_intersec
+
+	robo->alinhar(sensor, direcao::traz);
 	if(cor_E != Cor::preto){
-		robo->alinhar(sensor, direcao::traz);
 		robo->andar(50, 0.15 + robo->get_pintao());
-		if(!dead_end)
-			interseccao = true;
-
-
+		if(!dead_end) interseccao = true;
 	}
 
 	cor_E = sensor->ler_cor_E();
@@ -189,7 +201,7 @@ void Mapeamento::mapeamento_intersec() {
 	if(cor_atual == Cor::ndCor){
 		map_boneco_inicio = true;
 		interseccao = true;
-		inicializar_threads_ultra();
+		//inicializar_threads_ultra();
 
 
 		cout << "primeira intersec" << endl;
@@ -220,6 +232,7 @@ void Mapeamento::mapeamento_intersec() {
 			robo->girar(180);
 			while(robo->get_estado() == flag_aceleracao::girar);
 
+			robo->andar(30, robo->get_pintao());
 			robo->alinhar(sensor, direcao::traz);
 			robo->andar(30);
 			while(sensor->ler_cor_E() == cor_E || sensor->ler_cor_D() == cor_D);
@@ -501,8 +514,6 @@ bool Mapeamento::finalizar_threads_ultra(){
 	return true;
 }
 
-
-//TODO
 
 void Mapeamento::loop_mapeamento_bonecoE(){
 	bool estou_vendo_boneco = false;
