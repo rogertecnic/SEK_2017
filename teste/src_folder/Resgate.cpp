@@ -250,41 +250,42 @@ void Resgate::resgatar(){
 			estd = estados_arena::terminado;
 		}
 	}
-
-
-
-	void Resgate::realinha(direcao lado_saindo) {
-		double pwm_sp = robo->get_pwm_sp();
-		int grau = 12;
-		if(lado_saindo == direcao::esquerda)
-		{
-			cout<<"saiu E"<<endl;
-			robo->parar();
-			robo->andar(-80,0.08);
-			robo->girar(-grau);
-			while(robo->get_estado() == flag_aceleracao::girar);
-			//robo->andar(80, 0.07); // anda pra frente necessario?
-			robo->andar(pwm_sp);
-		}
-
-		else if(lado_saindo == direcao::direita)
-		{
-			cout<<"saiu D"<<endl;
-			robo->parar();
-			robo->andar(-80,0.08);
-			robo->girar(grau);
-			while(robo->get_estado() == flag_aceleracao::girar);
-			//robo->andar(80, 0.08); // anda pra frente necessario?
-			robo->andar(pwm_sp);
-		}
-		else{
-			cout << "realinha argumento errado" << endl;
-			robo->parar();
-			usleep(1000000*5);
-		}
-		usleep(1000000*0.3);
-	}
 }
+
+
+
+void Resgate::realinha(direcao lado_saindo) {
+	double pwm_sp = robo->get_pwm_sp();
+	int grau = 12;
+	if(lado_saindo == direcao::esquerda)
+	{
+		cout<<"saiu E"<<endl;
+		robo->parar();
+		robo->andar(-80,0.08);
+		robo->girar(-grau);
+		while(robo->get_estado() == flag_aceleracao::girar);
+		//robo->andar(80, 0.07); // anda pra frente necessario?
+		robo->andar(pwm_sp);
+	}
+
+	else if(lado_saindo == direcao::direita)
+	{
+		cout<<"saiu D"<<endl;
+		robo->parar();
+		robo->andar(-80,0.08);
+		robo->girar(grau);
+		while(robo->get_estado() == flag_aceleracao::girar);
+		//robo->andar(80, 0.08); // anda pra frente necessario?
+		robo->andar(pwm_sp);
+	}
+	else{
+		cout << "realinha argumento errado" << endl;
+		robo->parar();
+		usleep(1000000*5);
+	}
+	usleep(1000000*0.3);
+}
+
 
 
 

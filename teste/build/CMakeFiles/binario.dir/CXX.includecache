@@ -104,6 +104,18 @@ vector
 Const.h
 /src/src_folder/Const.h
 
+/src/src_folder/M_arquivos.h
+iostream
+-
+stdarg.h
+-
+fstream
+-
+list
+-
+string
+-
+
 /src/src_folder/Mapeamento.h
 Controlador_robo.h
 /src/src_folder/Controlador_robo.h
@@ -117,6 +129,10 @@ Const.h
 /src/src_folder/Const.h
 vector
 -
+
+/src/src_folder/Resgate.cpp
+Resgate.h
+/src/src_folder/Resgate.h
 
 /src/src_folder/Resgate.h
 Controlador_robo.h
@@ -160,5 +176,23 @@ Const.h
 iostream
 -
 string
+-
+
+/src/src_folder/ev3dev.h
+map
+-
+set
+-
+string
+-
+tuple
+-
+vector
+-
+algorithm
+-
+functional
+-
+memory
 -
 
