@@ -4,7 +4,7 @@
 Resgate::Resgate(Controlador_robo *robo, Sensor_cor_hsv *sensor, Ultrassom_nxt *ultraE, Ultrassom_nxt *ultraD)
 :robo(robo), sensor(sensor), ultraE(ultraE), ultraD(ultraD)
 {
-	garra = new Garra(ev3dev::OUTPUT_C, -42);
+	cancela = new Garra(ev3dev::OUTPUT_C, -42, "cancela");
 }
 
 
@@ -120,8 +120,7 @@ void Resgate::resgatar(){
 
 
 void Resgate::intersec() {
-	if(!inicio_resg)
-		it--;
+	if(!inicio_resg) it--;
 	else inicio_resg = false;
 
 	if(!inicio_da_cidade()){
@@ -186,9 +185,9 @@ void Resgate::just_do_it(){
 		robo->parar();
 		robo->girar(90);
 		while(robo->get_estado() == flag_aceleracao::girar);
-		garra->abrir();
+		cancela->abrir();
 		//TODO andar uma distancia x
-		garra->fechar();
+		cancela->fechar();
 		//TODO voltar uma distancia x
 		contador_bonecos++;
 
@@ -219,9 +218,9 @@ void Resgate::just_do_it(){
 		robo->parar();
 		robo->girar(-90);
 		while(robo->get_estado() == flag_aceleracao::girar);
-		garra->abrir();
+		cancela->abrir();
 		//TODO andar uma distancia x
-		garra->fechar();
+		cancela->fechar();
 		//TODO voltar uma distancia x
 		contador_bonecos++;
 

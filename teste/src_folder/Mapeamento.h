@@ -45,9 +45,6 @@ private:
 	thread mapeamento_bonecoE;
 	thread mapeamento_bonecoD;
 
-	//Variável de controle de start do mapeamento dos bonecos
-	bool map_boneco_inicio = false;
-
 	//Arquivo para salvar as informações de mapeamento
 	Arquivos_mapeamento *arq_map;
 

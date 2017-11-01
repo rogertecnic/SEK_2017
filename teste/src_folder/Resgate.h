@@ -1,10 +1,10 @@
 #ifndef RESGATE_H_
 #define RESGATE_H_
 
+#include "Garra.h"
 #include "Const.h"
 #include "Controlador_robo.h"
 #include "Ultrassom_nxt.h"
-#include "Garra.h"
 
 #define distancia_boneco 18
 #define BONECOS 2
@@ -21,7 +21,7 @@ private:
 	Sensor_cor_hsv *sensor;
 	Ultrassom_nxt *ultraE;
 	Ultrassom_nxt *ultraD;
-	Garra *garra;
+	Garra *cancela;
 
 
 	estados_arena estd_resgate = estados_arena::faixa;
@@ -47,7 +47,7 @@ private:
 	void get_distancia_boneco();
 	void just_do_it();
 	void intersec();
-	void realinha(direcao );
+	void realinha(direcao);
 	void caminho_certo();
 	void inverter_ponteiros();
 	bool fim_da_cidade();
