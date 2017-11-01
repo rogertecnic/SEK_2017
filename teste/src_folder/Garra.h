@@ -1,5 +1,5 @@
-#ifndef CANCELA_H_
-#define CANCELA_H_
+#ifndef GARRA_H_
+#define GARRA_H_
 
 #include "Const.h"
 
@@ -21,4 +21,4 @@ private:
 
 
 
-#endif /* CANCELA_H_ */
+#endif
