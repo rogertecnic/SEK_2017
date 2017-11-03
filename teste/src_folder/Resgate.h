@@ -22,6 +22,7 @@ private:
 	Ultrassom_nxt *ultraE;
 	Ultrassom_nxt *ultraD;
 	Garra *cancela;
+	Garra *garra;
 
 
 	estados_arena estd_resgate = estados_arena::faixa;

@@ -5,6 +5,7 @@ Resgate::Resgate(Controlador_robo *robo, Sensor_cor_hsv *sensor, Ultrassom_nxt *
 :robo(robo), sensor(sensor), ultraE(ultraE), ultraD(ultraD)
 {
 	cancela = new Garra(ev3dev::OUTPUT_C, -42, "cancela");
+	garra = new Garra(ev3dev::OUTPUT_D, 90, "garra");
 }
 
 
@@ -20,12 +21,8 @@ void Resgate::resgatar(){
 		case estados_arena::leu_fora:
 			cout << "fora:";
 
-			if(cor_E == Cor::fora)
-				realinha(direcao::esquerda);
-
-			else if (cor_D == Cor::fora)
-				realinha(direcao::direita);
-
+			if(cor_E == Cor::fora) realinha(direcao::esquerda);
+			else if (cor_D == Cor::fora) realinha(direcao::direita);
 			else estd_resgate = estados_arena::atencao;
 
 			break;
@@ -34,12 +31,8 @@ void Resgate::resgatar(){
 		case estados_arena::intersec:
 			cout << "intersec?";
 			while(true){
-				if(sensor->ler_cor_E() != cor_E)
-					realinha(direcao::esquerda);
-
-				else if(sensor->ler_cor_D() != cor_D)
-					realinha(direcao::direita);
-
+				if(sensor->ler_cor_E() != cor_E) realinha(direcao::esquerda);
+				else if(sensor->ler_cor_D() != cor_D) realinha(direcao::direita);
 				else break;
 
 				robo->alinhar(sensor, direcao::frente);
@@ -48,13 +41,19 @@ void Resgate::resgatar(){
 
 
 
-			if(sentido_navegacao) intersec();
+			if(sentido_navegacao == -1) intersec();
 			else {
 				it++;
-				if(!fim_da_cidade())
+				if(!fim_da_cidade()) {
+					if(cor_E != Cor::preto){
+						robo->alinhar(sensor, direcao::traz);
+						robo->andar(50, 0.15 + robo->get_pintao()); // vai pro meio do quadrado
+					}
+					cor_E = sensor->ler_cor_E();
+					cor_D = sensor->ler_cor_D();
 					caminho_certo();
-				else
-					goto_plaza();
+				}
+				else goto_plaza();
 
 			}
 
@@ -63,10 +62,6 @@ void Resgate::resgatar(){
 				robo->reset_distancia_absoluta();
 				estd_resgate = estados_arena::faixa;
 				break;
-			}
-			else {
-				robo->parar();
-				cout << "o robo terminou a intersecao e nao esta no branco" << endl;
 			}
 
 			break;
@@ -108,7 +103,6 @@ void Resgate::resgatar(){
 			{
 				robo->andar(20);
 				estd_resgate = estados_arena::intersec;
-				usleep(1000000*0.7); // para o robo entrar um pouquinho na intersecao
 				break;
 			}
 
