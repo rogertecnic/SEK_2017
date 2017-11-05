@@ -158,7 +158,6 @@ void Mapeamento::mapear(){
 	robo->alinhar(sensor, direcao::traz);
 	robo->girar(180);
 	while(robo->get_estado() == flag_aceleracao::girar);
-	usleep(1000000*0.5);
 	robo->andar(30);
 	while(sensor->ler_cor_E() != Cor::branco && sensor->ler_cor_D() != Cor::branco);
 	robo->alinhar(sensor, direcao::traz);
@@ -194,7 +193,8 @@ void Mapeamento::intersec() {
 		estd_map = estados_arena::terminado;
 	}
 
-
+	//while(sensor->ler_cor_E() != Cor::branco && sensor->ler_cor_D() != Cor::branco);
+	robo->andar(30, 0.1);
 	robo->alinhar(sensor, direcao::traz);
 	robo->andar(70);
 	usleep(1000000*0.5);
@@ -224,10 +224,11 @@ void Mapeamento::mapeamento_intersec() {
 
 		robo->girar(-90);
 		while(robo->get_estado() == flag_aceleracao::girar);
+		usleep(1000000*0.2);
 
-		robo->andar(30);
+		robo->andar(70);
 		while(sensor->ler_cor_E() == cor_E || sensor->ler_cor_D() == cor_D);
-		usleep(1000000*0.3);
+		usleep(1000000*0.5);
 
 		interseccao = false;
 	}
@@ -245,10 +246,9 @@ void Mapeamento::mapeamento_intersec() {
 			robo->girar(180);
 			while(robo->get_estado() == flag_aceleracao::girar);
 			robo->alinhar(sensor, direcao::traz);
-
 			robo->andar(30);
 			while(sensor->ler_cor_E() == cor_E || sensor->ler_cor_D() == cor_D);
-			usleep(1000000*0.3);
+			usleep(1000000*0.5);
 		}
 
 		/* Encontro de outra intersecção*/
@@ -327,7 +327,6 @@ void Mapeamento::mapeamento_intersec() {
 					direcao_atual = direcao::direita;
 					robo->girar(-90);
 					while(robo->get_estado() == flag_aceleracao::girar);
-
 					confirmacao_status = false;
 				}
 
@@ -337,7 +336,7 @@ void Mapeamento::mapeamento_intersec() {
 					confirmacao_status = true;
 				}
 
-				robo->andar(30);
+				robo->andar(70);
 				while(sensor->ler_cor_E() == cor_E || sensor->ler_cor_D() == cor_D);
 				usleep(1000000*0.3);
 				dead_end = false;
@@ -363,7 +362,7 @@ void Mapeamento::mapeamento_intersec() {
 				caminho_certo();
 				confirmacao_status = true;
 
-				robo->andar(30);
+				robo->andar(70);
 				while(sensor->ler_cor_E() == cor_E || sensor->ler_cor_D() == cor_D);
 				usleep(1000000*0.3);
 				dead_end = false;

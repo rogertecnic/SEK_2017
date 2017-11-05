@@ -7,7 +7,7 @@ Garra::Garra(string motor_port, int graus_abertura_do_motor, string tipo)
 	garra.reset();
 	garra.set_stop_action("hold");
 
-	if(tipo == "cancela") garra.set_speed_sp(360+180);
+	if(tipo == "cancela") garra.set_speed_sp(180);
 	else garra.set_speed_sp(360+180);
 }
 

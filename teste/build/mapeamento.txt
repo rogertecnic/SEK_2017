@@ -1,0 +1,16 @@
+Intersecções
+3
+1
+2
+
+Posições bonecos
+Intersecção: 1
+
+Posição pre e:
+Posição pre d:
+Posição pos e:
+Posição pos d:
+
+
+
+Fim do arquivo!

@@ -6,29 +6,17 @@
 
 #IncludeRegexTransform: 
 
-../src_folder/M_arquivos.h
-iostream
--
-stdarg.h
--
-fstream
--
-list
--
-string
--
-
 /src/main.cpp
-M_arquivos.h
-/src/M_arquivos.h
-src_folder/Sensor_cor.h
-/src/src_folder/Sensor_cor.h
 src_folder/Sensor_cor_hsv.h
 /src/src_folder/Sensor_cor_hsv.h
 src_folder/Controlador_robo.h
 /src/src_folder/Controlador_robo.h
 src_folder/Mapeamento.h
 /src/src_folder/Mapeamento.h
+src_folder/Garra.h
+/src/src_folder/Garra.h
+src_folder/Resgate.h
+/src/src_folder/Resgate.h
 
 /src/src_folder/Arquivos_mapeamento.h
 fstream
@@ -62,6 +50,10 @@ Sensor_cor_hsv.h
 Const.h
 /src/src_folder/Const.h
 
+/src/src_folder/Garra.h
+Const.h
+/src/src_folder/Const.h
+
 /src/src_folder/M_arquivos.h
 iostream
 -
@@ -73,10 +65,6 @@ list
 -
 string
 -
-
-/src/src_folder/Mapeamento.cpp
-Mapeamento.h
-/src/src_folder/Mapeamento.h
 
 /src/src_folder/Mapeamento.h
 Controlador_robo.h
@@ -90,17 +78,19 @@ Ultrassom_nxt.h
 Const.h
 /src/src_folder/Const.h
 
-/src/src_folder/Sensor_cor.h
-iostream
--
-tuple
--
-ev3dev.h
-/src/src_folder/ev3dev.h
-unistd.h
--
+/src/src_folder/Resgate.cpp
+Resgate.h
+/src/src_folder/Resgate.h
+
+/src/src_folder/Resgate.h
+Garra.h
+/src/src_folder/Garra.h
 Const.h
 /src/src_folder/Const.h
+Controlador_robo.h
+/src/src_folder/Controlador_robo.h
+Ultrassom_nxt.h
+/src/src_folder/Ultrassom_nxt.h
 
 /src/src_folder/Sensor_cor_hsv.h
 tuple

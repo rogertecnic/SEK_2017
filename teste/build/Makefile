@@ -259,6 +259,30 @@ src_folder/Mapeamento.cpp.s:
 	$(MAKE) -f CMakeFiles/binario.dir/build.make CMakeFiles/binario.dir/src_folder/Mapeamento.cpp.s
 .PHONY : src_folder/Mapeamento.cpp.s
 
+src_folder/Resgate.o: src_folder/Resgate.cpp.o
+.PHONY : src_folder/Resgate.o
+
+# target to build an object file
+src_folder/Resgate.cpp.o:
+	$(MAKE) -f CMakeFiles/binario.dir/build.make CMakeFiles/binario.dir/src_folder/Resgate.cpp.o
+.PHONY : src_folder/Resgate.cpp.o
+
+src_folder/Resgate.i: src_folder/Resgate.cpp.i
+.PHONY : src_folder/Resgate.i
+
+# target to preprocess a source file
+src_folder/Resgate.cpp.i:
+	$(MAKE) -f CMakeFiles/binario.dir/build.make CMakeFiles/binario.dir/src_folder/Resgate.cpp.i
+.PHONY : src_folder/Resgate.cpp.i
+
+src_folder/Resgate.s: src_folder/Resgate.cpp.s
+.PHONY : src_folder/Resgate.s
+
+# target to generate assembly for a file
+src_folder/Resgate.cpp.s:
+	$(MAKE) -f CMakeFiles/binario.dir/build.make CMakeFiles/binario.dir/src_folder/Resgate.cpp.s
+.PHONY : src_folder/Resgate.cpp.s
+
 src_folder/Sensor_cor_hsv.o: src_folder/Sensor_cor_hsv.cpp.o
 .PHONY : src_folder/Sensor_cor_hsv.o
 
@@ -358,6 +382,9 @@ help:
 	@echo "... src_folder/Mapeamento.o"
 	@echo "... src_folder/Mapeamento.i"
 	@echo "... src_folder/Mapeamento.s"
+	@echo "... src_folder/Resgate.o"
+	@echo "... src_folder/Resgate.i"
+	@echo "... src_folder/Resgate.s"
 	@echo "... src_folder/Sensor_cor_hsv.o"
 	@echo "... src_folder/Sensor_cor_hsv.i"
 	@echo "... src_folder/Sensor_cor_hsv.s"

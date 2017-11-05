@@ -7,6 +7,7 @@ file(REMOVE_RECURSE
   "CMakeFiles/binario.dir/src_folder/Mapeamento.cpp.o"
   "CMakeFiles/binario.dir/src_folder/Arquivos_mapeamento.cpp.o"
   "CMakeFiles/binario.dir/src_folder/Garra.cpp.o"
+  "CMakeFiles/binario.dir/src_folder/Resgate.cpp.o"
   "CMakeFiles/binario.dir/main.cpp.o"
   "binario.pdb"
   "binario"

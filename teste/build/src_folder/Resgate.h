@@ -57,5 +57,3 @@ private:
 	vector<no_intersec>::iterator it;
 
 };
-
-#endif

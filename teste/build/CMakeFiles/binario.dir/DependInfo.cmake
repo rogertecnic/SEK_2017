@@ -10,6 +10,7 @@ set(CMAKE_DEPENDS_CHECK_CXX
   "/src/src_folder/Garra.cpp" "/src/build/CMakeFiles/binario.dir/src_folder/Garra.cpp.o"
   "/src/src_folder/M_arquivos.cpp" "/src/build/CMakeFiles/binario.dir/src_folder/M_arquivos.cpp.o"
   "/src/src_folder/Mapeamento.cpp" "/src/build/CMakeFiles/binario.dir/src_folder/Mapeamento.cpp.o"
+  "/src/src_folder/Resgate.cpp" "/src/build/CMakeFiles/binario.dir/src_folder/Resgate.cpp.o"
   "/src/src_folder/Sensor_cor_hsv.cpp" "/src/build/CMakeFiles/binario.dir/src_folder/Sensor_cor_hsv.cpp.o"
   "/src/src_folder/Ultrassom_nxt.cpp" "/src/build/CMakeFiles/binario.dir/src_folder/Ultrassom_nxt.cpp.o"
   "/src/src_folder/ev3dev.cpp" "/src/build/CMakeFiles/binario.dir/src_folder/ev3dev.cpp.o"

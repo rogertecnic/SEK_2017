@@ -141,7 +141,7 @@ void Resgate::intersec() {
 
 void Resgate::get_distancia_boneco(){
 	if((*it).pos){
-		if(!(*it).posicao_pos_e.empty() && !(*it).posicao_pos_d.empty()){
+		if((*it).posicao_pos_e != NULL && (*it).posicao_pos_d != NULL){
 			if((*it).posicao_pos_e[pos_e] < ((*it).posicao_pos_d[pos_d])){
 				gdistancia_boneco = (*it).posicao_pos_e[pos_e] - 2;
 				lado = lado_ultra::esq;
@@ -153,7 +153,7 @@ void Resgate::get_distancia_boneco(){
 		}
 
 		else{
-			if(!(*it).posicao_pos_e.empty()){
+			if((*it).posicao_pos_e != NULL){
 				gdistancia_boneco = (*it).posicao_pos_e[pos_e] - 2;
 				lado = lado_ultra::esq;
 			}
@@ -386,22 +386,22 @@ void Resgate::inverter_ponteiros(){
 	}
 	else{
 		it = no.end();
-		pos_e = (*it).posicao_pos_e.size() - 1;
-		pre_e = (*it).posicao_pre_e.size() - 1;
-		pos_d = (*it).posicao_pos_d.size() - 1;
-		pre_d = (*it).posicao_pre_d.size() - 1;
+		pos_e = (*it).posicao_pos_e.end();
+		pre_e = (*it).posicao_pre_e.end();
+		pos_d = (*it).posicao_pos_d.end();
+		pre_d = (*it).posicao_pre_d.end();
 	}
 
 
 }
 
 bool Resgate::fim_da_cidade(){
-	if(it == no.end())  return true;
+	if((*it) == no.end())  return true;
 	return false;
 }
 
 bool Resgate::inicio_da_cidade(){
-	if(it == no.begin())  return true;
+	if((*it) == no.begin())  return true;
 	return false;
 }
 

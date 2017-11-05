@@ -1,8 +1,8 @@
-#include "M_arquivos.h"
-#include "src_folder/Sensor_cor.h"
 #include "src_folder/Sensor_cor_hsv.h"
 #include "src_folder/Controlador_robo.h"
 #include "src_folder/Mapeamento.h"
+#include "src_folder/Garra.h"
+#include "src_folder/Resgate.h"
 
 
 using namespace std;
@@ -93,10 +93,128 @@ void teste_map(){
 }
 
 
+void ler_cor(){
+	Controlador_robo robo(true, "debug posicao direto no pwm.m");
+	Sensor_cor_hsv cor(ev3dev::INPUT_1, ev3dev::INPUT_2);
+
+	robo.inicializar_thread_aceleracao();
+	robo.calibra_sensor_cor(&cor);
+	system ("clear");
+	cout << "Fazer teste cor" << endl;
+	while(!ev3dev::button::enter.process());
+
+	while(true){
+		cout << "Cor: " << cor.ler_cor_D() << "\t" << cor.ler_cor_E() << endl;
+		usleep(1000);
+	}
+}
+
+
+void teste_garra(){
+	Garra garra(ev3dev::OUTPUT_C, 45, "cancela");
+
+	cout << "Teste garra!!!" << endl;
+	while(true){
+		if(ev3dev::button::up.process()) garra.abrir();
+		else if(ev3dev::button::down.process()) garra.fechar();
+		else if(ev3dev::button::back.process()) break;
+	}
+}
+
+
+void teste_leitura_ultra(){
+	Ultrassom_nxt ultraE(Ultrassom_nxt::INPUT_3);
+
+	while(true){
+		cout<<ultraE.le_centimetro()<< endl;
+		usleep(1000000*0.5);
+	}
+}
+
+
+void teste_pega_boneco(){
+	Controlador_robo robo(true, "debug posicao direto no pwm.m");
+	Garra garra(ev3dev::OUTPUT_D, 135, "garra");
+	Garra cancela(ev3dev::OUTPUT_C, 45, "cancela");
+	Ultrassom_nxt ultraE(Ultrassom_nxt::INPUT_3);
+
+	robo.inicializar_thread_aceleracao();
+
+	cout << "Fazer teste pega_boneco" << endl;
+	while(!ev3dev::button::enter.process());
+
+	while(true){
+		robo.andar(50);
+		if(ultraE.le_centimetro() <= 18){
+			usleep(1000000*0.15);
+			robo.parar();
+			robo.andar(-30);
+			while(ultraE.le_centimetro() > 18);
+			robo.parar();
+
+			cancela.abrir();
+			garra.abrir();
+			usleep(1000000*0.3);
+			robo.girar(90);
+			while(robo.get_estado() == flag_aceleracao::girar);
+
+			robo.andar(30, 0.13);
+
+			for(unsigned int i = 0; i < 3; i++){
+				garra.fechar();
+				robo.andar(20);
+				garra.abrir();
+				usleep(1000000*0.3);
+			}
+			robo.parar();
+			garra.fechar();
+			usleep(1000000*0.3);
+			cancela.fechar();
+
+			robo.andar(-30, 0.15);
+			robo.girar(-90);
+			while(robo.get_estado() == flag_aceleracao::girar);
+		}
+	}
+
+
+}
+
+void teste_raio_roda(){
+	Controlador_robo robo(true, "debug posicao direto no pwm.m");
+	robo.inicializar_thread_aceleracao();
+	robo.andar(30,2);
+	robo.finalizar_thread_aceleracao();
+
+}
+
+
+void teste_distancia_entre_rodas(){
+	Controlador_robo robo(true, "debug posicao direto no pwm.m");
+	robo.inicializar_thread_aceleracao();
+	while(true){
+		robo.girar(90);
+		while(robo.get_estado() == flag_aceleracao::girar);
+		usleep(1000000*0.5);
+	}
+	robo.finalizar_thread_aceleracao();
+}
+
+
 int main(){
+	system ("clear");
 	system("setfont Greek-TerminusBold20x10.psf.gz");
+
 	//teste_alinhamento_rampa();
 	teste_map();
+	//ler_cor();
+	//teste_garra();
+    //teste_raio_roda();
+	//teste_distancia_entre_rodas();
+
+	//teste_pega_boneco();
+	//teste_leitura_ultra();
+
 	cout << "Teste finalizado. Bye!" << endl;
 	usleep (1000000);
 	return 0;
