@@ -164,7 +164,7 @@ void teste_pega_boneco(){
 				garra.fechar();
 				robo.andar(20);
 				garra.abrir();
-				usleep(1000000*0.3);
+				usleep(1000000);
 			}
 			robo.parar();
 			garra.fechar();
@@ -212,10 +212,10 @@ int main(){
 
 	//teste_alinhamento_rampa();
 	//ler_cor();
-	//teste_map();
+	teste_map();
 	//teste_garra();
     //teste_raio_roda();
-	teste_distancia_entre_rodas();
+	//teste_distancia_entre_rodas();
 
 	//teste_pega_boneco();
 	//teste_leitura_ultra();

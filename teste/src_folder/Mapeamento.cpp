@@ -18,6 +18,10 @@ Mapeamento::Mapeamento(Controlador_robo *robo, Sensor_cor_hsv *sensor, Ultrassom
 
 
 void Mapeamento::mapear(){
+	no_intersec novo_no;
+	no.push_back(novo_no);
+
+
 
 	cout << "Bora mapear!!" << endl;
 
@@ -27,6 +31,9 @@ void Mapeamento::mapear(){
 	int count_branco_apos_intersec = 0;
 	Cor corE_corD_iguais = Cor::ndCor;
 	int mudanca_cor_fim_cidade = 0;
+	//int count_fix_loop = 0;
+	//bool fix_loop = false;
+
 
 	while(estd_map != estados_arena::terminado) {
 
@@ -55,14 +62,22 @@ void Mapeamento::mapear(){
 		case estados_arena::intersec:
 			cout << "Intersec?";
 			while(true) {
-				if(sensor->ler_cor_E() != cor_E) realinha(direcao::esquerda);
-				else if(sensor->ler_cor_D() != cor_D) realinha(direcao::direita);
+				if(sensor->ler_cor_E() != cor_E)
+					realinha(direcao::esquerda);
+
+				else if(sensor->ler_cor_D() != cor_D)
+					realinha(direcao::direita);
+
 				else break;
+
 				//FIXME tratar
 				cout << "Nao, loop infinito?" << endl;
 				robo->alinhar(sensor, direcao::frente);
 				robo->andar(30, 0.02);
+				//count_fix_loop++;
 			}
+
+
 			cout << "SIM" << endl;
 
 			intersec();
@@ -70,13 +85,14 @@ void Mapeamento::mapear(){
 				count_branco_apos_intersec ++;
 				if(count_branco_apos_intersec >= 5) {
 					//FIXME tratar
-					robo->parar();
+					//robo->parar();
 					cout << "O robo terminou a interseccao e nao esta no branco" << endl;
 					estd_map = estados_arena::faixa;
 				}
 			}
 			estd_map = estados_arena::faixa;
 			cout << "FAIXA!!" << endl;
+
 			break;
 
 
@@ -165,7 +181,7 @@ void Mapeamento::mapear(){
 	robo->parar();
 
 	no.at(it_no).pos = false;
-	finalizar_threads_ultra();
+	//finalizar_threads_ultra();
 	cout << "Gerando arquivo..." << endl;
 	arq_map->arquivo_map(cp, no);
 
@@ -216,7 +232,7 @@ void Mapeamento::mapeamento_intersec() {
 		cout << "Primeira interseccao" << endl;
 
 		interseccao = true;
-		inicializar_threads_ultra();
+		//inicializar_threads_ultra();
 
 
 		cor_atual = sensor->ler_cor_D();

@@ -4,7 +4,7 @@
 Resgate::Resgate(Controlador_robo *robo, Sensor_cor_hsv *sensor, Ultrassom_nxt *ultraE, Ultrassom_nxt *ultraD)
 :robo(robo), sensor(sensor), ultraE(ultraE), ultraD(ultraD)
 {
-	cancela = new Garra(ev3dev::OUTPUT_C, -42, "cancela");
+	cancela = new Garra(ev3dev::OUTPUT_C, 45, "cancela");
 	garra = new Garra(ev3dev::OUTPUT_D, 90, "garra");
 }
 
