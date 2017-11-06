@@ -476,7 +476,7 @@ void Controlador_robo::calibra_sensor_cor(Sensor_cor_hsv *sensor_cor) {
 	}
 
 	valores_E[0] += 0.01; // maximo_s_Branco_E
-	valores_E[1] -= 0.02; // minimo_V_Branco_E
+	valores_E[1] -= 0.05; // minimo_V_Branco_E
 	valores_E[2] += 0.05; // maximo_V_Preto_E
 	valores_E[3] -= 0.005; // minimo_V_Preto_E
 

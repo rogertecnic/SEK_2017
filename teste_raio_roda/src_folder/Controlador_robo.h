@@ -48,7 +48,7 @@ private:
 
 
 	/*Variaveis caracteristica do robo*/
-	double fator_croda = 1.0171;// 1.005 maior pende p esquerda
+	double fator_croda = 1.0173;// 1.005 maior pende p esquerda
 	double delay = 5.0;//Em miliseg
 	double aceleracao = 700.0;//Em pwm/seg
 	double raio_roda = 0.02665; // metros 0.02695 maior para antes
