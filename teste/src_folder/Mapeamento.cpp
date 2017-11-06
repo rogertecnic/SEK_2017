@@ -165,7 +165,7 @@ void Mapeamento::mapear(){
 	robo->parar();
 
 	no.at(it_no).pos = false;
-	//finalizar_threads_ultra();
+	finalizar_threads_ultra();
 	cout << "Gerando arquivo..." << endl;
 	arq_map->arquivo_map(cp, no);
 
@@ -216,7 +216,7 @@ void Mapeamento::mapeamento_intersec() {
 		cout << "Primeira interseccao" << endl;
 
 		interseccao = true;
-		//inicializar_threads_ultra();
+		inicializar_threads_ultra();
 
 
 		cor_atual = sensor->ler_cor_D();
@@ -241,7 +241,7 @@ void Mapeamento::mapeamento_intersec() {
 
 			dead_end = true;
 			robo->alinhar(sensor, direcao::traz);
-			robo->andar(30, robo->get_pintao() + 0.09);
+			robo->andar(30, robo->get_pintao() + 0.07);
 			robo->girar(180);
 			while(robo->get_estado() == flag_aceleracao::girar);
 			robo->alinhar(sensor, direcao::traz);

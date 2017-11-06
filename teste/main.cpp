@@ -123,9 +123,9 @@ void teste_garra(){
 
 
 void teste_leitura_ultra(){
-	Ultrassom_nxt ultraE(Ultrassom_nxt::INPUT_3);
+	Ultrassom_nxt ultraE(Ultrassom_nxt::INPUT_4);
 
-	while(true){
+	while(!ev3dev::button::back.process()){
 		cout<<ultraE.le_centimetro()<< endl;
 		usleep(1000000*0.5);
 	}
@@ -192,11 +192,16 @@ void teste_raio_roda(){
 void teste_distancia_entre_rodas(){
 	Controlador_robo robo(true, "debug posicao direto no pwm.m");
 	robo.inicializar_thread_aceleracao();
+	robo.girar(360);
+
+	/*
 	while(true){
 		robo.girar(90);
 		while(robo.get_estado() == flag_aceleracao::girar);
 		usleep(1000000*0.5);
 	}
+	robo.finalizar_thread_aceleracao();
+	*/
 	robo.finalizar_thread_aceleracao();
 }
 
@@ -206,11 +211,11 @@ int main(){
 	system("setfont Greek-TerminusBold20x10.psf.gz");
 
 	//teste_alinhamento_rampa();
-	teste_map();
 	//ler_cor();
+	//teste_map();
 	//teste_garra();
     //teste_raio_roda();
-	//teste_distancia_entre_rodas();
+	teste_distancia_entre_rodas();
 
 	//teste_pega_boneco();
 	//teste_leitura_ultra();
