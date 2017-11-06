@@ -17,6 +17,6 @@ int main(){
 
 	Controlador_robo robo(true, "debug posicao direto no pwm.m");
 	robo.inicializar_thread_aceleracao();
-	robo.andar(30,2);
+	robo.andar(50,1.8);
 	robo.finalizar_thread_aceleracao();
 }

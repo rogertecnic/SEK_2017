@@ -150,7 +150,7 @@ void Controlador_robo::loop_controle_aceleracao(){
 		t_inicial = t_final;
 		tempo += delta_t.count();
 		if(debug)
-			arquivo->elementos_arq(tempo, (double)motorE->position(), (double)motorD->position(), erro, pwm);
+			arquivo->elementos_arq((double)tempo, (double)motorE->position(), (double)motorD->position(), (double)erro, (double)pwm);
 
 
 		switch(estado){
