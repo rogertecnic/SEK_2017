@@ -122,13 +122,15 @@ void Sensor_cor_hsv::set_fatores_rgb(double *valores_E, double *valores_D) {
 }
 
 void Sensor_cor_hsv::set_maximos_minimos(double *maximos_E, double *maximos_D){
-	minimo_V_Branco_E  = maximos_E[0];
-	maximo_V_Preto_E  = maximos_E[1];
-	minimo_V_Preto_E = maximos_E[2];
+	maximo_S_Branco_E = maximos_E[0];
+	minimo_V_Branco_E  = maximos_E[1];
+	maximo_V_Preto_E  = maximos_E[2];
+	minimo_V_Preto_E = maximos_E[3];
 
-	minimo_V_Branco_D  = maximos_D[0];
-	maximo_V_Preto_D  = maximos_D[1];
-	minimo_V_Preto_D = maximos_D[2];
+	maximo_S_Branco_D = maximos_D[0];
+	minimo_V_Branco_D  = maximos_D[1];
+	maximo_V_Preto_D  = maximos_D[2];
+	minimo_V_Preto_D = maximos_D[3];
 }
 
 
@@ -169,10 +171,22 @@ HSV Sensor_cor_hsv::RGBtoHSV(RGB rgb){
 void Sensor_cor_hsv::fecha_arquivo(){
 	if(debug){
 		arquivo_E->fecha_arq();
-		arquivo_E->string_arq("%vetores: 0,r,g,b,h,s,v");
 		arquivo_D->fecha_arq();
-		arquivo_D->string_arq("%vetores: 0,r,g,b,h,s,v");
 	}
+	string strr = "%maximos e minimos: \n% " +
+			to_string(maximo_S_Branco_E) + "\n% " +
+			to_string(minimo_V_Branco_E) + "\n% " +
+			to_string(maximo_V_Preto_E) + "\n% " +
+			to_string(minimo_V_Preto_E) + "\n" +
+			"plot(x4);";
+	arquivo_E->string_arq(strr);
+	strr = "%maximos e minimos: \n% " +
+			to_string(maximo_S_Branco_D) + "\n% " +
+			to_string(minimo_V_Branco_D) + "\n% " +
+			to_string(maximo_V_Preto_D) + "\n% " +
+			to_string(minimo_V_Preto_D) + "\n" +
+			"plot(x4);";
+	arquivo_D->string_arq(strr);
 	debug = false;
 }
 
