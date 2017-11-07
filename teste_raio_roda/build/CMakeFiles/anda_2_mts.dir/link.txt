@@ -1,0 +1,1 @@
+/usr/bin/arm-linux-gnueabi-g++       CMakeFiles/anda_2_mts.dir/src_folder/ev3dev.o CMakeFiles/anda_2_mts.dir/src_folder/M_arquivos.o CMakeFiles/anda_2_mts.dir/src_folder/Controlador_robo.o CMakeFiles/anda_2_mts.dir/main.o  -o anda_2_mts -rdynamic -pthread 

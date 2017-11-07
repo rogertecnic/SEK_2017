@@ -57,5 +57,5 @@ extern int sentido_navegacao;
 /* Variaveis de mapeamento de intersecção e de bonecos*/
 extern vector<no_intersec> no;
 extern direcao_checkpoint cp;
-const bool arena_pequi = true; // testar o robo na nossa arena e na arena oficial
+const bool arena_pequi = false; // testar o robo na nossa arena e na arena oficial
 #endif

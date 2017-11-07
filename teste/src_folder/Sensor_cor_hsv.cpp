@@ -48,7 +48,8 @@ Cor Sensor_cor_hsv::ler_cor_E() {
 
 	if(arena_pequi){
 		if(hsv.v < maximo_V_Preto_E)
-			if(hsv.h > metade_H_preto_fora) return Cor::preto;
+			if( (100 - range_H_preto_fora < hsv.h) &&
+					(hsv.h < 100 + range_H_preto_fora)) return Cor::preto;
 			else return Cor::fora;
 	}
 	else{
@@ -86,7 +87,8 @@ Cor Sensor_cor_hsv::ler_cor_D() {
 
 	if(arena_pequi){
 		if(hsv.v < maximo_V_Preto_D)
-			if(hsv.h > metade_H_preto_fora) return Cor::preto;
+			if((100 - range_H_preto_fora < hsv.h) &&
+					(hsv.h < 100 + range_H_preto_fora)) return Cor::preto;
 			else
 				return Cor::fora;
 

@@ -104,7 +104,7 @@ void ler_cor(){
 	while(!ev3dev::button::enter.process());
 
 	while(!ev3dev::button::up.process()){
-		cout << "Cor: " << cor.ler_cor_D() << "\t" << cor.ler_cor_E() << endl;
+		cout << "Cor: " << cor.ler_cor_E() << "\t" << cor.ler_cor_D() << endl;
 		usleep(1000);
 	}
 	cor.fecha_arquivo();
