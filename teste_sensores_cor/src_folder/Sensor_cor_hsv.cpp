@@ -27,7 +27,7 @@ Sensor_cor_hsv::Sensor_cor_hsv(string sensor_port_E, string sensor_port_D,
 
 
 Cor Sensor_cor_hsv::ler_cor_E() {
-	std::tuple<int, int, int> sample;
+	tuple<int, int, int> sample;
 	sample = sensor_E.raw();
 	RGB rgb;
 	rgb.r = get<0>(sample);
@@ -43,9 +43,21 @@ Cor Sensor_cor_hsv::ler_cor_E() {
 			(double)rgb.r, (double)rgb.g, (double)rgb.b,
 			(double)hsv.h, (double)hsv.s, (double)hsv.v);
 
-	if(hsv.v > minimo_V_Branco_E) return Cor::branco;
-	if(hsv.v > minimo_V_Preto_E && hsv.v < maximo_V_Preto_E) return Cor::preto;
-	if(hsv.v < minimo_V_Preto_E) return Cor::fora;
+
+	if(hsv.v > minimo_V_Branco_E)
+		if( hsv.s < maximo_S_Branco_E) return Cor::branco;
+
+	if(arena_pequi){
+		if(hsv.v < maximo_V_Preto_E)
+			if( (125 - range_H_preto_fora < hsv.h) &&
+					(hsv.h < 125 + range_H_preto_fora)) return Cor::preto;
+			else return Cor::fora;
+	}
+	else{
+		if(hsv.v > minimo_V_Preto_E && hsv.v < maximo_V_Preto_E) return Cor::preto;
+		if(hsv.v < minimo_V_Preto_E) return Cor::fora;
+	}
+
 	if(hsv.h < limites_H_Vermelho_E[0] || hsv.h > limites_H_Vermelho_E[1]) return Cor::vermelho;
 	if(hsv.h > limites_H_Verde_E[0] && hsv.h < limites_H_Verde_E[1]) return Cor::verde;
 	if(hsv.h > limites_H_Azul_E[0] && hsv.h < limites_H_Azul_E[1]) return Cor::azul;
@@ -55,7 +67,7 @@ Cor Sensor_cor_hsv::ler_cor_E() {
 
 
 Cor Sensor_cor_hsv::ler_cor_D() {
-	std::tuple<int, int, int> sample;
+	tuple<int, int, int> sample;
 	sample = sensor_D.raw();
 	RGB rgb;
 	rgb.r = get<0>(sample);
@@ -71,9 +83,21 @@ Cor Sensor_cor_hsv::ler_cor_D() {
 			(double)rgb.r, (double)rgb.g, (double)rgb.b,
 			(double)hsv.h, (double)hsv.s, (double)hsv.v);
 
-	if(hsv.v > minimo_V_Branco_D) return Cor::branco;
-	if(hsv.v > minimo_V_Preto_D && hsv.v < maximo_V_Preto_D) return Cor::preto;
-	if(hsv.v < minimo_V_Preto_D) return Cor::fora;
+	if(hsv.v > minimo_V_Branco_D)
+		if( hsv.s < maximo_S_Branco_D) return Cor::branco;
+
+	if(arena_pequi){
+		if(hsv.v < maximo_V_Preto_D)
+			if((104 - range_H_preto_fora < hsv.h) &&
+					(hsv.h < 104 + range_H_preto_fora)) return Cor::preto;
+			else
+				return Cor::fora;
+
+	}
+	else{
+		if(hsv.v > minimo_V_Preto_D && hsv.v < maximo_V_Preto_D) return Cor::preto;
+		if(hsv.v < minimo_V_Preto_D) return Cor::fora;
+	}
 	if(hsv.h < limites_H_Vermelho_D[0] || hsv.h > limites_H_Vermelho_D[1]) return Cor::vermelho;
 	if(hsv.h > limites_H_Verde_D[0] && hsv.h < limites_H_Verde_D[1]) return Cor::verde;
 	if(hsv.h > limites_H_Azul_D[0] && hsv.h < limites_H_Azul_D[1]) return Cor::azul;

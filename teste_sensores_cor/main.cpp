@@ -16,10 +16,12 @@ int main(){
 	Sensor_cor_hsv cor(ev3dev::INPUT_1, ev3dev::INPUT_2,true,"leitura_sensor_cor_hsv");
 	robot.inicializar_thread_aceleracao();
 
+	robot.calibra_sensor_cor(&cor);
+
 	while(!ev3dev::button::up.pressed()){
 		while(!ev3dev::button::enter.pressed() && !ev3dev::button::up.pressed());
 		while(ev3dev::button::enter.pressed());
-		robot.andar(70);
+		robot.andar(20);
 		while(!ev3dev::button::enter.pressed() && !ev3dev::button::up.pressed())
 			cout<<cor.ler_cor_E()<<";"<<cor.ler_cor_D()<<endl;
 		robot.parar();
