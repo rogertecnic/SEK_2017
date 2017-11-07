@@ -19,7 +19,7 @@ int main(){
 	while(!ev3dev::button::up.pressed()){
 		while(!ev3dev::button::enter.pressed() && !ev3dev::button::up.pressed());
 		while(ev3dev::button::enter.pressed());
-		robot.andar(20);
+		robot.andar(70);
 		while(!ev3dev::button::enter.pressed() && !ev3dev::button::up.pressed())
 			cout<<cor.ler_cor_E()<<";"<<cor.ler_cor_D()<<endl;
 		robot.parar();
