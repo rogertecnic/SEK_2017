@@ -229,26 +229,26 @@ void Resgate::resgatar(){
 			} //FIM DO switch (estd){
 		} // FIM DO while(){
 	}
+}
 
-	void Resgate::intersec() {
-		if(sentido_navegacao == -1)
-			qnt_cruzamentos --;
-		else
-			qnt_cruzamentos ++;
+void Resgate::intersec() {
+	if(sentido_navegacao == -1)
+		qnt_cruzamentos --;
+	else
+		qnt_cruzamentos ++;
 
-		if(qnt_cruzamentos >0){
-			robo->alinhar(sensor, direcao::traz);
-			robo->andar(50, 0.15 + robo->get_pintao()); // vai pro meio do quadrado
-			caminho_certo();
-			cor_E = sensor->ler_cor_E();
-			cor_D = sensor->ler_cor_D();
-			robo->andar(70);
-			while(sensor->ler_cor_E() == cor_E || sensor->ler_cor_D() == cor_D);
-			usleep(1000000*0.3);
-			estd = estados_arena::faixa;
-		}else{
-			estd = estados_arena::terminado;
-		}
+	if(qnt_cruzamentos >0){
+		robo->alinhar(sensor, direcao::traz);
+		robo->andar(50, 0.15 + robo->get_pintao()); // vai pro meio do quadrado
+		caminho_certo();
+		cor_E = sensor->ler_cor_E();
+		cor_D = sensor->ler_cor_D();
+		robo->andar(70);
+		while(sensor->ler_cor_E() == cor_E || sensor->ler_cor_D() == cor_D);
+		usleep(1000000*0.3);
+		estd = estados_arena::faixa;
+	}else{
+		estd = estados_arena::terminado;
 	}
 }
 
