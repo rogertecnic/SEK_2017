@@ -48,8 +48,8 @@ Cor Sensor_cor_hsv::ler_cor_E() {
 
 	if(arena_pequi){
 		if(hsv.v < maximo_V_Preto_E)
-			if( (100 - range_H_preto_fora < hsv.h) &&
-					(hsv.h < 100 + range_H_preto_fora)) return Cor::preto;
+			if( (125 - range_H_preto_fora < hsv.h) &&
+					(hsv.h < 125 + range_H_preto_fora)) return Cor::preto;
 			else return Cor::fora;
 	}
 	else{
@@ -87,8 +87,8 @@ Cor Sensor_cor_hsv::ler_cor_D() {
 
 	if(arena_pequi){
 		if(hsv.v < maximo_V_Preto_D)
-			if((100 - range_H_preto_fora < hsv.h) &&
-					(hsv.h < 100 + range_H_preto_fora)) return Cor::preto;
+			if((104 - range_H_preto_fora < hsv.h) &&
+					(hsv.h < 104 + range_H_preto_fora)) return Cor::preto;
 			else
 				return Cor::fora;
 
@@ -173,6 +173,20 @@ void Sensor_cor_hsv::fecha_arquivo(){
 		arquivo_E->fecha_arq();
 		arquivo_D->fecha_arq();
 	}
+	string strr = "%maximos e minimos: \n% " +
+			to_string(maximo_S_Branco_E) + "\n% " +
+			to_string(minimo_V_Branco_E) + "\n% " +
+			to_string(maximo_V_Preto_E) + "\n% " +
+			to_string(minimo_V_Preto_E) + "\n" +
+			"plot(x4);";
+	arquivo_E->string_arq(strr);
+	strr = "%maximos e minimos: \n% " +
+			to_string(maximo_S_Branco_D) + "\n% " +
+			to_string(minimo_V_Branco_D) + "\n% " +
+			to_string(maximo_V_Preto_D) + "\n% " +
+			to_string(minimo_V_Preto_D) + "\n" +
+			"plot(x4);";
+	arquivo_D->string_arq(strr);
 	debug = false;
 }
 

@@ -64,7 +64,7 @@ private:
 	double maximo_V_Preto_D = 0;
 	double minimo_V_Preto_D = 0;
 
-	double range_H_preto_fora = 50; // usado so na nossa arena
+	double range_H_preto_fora = 55; // usado so na nossa arena
 
 	double fator_escalimetro_rgb_E[3] = {1,1,1}; // mudar o rgb para a escala 0 a 255
 	double fator_escalimetro_rgb_D[3] = {1,1,1}; // mudar o rgb para a escala 0 a 255
