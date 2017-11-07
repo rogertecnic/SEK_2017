@@ -3,6 +3,7 @@
 #include "src_folder/Mapeamento.h"
 #include "src_folder/Garra.h"
 #include "src_folder/Resgate.h"
+#include <fstream>
 
 
 using namespace std;
@@ -123,10 +124,10 @@ void teste_garra(){
 
 
 void teste_leitura_ultra(){
-	Ultrassom_nxt ultraE(Ultrassom_nxt::INPUT_4);
+	Ultrassom_nxt ultraE(Ultrassom_nxt::INPUT_3);
 
 	while(!ev3dev::button::back.process()){
-		cout<<ultraE.le_centimetro()<< endl;
+		cout<< "  " << ultraE.le_centimetro() << endl;
 		usleep(1000000*0.5);
 	}
 }
@@ -138,18 +139,23 @@ void teste_pega_boneco(){
 	Garra cancela(ev3dev::OUTPUT_C, 45, "cancela");
 	Ultrassom_nxt ultraE(Ultrassom_nxt::INPUT_3);
 
+	ofstream outfile;
+	outfile.open("ultra.txt", ios::out);
+
 	robo.inicializar_thread_aceleracao();
 
 	cout << "Fazer teste pega_boneco" << endl;
 	while(!ev3dev::button::enter.process());
 
-	while(true){
-		robo.andar(50);
-		if(ultraE.le_centimetro() <= 18){
+	while(!ev3dev::button::up.process()){
+		robo.andar(70);
+		outfile << ultraE.le_centimetro() << endl;
+
+		if(ultraE.le_centimetro() <= 20){
 			usleep(1000000*0.15);
 			robo.parar();
 			robo.andar(-30);
-			while(ultraE.le_centimetro() > 18);
+			while(ultraE.le_centimetro() > 20);
 			robo.parar();
 
 			cancela.abrir();
@@ -163,6 +169,7 @@ void teste_pega_boneco(){
 			for(unsigned int i = 0; i < 3; i++){
 				garra.fechar();
 				robo.andar(20);
+				usleep(1000000);
 				garra.abrir();
 				usleep(1000000);
 			}
@@ -174,7 +181,9 @@ void teste_pega_boneco(){
 			robo.andar(-30, 0.15);
 			robo.girar(-90);
 			while(robo.get_estado() == flag_aceleracao::girar);
+			break;
 		}
+		usleep(1000000*0.2);
 	}
 
 
@@ -211,13 +220,13 @@ int main(){
 	system("setfont Greek-TerminusBold20x10.psf.gz");
 
 	//teste_alinhamento_rampa();
-	ler_cor();
+	//ler_cor();
 	//teste_map();
 	//teste_garra();
     //teste_raio_roda();
 	//teste_distancia_entre_rodas();
 	//teste_pega_boneco();
-	//teste_leitura_ultra();
+	teste_leitura_ultra();
 
 	cout << "Teste finalizado. Bye!" << endl;
 	usleep (1000000);
