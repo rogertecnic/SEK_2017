@@ -211,12 +211,11 @@ int main(){
 	system("setfont Greek-TerminusBold20x10.psf.gz");
 
 	//teste_alinhamento_rampa();
-	//ler_cor();
-	teste_map();
+	ler_cor();
+	//teste_map();
 	//teste_garra();
     //teste_raio_roda();
 	//teste_distancia_entre_rodas();
-
 	//teste_pega_boneco();
 	//teste_leitura_ultra();
 

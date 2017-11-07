@@ -49,8 +49,10 @@ void Mapeamento::mapear(){
 			corE_corD_iguais = Cor::ndCor;
 			mudanca_cor_fim_cidade = 0;
 
-			if(cor_E == Cor::fora) realinha(direcao::esquerda);
-			else if (cor_D == Cor::fora) realinha(direcao::direita);
+			if(cor_E == Cor::fora)
+				realinha(direcao::esquerda);
+			else if (cor_D == Cor::fora)
+				realinha(direcao::direita);
 			else {
 				estd_map = estados_arena::atencao;
 				cout << "ATENCAO!!" << endl;
@@ -61,14 +63,15 @@ void Mapeamento::mapear(){
 
 		case estados_arena::intersec:
 			cout << "Intersec?";
-			while(true) {
-				if(sensor->ler_cor_E() != cor_E)
+			while(true){
+				if(sensor->ler_cor_E() != cor_E){
 					realinha(direcao::esquerda);
-
-				else if(sensor->ler_cor_D() != cor_D)
+				}
+				else if(sensor->ler_cor_D() != cor_D){
 					realinha(direcao::direita);
-
-				else break;
+				}
+				else
+					break;
 
 				//FIXME tratar
 				cout << "Nao, loop infinito?" << endl;
@@ -81,15 +84,20 @@ void Mapeamento::mapear(){
 			cout << "SIM" << endl;
 
 			intersec();
-			while( !(sensor->ler_cor_E() == Cor::branco) || !(sensor->ler_cor_D() == Cor::branco)) {
+			while( !(sensor->ler_cor_E() == Cor::branco) || !(sensor->ler_cor_D() == Cor::branco))
+			{
+				//se o robo entrar aqui eh por que ha algo errado no metodo intersec
+				//o metodo terminou e o robo nao esta no branco, olhar o que aconteceu
 				count_branco_apos_intersec ++;
 				if(count_branco_apos_intersec >= 5) {
-					//FIXME tratar
-					//robo->parar();
-					cout << "O robo terminou a interseccao e nao esta no branco" << endl;
+					robo->parar();
+					cout << "o robo terminou a intersecao e nao esta no branco" << endl;
+					cout << "esperando 10 seg" << endl;
+					usleep(1000000*10);
 					estd_map = estados_arena::faixa;
 				}
 			}
+
 			estd_map = estados_arena::faixa;
 			cout << "FAIXA!!" << endl;
 
@@ -114,9 +122,11 @@ void Mapeamento::mapear(){
 		case estados_arena::atencao:
 			/* TODO fazer tratamento do caso que sensor fique muito tempo em uma interface */
 
-			if(count_intersec == 0) robo->andar(30);
+			if(count_intersec == 0)
+				robo->andar(30);
 
-			if(cor_E == Cor::branco && cor_D == Cor::branco) {
+			if(cor_E == Cor::branco && cor_D == Cor::branco)
+			{
 				estd_map = estados_arena::faixa;
 				cout << "FAIXA!!" << endl;
 				break;
@@ -132,7 +142,7 @@ void Mapeamento::mapear(){
 					(cor_E == Cor::azul && cor_D == Cor::azul) ||
 					(cor_E == Cor::preto && cor_D == Cor::preto))
 			{
-				robo->andar(30);
+				robo->andar(20);
 				if(corE_corD_iguais != cor_E) {
 					corE_corD_iguais = cor_E;
 					mudanca_cor_fim_cidade ++;
@@ -143,29 +153,29 @@ void Mapeamento::mapear(){
 
 				switch(mudanca_cor_fim_cidade) {
 				case 1:
-					if(count_intersec > 6) // robo desacelerando, passa a cor rapido
+					if(count_intersec > 8) // robo desacelerando, passa a cor rapido
 						estd_map = estados_arena::intersec;
 
 					break;
 
-				case 2:
-					if(count_intersec > 18) // robo ja devagar, demora mais pra passar a cor
-						estd_map = estados_arena::intersec;
-					break;
-
-				case 3:
+				case 2: // chegou ao fim da cidade
+					interseccao = true;
+					usleep(1000000*0.8);
+					interseccao = false;
+					usleep(1000000*0.8);
 					estd_map = estados_arena::terminado;
 					cout << "MAP TERMINADO!!" << endl;
 					break;
-
 				}
+				usleep(1000000*0.08);
 			}
 
-			break;
+			break; // 	FIM DO case estados_arena::atencao:
 
 
-		}
-	}
+		} //FIM DO switch (estd){
+	} // FIM DO while(estd != estados_arena::terminado){
+
 
 
 	cout << "Fim da arena!" << endl;
@@ -201,15 +211,7 @@ void Mapeamento::intersec() {
 	cor_E = sensor->ler_cor_E();
 	cor_D = sensor->ler_cor_D();
 
-	if(!fim_da_cidade()) mapeamento_intersec();
-	else {
-		interseccao = true;
-		usleep(1000000*0.8);
-		interseccao = false;
-		usleep(1000000*0.8);
-		estd_map = estados_arena::terminado;
-	}
-
+	mapeamento_intersec();
 
 	robo->alinhar(sensor, direcao::traz);
 	robo->andar(70);
@@ -219,7 +221,6 @@ void Mapeamento::intersec() {
 
 void Mapeamento::mapeamento_intersec() {
 	if(cor_E != cor_D) {
-		//FIXME
 		robo->parar();
 		cout << "mapeamento_intersec sensores com leituras diferentes, press enter" << endl;
 		while(!ev3dev::button::enter.process());
@@ -233,7 +234,6 @@ void Mapeamento::mapeamento_intersec() {
 
 		interseccao = true;
 		//inicializar_threads_ultra();
-
 
 		cor_atual = sensor->ler_cor_D();
 		direcao_atual = direcao::direita;

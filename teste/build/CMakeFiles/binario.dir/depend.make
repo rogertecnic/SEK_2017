@@ -9,6 +9,7 @@ CMakeFiles/binario.dir/main.cpp.o: ../src_folder/Garra.h
 CMakeFiles/binario.dir/main.cpp.o: ../src_folder/M_arquivos.h
 CMakeFiles/binario.dir/main.cpp.o: ../src_folder/Mapeamento.h
 CMakeFiles/binario.dir/main.cpp.o: ../src_folder/Resgate.h
+CMakeFiles/binario.dir/main.cpp.o: ../src_folder/Sensor_cor.h
 CMakeFiles/binario.dir/main.cpp.o: ../src_folder/Sensor_cor_hsv.h
 CMakeFiles/binario.dir/main.cpp.o: ../src_folder/Ultrassom_nxt.h
 CMakeFiles/binario.dir/main.cpp.o: ../src_folder/ev3dev.h
@@ -22,6 +23,7 @@ CMakeFiles/binario.dir/src_folder/Controlador_robo.cpp.o: ../src_folder/Const.h
 CMakeFiles/binario.dir/src_folder/Controlador_robo.cpp.o: ../src_folder/Controlador_robo.cpp
 CMakeFiles/binario.dir/src_folder/Controlador_robo.cpp.o: ../src_folder/Controlador_robo.h
 CMakeFiles/binario.dir/src_folder/Controlador_robo.cpp.o: ../src_folder/M_arquivos.h
+CMakeFiles/binario.dir/src_folder/Controlador_robo.cpp.o: ../src_folder/Sensor_cor.h
 CMakeFiles/binario.dir/src_folder/Controlador_robo.cpp.o: ../src_folder/Sensor_cor_hsv.h
 CMakeFiles/binario.dir/src_folder/Controlador_robo.cpp.o: ../src_folder/ev3dev.h
 
@@ -39,6 +41,7 @@ CMakeFiles/binario.dir/src_folder/Mapeamento.cpp.o: ../src_folder/Controlador_ro
 CMakeFiles/binario.dir/src_folder/Mapeamento.cpp.o: ../src_folder/M_arquivos.h
 CMakeFiles/binario.dir/src_folder/Mapeamento.cpp.o: ../src_folder/Mapeamento.cpp
 CMakeFiles/binario.dir/src_folder/Mapeamento.cpp.o: ../src_folder/Mapeamento.h
+CMakeFiles/binario.dir/src_folder/Mapeamento.cpp.o: ../src_folder/Sensor_cor.h
 CMakeFiles/binario.dir/src_folder/Mapeamento.cpp.o: ../src_folder/Sensor_cor_hsv.h
 CMakeFiles/binario.dir/src_folder/Mapeamento.cpp.o: ../src_folder/Ultrassom_nxt.h
 CMakeFiles/binario.dir/src_folder/Mapeamento.cpp.o: ../src_folder/ev3dev.h
@@ -49,6 +52,7 @@ CMakeFiles/binario.dir/src_folder/Resgate.cpp.o: ../src_folder/Garra.h
 CMakeFiles/binario.dir/src_folder/Resgate.cpp.o: ../src_folder/M_arquivos.h
 CMakeFiles/binario.dir/src_folder/Resgate.cpp.o: ../src_folder/Resgate.cpp
 CMakeFiles/binario.dir/src_folder/Resgate.cpp.o: ../src_folder/Resgate.h
+CMakeFiles/binario.dir/src_folder/Resgate.cpp.o: ../src_folder/Sensor_cor.h
 CMakeFiles/binario.dir/src_folder/Resgate.cpp.o: ../src_folder/Sensor_cor_hsv.h
 CMakeFiles/binario.dir/src_folder/Resgate.cpp.o: ../src_folder/Ultrassom_nxt.h
 CMakeFiles/binario.dir/src_folder/Resgate.cpp.o: ../src_folder/ev3dev.h

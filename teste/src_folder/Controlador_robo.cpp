@@ -109,6 +109,21 @@ bool Controlador_robo::finalizar_thread_aceleracao(){
 }
 
 
+void Controlador_robo::alinha_portal(Sensor_cor_hsv *sensor_cor){
+	alinhar(sensor_cor, direcao::traz);
+	andar(30,0.2);
+	girar(45);
+	while(get_estado() == flag_aceleracao::girar);
+
+	andar(30);
+	while(sensor_cor->ler_cor_E() != Cor::fora);
+	parar();
+	andar(-30,0.06);
+	girar(-44);
+	while(get_estado() == flag_aceleracao::girar);
+	andar(50);
+}
+
 /*
  * retorna o atual estado de movimento do robo,
  * flag_aceleracao{ndAcel, linha_reta, parar, girar};
@@ -414,13 +429,17 @@ void Controlador_robo::calibra_sensor_cor(Sensor_cor_hsv *sensor_cor) {
 	 * as condicoes de avaliacao da cor quando realizar leitura
 	 */
 	HSV hsv;
-	double valores_E[3], valores_D[3];
-	valores_E[0] = 2; // minimo_V_Branco_E
-	valores_E[1] = 0; // maximo_V_Preto_E
-	valores_E[2] = 2; // minimo_V_Preto_E
-	valores_D[0] = 2; // minimo_V_Branco_D
-	valores_D[1] = 0; // maximo_V_Preto_D
-	valores_D[2] = 2; // minimo_V_Preto_D
+	double valores_E[4], valores_D[4];
+	valores_E[0] = 0; // maximo_S_Branco_E
+	valores_E[1] = 2; // minimo_V_Branco_E
+	valores_E[2] = 0; // maximo_V_Preto_E
+	valores_E[3] = 2; // minimo_V_Preto_E
+
+	valores_D[0] = 0; // maximo_S_Branco_D
+	valores_D[1] = 2; // minimo_V_Branco_D
+	valores_D[2] = 0; // maximo_V_Preto_D
+	valores_D[3] = 2; // minimo_V_Preto_D
+
 	for(int i = 0 ; i < rgb_branco_E.size() ; i++){
 		// muda a escala do rgb antes de converter pra hsv
 		rgb_branco_E[i].r *= max_rgb_E[0];
@@ -431,10 +450,13 @@ void Controlador_robo::calibra_sensor_cor(Sensor_cor_hsv *sensor_cor) {
 		rgb_branco_D[i].b *= max_rgb_D[2];
 
 		hsv = sensor_cor->RGBtoHSV(rgb_branco_E[i]);
-		if(valores_E[0] > hsv.v) valores_E[0] = hsv.v;
+		if(valores_E[0] < hsv.s) valores_E[0] = hsv.s;
+		if(valores_E[1] > hsv.v) valores_E[1] = hsv.v;
 		hsv = sensor_cor->RGBtoHSV(rgb_branco_D[i]);
-		if(valores_D[0] > hsv.v) valores_D[0] = hsv.v;
+		if(valores_D[0] < hsv.s) valores_D[0] = hsv.s;
+		if(valores_D[1] > hsv.v) valores_D[1] = hsv.v;
 	}
+
 	for(int i = 0 ; i < rgb_preto_E.size() ; i++){
 		// muda a escala do rgb antes de converter pra hsv
 		rgb_preto_E[i].r *= max_rgb_E[0];
@@ -445,20 +467,22 @@ void Controlador_robo::calibra_sensor_cor(Sensor_cor_hsv *sensor_cor) {
 		rgb_preto_D[i].b *= max_rgb_D[2];
 
 		hsv = sensor_cor->RGBtoHSV(rgb_preto_E[i]);
-		if(valores_E[1] < hsv.v) valores_E[1] = hsv.v;
-		if(valores_E[2] > hsv.v) valores_E[2] = hsv.v;
+		if(valores_E[2] < hsv.v) valores_E[2] = hsv.v;
+		if(valores_E[3] > hsv.v) valores_E[3] = hsv.v;
 		hsv = sensor_cor->RGBtoHSV(rgb_preto_D[i]);
-		if(valores_D[1] < hsv.v) valores_D[1] = hsv.v;
-		if(valores_D[2] > hsv.v) valores_D[2] = hsv.v;
+		if(valores_D[2] < hsv.v) valores_D[2] = hsv.v;
+		if(valores_D[3] > hsv.v) valores_D[3] = hsv.v;
 	}
 
-	valores_E[0] -= 0.03 ; // minimo_V_Branco_E
-	valores_E[1] += 0.05; // maximo_V_Preto_E
-	valores_E[2] -= 0.005; // minimo_V_Preto_E
+	valores_E[0] += 0.01; // maximo_s_Branco_E
+	valores_E[1] -= 0.05; // minimo_V_Branco_E
+	valores_E[2] += 0.05; // maximo_V_Preto_E
+	valores_E[3] -= 0.005; // minimo_V_Preto_E
 
-	valores_D[0] -= 0.05; // minimo_V_Branco_D
-	valores_D[1] += 0.05; // maximo_V_Preto_D
-	valores_D[2] -= 0.005; // minimo_V_Preto_D
+	valores_D[0] += 0.01; // maximo_s_Branco_D
+	valores_D[1] -= 0.05; // minimo_V_Branco_D
+	valores_D[2] += 0.05; // maximo_V_Preto_D
+	valores_D[3] -= 0.005; // minimo_V_Preto_D
 	sensor_cor->set_maximos_minimos(valores_E, valores_D);
 	cout <<"min branco:" << endl << valores_E[0] << ";" << valores_D[0] << endl;
 }

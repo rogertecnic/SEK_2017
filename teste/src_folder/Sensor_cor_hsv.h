@@ -14,6 +14,7 @@
 #define SENSOR_COR_HSV_H_
 
 #include <tuple>
+#include "ev3dev.h"
 #include <unistd.h>
 #include <math.h>
 #include "M_arquivos.h"
@@ -50,6 +51,7 @@ private:
 	double limites_H_Vermelho_E[2] = {30, 330}; // verificar se esta fora
 	double limites_H_Verde_E[2] = {90, 150}; // verificar se esta dentro
 	double limites_H_Azul_E[2] = {120, 270}; // verificar se esta dentro
+	double maximo_S_Branco_E = 0;
 	double minimo_V_Branco_E = 0;
 	double maximo_V_Preto_E = 0;
 	double minimo_V_Preto_E = 0;
@@ -57,10 +59,11 @@ private:
 	double limites_H_Vermelho_D[2] = {30, 330}; // verificar se esta fora
 	double limites_H_Verde_D[2] = {90, 150}; // verificar se esta dentro
 	double limites_H_Azul_D[2] = {210, 270}; // verificar se esta dentro
+	double maximo_S_Branco_D = 0;
 	double minimo_V_Branco_D = 0;
 	double maximo_V_Preto_D = 0;
 	double minimo_V_Preto_D = 0;
-
+	double metade_;
 	double fator_escalimetro_rgb_E[3] = {1,1,1}; // mudar o rgb para a escala 0 a 255
 	double fator_escalimetro_rgb_D[3] = {1,1,1}; // mudar o rgb para a escala 0 a 255
 };

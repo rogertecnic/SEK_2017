@@ -10,6 +10,7 @@ CMakeFiles/binario.dir/main.cpp.o
  /src/src_folder/M_arquivos.h
  /src/src_folder/Mapeamento.h
  /src/src_folder/Resgate.h
+ /src/src_folder/Sensor_cor.h
  /src/src_folder/Sensor_cor_hsv.h
  /src/src_folder/Ultrassom_nxt.h
  /src/src_folder/ev3dev.h
@@ -23,6 +24,7 @@ CMakeFiles/binario.dir/src_folder/Controlador_robo.cpp.o
  /src/src_folder/Controlador_robo.cpp
  /src/src_folder/Controlador_robo.h
  /src/src_folder/M_arquivos.h
+ /src/src_folder/Sensor_cor.h
  /src/src_folder/Sensor_cor_hsv.h
  /src/src_folder/ev3dev.h
 CMakeFiles/binario.dir/src_folder/Garra.cpp.o
@@ -40,6 +42,7 @@ CMakeFiles/binario.dir/src_folder/Mapeamento.cpp.o
  /src/src_folder/M_arquivos.h
  /src/src_folder/Mapeamento.cpp
  /src/src_folder/Mapeamento.h
+ /src/src_folder/Sensor_cor.h
  /src/src_folder/Sensor_cor_hsv.h
  /src/src_folder/Ultrassom_nxt.h
  /src/src_folder/ev3dev.h
@@ -50,6 +53,7 @@ CMakeFiles/binario.dir/src_folder/Resgate.cpp.o
  /src/src_folder/M_arquivos.h
  /src/src_folder/Resgate.cpp
  /src/src_folder/Resgate.h
+ /src/src_folder/Sensor_cor.h
  /src/src_folder/Sensor_cor_hsv.h
  /src/src_folder/Ultrassom_nxt.h
  /src/src_folder/ev3dev.h

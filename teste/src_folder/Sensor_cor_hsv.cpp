@@ -27,7 +27,7 @@ Sensor_cor_hsv::Sensor_cor_hsv(string sensor_port_E, string sensor_port_D,
 
 
 Cor Sensor_cor_hsv::ler_cor_E() {
-	std::tuple<int, int, int> sample;
+	tuple<int, int, int> sample;
 	sample = sensor_E.raw();
 	RGB rgb;
 	rgb.r = get<0>(sample);
@@ -43,7 +43,8 @@ Cor Sensor_cor_hsv::ler_cor_E() {
 			(double)rgb.r, (double)rgb.g, (double)rgb.b,
 			(double)hsv.h, (double)hsv.s, (double)hsv.v);
 
-	if(hsv.v > minimo_V_Branco_E) return Cor::branco;
+	if(hsv.v > minimo_V_Branco_E)
+		if( hsv.s < maximo_S_Branco_E) return Cor::branco;
 	if(hsv.v > minimo_V_Preto_E && hsv.v < maximo_V_Preto_E) return Cor::preto;
 	if(hsv.v < minimo_V_Preto_E) return Cor::fora;
 	if(hsv.h < limites_H_Vermelho_E[0] || hsv.h > limites_H_Vermelho_E[1]) return Cor::vermelho;
@@ -55,7 +56,7 @@ Cor Sensor_cor_hsv::ler_cor_E() {
 
 
 Cor Sensor_cor_hsv::ler_cor_D() {
-	std::tuple<int, int, int> sample;
+	tuple<int, int, int> sample;
 	sample = sensor_D.raw();
 	RGB rgb;
 	rgb.r = get<0>(sample);
@@ -71,7 +72,8 @@ Cor Sensor_cor_hsv::ler_cor_D() {
 			(double)rgb.r, (double)rgb.g, (double)rgb.b,
 			(double)hsv.h, (double)hsv.s, (double)hsv.v);
 
-	if(hsv.v > minimo_V_Branco_D) return Cor::branco;
+	if(hsv.v > minimo_V_Branco_D)
+			if( hsv.s < maximo_S_Branco_D) return Cor::branco;
 	if(hsv.v > minimo_V_Preto_D && hsv.v < maximo_V_Preto_D) return Cor::preto;
 	if(hsv.v < minimo_V_Preto_D) return Cor::fora;
 	if(hsv.h < limites_H_Vermelho_D[0] || hsv.h > limites_H_Vermelho_D[1]) return Cor::vermelho;
@@ -98,13 +100,15 @@ void Sensor_cor_hsv::set_fatores_rgb(double *valores_E, double *valores_D) {
 }
 
 void Sensor_cor_hsv::set_maximos_minimos(double *maximos_E, double *maximos_D){
-	minimo_V_Branco_E  = maximos_E[0];
-	maximo_V_Preto_E  = maximos_E[1];
-	minimo_V_Preto_E = maximos_E[2];
+	maximo_S_Branco_E = maximos_E[0];
+	minimo_V_Branco_E  = maximos_E[1];
+	maximo_V_Preto_E  = maximos_E[2];
+	minimo_V_Preto_E = maximos_E[3];
 
-	minimo_V_Branco_D  = maximos_D[0];
-	maximo_V_Preto_D  = maximos_D[1];
-	minimo_V_Preto_D = maximos_D[2];
+	maximo_S_Branco_D = maximos_D[0];
+	minimo_V_Branco_D  = maximos_D[1];
+	maximo_V_Preto_D  = maximos_D[2];
+	minimo_V_Preto_D = maximos_D[3];
 }
 
 
