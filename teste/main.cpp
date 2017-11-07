@@ -202,8 +202,7 @@ void teste_luana_alinhamento(){
 
 
 void teste_rogerio(){
-	Controlador_robo robot(false, "debug posicao direto no pwm.m"); // fator_croda = 1.005
-	//Sensor_cor cor(ev3dev::INPUT_1, ev3dev::INPUT_2);
+	Controlador_robo robot(false, "debug posicao direto no pwm.m");
 	Sensor_cor_hsv cor(ev3dev::INPUT_1, ev3dev::INPUT_2,false,"leitura_sensor_cor_hsv");
 	Ultrassom_nxt ultraE(Ultrassom_nxt::INPUT_3);
 	Ultrassom_nxt ultraD(Ultrassom_nxt::INPUT_4);

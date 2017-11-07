@@ -3,7 +3,10 @@
 
 #include <iostream>
 #include <vector>
+#include <thread>
+#include <string>
 #include "ev3dev.h"
+
 
 using namespace std;
 
@@ -56,4 +59,5 @@ extern int sentido_navegacao;
 extern vector<no_intersec> no; // bonecos
 extern direcao_checkpoint cp; // intersecao
 extern int qnt_cruzamentos;
+const bool arena_pequi = true; // testar o robo na nossa arena e na arena oficial
 #endif

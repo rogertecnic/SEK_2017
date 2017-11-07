@@ -7,7 +7,6 @@
 #include "ev3dev.h"
 #include <tuple>
 #include "M_arquivos.h"
-#include "Sensor_cor.h"
 #include "Sensor_cor_hsv.h"
 #include "Const.h"
 #include <vector>
