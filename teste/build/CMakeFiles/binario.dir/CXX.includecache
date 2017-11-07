@@ -18,10 +18,6 @@ src_folder/Garra.h
 src_folder/Resgate.h
 /src/src_folder/Resgate.h
 
-/src/src_folder/Arquivos_mapeamento.cpp
-Arquivos_mapeamento.h
-/src/src_folder/Arquivos_mapeamento.h
-
 /src/src_folder/Arquivos_mapeamento.h
 fstream
 -
@@ -39,10 +35,6 @@ string
 -
 ev3dev.h
 /src/src_folder/ev3dev.h
-
-/src/src_folder/Controlador_robo.cpp
-Controlador_robo.h
-/src/src_folder/Controlador_robo.h
 
 /src/src_folder/Controlador_robo.h
 iostream
@@ -68,10 +60,6 @@ Const.h
 vector
 -
 
-/src/src_folder/Garra.cpp
-Garra.h
-/src/src_folder/Garra.h
-
 /src/src_folder/Garra.h
 Const.h
 /src/src_folder/Const.h
@@ -88,10 +76,6 @@ list
 string
 -
 
-/src/src_folder/Mapeamento.cpp
-Mapeamento.h
-/src/src_folder/Mapeamento.h
-
 /src/src_folder/Mapeamento.h
 Controlador_robo.h
 /src/src_folder/Controlador_robo.h
@@ -103,10 +87,6 @@ Ultrassom_nxt.h
 /src/src_folder/Ultrassom_nxt.h
 Const.h
 /src/src_folder/Const.h
-
-/src/src_folder/Resgate.cpp
-Resgate.h
-/src/src_folder/Resgate.h
 
 /src/src_folder/Resgate.h
 Garra.h
@@ -129,10 +109,6 @@ unistd.h
 -
 Const.h
 /src/src_folder/Const.h
-
-/src/src_folder/Sensor_cor_hsv.cpp
-Sensor_cor_hsv.h
-/src/src_folder/Sensor_cor_hsv.h
 
 /src/src_folder/Sensor_cor_hsv.h
 tuple

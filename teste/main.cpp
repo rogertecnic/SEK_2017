@@ -95,7 +95,7 @@ void teste_map(){
 
 void ler_cor(){
 	Controlador_robo robo(true, "debug posicao direto no pwm.m");
-	Sensor_cor_hsv cor(ev3dev::INPUT_1, ev3dev::INPUT_2);
+	Sensor_cor_hsv cor(ev3dev::INPUT_1, ev3dev::INPUT_2, true, "cores");
 
 	robo.inicializar_thread_aceleracao();
 	robo.calibra_sensor_cor(&cor);
@@ -103,10 +103,11 @@ void ler_cor(){
 	cout << "Fazer teste cor" << endl;
 	while(!ev3dev::button::enter.process());
 
-	while(true){
+	while(!ev3dev::button::up.process()){
 		cout << "Cor: " << cor.ler_cor_D() << "\t" << cor.ler_cor_E() << endl;
 		usleep(1000);
 	}
+	cor.fecha_arquivo();
 }
 
 
