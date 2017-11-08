@@ -64,7 +64,7 @@ void Controlador_robo::alinhar(Sensor_cor_hsv *cor, direcao dir){
 
 	cout<<"alinhando:"<<cor_E<<";"<<cor_D<<endl;
 	motorD->set_duty_cycle_sp(dir == direcao::traz?20:-20);
-	motorE->set_duty_cycle_sp(dir == direcao::traz?20:-20); // sentido inverso devido a reducao de engrenagem
+	motorE->set_duty_cycle_sp(dir == direcao::traz?22:-22); // sentido inverso devido a reducao de engrenagem
 	motorE->run_direct();
 	motorD->run_direct();
 	bool motorE_parado = false,
@@ -268,7 +268,8 @@ void Controlador_robo::loop_controle_aceleracao(){
 			motorE->run_to_rel_pos();
 			motorD->run_to_rel_pos();
 			usleep(1000*100);
-			while((motorE->speed() > 2 || motorE->speed() < -2) && estado == flag_aceleracao::girar);
+			while((motorE->speed() > 2 || motorE->speed() < -2) &&
+					estado == flag_aceleracao::girar){ }
 
 			motorE->run_forever(); // so funciona se chamar o run_forever
 			motorD->run_forever(); // antes de parar, caso contrario o robo fica louco

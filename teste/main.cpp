@@ -33,7 +33,7 @@ void teste_alinhamento_rampa(){
 		corE = cor.ler_cor_E();
 		corD = cor.ler_cor_D();
 
-		if(corE == Cor::azul && corD == Cor::azul){
+		if(corE == Cor::amarelo && corD == Cor::amarelo){
 			break;
 		}
 	}

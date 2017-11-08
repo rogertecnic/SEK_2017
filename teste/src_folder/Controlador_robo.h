@@ -1,9 +1,16 @@
 #ifndef CONTROLADOR_ROBO_H_
 #define CONTROLADOR_ROBO_H_
-
-#include "Const.h"
-#include "Sensor_cor_hsv.h"
+#include <iostream>
+#include <thread>
+#include <chrono>
+#include <unistd.h>
+#include "ev3dev.h"
+#include <tuple>
 #include "M_arquivos.h"
+#include "Sensor_cor_hsv.h"
+#include "Const.h"
+#include <vector>
+
 
 using namespace std;
 
@@ -50,18 +57,17 @@ private:
 
 
 	/*Variaveis caracteristica do robo*/
-	double fator_croda = 1.0173;// 1.005 maior pende p esquerda
+	double fator_croda = 1.0173;
 	double delay = 5.0;//Em miliseg
 	double aceleracao = 700.0;//Em pwm/seg
-	double raio_roda = 0.02665;//0.0538/2.0; // metros
-	double tamanho_do_pintao = 0.1265; // 0.062 melhor
+	double raio_roda = 0.0267; // metros
+	double tamanho_do_pintao = 0.076; // 0.062 melhor
 	double relacao_engrenagem = 0.5; // 2 volta motor equivale 1 voltas roda
-	double raio_robo = 0.08035; // 0.08035 largura entre os centros das rodas div por 2 0.132
+	double raio_robo = 0.074; // largura entre os centros das rodas div por 2
 	double angulo_robo_graus = 0; // quanto o robo vai girar quando chamar o metodo girar
 	double distancia_linha_reta = 0; // distancia que  o robo ja andou
 	double distancia_absoluta = 0; // distancia absoluta que o robo andou
 	void reset_motores(); // reseta os motores e a distancia_linha_reta
-
 
 	/*Variáveis controlador PWM*/
 	double erro = 0.0;
