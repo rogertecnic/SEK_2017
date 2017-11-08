@@ -13,12 +13,10 @@
 #ifndef SENSOR_COR_HSV_H_
 #define SENSOR_COR_HSV_H_
 
-#include <tuple>
-#include "ev3dev.h"
-#include <unistd.h>
+#include "Const.h"
 #include <math.h>
 #include "M_arquivos.h"
-#include "Const.h"
+
 
 using namespace std;
 

@@ -38,6 +38,7 @@ int Ultrassom_nxt::le_centimetro(){
 		int leitura = 0;
 		is >> leitura;
 		is.close();
+		cout << leitura << endl;
 		if(leitura > dist_max) leitura = dist_max;
 		if(leitura < dist_min) leitura = dist_min;
 		return leitura;

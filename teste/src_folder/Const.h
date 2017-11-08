@@ -1,7 +1,9 @@
 #ifndef CONST_H_
 #define CONST_H_
 
+#include <tuple>
 #include <iostream>
+#include <unistd.h>
 #include <vector>
 #include <thread>
 #include <string>
@@ -14,6 +16,7 @@ enum estados_arena{faixa, leu_fora, leu_nda, intersec, terminado, atencao}; //us
 enum direcao{ndDirecao, frente, direita, esquerda, traz};// usado na classe Mapeamento
 enum Cor{ndCor, preto, branco, vermelho, verde, azul, fora}; // cores possiveis
 enum flag_aceleracao{ndAcel, linha_reta, parar, girar}; // usado dentro do Controlador_robo
+
 
 struct RGB{ // utilizado na classe Sensor_cor_hsv
 	int r = 0, g = 0, b = 0;

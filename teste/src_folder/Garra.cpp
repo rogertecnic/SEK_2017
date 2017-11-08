@@ -6,9 +6,8 @@ Garra::Garra(string motor_port, int graus_abertura_do_motor, string tipo)
 {
 	garra.reset();
 	garra.set_stop_action("hold");
+	garra.set_speed_sp(360+180);
 
-	if(tipo == "cancela") garra.set_speed_sp(360+180);
-	else garra.set_speed_sp(360+180);
 }
 
 void Garra::abrir() {
@@ -18,6 +17,8 @@ void Garra::abrir() {
 		garra.set_position_sp(-graus_abertura_do_motor);
 		garra.run_to_abs_pos();
 	}
+	usleep(2000000);
+
 }
 
 void Garra::fechar() {
@@ -33,4 +34,5 @@ void Garra::fechar() {
 		garra_aberta = false;
 		garra.run_to_abs_pos();
 	}
+	usleep(2000000);
 }
