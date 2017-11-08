@@ -67,14 +67,16 @@ void Mapeamento::mapear(){
 			while( !(sensor->ler_cor_E() == Cor::branco) || !(sensor->ler_cor_D() == Cor::branco))
 			{
 				count_branco_apos_intersec ++;
-				if(count_branco_apos_intersec >=5){
+				if(count_branco_apos_intersec >=8){
 					robo->parar();
 					cout << "o robo terminou a intersecao e nao esta no branco" << endl;
 					cout << "esperando 10 seg" << endl;
 					usleep(1000000*10);
 					estd = estados_arena::faixa;
 				}
-			}if(qnt_cruzamentos>=6){
+			}
+			robo->alinhar(sensor, direcao::traz);
+			if(qnt_cruzamentos>= total_cruzamentos_teste){
 				estd = estados_arena::terminado;
 				cout << endl << endl << "ultima intersec"<< endl;
 			}
@@ -90,7 +92,7 @@ void Mapeamento::mapear(){
 			count_intersec = 0;
 			count_branco_apos_intersec = 0;
 			corE_corD_iguais = Cor::ndCor;
-			robo->andar(70);
+			robo->andar(80);
 			if (cor_E != Cor::branco || cor_D != Cor::branco){
 				estd = estados_arena::atencao;
 				cout << "ATENCAO!!" << endl;
@@ -141,11 +143,12 @@ void Mapeamento::mapear(){
 		} //FIM DO switch (estd){
 	} // FIM DO while(estd != estados_arena::terminado){
 
-	cout << "fim da arena" << endl; // robo indo para a rampa
+	robo->andar(50,0.3);
+	cout << "fim da arena" << endl; // robo indo para a rampa (ou na rampa)
+	usleep(1000000*10);
 	/* TODO se a rampa estiver logo depois da ultima
-	 * intersec pode ser que esse delay de problema, testar
+	 * intersec pode ser que de problema, testar
 	 */
-	usleep(1000000*0.5);
 	robo->parar();
 }
 
@@ -165,6 +168,7 @@ void Mapeamento::intersec() {
 	cor_E = sensor->ler_cor_E();
 	cor_D = sensor->ler_cor_D();
 	mapeamento_intersec();
+	usleep(1000000*0.3); // delay saindo da intersec
 }
 
 
@@ -194,7 +198,6 @@ void Mapeamento::mapeamento_intersec() {
 		while(robo->get_estado() == flag_aceleracao::girar);
 		robo->andar(70);
 		while(sensor->ler_cor_E() == cor_E || sensor->ler_cor_D() == cor_D);
-		usleep(1000000*0.3);
 	}
 
 	/*Depois da primeira intersecção*/
@@ -204,12 +207,12 @@ void Mapeamento::mapeamento_intersec() {
 		if(cor_E == Cor::preto || cor_D == Cor::preto){
 			dead_end = true;
 			cout << "cheguei Dead-end" << endl;
+			robo->andar(50,0.11);
 			robo->girar(180);
 			while(robo->get_estado() == flag_aceleracao::girar);
 			robo->alinhar(sensor, direcao::traz);
 			robo->andar(30);
 			while(sensor->ler_cor_E() == cor_E || sensor->ler_cor_D() == cor_D);
-			usleep(1000000*0.5);
 		}
 
 		/*Encontro de outra intersecção*/
@@ -239,7 +242,6 @@ void Mapeamento::mapeamento_intersec() {
 
 				robo->andar(70);
 				while(sensor->ler_cor_E() == cor_E || sensor->ler_cor_D() == cor_D);
-				usleep(1000000*0.3);
 				dead_end = false;
 			}
 
@@ -284,7 +286,7 @@ void Mapeamento::mapeamento_intersec() {
 					*ultimo_checkpoint = (direcao)(6-soma_direcoes);
 					cout <<endl << endl << endl << "ultima direcao:"<< *ultimo_checkpoint << endl;
 					cout << "ultima cor, seguir" << endl;
-					usleep(1000000*5);
+					usleep(1000000*0.1);
 					caminho_certo();
 					confirmacao_status = true;
 					qnt_cores_mapeadas ++;
@@ -306,7 +308,6 @@ void Mapeamento::mapeamento_intersec() {
 
 				robo->andar(70);
 				while(sensor->ler_cor_E() == cor_E || sensor->ler_cor_D() == cor_D);
-				usleep(1000000*0.3);
 				dead_end = false;
 			}
 
@@ -335,7 +336,6 @@ void Mapeamento::mapeamento_intersec() {
 
 				robo->andar(70);
 				while(sensor->ler_cor_E() == cor_E || sensor->ler_cor_D() == cor_D);
-				usleep(1000000*0.3);
 				dead_end = false;
 			}
 		}

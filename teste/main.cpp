@@ -284,40 +284,23 @@ void teste_rogerio(){
 	//	while(!ev3dev::button::enter.process());
 	//	robot.parar();
 
-	/*
-	 * teste da classe sensor_cor
-	 * imprime o que o sensor esta lendo usando a classe
-	 */
-	//cor.calibra();
-	//	while(!ev3dev::button::up.process()){
-	//		while(!ev3dev::button::enter.process());
-	//		usleep(1000*800);
-	//		ev3dev::button::enter.process();
-	//		robot.andar(30);
-	//		while(!ev3dev::button::enter.process())
-	//			cout<<cor.ler_cor_E()<<";"<<cor.ler_cor_D()<<endl;
-	//		robot.parar();
-	//		usleep(1000*800);
-	//		ev3dev::button::enter.process();
-	//	}
-
 
 	/*
 	 * teste da classe sensor_cor_hsv
 	 * pega alguns valores e guarda no arquivo
 	 */
-	//	robot.calibra_sensor_cor(&cor);
-	//	while(!ev3dev::button::up.pressed()){
-	//		while(!ev3dev::button::enter.pressed() && !ev3dev::button::up.pressed());
-	//		while(ev3dev::button::enter.pressed());
-	//		robot.andar(30);
-	//		while(!ev3dev::button::enter.pressed() && !ev3dev::button::up.pressed())
-	//			cout<<cor.ler_cor_E()<<";"<<cor.ler_cor_D()<<endl;
-	//		robot.parar();
-	//		usleep(1000000*0.01);
-	//		while(ev3dev::button::enter.pressed());
-	//	}
-	//	cor.fecha_arquivo();
+//		robot.calibra_sensor_cor(&cor);
+//		while(!ev3dev::button::up.pressed()){
+//			while(!ev3dev::button::enter.pressed() && !ev3dev::button::up.pressed());
+//			while(ev3dev::button::enter.pressed());
+//			robot.andar(30);
+//			while(!ev3dev::button::enter.pressed() && !ev3dev::button::up.pressed())
+//				cout<<cor.ler_cor_E()<<";"<<cor.ler_cor_D()<<endl;
+//			robot.parar();
+//			usleep(1000000*0.01);
+//			while(ev3dev::button::enter.pressed());
+//		}
+//		cor.fecha_arquivo();
 
 	/*
 	 * teste da classe de cor

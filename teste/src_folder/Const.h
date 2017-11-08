@@ -46,5 +46,6 @@ extern int sentido_navegacao;
  * */
 extern direcao_checkpoint cp; // intersecao
 extern int qnt_cruzamentos;
-const bool arena_pequi = true; // testar o robo na nossa arena e na arena oficial
+const int total_cruzamentos_teste = 3;
+const bool arena_pequi = false; // testar o robo na nossa arena e na arena oficial
 #endif
