@@ -24,23 +24,19 @@ Sensor_cor_hsv::Sensor_cor_hsv(string sensor_port_E, string sensor_port_D,
 	}
 
 	if(arena_pequi){
-		limites_H_Vermelho_E[0] = 30;// verificar se esta fora
-		limites_H_Vermelho_E[1] = 330;
-		limites_H_Verde_E[0] = 90; // verificar se esta dentro
+		limites_H_Vermelho_E[0] = 22;// verificar se esta fora
+		limites_H_Vermelho_E[1] = 340;
+		limites_H_Verde_E[0] = 110; // verificar se esta dentro
 		limites_H_Verde_E[1] = 150;
-		limites_H_Azul_E[0] = 120; // verificar se esta dentro
-		limites_H_Azul_E[1] = 270;
-		limites_H_Amarelo_E[0] = 0; // verificar se esta dentro
-		limites_H_Amarelo_E[1] = 0;
+		limites_H_Amarelo_E[0] = 22; // verificar se esta dentro
+		limites_H_Amarelo_E[1] = 50;
 
-		limites_H_Vermelho_D[0] = 30;// verificar se esta fora
-		limites_H_Vermelho_D[1] = 330;
-		limites_H_Verde_D[0] = 90; // verificar se esta dentro
+		limites_H_Vermelho_D[0] = 24;// verificar se esta fora
+		limites_H_Vermelho_D[1] = 340;
+		limites_H_Verde_D[0] = 100; // verificar se esta dentro
 		limites_H_Verde_D[1] = 150;
-		limites_H_Azul_D[0] = 120; // verificar se esta dentro
-		limites_H_Azul_D[1] = 270;
-		limites_H_Amarelo_D[0] = 0; // verificar se esta dentro
-		limites_H_Amarelo_D[1] = 0;
+		limites_H_Amarelo_D[0] = 24; // verificar se esta dentro
+		limites_H_Amarelo_D[1] = 50;
 	}
 }
 
@@ -79,7 +75,6 @@ Cor Sensor_cor_hsv::ler_cor_E() {
 
 	if(hsv.h < limites_H_Vermelho_E[0] || hsv.h > limites_H_Vermelho_E[1]) return Cor::vermelho;
 	if(hsv.h > limites_H_Verde_E[0] && hsv.h < limites_H_Verde_E[1]) return Cor::verde;
-	if(hsv.h > limites_H_Azul_E[0] && hsv.h < limites_H_Azul_E[1]) return Cor::azul;
 	if(hsv.h > limites_H_Amarelo_E[0] && hsv.h < limites_H_Amarelo_E[1])return Cor::amarelo;
 	return Cor::ndCor;
 }
@@ -119,7 +114,6 @@ Cor Sensor_cor_hsv::ler_cor_D() {
 
 	if(hsv.h < limites_H_Vermelho_D[0] || hsv.h > limites_H_Vermelho_D[1]) return Cor::vermelho;
 	if(hsv.h > limites_H_Verde_D[0] && hsv.h < limites_H_Verde_D[1]) return Cor::verde;
-	if(hsv.h > limites_H_Azul_D[0] && hsv.h < limites_H_Azul_D[1]) return Cor::azul;
 	if(hsv.h > limites_H_Amarelo_D[0] && hsv.h < limites_H_Amarelo_D[1])return Cor::amarelo;
 
 	return Cor::ndCor;

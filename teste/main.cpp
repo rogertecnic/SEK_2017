@@ -4,7 +4,6 @@
 #include <string>
 #include "M_arquivos.h"
 #include "ev3dev.h"
-#include "src_folder/Sensor_cor.h"
 #include "src_folder/Sensor_cor_hsv.h"
 #include "src_folder/Controlador_robo.h"
 #include "src_folder/Mapeamento.h"
@@ -206,7 +205,7 @@ void teste_rogerio(){
 	Sensor_cor_hsv cor(ev3dev::INPUT_1, ev3dev::INPUT_2,false,"leitura_sensor_cor_hsv");
 	Ultrassom_nxt ultraE(Ultrassom_nxt::INPUT_3);
 	Ultrassom_nxt ultraD(Ultrassom_nxt::INPUT_4);
-	Mapeamento mapa(&robot, &cor, &ultraE, &ultraD);
+	Mapeamento mapa(&robot, &cor);
 	Resgate resgate(&robot, &cor, &ultraE, &ultraD, ev3dev::OUTPUT_D);
 
 
@@ -250,12 +249,12 @@ void teste_rogerio(){
 	/*
 	 * teste classe mapeamento com classe sensor cor hsv
 	 */
-				robot.calibra_sensor_cor(&cor);
-				while(!ev3dev::button::enter.process());
-				usleep(1000000*0.1);
-				while(!ev3dev::button::enter.process());
-				mapa.mapear();
-				resgate.resgatar();
+	robot.calibra_sensor_cor(&cor);
+	while(!ev3dev::button::enter.process());
+	usleep(1000000*0.1);
+	while(!ev3dev::button::enter.process());
+	mapa.mapear();
+	resgate.resgatar();
 
 
 	/*
@@ -291,7 +290,7 @@ void teste_rogerio(){
 	 */
 	//cor.calibra();
 	//	while(!ev3dev::button::up.process()){
-	//		while(!ev3dev::button::enter.process()){}
+	//		while(!ev3dev::button::enter.process());
 	//		usleep(1000*800);
 	//		ev3dev::button::enter.process();
 	//		robot.andar(30);
@@ -307,18 +306,18 @@ void teste_rogerio(){
 	 * teste da classe sensor_cor_hsv
 	 * pega alguns valores e guarda no arquivo
 	 */
-	//		while(!ev3dev::button::up.process()){
-	//		while(!ev3dev::button::enter.process()){}
-	//		usleep(1000*800);
-	//		ev3dev::button::enter.process();
+	//	robot.calibra_sensor_cor(&cor);
+	//	while(!ev3dev::button::up.pressed()){
+	//		while(!ev3dev::button::enter.pressed() && !ev3dev::button::up.pressed());
+	//		while(ev3dev::button::enter.pressed());
 	//		robot.andar(30);
-	//		while(!ev3dev::button::enter.process());
-	//		//	cout<<cor.ler_cor_E()<<";"<<cor.ler_cor_D()<<endl;
+	//		while(!ev3dev::button::enter.pressed() && !ev3dev::button::up.pressed())
+	//			cout<<cor.ler_cor_E()<<";"<<cor.ler_cor_D()<<endl;
 	//		robot.parar();
-	//		usleep(1000*800);
-	//		ev3dev::button::enter.process();
-	//		}
-	//cor.fecha_arquivo();
+	//		usleep(1000000*0.01);
+	//		while(ev3dev::button::enter.pressed());
+	//	}
+	//	cor.fecha_arquivo();
 
 	/*
 	 * teste da classe de cor
@@ -584,7 +583,7 @@ void teste_luana_mapeamento(){
 	usleep(0.3*1000000);
 	ev3dev::button::enter.process();
 
-	Mapeamento map(&robot, &cor, &ultraE, &ultraD);
+	Mapeamento map(&robot, &cor);
 
 	map.mapear();
 

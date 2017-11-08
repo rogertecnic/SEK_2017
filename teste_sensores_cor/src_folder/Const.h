@@ -3,13 +3,16 @@
 
 #include <iostream>
 #include <vector>
+#include <thread>
+#include <string>
 #include "ev3dev.h"
+
 
 using namespace std;
 
 enum estados_arena{faixa, leu_fora, leu_nda, intersec, terminado, atencao, captura, salva}; //usado na classe Mapeamento
 enum direcao{ndDirecao, frente, direita, esquerda, traz};// usado na classe Mapeamento
-enum Cor{ndCor, preto, branco, vermelho, verde, azul, fora, amarelo}; // cores possiveis
+enum Cor{ndCor, preto, branco, vermelho, verde, amarelo, fora}; // cores possiveis
 enum flag_aceleracao{ndAcel, linha_reta, parar, girar}; // usado dentro do Controlador_robo
 
 struct RGB{ // utilizado na classe Sensor_cor_hsv
@@ -27,19 +30,7 @@ struct HSV{ // utilizado na classe Sensor_cor_hsv
 struct direcao_checkpoint {
 	direcao checkpoint_vermelho;
 	direcao checkpoint_verde;
-	direcao checkpoint_azul;
-};
-
-
-
-/*
- * posicao do boneco relativa a intersecao pre ou pos
- */
-struct no_intersec {
-	vector<double> posicao_pre_d;
-	vector<double> posicao_pos_d;
-	vector<double> posicao_pre_e;
-	vector<double> posicao_pos_e;
+	direcao checkpoint_amarelo;
 };
 
 const bool automapear_3_checkpoint = true;
@@ -53,8 +44,7 @@ extern int sentido_navegacao;
 /* Variaveis de mapeamento de intersecção e de bonecos
  * inicializadas no inicio do arquivo Mapeamento.cpp
  * */
-extern vector<no_intersec> no; // bonecos
 extern direcao_checkpoint cp; // intersecao
 extern int qnt_cruzamentos;
-const bool arena_pequi = false; // testar o robo na nossa arena e na arena oficial
+const bool arena_pequi = true; // testar o robo na nossa arena e na arena oficial
 #endif

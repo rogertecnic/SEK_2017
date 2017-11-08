@@ -128,7 +128,7 @@ void Resgate::resgatar(){
 			}
 			if((cor_E == Cor::vermelho && cor_D == Cor::vermelho) ||
 					(cor_E == Cor::verde && cor_D == Cor::verde) ||
-					(cor_E == Cor::azul && cor_D == Cor::azul) ||
+					(cor_E == Cor::amarelo && cor_D == Cor::amarelo) ||
 					(cor_E == Cor::preto && cor_D == Cor::preto))
 			{
 				robo->andar(20);
@@ -324,15 +324,15 @@ void Resgate::caminho_certo (){
 		}
 	}
 
-	else if (sensor->ler_cor_E() == Cor::azul && sensor->ler_cor_D() == Cor::azul){
-		if (cp.checkpoint_azul == direcao::direita){
+	else if (sensor->ler_cor_E() == Cor::amarelo && sensor->ler_cor_D() == Cor::amarelo){
+		if (cp.checkpoint_amarelo == direcao::direita){
 			if(sentido_navegacao == -1)
 				robo->girar(90);
 			else
 				robo->girar(-90);
 		}
 
-		else if (cp.checkpoint_azul == direcao::esquerda){
+		else if (cp.checkpoint_amarelo == direcao::esquerda){
 			if(sentido_navegacao == -1)
 				robo->girar(-90);
 			else

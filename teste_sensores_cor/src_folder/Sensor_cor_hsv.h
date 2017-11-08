@@ -50,7 +50,6 @@ private:
 	 */
 	double limites_H_Vermelho_E[2] = {10, 340}; // verificar se esta fora
 	double limites_H_Verde_E[2] = {120, 170}; // verificar se esta dentro
-	double limites_H_Azul_E[2] = {210, 270}; // verificar se esta dentro
 	double limites_H_Amarelo_E[2] = {10, 50}; // verificar se esta dentro
 	double maximo_S_Branco_E = 0;
 	double minimo_V_Branco_E = 0;
@@ -59,7 +58,6 @@ private:
 
 	double limites_H_Vermelho_D[2] = {12, 340}; // verificar se esta fora
 	double limites_H_Verde_D[2] = {120, 170}; // verificar se esta dentro
-	double limites_H_Azul_D[2] = {210, 270}; // verificar se esta dentro
 	double limites_H_Amarelo_D[2]= {12, 50}; // verificar se esta dentro
 	double maximo_S_Branco_D = 0;
 	double minimo_V_Branco_D = 0;

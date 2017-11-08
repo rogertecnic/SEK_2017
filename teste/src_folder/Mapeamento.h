@@ -10,7 +10,6 @@
 
 #include "Controlador_robo.h"
 #include "Sensor_cor_hsv.h"
-#include "Arquivos_mapeamento.h"
 #include  "Ultrassom_nxt.h"
 #include "Const.h"
 #include <vector>
@@ -23,68 +22,15 @@ using namespace std;
 
 class Mapeamento {
 public:
-	Mapeamento(Controlador_robo *, Sensor_cor_hsv *, Ultrassom_nxt *, Ultrassom_nxt *);
+	Mapeamento(Controlador_robo *, Sensor_cor_hsv *);
 
 	// inicia rotina de mapeamento
 	void mapear();
-	void testar_map_boneco();//FIXME deletar, marco de teste
 
 private:
 	// objetos utilizadospara controlar o hardware
 	Controlador_robo *robo;
 	Sensor_cor_hsv *sensor;
-	Ultrassom_nxt *ultraE;
-	Ultrassom_nxt *ultraD;
-
-
-	int iterador_fim_cidade = 0;//FIXME deletar, marco de teste
-
-	/*********************************************************************************************/
-	/*************************VARIAVEIS DO MAPEAMENTO DE BONECO***********************************/
-	/*********************************************************************************************/
-	// posicao em que o robo sai de uma intersec
-	double posicao_saiu_intersec = 0;
-	double posicao_chegou_intersec = 0;
-
-	/* Variável de controle da thread*/
-	bool thread_rodando_bonecos = false;
-
-	/* Uma thread para cada sensor ultrassom: esquerdo e direito*/
-	thread mapeamento_bonecoE;
-	thread mapeamento_bonecoD;
-
-	//Arquivo para salvar as informações de mapeamento
-	Arquivos_mapeamento *arq_map;
-
-	/* Lista de Vectors e seus iteradores
-	 * Os Vectors armazenam as posições dos bonecos em relação à intersecção
-	 * Cada nó trata-se de uma intersecção
-	 * Cada intersecção deve conter as posições dos bonecos antes e depois dela (se houver)
-	 */
-	int it_no = 0;
-	/*-------------------------------------------------------------------------------------------*/
-	/*------------------------FIM VARIAVEIS DO MAPEAMENTO DE BONECO------------------------------*/
-	/*-------------------------------------------------------------------------------------------*/
-
-
-	/*********************************************************************************************/
-	/***************************METODOS DO MAPEAMENTO DE BONECO***********************************/
-	/*********************************************************************************************/
-	//Métodos de controle das Threads de mapeamento dos bonecos (sensor ultrassom)
-	bool inicializar_threads_ultra();
-	bool finalizar_threads_ultra();
-
-	//Métodos das rotinas das threads
-	void loop_mapeamento_bonecoE();
-	void loop_mapeamento_bonecoD();
-
-	/* atribui o vector pre a uma intersecao que o robo acabou de chegar
-	 * utilizar quando o robo sair da intersecao
-	 */
-	void novo_no_map_boneco();
-	/*-------------------------------------------------------------------------------------------*/
-	/*-------------------------FIM METODOS DO MAPEAMENTO DE BONECO-------------------------------*/
-	/*-------------------------------------------------------------------------------------------*/
 
 
 	/*********************************************************************************************/
@@ -136,14 +82,6 @@ private:
 	 * ele segue pelo "caminho certo"
 	 */
 	void caminho_certo();
-
-
-	/* Método utilizado em: mapeamento_intersec
-	 * Determina se foi encontrado o final da cidade
-	 * representado por uma rampa com uma sequência de cores
-	 */
-	bool fim_da_cidade();
-
 
 	/*verifica se a cor que o robo esta sobre quando chamar o metodo ja foi mapeada*/
 	bool cor_ja_mapeada();
