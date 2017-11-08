@@ -139,8 +139,6 @@ void teste_pega_boneco(){
 	Garra cancela(ev3dev::OUTPUT_C, 45, "cancela");
 	Ultrassom_nxt ultraE(Ultrassom_nxt::INPUT_3);
 
-	int count_resg = 0;
-
 	robo.inicializar_thread_aceleracao();
 
 	cout << "Fazer teste pega_boneco" << endl;
@@ -152,9 +150,7 @@ void teste_pega_boneco(){
 
 	usleep(1000000*0.3);
 	robo.parar();
-	//robo.andar(-30, );
-	//while(ultraE.le_centimetro() > 25);
-	//robo.parar();
+
 
 	cancela.abrir();
 	garra.abrir();
@@ -168,11 +164,10 @@ void teste_pega_boneco(){
 
 	robo.andar(20);
 	cout << "Vou entrar no for" << endl;
-	while(count_resg < 2){
+	for(unsigned count_resg = 0; count_resg < 1; count_resg++){
 		garra.abrir();
 		usleep(1000000);
 		garra.fechar();
-		count_resg++;
 	}
 	cout << "saindo do for" << endl;
 
@@ -181,7 +176,7 @@ void teste_pega_boneco(){
 	garra.fechar();
 	cancela.fechar();
 
-	robo.andar(-30, 0.15);
+	robo.andar(-30, 0.135);
 	robo.girar(-90);
 	while(robo.get_estado() == flag_aceleracao::girar);
 
