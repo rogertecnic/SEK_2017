@@ -1,8 +1,7 @@
 #include "src_folder/Sensor_cor_hsv.h"
 #include "src_folder/Controlador_robo.h"
-#include "src_folder/Mapeamento.h"
 #include "src_folder/Garra.h"
-#include "src_folder/Resgate.h"
+#include "src_folder/Ultrassom_nxt.h"
 
 
 using namespace std;
@@ -75,7 +74,7 @@ void teste_alinhamento_rampa(){
 
 }
 
-
+/*
 void teste_map(){
 	Controlador_robo robo(true, "debug posicao direto no pwm.m");
 	Sensor_cor_hsv cor(ev3dev::INPUT_1, ev3dev::INPUT_2);
@@ -91,6 +90,7 @@ void teste_map(){
 	map.mapear();
 
 }
+ */
 
 
 void ler_cor(){
@@ -112,7 +112,7 @@ void ler_cor(){
 
 
 void teste_garra(){
-	Garra garra(ev3dev::OUTPUT_C, 45, "cancela");
+	Garra garra(ev3dev::OUTPUT_D, 135, "garra");
 
 	cout << "Teste garra!!!" << endl;
 	while(true){
@@ -158,7 +158,7 @@ void teste_pega_boneco(){
 	robo.girar(90);
 	while(robo.get_estado() == flag_aceleracao::girar);
 
-	robo.andar(30, 0.12);
+	robo.andar(30, robo.get_pintao()+0.02);
 
 	garra.fechar();
 
@@ -184,6 +184,38 @@ void teste_pega_boneco(){
 
 }
 
+
+void realinha(Controlador_robo *robo, direcao lado_saindo) {
+	double pwm_sp = robo->get_pwm_sp();
+	int grau = 12;
+
+	if(lado_saindo == direcao::esquerda) {
+		cout<<"saiu E"<<endl;
+		robo->parar();
+		robo->andar(-80,0.08);
+		robo->girar(-grau);
+		while(robo->get_estado() == flag_aceleracao::girar);
+		robo->andar(pwm_sp);
+	}
+
+	else if(lado_saindo == direcao::direita) {
+		cout<<"saiu D"<<endl;
+		robo->parar();
+		robo->andar(-80,0.08);
+		robo->girar(grau);
+		while(robo->get_estado() == flag_aceleracao::girar);
+		robo->andar(pwm_sp);
+	}
+
+	else {
+		cout << "realinha argumento errado" << endl;
+		robo->parar();
+		usleep(1000000*5);
+	}
+	usleep(1000000*0.3);
+}
+
+
 void teste_go_to_plaza(){
 	Controlador_robo robo(true, "debug posicao direto no pwm.m");
 	Sensor_cor_hsv sensor(ev3dev::INPUT_1, ev3dev::INPUT_2, true, "cores");
@@ -191,6 +223,8 @@ void teste_go_to_plaza(){
 	Garra cancela(ev3dev::OUTPUT_C, 45, "cancela");
 	Ultrassom_nxt ultraE(Ultrassom_nxt::INPUT_3);
 
+	Cor cor_E = Cor::ndCor;
+	Cor	cor_D = Cor::ndCor;
 	int count_nwhite = 0;
 
 
@@ -213,7 +247,7 @@ void teste_go_to_plaza(){
 	}
 	robo.parar();
 
-	robo.andar(30, 0.2);
+	robo.andar(40, 0.3);
 
 	cancela.abrir();
 	garra.abrir();
@@ -223,6 +257,10 @@ void teste_go_to_plaza(){
 	usleep(100000);
 
 	robo.parar();
+	garra.fechar();
+	cancela.fechar();
+
+	//robo.alinhar(&sensor, direcao::frente);
 
 	garra.fechar();
 	cancela.fechar();
@@ -230,25 +268,50 @@ void teste_go_to_plaza(){
 	robo.girar(-90);
 	while(robo.get_estado() == flag_aceleracao::girar);
 
-	robo.andar(30, 0.45);
+	robo.andar(50, 0.40);
 
 	robo.girar(-90);
 	while(robo.get_estado() == flag_aceleracao::girar);
 
-	robo.andar(30, 0.55);
+	robo.andar(50, 0.5);
 
 	robo.girar(-90);
 	while(robo.get_estado() == flag_aceleracao::girar);
 
-	robo.andar(20);
+	robo.andar(30);
 	while(ultraE.le_centimetro() < 30);
 	robo.parar();
-	robo.girar(-90);
+	robo.girar(90);
 	while(robo.get_estado() == flag_aceleracao::girar);
 
+	robo.andar(40);
+	while(true){
+		cor_E = sensor.ler_cor_E();
+		cor_D = sensor.ler_cor_D();
+
+		if(cor_E == Cor::fora)
+			realinha(&robo, direcao::esquerda);
+		else if (cor_D == Cor::fora)
+			realinha(&robo, direcao::direita);
+
+		if((cor_E == Cor::vermelho && cor_D == Cor::vermelho) ||
+				(cor_E == Cor::verde && cor_D == Cor::verde))
+		{
+			robo.alinhar(&sensor, direcao::traz);
+			robo.andar(30);
+			while(sensor.ler_cor_E() != Cor::branco || sensor.ler_cor_D() != Cor::branco);
+			usleep(1000000*0.5);
+			robo.alinhar(&sensor, direcao::traz);
+			robo.parar();
+			break;
+		}
 
 
+
+	}
 }
+
+
 
 void teste_raio_roda(){
 	Controlador_robo robo(true, "debug posicao direto no pwm.m");

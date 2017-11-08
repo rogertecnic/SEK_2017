@@ -6,6 +6,7 @@
 #include <thread>
 #include <string>
 #include "ev3dev.h"
+#include <unistd.h>
 
 
 using namespace std;
