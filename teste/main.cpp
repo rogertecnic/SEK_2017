@@ -253,8 +253,10 @@ void teste_rogerio(){
 	while(!ev3dev::button::enter.process());
 	usleep(1000000*0.1);
 	while(!ev3dev::button::enter.process());
+	//mapa.saidinha_ultima_intersec();
 	mapa.mapear();
-	resgate.resgatar();
+	cout << endl << endl << endl<<"SAIU DO MAPEAMENTO JA";
+	//resgate.resgatar();
 
 
 	/*

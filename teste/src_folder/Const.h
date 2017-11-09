@@ -6,6 +6,7 @@
 #include <thread>
 #include <string>
 #include "ev3dev.h"
+#include <unistd.h>
 
 
 using namespace std;
@@ -33,7 +34,7 @@ struct direcao_checkpoint {
 	direcao checkpoint_amarelo;
 };
 
-const bool automapear_3_checkpoint = true;
+const bool automapear_3_checkpoint = false;
 
 /* == 1 se estiver indo do ponto de start para a rampa
  * == -1 se estiver indo da rampa para o ponto de start
@@ -46,6 +47,6 @@ extern int sentido_navegacao;
  * */
 extern direcao_checkpoint cp; // intersecao
 extern int qnt_cruzamentos;
-const int total_cruzamentos_teste = 3;
-const bool arena_pequi = false; // testar o robo na nossa arena e na arena oficial
+const int total_cruzamentos_teste = 4;
+const bool arena_pequi = true; // testar o robo na nossa arena e na arena oficial
 #endif

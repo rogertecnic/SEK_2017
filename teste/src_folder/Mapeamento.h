@@ -22,6 +22,7 @@ using namespace std;
 
 class Mapeamento {
 public:
+	void saidinha_ultima_intersec();
 	Mapeamento(Controlador_robo *, Sensor_cor_hsv *);
 
 	// inicia rotina de mapeamento
@@ -85,6 +86,19 @@ private:
 
 	/*verifica se a cor que o robo esta sobre quando chamar o metodo ja foi mapeada*/
 	bool cor_ja_mapeada();
+
+	/*
+	 * metodo para fazer a saidinha da ultima intersec, ele eh chamado
+	 * no final do metodo mapear, quando o robo esta detro da ultima intersec
+	 * e de frente para a direcao correta, que seria a direcao da rampa
+	 */
+	//void saidinha_ultima_intersec();
+
+
+	/*
+	 * metodo para voltar pro inicio e ganhas os 20 pontinhos
+	 */
+	void volta_200pto();
 	/*-------------------------------------------------------------------------------------------*/
 	/*-------------------------FIM METODOS DO MAPEAMENTO DE DIRECAO------------------------------*/
 	/*-------------------------------------------------------------------------------------------*/

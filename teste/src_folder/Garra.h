@@ -8,7 +8,7 @@ using namespace std;
 // a garra abre no sentido negativo, o limite eh -42
 class Garra {
 public:
-	Garra(string motor_port, int graus_abertura_do_motor);
+	Garra(string motor_port, int graus_abertura_do_motor, string tipo);
 	void abrir();
 	void fechar();
 
@@ -16,6 +16,7 @@ private:
 	bool garra_aberta = false;
 	ev3dev::large_motor garra;
 	int graus_abertura_do_motor = 0;
+	string tipo;
 };
 
 

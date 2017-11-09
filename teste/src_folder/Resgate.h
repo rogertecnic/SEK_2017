@@ -21,6 +21,7 @@ private:
 	Ultrassom_nxt *ultraE;
 	Ultrassom_nxt *ultraD;
 	Garra garra;
+	Garra cancela;
 	//ev3dev::large_motor *motorCancela;
 
 	/*********************************************************************************************/
