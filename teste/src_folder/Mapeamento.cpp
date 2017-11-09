@@ -10,12 +10,56 @@ int qnt_cruzamentos = 0;
 Mapeamento::Mapeamento(Controlador_robo *robo, Sensor_cor_hsv *sensor)
 :robo(robo), sensor(sensor)
 {
+	file.open("map.txt");
+	if (!( getline(file, c))){
+		outfile.open("map.txt", ios::app);
+		arq_existente = true;
+	}
+}
+
+bool Mapeamento::pegar_informacoes_arq(){
+	int count_intersec_map = 1;
+
+	if(c[0] == 0)
+		cp.checkpoint_vermelho = direcao(c[1]);
+
+	else if(c[0] == 1)
+		cp.checkpoint_amarelo = direcao(c[1]);
+
+	else if(c[0] == 2)
+		cp.checkpoint_verde = direcao(c[1]);
+
+	while(c < 3){
+		if (!( getline(file, c))) break;
+		else{
+			count_intersec_map++;
+
+			if(c[0] == 0)
+				cp.checkpoint_vermelho = direcao(c[1]);
+
+			else if(c[0] == 1)
+				cp.checkpoint_amarelo = direcao(c[1]);
+
+			else if(c[0] == 2)
+				cp.checkpoint_verde = direcao(c[1]);
+
+
+		}
+	}
+
+	if(count_intersec_map == 3) return true;
+	else return false;
 }
 
 /* rotina de mapeamento, controla o robo inteiro enquanto mapeia as cores
  * e faz o controle das threads de mapear os bonecos
  */
 void Mapeamento::mapear(){
+	if(arq_existente)
+		todas_cores_mapeadas = pegar_informacoes_arq();
+
+
+
 	cout << endl << endl << endl << "bora mapear!!" << endl;
 	direcao_atual = direcao::ndDirecao;
 
@@ -352,54 +396,54 @@ void Mapeamento::mapeamento_intersec() {
  */
 void Mapeamento::caminho_certo (){
 	if (sensor->ler_cor_E() == Cor::vermelho && sensor->ler_cor_D() == Cor::vermelho){
-			if (cp.checkpoint_vermelho == direcao::direita){
-				if(sentido_navegacao == -1)
-					robo->girar(90);
-				else
-					robo->girar(-90);
-			}
-
-			else if (cp.checkpoint_vermelho == direcao::esquerda){
-				if(sentido_navegacao == -1)
-					robo->girar(-90);
-				else
-					robo->girar(90);
-			}
+		if (cp.checkpoint_vermelho == direcao::direita){
+			if(sentido_navegacao == -1)
+				robo->girar(90);
+			else
+				robo->girar(-90);
 		}
 
-		else if (sensor->ler_cor_E() == Cor::verde && sensor->ler_cor_D() == Cor::verde){
-			if (cp.checkpoint_verde == direcao::direita){
-				if(sentido_navegacao == -1)
-					robo->girar(90);
-				else
-					robo->girar(-90);
-			}
+		else if (cp.checkpoint_vermelho == direcao::esquerda){
+			if(sentido_navegacao == -1)
+				robo->girar(-90);
+			else
+				robo->girar(90);
+		}
+	}
 
-			else if (cp.checkpoint_verde == direcao::esquerda){
-				if(sentido_navegacao == -1)
-					robo->girar(-90);
-				else
-					robo->girar(90);
-			}
+	else if (sensor->ler_cor_E() == Cor::verde && sensor->ler_cor_D() == Cor::verde){
+		if (cp.checkpoint_verde == direcao::direita){
+			if(sentido_navegacao == -1)
+				robo->girar(90);
+			else
+				robo->girar(-90);
 		}
 
-		else if (sensor->ler_cor_E() == Cor::amarelo && sensor->ler_cor_D() == Cor::amarelo){
-			if (cp.checkpoint_amarelo == direcao::direita){
-				if(sentido_navegacao == -1)
-					robo->girar(90);
-				else
-					robo->girar(-90);
-			}
+		else if (cp.checkpoint_verde == direcao::esquerda){
+			if(sentido_navegacao == -1)
+				robo->girar(-90);
+			else
+				robo->girar(90);
+		}
+	}
 
-			else if (cp.checkpoint_amarelo == direcao::esquerda){
-				if(sentido_navegacao == -1)
-					robo->girar(-90);
-				else
-					robo->girar(90);
-			}
+	else if (sensor->ler_cor_E() == Cor::amarelo && sensor->ler_cor_D() == Cor::amarelo){
+		if (cp.checkpoint_amarelo == direcao::direita){
+			if(sentido_navegacao == -1)
+				robo->girar(90);
+			else
+				robo->girar(-90);
 		}
 
-		while(robo->get_estado() == flag_aceleracao::girar);
+		else if (cp.checkpoint_amarelo == direcao::esquerda){
+			if(sentido_navegacao == -1)
+				robo->girar(-90);
+			else
+				robo->girar(90);
+		}
+	}
+
+	while(robo->get_estado() == flag_aceleracao::girar);
 }
 
 
