@@ -51,12 +51,47 @@ bool Mapeamento::pegar_informacoes_arq(){
 	else return false;
 }
 
+bool Mapeamento::pegar_informacoes_arq(){
+	int count_intersec_map = 1;
+
+	if(c[0] == 0)
+		cp.checkpoint_vermelho = direcao(c[1]);
+
+	else if(c[0] == 1)
+		cp.checkpoint_amarelo = direcao(c[1]);
+
+	else if(c[0] == 2)
+		cp.checkpoint_verde = direcao(c[1]);
+
+	while(count_intersec_map < 3){
+		if (!( getline(file, c))) break;
+		else{
+			count_intersec_map++;
+
+			if(c[0] == 0)
+				cp.checkpoint_vermelho = direcao(c[1]);
+
+			else if(c[0] == 1)
+				cp.checkpoint_amarelo = direcao(c[1]);
+
+			else if(c[0] == 2)
+				cp.checkpoint_verde = direcao(c[1]);
+
+
+		}
+	}
+
+	if(count_intersec_map == 3) return true;
+	else return false;
+}
+
+
 /* rotina de mapeamento, controla o robo inteiro enquanto mapeia as cores
  * e faz o controle das threads de mapear os bonecos
  */
 void Mapeamento::mapear(){
 	if(arq_existente)
-		todas_cores_mapeadas = pegar_informacoes_arq();
+		//todas_cores_mapeadas = pegar_informacoes_arq();
 
 
 
@@ -130,7 +165,7 @@ void Mapeamento::mapear(){
 				estd = estados_arena::faixa;
 			}
 			else if(qnt_cruzamentos == 0 && sentido_navegacao == -1){
-				robo->andar(60,0.15);
+				robo->andar(60,0.18);
 				sentido_navegacao = 1;
 				robo->girar(180);
 				while(robo->get_estado() == flag_aceleracao::girar);

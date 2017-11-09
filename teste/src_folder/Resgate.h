@@ -70,7 +70,7 @@ private:
 	 * metodo usado para ir do inicio para o final, o robo deve estar
 	 * no inicio da arena, antes da primeira intersecao e virado para frente (1),
 	 * este metodo termina com o robo na ultima intersec, virado para traz (-1) e
-	 * depois de alinhar para traz na intersec
+	 * depois de alinhar para traz na intersec um pouco para frente
 	 */
 	void ir_para_final();
 	/*-------------------------------------------------------------------------------------------*/
