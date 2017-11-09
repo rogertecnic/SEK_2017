@@ -170,7 +170,7 @@ void Resgate::resgatar(){
 void Resgate::intersec() {
 	if(sentido_navegacao == -1)
 		qnt_cruzamentos --;
-	else
+	else{
 		qnt_cruzamentos ++;
 
 		robo->alinhar(sensor, direcao::traz);
