@@ -29,4 +29,4 @@ list(APPEND LIBS  src_folder/Garra.cpp)
 #list(APPEND LIBS  src_folder/Resgate.cpp)
 
 # adiciona todos os sources e o main para serem compilados juntos
-add_executable(binario  ${LIBS} main.cpp)
+add_executable(teste_garra  ${LIBS} main.cpp)

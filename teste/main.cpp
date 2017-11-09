@@ -222,8 +222,8 @@ void realinha(Controlador_robo *robo, direcao lado_saindo) {
 void teste_go_to_plaza(){
 	Controlador_robo robo(true, "debug posicao direto no pwm.m");
 	Sensor_cor_hsv sensor(ev3dev::INPUT_1, ev3dev::INPUT_2, true, "cores");
-	Garra garra(ev3dev::OUTPUT_D, 135, "garra");
-	Garra cancela(ev3dev::OUTPUT_C, 45, "cancela");
+	Garra garra(ev3dev::OUTPUT_D, 90, "garra");
+	Garra cancela(ev3dev::OUTPUT_C, -35, "cancela");
 	Ultrassom_nxt ultraE(Ultrassom_nxt::INPUT_3);
 
 	Cor cor_E = Cor::ndCor;
