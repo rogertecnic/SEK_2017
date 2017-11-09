@@ -583,6 +583,8 @@ int main(){
 	//teste_rogerio_alinhamento();
 	//teste_luana_mapeamento();
 
+	ev3dev::button::back.pressed();
+
 	cout << "Teste finalizado. Bye!" << endl;
 	usleep (1000000);
 	return 0;
