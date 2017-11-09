@@ -249,14 +249,15 @@ void teste_rogerio(){
 	/*
 	 * teste classe mapeamento com classe sensor cor hsv
 	 */
-	robot.calibra_sensor_cor(&cor);
+	//robot.calibra_sensor_cor(&cor);
+	//cor.fecha_arquivo();
 	while(!ev3dev::button::enter.process());
 	usleep(1000000*0.1);
 	while(!ev3dev::button::enter.process());
 	//mapa.saidinha_ultima_intersec();
 	mapa.mapear();
 	cout <<"SAIU DO MAPEAMENTO JA"<<endl;
-	usleep(1000000*3);
+	resgate.ir_para_final();
 	resgate.resgatar();
 
 

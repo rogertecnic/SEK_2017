@@ -188,6 +188,9 @@ void Sensor_cor_hsv::fecha_arquivo(){
 		arquivo_D->fecha_arq();
 	}
 	string strr = "%maximos e minimos: \n% " +
+			to_string(fator_escalimetro_rgb_E[0])+ "\n% " +
+			to_string(fator_escalimetro_rgb_E[1])+ "\n% " +
+			to_string(fator_escalimetro_rgb_E[2])+ "\n% " +
 			to_string(maximo_S_Branco_E) + "\n% " +
 			to_string(minimo_V_Branco_E) + "\n% " +
 			to_string(maximo_V_Preto_E) + "\n% " +
@@ -195,6 +198,9 @@ void Sensor_cor_hsv::fecha_arquivo(){
 			"plot(x4);";
 	arquivo_E->string_arq(strr);
 	strr = "%maximos e minimos: \n% " +
+			to_string(fator_escalimetro_rgb_D[0])+ "\n% " +
+			to_string(fator_escalimetro_rgb_D[1])+ "\n% " +
+			to_string(fator_escalimetro_rgb_D[2])+ "\n% " +
 			to_string(maximo_S_Branco_D) + "\n% " +
 			to_string(minimo_V_Branco_D) + "\n% " +
 			to_string(maximo_V_Preto_D) + "\n% " +

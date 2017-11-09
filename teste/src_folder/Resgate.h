@@ -14,6 +14,13 @@ public:
 
 	Resgate(Controlador_robo *, Sensor_cor_hsv *, Ultrassom_nxt *, Ultrassom_nxt *, string porta_garra);
 	void resgatar();
+	/*
+	 * metodo usado para ir do inicio para o final, o robo deve estar
+	 * no inicio da arena, antes da primeira intersecao e virado para frente (1),
+	 * este metodo termina com o robo na ultima intersec, virado para traz (-1) e
+	 * depois de alinhar para traz na intersec um pouco para frente
+	 */
+	void ir_para_final();
 
 private:
 	Controlador_robo *robo;
@@ -66,13 +73,7 @@ private:
 	 */
 	void caminho_certo();
 
-	/*
-	 * metodo usado para ir do inicio para o final, o robo deve estar
-	 * no inicio da arena, antes da primeira intersecao e virado para frente (1),
-	 * este metodo termina com o robo na ultima intersec, virado para traz (-1) e
-	 * depois de alinhar para traz na intersec um pouco para frente
-	 */
-	void ir_para_final();
+
 	/*-------------------------------------------------------------------------------------------*/
 	/*-------------------------FIM METODOS DO CONTROLE DE DIRECAO--------------------------------*/
 	/*-------------------------------------------------------------------------------------------*/

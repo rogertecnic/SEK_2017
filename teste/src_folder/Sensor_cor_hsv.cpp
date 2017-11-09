@@ -37,6 +37,22 @@ Sensor_cor_hsv::Sensor_cor_hsv(string sensor_port_E, string sensor_port_D,
 		limites_H_Verde_D[1] = 150;
 		limites_H_Amarelo_D[0] = 24; // verificar se esta dentro
 		limites_H_Amarelo_D[1] = 50;
+
+		fator_escalimetro_rgb_E[0] = 1.861314;
+		fator_escalimetro_rgb_E[1] = 1.473988;
+		fator_escalimetro_rgb_E[2] = 2.339450;
+		maximo_S_Branco_E = 0.099070;
+		minimo_V_Branco_E  = 0.749686;
+		maximo_V_Preto_E  = 0.163725;
+		minimo_V_Preto_E = 0.061667;
+
+		fator_escalimetro_rgb_D[0] = 2.125000;
+		fator_escalimetro_rgb_D[1] = 1.888889;
+		fator_escalimetro_rgb_D[2] = 4.047619;
+		maximo_S_Branco_D = 0.077522;
+		minimo_V_Branco_D  = 0.757529;
+		maximo_V_Preto_D  = 0.159804;
+		minimo_V_Preto_D = 0.065588;
 	}
 }
 
@@ -136,6 +152,7 @@ void Sensor_cor_hsv::set_fatores_rgb(double *valores_E, double *valores_D) {
 }
 
 void Sensor_cor_hsv::set_maximos_minimos(double *maximos_E, double *maximos_D){
+	cout << endl << endl << endl << endl << "maxmin:" << endl;
 	maximo_S_Branco_E = maximos_E[0];
 	minimo_V_Branco_E  = maximos_E[1];
 	maximo_V_Preto_E  = maximos_E[2];
@@ -145,6 +162,28 @@ void Sensor_cor_hsv::set_maximos_minimos(double *maximos_E, double *maximos_D){
 	minimo_V_Branco_D  = maximos_D[1];
 	maximo_V_Preto_D  = maximos_D[2];
 	minimo_V_Preto_D = maximos_D[3];
+
+	maximo_S_Branco_E = 0.0880851;
+	minimo_V_Branco_E  = 0.781059;
+	maximo_V_Preto_E  = 0.179412;
+	minimo_V_Preto_E = 0.0773529;
+
+	maximo_S_Branco_D = 0.0613223;
+	minimo_V_Branco_D  = 0.796745;
+	maximo_V_Preto_D  = 0.167647;
+	minimo_V_Preto_D = 0.0734314;
+
+	for(int i = 0; i <= 3; i ++) {
+		while(!ev3dev::button::enter.process());
+		usleep(1000000*0.1);
+		while(!ev3dev::button::enter.process());
+		cout << maximos_E[i] << endl <<  maximos_D[i] << endl;
+	}
+	while(!ev3dev::button::enter.process());
+	usleep(1000000*0.1);
+	while(!ev3dev::button::enter.process());
+	cout << "acabou!" << endl;
+
 }
 
 
