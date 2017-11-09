@@ -113,11 +113,14 @@ void ler_cor(){
 
 void teste_garra(){
 	Garra garra(ev3dev::OUTPUT_D, 135, "garra");
+	Garra cancela(ev3dev::OUTPUT_C, 45, "cancela");
 
 	cout << "Teste garra!!!" << endl;
 	while(true){
 		if(ev3dev::button::up.process()) garra.abrir();
 		else if(ev3dev::button::down.process()) garra.fechar();
+		else if(ev3dev::button::left.process()) cancela.abrir();
+		else if(ev3dev::button::right.process()) cancela.fechar();
 		else if(ev3dev::button::back.process()) break;
 	}
 }
@@ -347,10 +350,10 @@ int main(){
 	//teste_alinhamento_rampa();
 	//ler_cor();
 	//teste_map();
-	//teste_garra();
+	teste_garra();
 	//teste_raio_roda();
 	//teste_distancia_entre_rodas();
-	teste_pega_boneco();
+	//teste_pega_boneco();
 	//teste_leitura_ultra();
 
 	cout << "Teste finalizado. Bye!" << endl;

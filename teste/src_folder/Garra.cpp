@@ -17,7 +17,7 @@ void Garra::abrir() {
 		garra.set_position_sp(-graus_abertura_do_motor);
 		garra.run_to_abs_pos();
 	}
-	usleep(2000000);
+	usleep(1000000);
 
 }
 
@@ -34,5 +34,5 @@ void Garra::fechar() {
 		garra_aberta = false;
 		garra.run_to_abs_pos();
 	}
-	usleep(2000000);
+	usleep(1000000);
 }
