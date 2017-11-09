@@ -85,7 +85,10 @@ void Resgate::resgatar(){
 			robo->alinhar(sensor, direcao::traz);
 			if(qnt_cruzamentos<= 0){
 				estd = estados_arena::terminado;
-				cout << endl << endl << "inicio intersec"<< endl;
+				cout << endl << endl << "TERMINOU RESGATE"<< endl;
+			}
+			else if(qnt_cruzamentos >=total_cruzamentos_teste){ // subir rampa
+				//TODO subir a rampa, alinhar com o final do verde
 			}
 			else{
 				estd = estados_arena::faixa;
@@ -154,11 +157,9 @@ void Resgate::resgatar(){
 			break; // FIM CASE captura:
 
 
-		case estados_arena::salva: // caso esteja com boneco e ja esteja no fim
-			//TODO fazer o salvamento, quando ja estiver com o boneco dentro
-			robo->parar();
-			cout << "HR DE SALVAR!!" << endl;
-			usleep(1000000*10);
+		case estados_arena::salva:
+			go_to_plaza();
+			//TODO fazer retorno para continuar resgatando
 			break;// FIM CASE salva:
 
 
@@ -173,15 +174,15 @@ void Resgate::intersec() {
 	else
 		qnt_cruzamentos ++;
 
-		robo->alinhar(sensor, direcao::traz);
-		robo->andar(50, 0.15 + robo->get_pintao()); // vai pro meio do quadrado
-		caminho_certo();
-		cor_E = sensor->ler_cor_E();
-		cor_D = sensor->ler_cor_D();
-		robo->andar(70);
-		while(sensor->ler_cor_E() == cor_E || sensor->ler_cor_D() == cor_D);
-		usleep(1000000*0.3);
-	}
+	robo->alinhar(sensor, direcao::traz);
+	robo->andar(50, 0.15 + robo->get_pintao()); // vai pro meio do quadrado
+	caminho_certo();
+	cor_E = sensor->ler_cor_E();
+	cor_D = sensor->ler_cor_D();
+	robo->andar(70);
+	while(sensor->ler_cor_E() == cor_E || sensor->ler_cor_D() == cor_D);
+	usleep(1000000*0.3);
+
 }
 
 
@@ -275,6 +276,10 @@ void Resgate::caminho_certo (){
 	while(robo->get_estado() == flag_aceleracao::girar);
 }
 
+/*
+ * quando terminar a captura o robo esta no sentido 1, no meio da pista
+ * e entra no estado de salvar
+ */
 void Resgate::captura_rogerio() {
 	dist_boneco_E = ultraE->le_centimetro();
 	dist_boneco_D = ultraD->le_centimetro();
@@ -329,7 +334,6 @@ void Resgate::captura_rogerio() {
 	else{
 		cout << "NAO!" << endl;
 		estd = estados_arena::faixa;
-		break;
 	}
 }
 
@@ -428,13 +432,18 @@ void Resgate::ir_para_final() {
 				robo->andar(30, 0.02);
 			}
 			cout << "SIM" << endl;
+
 			if(qnt_cruzamentos>=3){ // se caso for a ultima intersec,
 				sentido_navegacao = -1;
 				robo->girar(180);
 				while(robo->get_estado() == flag_aceleracao::girar);
-				robo->alinhar(sensor,direcao::traz); // TODO TO AQUIII
-
+				robo->alinhar(sensor,direcao::traz);
+				robo->andar(30,0.08);
+				estd = estados_arena::terminado;
+				cout << endl << endl << "PODE INICIAR CAPTURA"<< endl;
+				break;
 			}
+
 			intersec();
 			while( !(sensor->ler_cor_E() == Cor::branco) || !(sensor->ler_cor_D() == Cor::branco))
 			{
@@ -451,14 +460,8 @@ void Resgate::ir_para_final() {
 				}
 			}
 			robo->alinhar(sensor, direcao::traz);
-			if(qnt_cruzamentos>= total_cruzamentos_teste){
-				estd = estados_arena::terminado;
-				cout << endl << endl << "PODE INICIAR CAPTURA"<< endl;
-			}
-			else{
-				estd = estados_arena::faixa;
-				cout << "FAIXA!!" << endl;
-			}
+			estd = estados_arena::faixa;
+			cout << "FAIXA!!" << endl;
 
 			break; // FIM CASE intersec:
 

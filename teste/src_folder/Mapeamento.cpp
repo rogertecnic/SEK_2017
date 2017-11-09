@@ -86,7 +86,7 @@ void Mapeamento::mapear(){
 				estd = estados_arena::faixa;
 			}
 			else if(qnt_cruzamentos == 0 && sentido_navegacao == -1){
-				robo->andar(60,0.15);
+				robo->andar(60,0.18);
 				sentido_navegacao = 1;
 				robo->girar(180);
 				while(robo->get_estado() == flag_aceleracao::girar);
@@ -352,54 +352,54 @@ void Mapeamento::mapeamento_intersec() {
  */
 void Mapeamento::caminho_certo (){
 	if (sensor->ler_cor_E() == Cor::vermelho && sensor->ler_cor_D() == Cor::vermelho){
-			if (cp.checkpoint_vermelho == direcao::direita){
-				if(sentido_navegacao == -1)
-					robo->girar(90);
-				else
-					robo->girar(-90);
-			}
-
-			else if (cp.checkpoint_vermelho == direcao::esquerda){
-				if(sentido_navegacao == -1)
-					robo->girar(-90);
-				else
-					robo->girar(90);
-			}
+		if (cp.checkpoint_vermelho == direcao::direita){
+			if(sentido_navegacao == -1)
+				robo->girar(90);
+			else
+				robo->girar(-90);
 		}
 
-		else if (sensor->ler_cor_E() == Cor::verde && sensor->ler_cor_D() == Cor::verde){
-			if (cp.checkpoint_verde == direcao::direita){
-				if(sentido_navegacao == -1)
-					robo->girar(90);
-				else
-					robo->girar(-90);
-			}
+		else if (cp.checkpoint_vermelho == direcao::esquerda){
+			if(sentido_navegacao == -1)
+				robo->girar(-90);
+			else
+				robo->girar(90);
+		}
+	}
 
-			else if (cp.checkpoint_verde == direcao::esquerda){
-				if(sentido_navegacao == -1)
-					robo->girar(-90);
-				else
-					robo->girar(90);
-			}
+	else if (sensor->ler_cor_E() == Cor::verde && sensor->ler_cor_D() == Cor::verde){
+		if (cp.checkpoint_verde == direcao::direita){
+			if(sentido_navegacao == -1)
+				robo->girar(90);
+			else
+				robo->girar(-90);
 		}
 
-		else if (sensor->ler_cor_E() == Cor::amarelo && sensor->ler_cor_D() == Cor::amarelo){
-			if (cp.checkpoint_amarelo == direcao::direita){
-				if(sentido_navegacao == -1)
-					robo->girar(90);
-				else
-					robo->girar(-90);
-			}
+		else if (cp.checkpoint_verde == direcao::esquerda){
+			if(sentido_navegacao == -1)
+				robo->girar(-90);
+			else
+				robo->girar(90);
+		}
+	}
 
-			else if (cp.checkpoint_amarelo == direcao::esquerda){
-				if(sentido_navegacao == -1)
-					robo->girar(-90);
-				else
-					robo->girar(90);
-			}
+	else if (sensor->ler_cor_E() == Cor::amarelo && sensor->ler_cor_D() == Cor::amarelo){
+		if (cp.checkpoint_amarelo == direcao::direita){
+			if(sentido_navegacao == -1)
+				robo->girar(90);
+			else
+				robo->girar(-90);
 		}
 
-		while(robo->get_estado() == flag_aceleracao::girar);
+		else if (cp.checkpoint_amarelo == direcao::esquerda){
+			if(sentido_navegacao == -1)
+				robo->girar(-90);
+			else
+				robo->girar(90);
+		}
+	}
+
+	while(robo->get_estado() == flag_aceleracao::girar);
 }
 
 
