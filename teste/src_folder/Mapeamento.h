@@ -110,7 +110,7 @@ private:
 	string c;
 	bool arq_existente = false;
 	bool todas_cores_mapeadas = false;
-	//bool pegar_informacoes_arq();
+	bool pegar_informacoes_arq();
 
 
 };

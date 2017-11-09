@@ -17,39 +17,74 @@ Mapeamento::Mapeamento(Controlador_robo *robo, Sensor_cor_hsv *sensor)
 	}
 }
 
-//bool Mapeamento::pegar_informacoes_arq(){
-//	int count_intersec_map = 1;
-//
-//	if(c[0] == 0)
-//		cp.checkpoint_vermelho = direcao(c[1]);
-//
-//	else if(c[0] == 1)
-//		cp.checkpoint_amarelo = direcao(c[1]);
-//
-//	else if(c[0] == 2)
-//		cp.checkpoint_verde = direcao(c[1]);
-//
-//	while(c < 3){
-//		if (!( getline(file, c))) break;
-//		else{
-//			count_intersec_map++;
-//
-//			if(c[0] == 0)
-//				cp.checkpoint_vermelho = direcao(c[1]);
-//
-//			else if(c[0] == 1)
-//				cp.checkpoint_amarelo = direcao(c[1]);
-//
-//			else if(c[0] == 2)
-//				cp.checkpoint_verde = direcao(c[1]);
-//
-//
-//		}
-//	}
-//
-//	if(count_intersec_map == 3) return true;
-//	else return false;
-//}
+bool Mapeamento::pegar_informacoes_arq(){
+	int count_intersec_map = 1;
+
+	if(c[0] == 0)
+		cp.checkpoint_vermelho = direcao(c[1]);
+
+	else if(c[0] == 1)
+		cp.checkpoint_amarelo = direcao(c[1]);
+
+	else if(c[0] == 2)
+		cp.checkpoint_verde = direcao(c[1]);
+
+	while(count_intersec_map < 3){
+		if (!( getline(file, c))) break;
+		else{
+			count_intersec_map++;
+
+			if(c[0] == 0)
+				cp.checkpoint_vermelho = direcao(c[1]);
+
+			else if(c[0] == 1)
+				cp.checkpoint_amarelo = direcao(c[1]);
+
+			else if(c[0] == 2)
+				cp.checkpoint_verde = direcao(c[1]);
+
+
+		}
+	}
+
+	if(count_intersec_map == 3) return true;
+	else return false;
+}
+
+bool Mapeamento::pegar_informacoes_arq(){
+	int count_intersec_map = 1;
+
+	if(c[0] == 0)
+		cp.checkpoint_vermelho = direcao(c[1]);
+
+	else if(c[0] == 1)
+		cp.checkpoint_amarelo = direcao(c[1]);
+
+	else if(c[0] == 2)
+		cp.checkpoint_verde = direcao(c[1]);
+
+	while(count_intersec_map < 3){
+		if (!( getline(file, c))) break;
+		else{
+			count_intersec_map++;
+
+			if(c[0] == 0)
+				cp.checkpoint_vermelho = direcao(c[1]);
+
+			else if(c[0] == 1)
+				cp.checkpoint_amarelo = direcao(c[1]);
+
+			else if(c[0] == 2)
+				cp.checkpoint_verde = direcao(c[1]);
+
+
+		}
+	}
+
+	if(count_intersec_map == 3) return true;
+	else return false;
+}
+
 
 /* rotina de mapeamento, controla o robo inteiro enquanto mapeia as cores
  * e faz o controle das threads de mapear os bonecos
@@ -298,12 +333,18 @@ void Mapeamento::mapeamento_intersec() {
 			else if(!cor_ja_mapeada())
 			{
 				if(!confirmacao_status){ // se cor atual nao foi mapeada preveamente mapeia
-					if(cor_atual == Cor::vermelho)
+					if(cor_atual == Cor::vermelho){
 						cp.checkpoint_vermelho = direcao_atual;
-					else if(cor_atual == Cor::verde)
+						outfile << "0"  << direcao_atual << endl;
+					}
+					else if(cor_atual == Cor::verde){
 						cp.checkpoint_verde = direcao_atual;
-					else if (cor_atual == Cor::amarelo)
+						outfile << "1"  << direcao_atual << endl;
+					}
+					else if (cor_atual == Cor::amarelo){
 						cp.checkpoint_amarelo = direcao_atual;
+						outfile << "2"  << direcao_atual << endl;
+					}
 					qnt_cores_mapeadas ++;
 				}
 
@@ -362,12 +403,18 @@ void Mapeamento::mapeamento_intersec() {
 			/*Cor ja mapeada, pode ser igual a atual ou outra cor*/
 			else {
 				if (!confirmacao_status){
-					if(cor_atual == Cor::vermelho)
+					if(cor_atual == Cor::vermelho){
 						cp.checkpoint_vermelho = direcao_atual;
-					else if(cor_atual == Cor::verde)
+						outfile << "0"  << direcao_atual << endl;
+					}
+					else if(cor_atual == Cor::verde){
 						cp.checkpoint_verde = direcao_atual;
-					else if (cor_atual == Cor::amarelo)
+						outfile << "1"  << direcao_atual << endl;
+					}
+					else if (cor_atual == Cor::amarelo){
 						cp.checkpoint_amarelo = direcao_atual;
+						outfile << "2"  << direcao_atual << endl;
+					}
 					qnt_cores_mapeadas ++;
 				}
 
