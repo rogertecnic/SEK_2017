@@ -7,11 +7,6 @@ Resgate::Resgate(Controlador_robo *robo, Sensor_cor_hsv *sensor, Ultrassom_nxt *
 {}
 
 void Resgate::resgatar(){
-	sentido_navegacao = -1;
-	cout << endl << endl << endl << "RESGATAR!!" << endl;
-	robo->girar(180);
-	while(robo->get_estado() == flag_aceleracao::girar);
-	robo->alinhar(sensor, direcao::traz);
 	robo->andar(pwm_busca);
 	usleep(1000000*0.5); // esperar sair da cor que ele alinhou
 
@@ -75,13 +70,16 @@ void Resgate::resgatar(){
 			intersec();
 			while( !(sensor->ler_cor_E() == Cor::branco) || !(sensor->ler_cor_D() == Cor::branco))
 			{
+				robo->andar(20);
+				usleep(1000000*0.08);
 				count_branco_apos_intersec ++;
-				if(count_branco_apos_intersec >=8){
+				if(count_branco_apos_intersec >=15){
 					robo->parar();
 					cout << "o robo terminou a intersecao e nao esta no branco" << endl;
-					cout << "esperando 10 seg" << endl;
-					usleep(1000000*10);
+					cout << "esperando 3 seg" << endl;
+					usleep(1000000*3);
 					estd = estados_arena::faixa;
+					break;
 				}
 			}
 			robo->alinhar(sensor, direcao::traz);
@@ -150,61 +148,8 @@ void Resgate::resgatar(){
 
 
 		case estados_arena::captura: // caso ver algum boneco
-			dist_boneco_E = ultraE->le_centimetro();
-			dist_boneco_D = ultraD->le_centimetro();
-			if(dist_boneco_E <= distancia_boneco){ // viu boneco a esquerda
-				cout << "ESQ!" << endl;
-				robo->parar();
-				robo->andar(-30, 0.1);
-				cancela.abrir();
-				garra.abrir();
-				robo->girar(90);
-				while(robo->get_estado() == flag_aceleracao::girar);
-				robo->andar(30, 0.2);
-				cancela.fechar();
-				garra.fechar();
-				robo->andar(-40, 0.2);
-				carga_bonecos ++;
-				if(carga_bonecos >=capacidade_bonecos){ // cheio, salva
-					robo->girar(90);
-					while(robo->get_estado() == flag_aceleracao::girar);
-					sentido_navegacao = 1;
-					estd = estados_arena::salva;
-				}
-				else{ // ainda nao cheio, continuar a procurar
-					robo->girar(-90);
-					while(robo->get_estado() == flag_aceleracao::girar);
-					estd = estados_arena::faixa;
-				}
-			}
-			else if(dist_boneco_D <= distancia_boneco){ // viu boneco a direita
-				cout << "DIR!" << endl;
-				robo->parar();
-				robo->andar(-30, 0.1);
-				garra.abrir();
-				robo->girar(-90);
-				while(robo->get_estado() == flag_aceleracao::girar);
-				robo->andar(30, 0.2);
-				garra.fechar();
-				robo->andar(-40, 0.2);
-				carga_bonecos ++;
-				if(carga_bonecos >=capacidade_bonecos){ // cheio, saiva
-					robo->girar(-90);
-					while(robo->get_estado() == flag_aceleracao::girar);
-					sentido_navegacao = 1;
-					estd = estados_arena::salva;
-				}
-				else{ // ainda nao cheio, continuar a procurar
-					robo->girar(90);
-					while(robo->get_estado() == flag_aceleracao::girar);
-					estd = estados_arena::faixa;
-				}
-			}
-			else{
-				cout << "NAO!" << endl;
-				estd = estados_arena::faixa;
-				break;
-			}
+			captura_rogerio();
+			//captura_luana();
 
 			break; // FIM CASE captura:
 
@@ -228,7 +173,6 @@ void Resgate::intersec() {
 	else
 		qnt_cruzamentos ++;
 
-	if(qnt_cruzamentos >0){
 		robo->alinhar(sensor, direcao::traz);
 		robo->andar(50, 0.15 + robo->get_pintao()); // vai pro meio do quadrado
 		caminho_certo();
@@ -237,9 +181,6 @@ void Resgate::intersec() {
 		robo->andar(70);
 		while(sensor->ler_cor_E() == cor_E || sensor->ler_cor_D() == cor_D);
 		usleep(1000000*0.3);
-		estd = estados_arena::faixa;
-	}else{
-		estd = estados_arena::terminado;
 	}
 }
 
@@ -332,4 +273,355 @@ void Resgate::caminho_certo (){
 	}
 
 	while(robo->get_estado() == flag_aceleracao::girar);
+}
+
+void Resgate::captura_rogerio() {
+	dist_boneco_E = ultraE->le_centimetro();
+	dist_boneco_D = ultraD->le_centimetro();
+	if(dist_boneco_E <= distancia_boneco){ // viu boneco a esquerda
+		cout << "ESQ!" << endl;
+		robo->parar();
+		robo->andar(-30, 0.1);
+		cancela.abrir();
+		garra.abrir();
+		robo->girar(90);
+		while(robo->get_estado() == flag_aceleracao::girar);
+		robo->andar(30, 0.2);
+		cancela.fechar();
+		garra.fechar();
+		robo->andar(-40, 0.2);
+		carga_bonecos ++;
+		if(carga_bonecos >=capacidade_bonecos){ // cheio, salva
+			robo->girar(90);
+			while(robo->get_estado() == flag_aceleracao::girar);
+			sentido_navegacao = 1;
+			estd = estados_arena::salva;
+		}
+		else{ // ainda nao cheio, continuar a procurar
+			robo->girar(-90);
+			while(robo->get_estado() == flag_aceleracao::girar);
+			estd = estados_arena::faixa;
+		}
+	}
+	else if(dist_boneco_D <= distancia_boneco){ // viu boneco a direita
+		cout << "DIR!" << endl;
+		robo->parar();
+		robo->andar(-30, 0.1);
+		garra.abrir();
+		robo->girar(-90);
+		while(robo->get_estado() == flag_aceleracao::girar);
+		robo->andar(30, 0.2);
+		garra.fechar();
+		robo->andar(-40, 0.2);
+		carga_bonecos ++;
+		if(carga_bonecos >=capacidade_bonecos){ // cheio, saiva
+			robo->girar(-90);
+			while(robo->get_estado() == flag_aceleracao::girar);
+			sentido_navegacao = 1;
+			estd = estados_arena::salva;
+		}
+		else{ // ainda nao cheio, continuar a procurar
+			robo->girar(90);
+			while(robo->get_estado() == flag_aceleracao::girar);
+			estd = estados_arena::faixa;
+		}
+	}
+	else{
+		cout << "NAO!" << endl;
+		estd = estados_arena::faixa;
+		break;
+	}
+}
+
+/*
+ * metodo de captura da luana, o robo deve ter acabado de detectar o boneco
+ * para chamar este metodo
+ */
+void Resgate::captura_luana() {
+	Controlador_robo robo(true, "debug posicao direto no pwm.m");
+	Garra garra(ev3dev::OUTPUT_D, 135, "garra");
+	Garra cancela(ev3dev::OUTPUT_C, 45, "cancela");
+	Ultrassom_nxt ultraE(Ultrassom_nxt::INPUT_3);
+
+	robo.inicializar_thread_aceleracao();
+
+	cout << "Fazer teste pega_boneco" << endl;
+	while(!ev3dev::button::enter.process());
+
+	robo.andar(25);
+	while(!ev3dev::button::up.process());
+
+
+	usleep(1000000*0.3);
+	robo.parar();
+
+
+	cancela.abrir();
+	garra.abrir();
+
+	robo.girar(90);
+	while(robo.get_estado() == flag_aceleracao::girar);
+
+	robo.andar(30, robo.get_pintao()+0.02);
+
+	garra.fechar();
+
+	robo.andar(20);
+	cout << "Vou entrar no for" << endl;
+	for(unsigned count_resg = 0; count_resg < 1; count_resg++){
+		garra.abrir();
+		usleep(1000000);
+		garra.fechar();
+	}
+	cout << "saindo do for" << endl;
+
+	robo.parar();
+
+	garra.fechar();
+	cancela.fechar();
+
+	robo.andar(-30, 0.135);
+	robo.girar(-90);
+	while(robo.get_estado() == flag_aceleracao::girar);
+
+}
+
+void Resgate::ir_para_final() {
+	int count_intersec = 0; // contador para confirmar quando entrar na intersecao
+	int count_branco_apos_intersec = 0; // contador para confirmar a saida da intersecao
+	Cor corE_corD_iguais = Cor::ndCor; // quando os sensores lerem a mesma cor, para comparacao
+	while(true){
+		cor_E = sensor->ler_cor_E();
+		cor_D = sensor->ler_cor_D();
+
+		switch (estd){
+		case estados_arena::leu_fora:
+			cout << "fora:";
+			count_intersec = 0;
+			count_branco_apos_intersec = 0;
+			corE_corD_iguais = Cor::ndCor;
+			if(cor_E == Cor::fora)
+				realinha(direcao::esquerda);
+			else if (cor_D == Cor::fora)
+				realinha(direcao::direita);
+			else {
+				estd = estados_arena::atencao;
+				cout << "ATENCAO!!" << endl;
+			}
+
+			break; // FIM CASE leu_fora:
+
+
+		case estados_arena::intersec:
+			cout << "intersec?";
+			while(true){
+				if(sensor->ler_cor_E() != cor_E){
+					realinha(direcao::esquerda);
+				}
+				else if(sensor->ler_cor_D() != cor_D){
+					realinha(direcao::direita);
+				}
+				else
+					break;
+				cout << "nao, loop infinito?" << endl;//FIXME tratar
+				robo->alinhar(sensor, direcao::frente);
+				robo->andar(30, 0.02);
+			}
+			cout << "SIM" << endl;
+			if(qnt_cruzamentos>=3){ // se caso for a ultima intersec,
+				sentido_navegacao = -1;
+				robo->girar(180);
+				while(robo->get_estado() == flag_aceleracao::girar);
+				robo->alinhar(sensor,direcao::traz); // TODO TO AQUIII
+
+			}
+			intersec();
+			while( !(sensor->ler_cor_E() == Cor::branco) || !(sensor->ler_cor_D() == Cor::branco))
+			{
+				robo->andar(20);
+				usleep(1000000*0.08);
+				count_branco_apos_intersec ++;
+				if(count_branco_apos_intersec >=15){
+					robo->parar();
+					cout << "o robo terminou a intersecao e nao esta no branco" << endl;
+					cout << "esperando 3 seg" << endl;
+					usleep(1000000*3);
+					estd = estados_arena::faixa;
+					break;
+				}
+			}
+			robo->alinhar(sensor, direcao::traz);
+			if(qnt_cruzamentos>= total_cruzamentos_teste){
+				estd = estados_arena::terminado;
+				cout << endl << endl << "PODE INICIAR CAPTURA"<< endl;
+			}
+			else{
+				estd = estados_arena::faixa;
+				cout << "FAIXA!!" << endl;
+			}
+
+			break; // FIM CASE intersec:
+
+
+		case estados_arena::faixa:
+			count_intersec = 0;
+			count_branco_apos_intersec = 0;
+			corE_corD_iguais = Cor::ndCor;
+			robo->andar(60);
+			if (cor_E != Cor::branco || cor_D != Cor::branco){
+				estd = estados_arena::atencao;
+				cout << "ATENCAO!!" << endl;
+			}
+
+			break; // FIM CASE faixa:
+
+
+		case estados_arena::atencao:
+			/* TODO fazer tratamento do caso que sensor fique muito tempo em uma interface
+			 */
+			if(count_intersec == 0)
+				robo->andar(30);
+
+			if(cor_E == Cor::branco && cor_D == Cor::branco)
+			{
+				estd = estados_arena::faixa;
+				cout << "FAIXA!!" << endl;
+				break;
+			}
+			if (cor_E == Cor::fora || cor_D == Cor::fora)
+			{
+				estd = estados_arena::leu_fora;
+				cout << "FORA!!" << endl;
+				break;
+			}
+			if((cor_E == Cor::vermelho && cor_D == Cor::vermelho) ||
+					(cor_E == Cor::verde && cor_D == Cor::verde) ||
+					(cor_E == Cor::amarelo && cor_D == Cor::amarelo) ||
+					(cor_E == Cor::preto && cor_D == Cor::preto))
+			{
+				robo->andar(20);
+				if(corE_corD_iguais != cor_E){
+					corE_corD_iguais = cor_E;
+					cout << "INTERFACE" << endl;
+					count_intersec = 0;
+				}else
+					count_intersec ++;
+
+				if(count_intersec >= 8) // confirmar intersec
+					estd = estados_arena::intersec;
+			}
+			usleep(1000000*0.08);
+
+
+			break; // 	FIM DO case estados_arena::atencao:
+
+		} //FIM DO switch (estd){
+	} // FIM DO while(){
+
+
+
+
+
+
+	sentido_navegacao = -1;
+	cout << endl << endl << endl << "RESGATAR!!" << endl;
+	robo->girar(180);
+	while(robo->get_estado() == flag_aceleracao::girar);
+	robo->alinhar(sensor, direcao::traz);
+}
+
+/*
+ * metodo que leva o boneco para o plaza, o robo deve estar na rampa, subindo
+ * alinhado para traz com o verde
+ */
+void Resgate::go_to_plaza() {
+	Controlador_robo robo(true, "debug posicao direto no pwm.m");
+	Sensor_cor_hsv sensor(ev3dev::INPUT_1, ev3dev::INPUT_2, true, "cores");
+	Garra garra(ev3dev::OUTPUT_D, 135, "garra");
+	Garra cancela(ev3dev::OUTPUT_C, 45, "cancela");
+	Ultrassom_nxt ultraE(Ultrassom_nxt::INPUT_3);
+
+	Cor cor_E = Cor::ndCor;
+	Cor	cor_D = Cor::ndCor;
+	int count_nwhite = 0;
+
+
+	robo.inicializar_thread_aceleracao();
+	robo.calibra_sensor_cor(&sensor);
+
+	cout << "Fazer teste Go_To_Plaza" << endl;
+	while(!ev3dev::button::enter.process());
+
+
+
+	robo.andar(40);
+	while(true){
+		if(count_nwhite >= 10) break;
+
+		if(sensor.ler_cor_E() != Cor::branco && sensor.ler_cor_D() != Cor::branco)
+			count_nwhite++;
+		else count_nwhite = 0;
+
+	}
+	robo.parar();
+
+	robo.andar(40, 0.3);
+
+	cancela.abrir();
+	garra.abrir();
+
+	robo.andar(-30);
+	while(sensor.ler_cor_E() != Cor::branco || sensor.ler_cor_D() != Cor::branco);
+	usleep(100000);
+
+	robo.parar();
+	garra.fechar();
+	cancela.fechar();
+
+	//robo.alinhar(&sensor, direcao::frente);
+
+	garra.fechar();
+	cancela.fechar();
+
+	robo.girar(-90);
+	while(robo.get_estado() == flag_aceleracao::girar);
+
+	robo.andar(50, 0.40);
+
+	robo.girar(-90);
+	while(robo.get_estado() == flag_aceleracao::girar);
+
+	robo.andar(50, 0.5);
+
+	robo.girar(-90);
+	while(robo.get_estado() == flag_aceleracao::girar);
+
+	robo.andar(30);
+	while(ultraE.le_centimetro() < 30);
+	robo.parar();
+	robo.girar(90);
+	while(robo.get_estado() == flag_aceleracao::girar);
+
+	robo.andar(40);
+	while(true){
+		cor_E = sensor.ler_cor_E();
+		cor_D = sensor.ler_cor_D();
+
+		if(cor_E == Cor::fora)
+			realinha(direcao::esquerda);
+		else if (cor_D == Cor::fora)
+			realinha(direcao::direita);
+
+		if((cor_E == Cor::vermelho && cor_D == Cor::vermelho) ||
+				(cor_E == Cor::verde && cor_D == Cor::verde))
+		{
+			robo.alinhar(&sensor, direcao::traz);
+			robo.andar(30);
+			while(sensor.ler_cor_E() != Cor::branco || sensor.ler_cor_D() != Cor::branco);
+			usleep(1000000*0.5);
+			robo.alinhar(&sensor, direcao::traz);
+			robo.parar();
+			break;
+		}
+	}
 }

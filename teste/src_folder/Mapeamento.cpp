@@ -86,8 +86,12 @@ void Mapeamento::mapear(){
 				estd = estados_arena::faixa;
 			}
 			else if(qnt_cruzamentos == 0 && sentido_navegacao == -1){
+				robo->andar(60,0.15);
+				sentido_navegacao = 1;
+				robo->girar(180);
+				while(robo->get_estado() == flag_aceleracao::girar);
 				estd = estados_arena::terminado;
-				cout << endl << endl << "TERMINADO!"<< endl;
+				cout << endl << endl << "MAP TERMINADO!"<< endl;
 			}
 			else{
 				estd = estados_arena::faixa;

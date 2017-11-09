@@ -65,6 +65,14 @@ private:
 	 * ele segue pelo "caminho certo"
 	 */
 	void caminho_certo();
+
+	/*
+	 * metodo usado para ir do inicio para o final, o robo deve estar
+	 * no inicio da arena, antes da primeira intersecao e virado para frente (1),
+	 * este metodo termina com o robo na ultima intersec, virado para traz (-1) e
+	 * depois de alinhar para traz na intersec
+	 */
+	void ir_para_final();
 	/*-------------------------------------------------------------------------------------------*/
 	/*-------------------------FIM METODOS DO CONTROLE DE DIRECAO--------------------------------*/
 	/*-------------------------------------------------------------------------------------------*/
@@ -84,9 +92,9 @@ private:
 	/*********************************************************************************************/
 	/*********************************METODOS DO RESGATE******************************************/
 	/*********************************************************************************************/
-
-
-
+	void captura_rogerio();
+	void captura_luana();
+	void go_to_plaza();
 	/*-------------------------------------------------------------------------------------------*/
 	/*--------------------------------FIM METODOS DO RESGATE-------------------------------------*/
 	/*-------------------------------------------------------------------------------------------*/
