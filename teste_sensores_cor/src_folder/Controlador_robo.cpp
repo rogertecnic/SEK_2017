@@ -475,15 +475,27 @@ void Controlador_robo::calibra_sensor_cor(Sensor_cor_hsv *sensor_cor) {
 		if(valores_D[3] > hsv.v) valores_D[3] = hsv.v;
 	}
 
-	valores_E[0] += 0.01; // maximo_s_Branco_E
-	valores_E[1] -= 0.05; // minimo_V_Branco_E
-	valores_E[2] += 0.05; // maximo_V_Preto_E
-	valores_E[3] -= 0.005; // minimo_V_Preto_E
+	if(arena_pequi){
+		valores_E[0] += 0.02; // maximo_s_Branco_E
+		valores_E[1] -= 0.066; // minimo_V_Branco_E
+		valores_E[2] += 0.05; // maximo_V_Preto_E
+		valores_E[3] -= 0.005; // minimo_V_Preto_E
 
-	valores_D[0] += 0.01; // maximo_s_Branco_D
-	valores_D[1] -= 0.05; // minimo_V_Branco_D
-	valores_D[2] += 0.05; // maximo_V_Preto_D
-	valores_D[3] -= 0.005; // minimo_V_Preto_D
+		valores_D[0] += 0.02; // maximo_s_Branco_D
+		valores_D[1] -= 0.066; // minimo_V_Branco_D
+		valores_D[2] += 0.05; // maximo_V_Preto_D
+		valores_D[3] -= 0.005; // minimo_V_Preto_D
+	}else{
+		valores_E[0] += 0.01; // maximo_s_Branco_E
+		valores_E[1] -= 0.05; // minimo_V_Branco_E
+		valores_E[2] += 0.05; // maximo_V_Preto_E
+		valores_E[3] -= 0.005; // minimo_V_Preto_E
+
+		valores_D[0] += 0.01; // maximo_s_Branco_D
+		valores_D[1] -= 0.05; // minimo_V_Branco_D
+		valores_D[2] += 0.05; // maximo_V_Preto_D
+		valores_D[3] -= 0.005; // minimo_V_Preto_D
+	}
 	sensor_cor->set_maximos_minimos(valores_E, valores_D);
 	cout <<"min branco:" << endl << valores_E[0] << ";" << valores_D[0] << endl;
 }

@@ -249,7 +249,7 @@ void teste_rogerio(){
 	/*
 	 * teste classe mapeamento com classe sensor cor hsv
 	 */
-	//robot.calibra_sensor_cor(&cor);
+	robot.calibra_sensor_cor(&cor);
 	while(!ev3dev::button::enter.process());
 	usleep(1000000*0.1);
 	while(!ev3dev::button::enter.process());
