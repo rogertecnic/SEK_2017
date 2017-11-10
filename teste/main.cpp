@@ -7,6 +7,7 @@
 #include "src_folder/Controlador_robo.h"
 #include "src_folder/Mapeamento.h"
 #include "src_folder/Resgate.h"
+#include "src_folder/Ultrassom.h"
 
 
 using namespace std;
@@ -67,9 +68,9 @@ void teste_rogerio(){
 	//robot.calibra_sensor_cor(&cor);
 	//cor.fecha_arquivo();
 	//robot.andar(-40);
-		while(!ev3dev::button::enter.process());
-		usleep(1000000*0.1);
-		while(!ev3dev::button::enter.process());
+	while(!ev3dev::button::enter.process());
+	usleep(1000000*0.1);
+	while(!ev3dev::button::enter.process());
 	//mapa.saidinha_ultima_intersec();
 	//cp.checkpoint_verde = direcao::esquerda;
 	//cp.checkpoint_vermelho = direcao::direita;
@@ -262,7 +263,7 @@ void realinha(Controlador_robo *robo, direcao lado_saindo) {
 	usleep(1000000*0.3);
 }
 
-void go_to_plaza(Controlador_robo *robo, Sensor_cor_hsv *sensor, Ultrassom_nxt *ultraE, Garra *cancela) {
+void go_to_plaza(Controlador_robo *robo, Sensor_cor_hsv *sensor, Ultrassom *ultraE, Garra *cancela) {
 	Cor cor_E = Cor::ndCor;
 	Cor	cor_D = Cor::ndCor;
 	int count_nwhite = 0;
@@ -342,7 +343,7 @@ void go_to_plaza(Controlador_robo *robo, Sensor_cor_hsv *sensor, Ultrassom_nxt *
 	}
 }
 
-void go_to_plaza2(Controlador_robo *robo, Sensor_cor_hsv *sensor, Ultrassom_nxt *ultraE){
+void go_to_plaza2(Controlador_robo *robo, Sensor_cor_hsv *sensor, Ultrassom *ultraE){
 	Cor cor_E = Cor::ndCor;
 	Cor	cor_D = Cor::ndCor;
 	int count_nwhite = 0;
@@ -412,10 +413,10 @@ void go_to_plaza2(Controlador_robo *robo, Sensor_cor_hsv *sensor, Ultrassom_nxt 
 void teste_rampa(){
 	Controlador_robo robo(false, "debug posicao direto no pwm.m");
 	Sensor_cor_hsv cor(ev3dev::INPUT_1, ev3dev::INPUT_2,false,"leitura_sensor_cor_hsv");
-	Ultrassom_nxt ultraE(Ultrassom_nxt::INPUT_3);
-	Ultrassom_nxt ultraD(Ultrassom_nxt::INPUT_4);
+	Ultrassom ultraE(ev3dev::INPUT_3);
+	Ultrassom ultraD(ev3dev::INPUT_4);
 	Mapeamento mapa(&robo, &cor);
-	Resgate resgate(&robo, &cor, &ultraE, &ultraD, ev3dev::OUTPUT_C, ev3dev::OUTPUT_D);
+	//Resgate resgate(&robo, &cor, &ultraE, &ultraD);
 	Garra g(ev3dev::OUTPUT_C, 40, "cancela");
 
 
@@ -432,12 +433,24 @@ void teste_rampa(){
 	go_to_plaza(&robo, &cor, &ultraE, &g);
 }
 
+void teste_leitura_ultra(){
+	Ultrassom ultraE(ev3dev::INPUT_3);
+	Ultrassom ultraD(ev3dev::INPUT_4);
+
+	while(!ev3dev::button::back.process()){
+		cout<<ultraE.le_centimetro()<<"    "<<ultraD.le_centimetro()<<endl;
+		usleep(1000000*0.5);
+	}
+}
+
+
 
 int main(){
 	system("setfont Greek-TerminusBold20x10.psf.gz");
 
 	//teste_rogerio();
-	teste_rampa();
+	//teste_rampa();
+	teste_leitura_ultra();
 
 	ev3dev::button::back.pressed();
 
