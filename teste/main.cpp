@@ -67,9 +67,9 @@ void teste_rogerio(){
 	//robot.calibra_sensor_cor(&cor);
 	//cor.fecha_arquivo();
 	//robot.andar(-40);
-	//	while(!ev3dev::button::enter.process());
-	//	usleep(1000000*0.1);
-	//	while(!ev3dev::button::enter.process());
+		while(!ev3dev::button::enter.process());
+		usleep(1000000*0.1);
+		while(!ev3dev::button::enter.process());
 	//mapa.saidinha_ultima_intersec();
 	//cp.checkpoint_verde = direcao::esquerda;
 	//cp.checkpoint_vermelho = direcao::direita;
@@ -79,7 +79,7 @@ void teste_rogerio(){
 
 	//usleep(1000000*2);
 	//resgate.ir_para_final();
-	//cout << endl << endl << "PODE INICIAR CAPTURA"<< endl;
+	cout << endl << endl << "PODE INICIAR CAPTURA"<< endl;
 	//qnt_cruzamentos = total_cruzamentos_teste;
 	resgate.resgatar();
 
@@ -262,7 +262,7 @@ void realinha(Controlador_robo *robo, direcao lado_saindo) {
 	usleep(1000000*0.3);
 }
 
-void go_to_plaza(Controlador_robo *robo, Sensor_cor_hsv *sensor, Ultrassom_nxt *ultraE) {
+void go_to_plaza(Controlador_robo *robo, Sensor_cor_hsv *sensor, Ultrassom_nxt *ultraE, Garra *cancela) {
 	Cor cor_E = Cor::ndCor;
 	Cor	cor_D = Cor::ndCor;
 	int count_nwhite = 0;
@@ -283,20 +283,20 @@ void go_to_plaza(Controlador_robo *robo, Sensor_cor_hsv *sensor, Ultrassom_nxt *
 	}
 	robo->parar();
 
-	robo->andar(40, 0.3);
+	robo->andar(40, 0.25);
 
-	//cancela.abrir();
+	cancela->abrir();
 
 	robo->andar(-30);
 	while(sensor->ler_cor_E() != Cor::branco || sensor->ler_cor_D() != Cor::branco);
 	usleep(100000);
 
 	robo->parar();
-	//cancela.fechar();
+	//cancela->fechar();
 
 	//robo.alinhar(&sensor, direcao::frente);
 
-	//cancela.fechar();
+	cancela->fechar();
 
 	robo->girar(-90);
 	while(robo->get_estado() == flag_aceleracao::girar);
@@ -307,6 +307,7 @@ void go_to_plaza(Controlador_robo *robo, Sensor_cor_hsv *sensor, Ultrassom_nxt *
 	while(robo->get_estado() == flag_aceleracao::girar);
 
 	robo->andar(50, 0.5);
+	robo->andar(-30, 0.05);
 
 	robo->girar(-90);
 	while(robo->get_estado() == flag_aceleracao::girar);
@@ -353,6 +354,11 @@ void go_to_plaza2(Controlador_robo *robo, Sensor_cor_hsv *sensor, Ultrassom_nxt 
 
 		cout << cor_E << "   " << cor_D << endl;
 
+		if(cor_E == Cor::verde && cor_D == Cor::verde){
+			usleep(1000000*0.1);
+			robo->alinhar(sensor, direcao::traz);
+		}
+
 		if(count_nwhite >= 10) break;
 
 		if(cor_E != Cor::branco && cor_D != Cor::branco)
@@ -362,7 +368,7 @@ void go_to_plaza2(Controlador_robo *robo, Sensor_cor_hsv *sensor, Ultrassom_nxt 
 	}
 	robo->parar();
 
-	robo->andar(40, 0.3);
+	robo->andar(40, 0.25);
 
 
 	robo->andar(-30);
@@ -410,15 +416,20 @@ void teste_rampa(){
 	Ultrassom_nxt ultraD(Ultrassom_nxt::INPUT_4);
 	Mapeamento mapa(&robo, &cor);
 	Resgate resgate(&robo, &cor, &ultraE, &ultraD, ev3dev::OUTPUT_C, ev3dev::OUTPUT_D);
+	Garra g(ev3dev::OUTPUT_C, 40, "cancela");
 
 
 
 	robo.inicializar_thread_aceleracao();
 
+	cout << "Teste rampa!!!" << endl;
+	while(!ev3dev::button::enter.process());
+
 	robo.andar(70);
 	usleep(1000000*2);
 	while(cor.ler_cor_E() != Cor::branco || cor.ler_cor_D() != Cor::branco);
-	go_to_plaza(&robo, &cor, &ultraE );
+
+	go_to_plaza(&robo, &cor, &ultraE, &g);
 }
 
 

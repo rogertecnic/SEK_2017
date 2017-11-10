@@ -129,12 +129,12 @@ void Resgate::resgatar(){
 						sentido_navegacao == 1){//saindo da ultima intersec, subir rampa
 					// *** ALINHAR PELA TANGENTE PARA VOLTAR CERTO OU IR PARA RAMPA CERTO
 					robo->andar(-50,0.2);
-					girar(45);
+					robo->girar(45);
 					robo->andar(40);
 					while(sensor->ler_cor_E() != Cor::fora);
-					parar();
+					robo->parar();
 					robo->andar(-30,0.06);
-					girar(-45);
+					robo->girar(-45);
 					if(carga_bonecos >= 1){
 						estd = estados_arena::rampa;
 						cout << "RAMPA" << endl;
@@ -206,22 +206,21 @@ void Resgate::resgatar(){
 				break;
 			}
 			else{ // aqui eu estou no inicio da rampa
-					robo->andar(60);
-					usleep(1000000*2);
-					while(true){
-						//cout << sensor->ler_cor_E() << ";" << sensor->ler_cor_D() << endl;
-						if(sensor->ler_cor_E() == Cor::verde || sensor->ler_cor_D() == Cor::verde)
-							break;
-					}
-					while(true){
-						//cout << sensor->ler_cor_E() << "T" << sensor->ler_cor_D() << endl;
-						if(sensor->ler_cor_E() != Cor::verde && sensor->ler_cor_D() != Cor::verde)
-							break;
-					}
-					usleep(1000000*0.3);
-					robo->alinhar(sensor, direcao::traz);
-					estd = estados_arena::salva;
+				robo->andar(60);
+				usleep(1000000*2);
+				while(true){
+					//cout << sensor->ler_cor_E() << ";" << sensor->ler_cor_D() << endl;
+					if(sensor->ler_cor_E() == Cor::verde || sensor->ler_cor_D() == Cor::verde)
+						break;
 				}
+				while(true){
+					//cout << sensor->ler_cor_E() << "T" << sensor->ler_cor_D() << endl;
+					if(sensor->ler_cor_E() != Cor::verde && sensor->ler_cor_D() != Cor::verde)
+						break;
+				}
+				usleep(1000000*0.3);
+				robo->alinhar(sensor, direcao::traz);
+				estd = estados_arena::salva;
 			}
 
 			break;
@@ -692,7 +691,7 @@ void Resgate::go_to_plaza() {
 	}
 	robo->parar();
 
-	robo->andar(40, 0.3);
+	robo->andar(40, 0.22);
 
 	cancela.abrir();
 
@@ -717,8 +716,12 @@ void Resgate::go_to_plaza() {
 
 	robo->andar(50, 0.5);
 
+	robo->andar(-30, 0.03);
+
 	robo->girar(-90);
 	while(robo->get_estado() == flag_aceleracao::girar);
+
+
 
 	robo->andar(30);
 	while(ultraE->le_centimetro() < 30);
@@ -772,7 +775,7 @@ void Resgate::go_to_plaza2(){
 	}
 	robo->parar();
 
-	robo->andar(40, 0.3);
+	robo->andar(40, 0.22);
 
 
 	robo->andar(-30);
