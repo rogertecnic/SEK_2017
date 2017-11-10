@@ -25,12 +25,12 @@ void Garra::fechar() {
 	if(garra_aberta){
 		if(tipo == "cancela"){
 			garra.set_stop_action("hold");
-			garra.set_position_sp(0);
+			garra.set_position_sp(4);
 		}
-		else{
-			garra.set_stop_action("hold");
-			garra.set_position_sp(graus_abertura_do_motor);
-		}
+//		else{
+//			garra.set_stop_action("hold");
+//			garra.set_position_sp(graus_abertura_do_motor);
+//		}
 		garra_aberta = false;
 		garra.run_to_abs_pos();
 	}

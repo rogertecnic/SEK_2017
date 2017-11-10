@@ -27,6 +27,9 @@ void Resgate::resgatar(){
 		dist_boneco_E = ultraE->le_centimetro();
 		dist_boneco_D = ultraD->le_centimetro();
 
+		if(carga_bonecos >= capacidade_bonecos)
+			pwm_busca = 70;
+		else pwm_busca = 40;
 		if(estd != estados_arena::atencao)cout << dist_boneco_E<<";" << dist_boneco_D << endl;
 
 		if((dist_boneco_E <= distancia_boneco || dist_boneco_D <= distancia_boneco) &&
@@ -43,7 +46,7 @@ void Resgate::resgatar(){
 			}
 		} else{
 			cont = 0;
-			pwm_busca = 40;
+			//pwm_busca = 40;
 		}
 
 		switch (estd){
@@ -70,7 +73,7 @@ void Resgate::resgatar(){
 
 
 		case estados_arena::intersec:
-			pwm_busca = 40;
+			//pwm_busca = 40;
 			cout << "intersec?";
 			while(true){
 				if(sensor->ler_cor_E() != cor_E){
@@ -109,7 +112,10 @@ void Resgate::resgatar(){
 			else{
 				estd = estados_arena::faixa;
 				cout << "FAIXA!!" << endl;
-				robo->andar(pwm_busca, 0.18);
+				if(carga_bonecos >= capacidade_bonecos)
+					robo->andar(60,0.18);
+				else
+					robo->andar(pwm_busca, 0.18);
 			}
 
 			break; // FIM CASE intersec:
@@ -119,7 +125,10 @@ void Resgate::resgatar(){
 			count_intersec = 0;
 			count_branco_apos_intersec = 0;
 			corE_corD_iguais = Cor::ndCor;
-			robo->andar(pwm_busca);
+			if(carga_bonecos >= capacidade_bonecos)
+				robo->andar(70);
+			else
+				robo->andar(pwm_busca);
 			if (cor_E != Cor::branco || cor_D != Cor::branco){
 				if(qnt_cruzamentos >=total_cruzamentos_teste &&
 						carga_bonecos >= capacidade_bonecos){ //saindo da ultima intersec, subir rampa
@@ -357,10 +366,17 @@ void Resgate::captura_rogerio() {
 		robo->girar(90);
 		while(robo->get_estado() == flag_aceleracao::girar);
 		robo->andar(60, 0.18);
+		//		int posAnt = robo->get_distancia_absoluta();
+		//		robo->andar(60);
+		//		while(robo->get_distancia_absoluta() < posAnt+0.18){
+		//			if(sensor->ler_cor_E() == Cor::fora){
+		//				robo->
+		//			}
+		//		}
 		cancela.fechar();
-		robo->andar(-60, 0.1);
+		robo->andar(-60, 0.14);
 		cancela.abrir();
-		robo->andar(60, 0.1);
+		robo->andar(60, 0.14);
 		cancela.fechar();
 		robo->andar(-60, 0.18);
 		carga_bonecos ++;
@@ -382,18 +398,18 @@ void Resgate::captura_rogerio() {
 	else if(dist_boneco_D <= distancia_boneco){ // viu boneco a direita
 		cout << "DIR!" << endl;
 		robo->parar();
-		robo->andar(-30, 0.15);
+		robo->andar(-30, 0.1);
 		cancela.abrir();
 		robo->girar(-90);
 		while(robo->get_estado() == flag_aceleracao::girar);
-		robo->andar(30, 0.18);
+		robo->andar(60, 0.18);
 		cancela.fechar();
-		robo->andar(-40, 0.08);
+		robo->andar(-60, 0.14);
 		cancela.abrir();
-		robo->andar(40, 0.08);
+		robo->andar(60, 0.14);
 		cancela.fechar();
-		robo->andar(-40, 0.18);
-		robo->andar(-40, 0.18);
+		robo->andar(-60, 0.18);
+		carga_bonecos ++;
 		carga_bonecos ++;
 		if(carga_bonecos >=capacidade_bonecos){ // cheio, saiva
 			if(sentido_navegacao -1)

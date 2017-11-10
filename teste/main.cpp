@@ -256,14 +256,14 @@ void teste_rogerio(){
 //	usleep(1000000*0.1);
 //	while(!ev3dev::button::enter.process());
 	//mapa.saidinha_ultima_intersec();
-	//mapa.mapear();
+	//cp.checkpoint_verde = direcao::esquerda;
+	//cp.checkpoint_vermelho = direcao::direita;
+	mapa.mapear();
 	cout <<"SAIU DO MAPEAMENTO JA"<<endl;
 	//usleep(1000000*2);
 	//resgate.ir_para_final();
 	//cout << endl << endl << "PODE INICIAR CAPTURA"<< endl;
 	//qnt_cruzamentos = total_cruzamentos_teste;
-	cp.checkpoint_verde = direcao::direita;
-	cp.checkpoint_amarelo = direcao::esquerda;
 	resgate.resgatar();
 
 

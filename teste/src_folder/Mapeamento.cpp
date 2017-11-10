@@ -11,41 +11,63 @@ Mapeamento::Mapeamento(Controlador_robo *robo, Sensor_cor_hsv *sensor)
 :robo(robo), sensor(sensor)
 {
 	file.open("map.txt");
-	if (!( getline(file, c))){
+	if (!( getline(file, c)))
 		outfile.open("map.txt", ios::app);
+
+	else
 		arq_existente = true;
-	}
+
 }
+
+/*
+ * Primeiro número representa a cor, sendo:
+ * 0 - Vermelho
+ * 1 - Verde
+ * 2 - Amarelo
+ *
+ * O segundo valor representa a direcao, sendo:
+ * 1 - em frente
+ * 2 - direita
+ * 3 - esquerda
+ *
+ */
 
 bool Mapeamento::pegar_informacoes_arq(){
 	int count_intersec_map = 1;
+	string x = "0123";
 
-	if(c[0] == 0)
-		cp.checkpoint_vermelho = direcao(c[1]);
-
-	else if(c[0] == 1)
-		cp.checkpoint_amarelo = direcao(c[1]);
-
-	else if(c[0] == 2)
-		cp.checkpoint_verde = direcao(c[1]);
-
-	while(count_intersec_map < 2){
-		if (!( getline(file, c))) break;
-		else{
-			count_intersec_map++;
-
-			if(c[0] == 0)
-				cp.checkpoint_vermelho = direcao(c[1]);
-
-			else if(c[0] == 1)
-				cp.checkpoint_amarelo = direcao(c[1]);
-
-			else if(c[0] == 2)
-				cp.checkpoint_verde = direcao(c[1]);
-
-
+	do{
+		if(c[0] == x[0]){
+			if(c[1] == x[1])
+				cp.checkpoint_vermelho = direcao::frente;
+			else if(c[1] == x[2])
+				cp.checkpoint_vermelho = direcao::direita;
+			else if(c[1] == x[3])
+				cp.checkpoint_vermelho = direcao::esquerda;
 		}
-	}
+
+		else if(c[0] == x[1]){
+			if(c[1] == x[1])
+				cp.checkpoint_verde = direcao::frente;
+			else if(c[1] == x[2])
+				cp.checkpoint_verde = direcao::direita;
+			else if(c[1] == x[3])
+				cp.checkpoint_verde = direcao::esquerda;
+		}
+
+		else if(c[0] == x[2]){
+			if(c[1] == x[1])
+				cp.checkpoint_amarelo = direcao::frente;
+			else if(c[1] == x[2])
+				cp.checkpoint_amarelo = direcao::direita;
+			else if(c[1] == x[3])
+				cp.checkpoint_amarelo = direcao::esquerda;
+		}
+
+		if (!( getline(file, c))) break;
+		count_intersec_map++;
+
+	} while(count_intersec_map <= 2);
 
 	if(count_intersec_map == 2) return true;
 	else return false;
@@ -56,16 +78,15 @@ bool Mapeamento::pegar_informacoes_arq(){
  * e faz o controle das threads de mapear os bonecos
  */
 void Mapeamento::mapear(){
-	if(arq_existente){
+	if(arq_existente && utilizar_arq){
 		todas_cores_mapeadas = pegar_informacoes_arq();
-		cout << "informaçoes pegadas" << endl;
+		cout << "informacoes pegadas" << endl;
+
 		cout << cp.checkpoint_vermelho << endl;
 		cout << cp.checkpoint_verde << endl;
 		cout << cp.checkpoint_amarelo << endl;
-
+		usleep(1000000*2);
 	}
-
-
 
 	cout << endl << endl << endl << "bora mapear!!" << endl;
 	direcao_atual = direcao::ndDirecao;
@@ -250,9 +271,26 @@ void Mapeamento::mapeamento_intersec() {
 		qnt_cruzamentos += sentido_navegacao;
 		cout << "primeira intersec" << endl;
 		cor_atual = sensor->ler_cor_D();
-		direcao_atual = direcao::direita;
-		robo->girar(-90);
-		while(robo->get_estado() == flag_aceleracao::girar);
+		if(arq_existente){
+			cout << "já sei o caminho" << endl;
+			confirmacao_status = true;
+
+			if(cor_atual == Cor::vermelho)
+				direcao_atual = cp.checkpoint_vermelho;
+			else if(cor_atual == Cor::verde)
+				direcao_atual = cp.checkpoint_verde;
+			else if(cor_atual == Cor::amarelo)
+				direcao_atual = cp.checkpoint_amarelo;
+
+			caminho_certo();
+		}
+		else{
+			direcao_atual = direcao::direita;
+			robo->girar(-90);
+			while(robo->get_estado() == flag_aceleracao::girar);
+		}
+
+
 		robo->andar(70);
 		while(sensor->ler_cor_E() == cor_E || sensor->ler_cor_D() == cor_D);
 	}
@@ -308,18 +346,25 @@ void Mapeamento::mapeamento_intersec() {
 			/*Cor nao mapeada, pode ser igual a atual ou outra cor*/
 			else if(!cor_ja_mapeada())
 			{
+				cout << "cor nao mapeada" << endl;
 				if(!confirmacao_status){ // se cor atual nao foi mapeada preveamente mapeia
 					if(cor_atual == Cor::vermelho){
 						cp.checkpoint_vermelho = direcao_atual;
-						outfile << "0"  << direcao_atual << endl;
+
+
+						if(utilizar_arq)
+							outfile << "0"  << direcao_atual << endl;
 					}
 					else if(cor_atual == Cor::verde){
 						cp.checkpoint_verde = direcao_atual;
-						outfile << "1"  << direcao_atual << endl;
+
+						if(utilizar_arq)
+							outfile << "1"  << direcao_atual << endl;
 					}
 					else if (cor_atual == Cor::amarelo){
 						cp.checkpoint_amarelo = direcao_atual;
-						outfile << "2"  << direcao_atual << endl;
+						if(utilizar_arq)
+							outfile << "2"  << direcao_atual << endl;
 					}
 					qnt_cores_mapeadas ++;
 				}
@@ -378,18 +423,22 @@ void Mapeamento::mapeamento_intersec() {
 
 			/*Cor ja mapeada, pode ser igual a atual ou outra cor*/
 			else {
+				cout << "Cor já mapeada" << endl;
 				if (!confirmacao_status){
 					if(cor_atual == Cor::vermelho){
 						cp.checkpoint_vermelho = direcao_atual;
-						outfile << "0"  << direcao_atual << endl;
+						if(utilizar_arq)
+							outfile << "0"  << direcao_atual << endl;
 					}
 					else if(cor_atual == Cor::verde){
 						cp.checkpoint_verde = direcao_atual;
-						outfile << "1"  << direcao_atual << endl;
+						if(utilizar_arq)
+							outfile << "1"  << direcao_atual << endl;
 					}
 					else if (cor_atual == Cor::amarelo){
 						cp.checkpoint_amarelo = direcao_atual;
-						outfile << "2"  << direcao_atual << endl;
+						if(utilizar_arq)
+							outfile << "2"  << direcao_atual << endl;
 					}
 					qnt_cores_mapeadas ++;
 				}

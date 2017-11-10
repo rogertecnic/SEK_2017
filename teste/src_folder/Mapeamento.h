@@ -12,8 +12,10 @@
 #include "Sensor_cor_hsv.h"
 #include  "Ultrassom_nxt.h"
 #include "Const.h"
+
 #include <vector>
 #include <fstream>
+#include <string.h>
 
 using namespace std;
 
@@ -103,13 +105,10 @@ private:
 
 	ifstream file;
 	ofstream outfile;
-	int size = 0;
 	string c;
 	bool arq_existente = false;
 	bool todas_cores_mapeadas = false;
 	bool pegar_informacoes_arq();
-
-
 };
 
 
