@@ -23,6 +23,7 @@ public:
 	 */
 	void ir_para_final();
 	void go_to_plaza();
+	void go_to_plaza2();
 
 private:
 	Controlador_robo *robo;
