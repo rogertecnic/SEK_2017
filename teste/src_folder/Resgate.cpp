@@ -678,8 +678,8 @@ void Resgate::go_to_plaza() {
 
 	robo->andar(60);
 	while(true){
-		//cor_E = sensor->ler_cor_E();
-		//cor_D = sensor->ler_cor_D();
+		cor_E = sensor->ler_cor_E();
+		cor_D = sensor->ler_cor_D();
 
 		cout << cor_E << "   " << cor_D << endl;
 
@@ -739,7 +739,7 @@ void Resgate::go_to_plaza() {
 		if((cor_E == Cor::vermelho && cor_D == Cor::vermelho) ||
 				(cor_E == Cor::verde && cor_D == Cor::verde))
 		{
-			robo->alinhar(sensor, direcao::traz);
+			//robo->alinhar(sensor, direcao::traz);
 			robo->andar(30);
 			while(sensor->ler_cor_E() != Cor::branco || sensor->ler_cor_D() != Cor::branco);
 			usleep(1000000*0.5);
@@ -749,4 +749,63 @@ void Resgate::go_to_plaza() {
 		}
 	}
 	carga_bonecos = 0;
+}
+
+void Resgate::go_to_plaza2(){
+	Cor cor_E = Cor::ndCor;
+	Cor	cor_D = Cor::ndCor;
+	int count_nwhite = 0;
+
+	robo->andar(60);
+	while(true){
+		cor_E = sensor->ler_cor_E();
+		cor_D = sensor->ler_cor_D();
+
+		cout << cor_E << "   " << cor_D << endl;
+
+		if(count_nwhite >= 10) break;
+
+		if(cor_E != Cor::branco && cor_D != Cor::branco)
+			count_nwhite++;
+		else count_nwhite = 0;
+		usleep(1000000*0.1);
+	}
+	robo->parar();
+
+	robo->andar(40, 0.3);
+
+
+	robo->andar(-30);
+	while(sensor->ler_cor_E() != Cor::branco || sensor->ler_cor_D() != Cor::branco);
+	usleep(100000);
+
+	robo->parar();
+
+
+	robo->andar(-60);
+
+	while(true){
+		if((cor_E == Cor::vermelho && cor_D == Cor::vermelho) ||
+				(cor_E == Cor::verde && cor_D == Cor::verde))
+		{
+			//robo->alinhar(sensor, direcao::traz);
+			break;
+		}
+	}
+
+	robo->andar(-30);
+	while(sensor->ler_cor_E() != Cor::branco || sensor->ler_cor_D() != Cor::branco);
+	usleep(1000000*0.5);
+	robo->alinhar(sensor, direcao::traz);
+	robo->andar(-30);
+	usleep(1000000*4);
+
+	while(true){
+		if(sensor->ler_cor_E() == Cor::branco && sensor->ler_cor_D() == Cor::branco){
+			robo->parar();
+			robo->girar(180);
+			break;
+		}
+	}
+
 }
