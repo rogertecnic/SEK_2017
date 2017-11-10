@@ -44,7 +44,7 @@ Sensor_cor_hsv::Sensor_cor_hsv(string sensor_port_E, string sensor_port_D,
 		maximo_S_Branco_E = 0.099070;
 		minimo_V_Branco_E  = 0.749686;
 		maximo_V_Preto_E  = 0.163725;
-		minimo_V_Preto_E = 0.061667;
+		minimo_V_Preto_E =0.061667;
 
 		fator_escalimetro_rgb_D[0] = 2.125000;
 		fator_escalimetro_rgb_D[1] = 1.888889;
@@ -53,6 +53,24 @@ Sensor_cor_hsv::Sensor_cor_hsv(string sensor_port_E, string sensor_port_D,
 		minimo_V_Branco_D  = 0.757529;
 		maximo_V_Preto_D  = 0.159804;
 		minimo_V_Preto_D = 0.065588;
+	}else{
+		fator_escalimetro_rgb_D[0] = 1.159091;
+		fator_escalimetro_rgb_D[1] = 0.965909;
+		fator_escalimetro_rgb_D[2] = 1.634615;
+		maximo_S_Branco_D = 0.095794;// 0.065794;
+		minimo_V_Branco_D  = 0.623137; // 0.793137
+		maximo_V_Preto_D  = 0.179412;
+		minimo_V_Preto_D = 0.059275;// 0.081275;
+
+
+
+		fator_escalimetro_rgb_E[0] = 1.677632;
+		fator_escalimetro_rgb_E[1] = 1.545455;
+		fator_escalimetro_rgb_E[2] = 3.493151;
+		maximo_S_Branco_E =0.081494;// 0.051494;
+		minimo_V_Branco_E  = 0.751961; // 0.851961
+		maximo_V_Preto_E  = 0.183333;
+		minimo_V_Preto_E = 0.065196; //0.085196;
 	}
 }
 
@@ -74,6 +92,7 @@ Cor Sensor_cor_hsv::ler_cor_E() {
 			(double)rgb.r, (double)rgb.g, (double)rgb.b,
 			(double)hsv.h, (double)hsv.s, (double)hsv.v);
 
+	//cout << hsv.v;
 	if(hsv.v > minimo_V_Branco_E)
 		if( hsv.s < maximo_S_Branco_E) return Cor::branco;
 
@@ -113,6 +132,7 @@ Cor Sensor_cor_hsv::ler_cor_D() {
 			(double)rgb.r, (double)rgb.g, (double)rgb.b,
 			(double)hsv.h, (double)hsv.s, (double)hsv.v);
 
+	//cout << ";"<< hsv.v << endl;
 	if(hsv.v > minimo_V_Branco_D)
 		if( hsv.s < maximo_S_Branco_D) return Cor::branco;
 
@@ -162,16 +182,6 @@ void Sensor_cor_hsv::set_maximos_minimos(double *maximos_E, double *maximos_D){
 	minimo_V_Branco_D  = maximos_D[1];
 	maximo_V_Preto_D  = maximos_D[2];
 	minimo_V_Preto_D = maximos_D[3];
-
-	maximo_S_Branco_E = 0.0880851;
-	minimo_V_Branco_E  = 0.781059;
-	maximo_V_Preto_E  = 0.179412;
-	minimo_V_Preto_E = 0.0773529;
-
-	maximo_S_Branco_D = 0.0613223;
-	minimo_V_Branco_D  = 0.796745;
-	maximo_V_Preto_D  = 0.167647;
-	minimo_V_Preto_D = 0.0734314;
 
 	for(int i = 0; i <= 3; i ++) {
 		while(!ev3dev::button::enter.process());

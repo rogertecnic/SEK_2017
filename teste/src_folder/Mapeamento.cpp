@@ -29,7 +29,7 @@ bool Mapeamento::pegar_informacoes_arq(){
 	else if(c[0] == 2)
 		cp.checkpoint_verde = direcao(c[1]);
 
-	while(count_intersec_map < 3){
+	while(count_intersec_map < 2){
 		if (!( getline(file, c))) break;
 		else{
 			count_intersec_map++;
@@ -47,41 +47,7 @@ bool Mapeamento::pegar_informacoes_arq(){
 		}
 	}
 
-	if(count_intersec_map == 3) return true;
-	else return false;
-}
-
-bool Mapeamento::pegar_informacoes_arq(){
-	int count_intersec_map = 1;
-
-	if(c[0] == 0)
-		cp.checkpoint_vermelho = direcao(c[1]);
-
-	else if(c[0] == 1)
-		cp.checkpoint_amarelo = direcao(c[1]);
-
-	else if(c[0] == 2)
-		cp.checkpoint_verde = direcao(c[1]);
-
-	while(count_intersec_map < 3){
-		if (!( getline(file, c))) break;
-		else{
-			count_intersec_map++;
-
-			if(c[0] == 0)
-				cp.checkpoint_vermelho = direcao(c[1]);
-
-			else if(c[0] == 1)
-				cp.checkpoint_amarelo = direcao(c[1]);
-
-			else if(c[0] == 2)
-				cp.checkpoint_verde = direcao(c[1]);
-
-
-		}
-	}
-
-	if(count_intersec_map == 3) return true;
+	if(count_intersec_map == 2) return true;
 	else return false;
 }
 
@@ -90,7 +56,7 @@ bool Mapeamento::pegar_informacoes_arq(){
  * e faz o controle das threads de mapear os bonecos
  */
 void Mapeamento::mapear(){
-	if(arq_existente)
+	//if(arq_existente)
 		//todas_cores_mapeadas = pegar_informacoes_arq();
 
 
@@ -144,13 +110,13 @@ void Mapeamento::mapear(){
 			while( !(sensor->ler_cor_E() == Cor::branco) || !(sensor->ler_cor_D() == Cor::branco))
 			{
 				robo->andar(20);
-				usleep(1000000*0.08);
+				usleep(1000000*0.1);
 				count_branco_apos_intersec ++;
-				if(count_branco_apos_intersec >=15){
+				if(count_branco_apos_intersec >=20){
 					robo->parar();
 					cout << "o robo terminou a intersecao e nao esta no branco" << endl;
 					cout << "esperando 3 seg" << endl;
-					usleep(1000000*3);
+					usleep(1000000*1);
 					estd = estados_arena::faixa;
 					break;
 				}
@@ -251,6 +217,7 @@ void Mapeamento::intersec() {
 
 	cor_E = sensor->ler_cor_E();
 	cor_D = sensor->ler_cor_D();
+
 	mapeamento_intersec();
 	//usleep(1000000*0.3); // delay saindo da intersec
 }
@@ -265,11 +232,11 @@ void Mapeamento::intersec() {
 void Mapeamento::mapeamento_intersec() {
 	if(cor_E != cor_D) // verifica se esta como previsto, se nao da um aviso e nao continua
 	{
-		robo->parar();
+		//robo->parar();
 		cout << "mapeamento_intersec sensores com leituras diferentes, press enter" << endl;
-		while(!ev3dev::button::enter.process());
-		usleep(1000000*0.1);
-		while(!ev3dev::button::enter.process());
+//		while(!ev3dev::button::enter.process());
+//		usleep(1000000*0.1);
+//		while(!ev3dev::button::enter.process());
 	}
 
 	/*Primeira intersecção*/
@@ -291,7 +258,7 @@ void Mapeamento::mapeamento_intersec() {
 		if(cor_E == Cor::preto || cor_D == Cor::preto){
 			dead_end = true;
 			cout << "cheguei Dead-end" << endl;
-			robo->andar(50,0.07);
+			robo->andar(50,0.05);
 			robo->girar(180);
 			while(robo->get_estado() == flag_aceleracao::girar);
 			robo->alinhar(sensor, direcao::traz);

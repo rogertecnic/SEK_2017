@@ -14,6 +14,7 @@ public:
 
 	Resgate(Controlador_robo *, Sensor_cor_hsv *, Ultrassom_nxt *, Ultrassom_nxt *, string porta_garra);
 	void resgatar();
+
 	/*
 	 * metodo usado para ir do inicio para o final, o robo deve estar
 	 * no inicio da arena, antes da primeira intersecao e virado para frente (1),
@@ -21,6 +22,7 @@ public:
 	 * depois de alinhar para traz na intersec um pouco para frente
 	 */
 	void ir_para_final();
+	void go_to_plaza();
 
 private:
 	Controlador_robo *robo;
@@ -86,6 +88,7 @@ private:
 	bool viu_boneco_D = false;
 	int dist_boneco_E = 999;
 	int dist_boneco_D = 999;
+	bool confirma_rampa = false;
 	/*-------------------------------------------------------------------------------------------*/
 	/*------------------------------FIM VARIAVEIS DO RESGATE-------------------------------------*/
 	/*-------------------------------------------------------------------------------------------*/
@@ -95,7 +98,7 @@ private:
 	/*********************************************************************************************/
 	void captura_rogerio();
 	void captura_luana();
-	void go_to_plaza();
+
 	/*-------------------------------------------------------------------------------------------*/
 	/*--------------------------------FIM METODOS DO RESGATE-------------------------------------*/
 	/*-------------------------------------------------------------------------------------------*/

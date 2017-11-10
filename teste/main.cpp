@@ -251,14 +251,17 @@ void teste_rogerio(){
 	 */
 	//robot.calibra_sensor_cor(&cor);
 	//cor.fecha_arquivo();
-	while(!ev3dev::button::enter.process());
-	usleep(1000000*0.1);
-	while(!ev3dev::button::enter.process());
-	//mapa.saidinha_ultima_intersec();
-	mapa.mapear();
-	cout <<"SAIU DO MAPEAMENTO JA"<<endl;
-	resgate.ir_para_final();
-	resgate.resgatar();
+	//robot.andar(-40);
+//	while(!ev3dev::button::enter.process());
+//	usleep(1000000*0.1);
+//	while(!ev3dev::button::enter.process());
+//	//mapa.saidinha_ultima_intersec();
+//	//mapa.mapear();
+//	cout <<"SAIU DO MAPEAMENTO JA"<<endl;
+//	//resgate.ir_para_final();
+//	qnt_cruzamentos = total_cruzamentos_teste;
+//
+//	resgate.resgatar();
 
 
 	/*
@@ -293,18 +296,20 @@ void teste_rogerio(){
 	 * teste da classe sensor_cor_hsv
 	 * pega alguns valores e guarda no arquivo
 	 */
-//		robot.calibra_sensor_cor(&cor);
-//		while(!ev3dev::button::up.pressed()){
-//			while(!ev3dev::button::enter.pressed() && !ev3dev::button::up.pressed());
-//			while(ev3dev::button::enter.pressed());
-//			robot.andar(30);
-//			while(!ev3dev::button::enter.pressed() && !ev3dev::button::up.pressed())
-//				cout<<cor.ler_cor_E()<<";"<<cor.ler_cor_D()<<endl;
-//			robot.parar();
-//			usleep(1000000*0.01);
-//			while(ev3dev::button::enter.pressed());
-//		}
-//		cor.fecha_arquivo();
+		//robot.calibra_sensor_cor(&cor);
+		while(!ev3dev::button::up.pressed()){
+			while(!ev3dev::button::enter.pressed() && !ev3dev::button::up.pressed());
+			while(ev3dev::button::enter.pressed());
+			//robot.andar(30);
+			while(!ev3dev::button::enter.pressed() && !ev3dev::button::up.pressed()){
+				cout<<cor.ler_cor_E()<<";"<<cor.ler_cor_D()<<endl;
+				usleep(1000000*0.1);
+			}
+			robot.parar();
+			usleep(1000000*0.01);
+			while(ev3dev::button::enter.pressed());
+		}
+		cor.fecha_arquivo();
 
 	/*
 	 * teste da classe de cor
