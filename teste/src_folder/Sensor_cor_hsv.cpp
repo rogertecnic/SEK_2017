@@ -37,6 +37,40 @@ Sensor_cor_hsv::Sensor_cor_hsv(string sensor_port_E, string sensor_port_D,
 		limites_H_Verde_D[1] = 150;
 		limites_H_Amarelo_D[0] = 24; // verificar se esta dentro
 		limites_H_Amarelo_D[1] = 50;
+
+		fator_escalimetro_rgb_E[0] = 1.861314;
+		fator_escalimetro_rgb_E[1] = 1.473988;
+		fator_escalimetro_rgb_E[2] = 2.339450;
+		maximo_S_Branco_E = 0.099070;
+		minimo_V_Branco_E  = 0.749686;
+		maximo_V_Preto_E  = 0.163725;
+		minimo_V_Preto_E =0.061667;
+
+		fator_escalimetro_rgb_D[0] = 2.125000;
+		fator_escalimetro_rgb_D[1] = 1.888889;
+		fator_escalimetro_rgb_D[2] = 4.047619;
+		maximo_S_Branco_D = 0.077522;
+		minimo_V_Branco_D  = 0.757529;
+		maximo_V_Preto_D  = 0.159804;
+		minimo_V_Preto_D = 0.065588;
+	}else{
+		fator_escalimetro_rgb_D[0] = 1.159091;
+		fator_escalimetro_rgb_D[1] = 0.965909;
+		fator_escalimetro_rgb_D[2] = 1.634615;
+		maximo_S_Branco_D = 0.095794;// 0.065794;
+		minimo_V_Branco_D  = 0.623137; // 0.793137
+		maximo_V_Preto_D  = 0.179412;
+		minimo_V_Preto_D = 0.059275;// 0.081275;
+
+
+
+		fator_escalimetro_rgb_E[0] = 1.677632;
+		fator_escalimetro_rgb_E[1] = 1.545455;
+		fator_escalimetro_rgb_E[2] = 3.493151;
+		maximo_S_Branco_E =0.081494;// 0.051494;
+		minimo_V_Branco_E  = 0.751961; // 0.851961
+		maximo_V_Preto_E  = 0.183333;
+		minimo_V_Preto_E = 0.065196; //0.085196;
 	}
 }
 
@@ -58,6 +92,7 @@ Cor Sensor_cor_hsv::ler_cor_E() {
 			(double)rgb.r, (double)rgb.g, (double)rgb.b,
 			(double)hsv.h, (double)hsv.s, (double)hsv.v);
 
+	//cout << hsv.v;
 	if(hsv.v > minimo_V_Branco_E)
 		if( hsv.s < maximo_S_Branco_E) return Cor::branco;
 
@@ -97,6 +132,7 @@ Cor Sensor_cor_hsv::ler_cor_D() {
 			(double)rgb.r, (double)rgb.g, (double)rgb.b,
 			(double)hsv.h, (double)hsv.s, (double)hsv.v);
 
+	//cout << ";"<< hsv.v << endl;
 	if(hsv.v > minimo_V_Branco_D)
 		if( hsv.s < maximo_S_Branco_D) return Cor::branco;
 
@@ -136,6 +172,7 @@ void Sensor_cor_hsv::set_fatores_rgb(double *valores_E, double *valores_D) {
 }
 
 void Sensor_cor_hsv::set_maximos_minimos(double *maximos_E, double *maximos_D){
+	cout << endl << endl << endl << endl << "maxmin:" << endl;
 	maximo_S_Branco_E = maximos_E[0];
 	minimo_V_Branco_E  = maximos_E[1];
 	maximo_V_Preto_E  = maximos_E[2];
@@ -145,6 +182,18 @@ void Sensor_cor_hsv::set_maximos_minimos(double *maximos_E, double *maximos_D){
 	minimo_V_Branco_D  = maximos_D[1];
 	maximo_V_Preto_D  = maximos_D[2];
 	minimo_V_Preto_D = maximos_D[3];
+
+	for(int i = 0; i <= 3; i ++) {
+		while(!ev3dev::button::enter.process());
+		usleep(1000000*0.1);
+		while(!ev3dev::button::enter.process());
+		cout << maximos_E[i] << endl <<  maximos_D[i] << endl;
+	}
+	while(!ev3dev::button::enter.process());
+	usleep(1000000*0.1);
+	while(!ev3dev::button::enter.process());
+	cout << "acabou!" << endl;
+
 }
 
 

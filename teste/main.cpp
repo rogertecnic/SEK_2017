@@ -2,6 +2,7 @@
 #include "src_folder/Controlador_robo.h"
 #include "src_folder/Garra.h"
 #include "src_folder/Ultrassom_nxt.h"
+#include "src_folder/Mapeamento.h"
 
 
 using namespace std;
@@ -74,23 +75,20 @@ void teste_alinhamento_rampa(){
 
 }
 
-/*
+
 void teste_map(){
 	Controlador_robo robo(true, "debug posicao direto no pwm.m");
 	Sensor_cor_hsv cor(ev3dev::INPUT_1, ev3dev::INPUT_2);
-	Ultrassom_nxt ultraE(Ultrassom_nxt::INPUT_3);
-	Ultrassom_nxt ultraD(Ultrassom_nxt::INPUT_4);
 
 	robo.inicializar_thread_aceleracao();
-	robo.calibra_sensor_cor(&cor);
 	cout << "Fazer teste mapeamento" << endl;
 	while(!ev3dev::button::enter.process());
 
-	Mapeamento map(&robo, &cor, &ultraE, &ultraD);
+	Mapeamento map(&robo, &cor);
 	map.mapear();
 
 }
- */
+
 
 
 void ler_cor(){
@@ -112,8 +110,8 @@ void ler_cor(){
 
 
 void teste_garra(){
-	Garra garra(ev3dev::OUTPUT_D, 135, "garra");
-	Garra cancela(ev3dev::OUTPUT_C, 45, "cancela");
+	Garra garra(ev3dev::OUTPUT_D, 27, "garra");
+	Garra cancela(ev3dev::OUTPUT_C, 37, "cancela");
 
 	cout << "Teste garra!!!" << endl;
 	while(true){
@@ -349,8 +347,8 @@ int main(){
 	//teste_go_to_plaza();
 	//teste_alinhamento_rampa();
 	//ler_cor();
-	//teste_map();
-	teste_garra();
+	teste_map();
+	//teste_garra();
 	//teste_raio_roda();
 	//teste_distancia_entre_rodas();
 	//teste_pega_boneco();

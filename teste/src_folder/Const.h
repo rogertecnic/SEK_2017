@@ -11,7 +11,7 @@
 
 using namespace std;
 
-enum estados_arena{faixa, leu_fora, leu_nda, intersec, terminado, atencao, captura, salva}; //usado na classe Mapeamento
+enum estados_arena{faixa, leu_fora, leu_nda, intersec, rampa, terminado, atencao, captura, salva}; //usado na classe Mapeamento
 enum direcao{ndDirecao, frente, direita, esquerda, traz};// usado na classe Mapeamento
 enum Cor{ndCor, preto, branco, vermelho, verde, amarelo, fora}; // cores possiveis
 enum flag_aceleracao{ndAcel, linha_reta, parar, girar}; // usado dentro do Controlador_robo
@@ -34,7 +34,7 @@ struct direcao_checkpoint {
 	direcao checkpoint_amarelo;
 };
 
-const bool automapear_3_checkpoint = true;
+const bool automapear_3_checkpoint = false;
 
 /* == 1 se estiver indo do ponto de start para a rampa
  * == -1 se estiver indo da rampa para o ponto de start
@@ -47,6 +47,7 @@ extern int sentido_navegacao;
  * */
 extern direcao_checkpoint cp; // intersecao
 extern int qnt_cruzamentos;
-const int total_cruzamentos_teste = 3;
+const int total_cruzamentos_teste = 4;
 const bool arena_pequi = false; // testar o robo na nossa arena e na arena oficial
+const bool utilizar_arq = true; //utlizar arquivo de mapeamento ou nao
 #endif
