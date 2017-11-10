@@ -196,7 +196,7 @@ void Mapeamento::mapear(){
 				}else
 					count_intersec ++;
 
-				if(count_intersec >= 8) // confirmar intersec
+				if(count_intersec >= 4) // confirmar intersec
 					estd = estados_arena::intersec;
 			}
 			usleep(1000000*0.08);

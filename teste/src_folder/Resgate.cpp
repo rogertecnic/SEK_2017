@@ -37,11 +37,14 @@ void Resgate::resgatar(){
 			pwm_busca = 15;
 			robo->andar(pwm_busca);
 			cont ++;
-			if(cont >= 5){
+			if(cont >= 2){
 				cout << "SIM" << endl;
 				estd = estados_arena::captura;
 			}
-		} else cont = 0;
+		} else{
+			cont = 0;
+			pwm_busca = 40;
+		}
 
 		switch (estd){
 		case estados_arena::leu_fora:
@@ -67,6 +70,7 @@ void Resgate::resgatar(){
 
 
 		case estados_arena::intersec:
+			pwm_busca = 40;
 			cout << "intersec?";
 			while(true){
 				if(sensor->ler_cor_E() != cor_E){
@@ -208,7 +212,7 @@ void Resgate::resgatar(){
 
 		case estados_arena::captura: // caso ver algum boneco
 			captura_rogerio();
-			pwm_busca = 60;
+			pwm_busca = 40;
 			// o estado eh atribuido dentro do metodo de captura
 			//captura_luana();
 
@@ -348,7 +352,7 @@ void Resgate::captura_rogerio() {
 	if(dist_boneco_E <= distancia_boneco){ // viu boneco a esquerda
 		cout << "ESQ!" << endl;
 		robo->parar();
-		robo->andar(-30, 0.08);
+		robo->andar(-30, 0.1);
 		cancela.abrir();
 		robo->girar(90);
 		while(robo->get_estado() == flag_aceleracao::girar);

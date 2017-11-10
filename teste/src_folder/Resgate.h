@@ -7,7 +7,7 @@
 #include "Const.h"
 #include "Garra.h"
 
-#define distancia_boneco 26 //MODIFICAR DEPOIS
+#define distancia_boneco 23 //MODIFICAR DEPOIS
 
 class Resgate {
 public:
@@ -37,7 +37,7 @@ private:
 	/****************************VARIAVEIS DO CONTROLE DE DIRECAO*********************************/
 	/*********************************************************************************************/
 	// pwm principal, quando o robo esta andando e procurando
-	int pwm_busca = 50;
+	int pwm_busca = 40;
 
 	int carga_bonecos = 0;
 	int capacidade_bonecos = 3;
