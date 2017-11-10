@@ -44,10 +44,8 @@ void Resgate::resgatar(){
 				cout << "SIM" << endl;
 				estd = estados_arena::captura;
 			}
-		} else{
-			cont = 0;
-			//pwm_busca = 40;
-		}
+		} else	cont = 0;
+
 
 		switch (estd){
 		case estados_arena::leu_fora:
@@ -73,7 +71,6 @@ void Resgate::resgatar(){
 
 
 		case estados_arena::intersec:
-			//pwm_busca = 40;
 			cout << "intersec?";
 			while(true){
 				if(sensor->ler_cor_E() != cor_E){
@@ -112,10 +109,8 @@ void Resgate::resgatar(){
 			else{
 				estd = estados_arena::faixa;
 				cout << "FAIXA!!" << endl;
-				if(carga_bonecos >= capacidade_bonecos)
-					robo->andar(60,0.18);
-				else
-					robo->andar(pwm_busca, 0.18);
+				if(carga_bonecos <= capacidade_bonecos)
+					robo->andar(60, 0.2); // anda p colocar o us na faixa
 			}
 
 			break; // FIM CASE intersec:
@@ -131,11 +126,25 @@ void Resgate::resgatar(){
 				robo->andar(pwm_busca);
 			if (cor_E != Cor::branco || cor_D != Cor::branco){
 				if(qnt_cruzamentos >=total_cruzamentos_teste &&
-						carga_bonecos >= capacidade_bonecos){ //saindo da ultima intersec, subir rampa
-					estd = estados_arena::rampa;
-					cout << "RAMPA" << endl;
+						sentido_navegacao == 1){//saindo da ultima intersec, subir rampa
+					// *** ALINHAR PELA TANGENTE PARA VOLTAR CERTO OU IR PARA RAMPA CERTO
+					robo->andar(-50,0.2);
+					girar(45);
+					robo->andar(40);
+					while(sensor->ler_cor_E() != Cor::fora);
+					parar();
+					robo->andar(-30,0.06);
+					girar(-45);
+					if(carga_bonecos >= 1){
+						estd = estados_arena::rampa;
+						cout << "RAMPA" << endl;
+					}else{
+						robo->andar(-50,0.2);
+						robo->girar(180);
+						sentido_navegacao = -1;
+					}
 				}
-				else{
+				else{//saindo da ultima intersec,nao subir rampa, voltar
 					estd = estados_arena::atencao;
 					cout << "ATENCAO!!" << endl;
 				}
@@ -196,8 +205,7 @@ void Resgate::resgatar(){
 				cout << "FORA!!" << endl;
 				break;
 			}
-			if(cor_E != Cor::branco && cor_D != Cor::branco){
-				if(confirma_rampa){
+			else{ // aqui eu estou no inicio da rampa
 					robo->andar(60);
 					usleep(1000000*2);
 					while(true){
@@ -207,13 +215,13 @@ void Resgate::resgatar(){
 					}
 					while(true){
 						//cout << sensor->ler_cor_E() << "T" << sensor->ler_cor_D() << endl;
-						if(sensor->ler_cor_E() == Cor::branco && sensor->ler_cor_D() == Cor::branco)
+						if(sensor->ler_cor_E() != Cor::verde && sensor->ler_cor_D() != Cor::verde)
 							break;
 					}
 					usleep(1000000*0.3);
 					robo->alinhar(sensor, direcao::traz);
 					estd = estados_arena::salva;
-				}else confirma_rampa = true;
+				}
 			}
 
 			break;
@@ -254,7 +262,7 @@ void Resgate::intersec() {
 	caminho_certo();
 	cor_E = sensor->ler_cor_E();
 	cor_D = sensor->ler_cor_D();
-	robo->andar(70);
+	robo->andar(70);// sai da intersec
 	while(sensor->ler_cor_E() == cor_E || sensor->ler_cor_D() == cor_D);
 	usleep(1000000*0.3);
 
@@ -358,72 +366,99 @@ void Resgate::caminho_certo (){
 void Resgate::captura_rogerio() {
 	dist_boneco_E = ultraE->le_centimetro();
 	dist_boneco_D = ultraD->le_centimetro();
-	if(dist_boneco_E <= distancia_boneco){ // viu boneco a esquerda
+	if(dist_boneco_E <= distancia_boneco){ // >>>>>>>>>>>>>>>>>>>>> viu boneco a esquerda
 		cout << "ESQ!" << endl;
 		robo->parar();
 		robo->andar(-30, 0.1);
 		cancela.abrir();
 		robo->girar(90);
-		while(robo->get_estado() == flag_aceleracao::girar);
-		robo->andar(60, 0.18);
-		//		int posAnt = robo->get_distancia_absoluta();
-		//		robo->andar(60);
-		//		while(robo->get_distancia_absoluta() < posAnt+0.18){
-		//			if(sensor->ler_cor_E() == Cor::fora){
-		//				robo->
-		//			}
-		//		}
-		cancela.fechar();
-		robo->andar(-60, 0.14);
-		cancela.abrir();
-		robo->andar(60, 0.14);
-		cancela.fechar();
-		robo->andar(-60, 0.18);
-		carga_bonecos ++;
-		if(carga_bonecos >=capacidade_bonecos){ // cheio, salva
-			if(sentido_navegacao -1)
-				robo->girar(90);
-			else
+		robo->andar(60);
+		int tem_boneco = 0;
+		int cnt = 0;
+		while(tem_boneco == 0){
+			if(sensor->ler_cor_E() == Cor::fora && sensor->ler_cor_D() == Cor::fora){
+				robo->andar(-60, 0.15-robo->get_pintao());
 				robo->girar(-90);
+				cancela.fechar();
+				tem_boneco = -1;
+			}
 
-			sentido_navegacao = 1;
-			//estd = estados_arena::salva;
+			cnt ++;
+			usleep(1000000*0.1);
+			if(cnt >= 18) // >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> delay pro robo capturar
+				tem_boneco = 1;
 		}
-		else{ // ainda nao cheio, continuar a procurar
-			robo->girar(-90);
-			while(robo->get_estado() == flag_aceleracao::girar);
-			estd = estados_arena::faixa;
-		}
+
+		if(tem_boneco == 1){
+			cancela.fechar();
+			robo->andar(-60, 0.14);
+			cancela.abrir();
+			robo->andar(60, 0.14);
+			cancela.fechar();
+			robo->andar(-60, 0.18);
+			carga_bonecos ++;
+			if(carga_bonecos >=capacidade_bonecos){ // cheio, salva
+				if(sentido_navegacao -1)
+					robo->girar(90);
+				else
+					robo->girar(-90);
+
+				sentido_navegacao = 1;
+				//estd = estados_arena::salva;
+			}
+			else{ // ainda nao cheio, continuar a procurar
+				robo->girar(-90);
+				while(robo->get_estado() == flag_aceleracao::girar);
+				estd = estados_arena::faixa;
+			}
+		}else estd = estados_arena::faixa;
 	}
-	else if(dist_boneco_D <= distancia_boneco){ // viu boneco a direita
+	else if(dist_boneco_D <= distancia_boneco){ // >>>>>>>>>>>>>>>>>>>>> viu boneco a direita
 		cout << "DIR!" << endl;
 		robo->parar();
 		robo->andar(-30, 0.1);
 		cancela.abrir();
 		robo->girar(-90);
-		while(robo->get_estado() == flag_aceleracao::girar);
-		robo->andar(60, 0.18);
-		cancela.fechar();
-		robo->andar(-60, 0.14);
-		cancela.abrir();
-		robo->andar(60, 0.14);
-		cancela.fechar();
-		robo->andar(-60, 0.18);
-		carga_bonecos ++;
-		carga_bonecos ++;
-		if(carga_bonecos >=capacidade_bonecos){ // cheio, saiva
-			if(sentido_navegacao -1)
+		robo->andar(60);
+		int tem_boneco = 0;
+		int cnt = 0;
+		while(tem_boneco == 0){
+			if(sensor->ler_cor_E() == Cor::fora && sensor->ler_cor_D() == Cor::fora){
+				robo->andar(-60, 0.15-robo->get_pintao());
 				robo->girar(-90);
-			else
+				cancela.fechar();
+				tem_boneco = -1;
+			}
+
+			cnt ++;
+			usleep(1000000*0.1);
+			if(cnt >= 18) // >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> delay pro robo capturar
+				tem_boneco = 1;
+		}
+
+		if(tem_boneco == 1){
+			cancela.fechar();
+			robo->andar(-60, 0.14);
+			cancela.abrir();
+			robo->andar(60, 0.14);
+			cancela.fechar();
+			robo->andar(-60, 0.18);
+			carga_bonecos ++;
+			carga_bonecos ++;
+			if(carga_bonecos >=capacidade_bonecos){ // cheio, saiva
+				if(sentido_navegacao -1)
+					robo->girar(-90);
+				else
+					robo->girar(90);
+				sentido_navegacao = 1;
+				//estd = estados_arena::salva;
+			}
+			else{ // ainda nao cheio, continuar a procurar
 				robo->girar(90);
-			sentido_navegacao = 1;
-			//estd = estados_arena::salva;
-		}
-		else{ // ainda nao cheio, continuar a procurar
-			robo->girar(90);
-			while(robo->get_estado() == flag_aceleracao::girar);
-			estd = estados_arena::faixa;
-		}
+				while(robo->get_estado() == flag_aceleracao::girar);
+				estd = estados_arena::faixa;
+			}
+		}else estd = estados_arena::faixa;
 	}
 	else{
 		cout << "NAO!" << endl;
