@@ -7,12 +7,12 @@
 #include "Const.h"
 #include "Garra.h"
 
-#define distancia_boneco 16 //MODIFICAR DEPOIS
+#define distancia_boneco 26 //MODIFICAR DEPOIS
 
 class Resgate {
 public:
 
-	Resgate(Controlador_robo *, Sensor_cor_hsv *, Ultrassom_nxt *, Ultrassom_nxt *, string porta_garra);
+	Resgate(Controlador_robo *, Sensor_cor_hsv *, Ultrassom_nxt *, Ultrassom_nxt *, string porta_cancela, string porta_garra);
 	void resgatar();
 
 	/*
@@ -37,10 +37,10 @@ private:
 	/****************************VARIAVEIS DO CONTROLE DE DIRECAO*********************************/
 	/*********************************************************************************************/
 	// pwm principal, quando o robo esta andando e procurando
-	int pwm_busca = 60;
+	int pwm_busca = 50;
 
 	int carga_bonecos = 0;
-	int capacidade_bonecos = 2;
+	int capacidade_bonecos = 3;
 
 	direcao direcao_boneco = direcao::ndDirecao;
 	// cor que o referente a intersecao que o robo acabou de sair

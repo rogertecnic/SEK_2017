@@ -56,8 +56,14 @@ bool Mapeamento::pegar_informacoes_arq(){
  * e faz o controle das threads de mapear os bonecos
  */
 void Mapeamento::mapear(){
-	//if(arq_existente)
-		//todas_cores_mapeadas = pegar_informacoes_arq();
+	if(arq_existente){
+		todas_cores_mapeadas = pegar_informacoes_arq();
+		cout << "informaçoes pegadas" << endl;
+		cout << cp.checkpoint_vermelho << endl;
+		cout << cp.checkpoint_verde << endl;
+		cout << cp.checkpoint_amarelo << endl;
+
+	}
 
 
 
@@ -261,6 +267,9 @@ void Mapeamento::mapeamento_intersec() {
 			robo->andar(50,0.05);
 			robo->girar(180);
 			while(robo->get_estado() == flag_aceleracao::girar);
+			while(sensor->ler_cor_E() != Cor::branco || sensor->ler_cor_D() != Cor::branco){
+					robo->andar(30);
+			}
 			robo->alinhar(sensor, direcao::traz);
 			robo->andar(30);
 			while(sensor->ler_cor_E() == cor_E || sensor->ler_cor_D() == cor_D);

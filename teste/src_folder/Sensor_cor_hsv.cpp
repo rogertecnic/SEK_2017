@@ -38,21 +38,36 @@ Sensor_cor_hsv::Sensor_cor_hsv(string sensor_port_E, string sensor_port_D,
 		limites_H_Amarelo_D[0] = 24; // verificar se esta dentro
 		limites_H_Amarelo_D[1] = 50;
 
-		fator_escalimetro_rgb_E[0] = 1.861314;
-		fator_escalimetro_rgb_E[1] = 1.473988;
-		fator_escalimetro_rgb_E[2] = 2.339450;
-		maximo_S_Branco_E = 0.099070;
-		minimo_V_Branco_E  = 0.749686;
-		maximo_V_Preto_E  = 0.163725;
-		minimo_V_Preto_E =0.061667;
+		fator_escalimetro_rgb_E[0] = 1.491228;
+		fator_escalimetro_rgb_E[1] = 1.356383;
+		fator_escalimetro_rgb_E[2] = 3.109756;
+		maximo_S_Branco_E = 0.066512;
+		minimo_V_Branco_E  = 0.661765;
+		maximo_V_Preto_E  = 0.171569;
+		minimo_V_Preto_E =0.063431;
+//		% 1.491228
+//		% 1.356383
+//		% 3.109756
+//		% 0.056512
+//		% 0.761765
+//		% 0.171569
+//		% 0.073431
 
-		fator_escalimetro_rgb_D[0] = 2.125000;
-		fator_escalimetro_rgb_D[1] = 1.888889;
-		fator_escalimetro_rgb_D[2] = 4.047619;
-		maximo_S_Branco_D = 0.077522;
-		minimo_V_Branco_D  = 0.757529;
-		maximo_V_Preto_D  = 0.159804;
-		minimo_V_Preto_D = 0.065588;
+		fator_escalimetro_rgb_D[0] = 1.268657;
+		fator_escalimetro_rgb_D[1] = 1.020000;
+		fator_escalimetro_rgb_D[2] = 1.758621;
+		maximo_S_Branco_D = 0.093394;
+		minimo_V_Branco_D  = 0.677451;
+		maximo_V_Preto_D  = 0.187255;
+		minimo_V_Preto_D = 0.053431;
+
+//		% 1.268657
+//		% 1.020000
+//		% 1.758621
+//		% 0.083394
+//		% 0.777451
+//		% 0.187255
+//		% 0.073431
 	}else{
 		fator_escalimetro_rgb_D[0] = 1.159091;
 		fator_escalimetro_rgb_D[1] = 0.965909;

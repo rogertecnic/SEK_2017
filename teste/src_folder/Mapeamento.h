@@ -15,9 +15,6 @@
 #include <vector>
 #include <fstream>
 
-#define distancia_boneco 16 //MODIFICAR DEPOIS
-
-
 using namespace std;
 
 

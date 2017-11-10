@@ -18,13 +18,13 @@ void Garra::abrir() {
 		garra.set_position_sp(-graus_abertura_do_motor);
 		garra.run_to_abs_pos();
 	}
-	usleep(1000000);
+	usleep(1000000*0.3);
 }
 
 void Garra::fechar() {
 	if(garra_aberta){
 		if(tipo == "cancela"){
-			garra.set_stop_action("coast");
+			garra.set_stop_action("hold");
 			garra.set_position_sp(0);
 		}
 		else{
@@ -34,5 +34,5 @@ void Garra::fechar() {
 		garra_aberta = false;
 		garra.run_to_abs_pos();
 	}
-	usleep(1000000);
+	usleep(1000000*0.3);
 }

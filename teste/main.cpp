@@ -206,7 +206,7 @@ void teste_rogerio(){
 	Ultrassom_nxt ultraE(Ultrassom_nxt::INPUT_3);
 	Ultrassom_nxt ultraD(Ultrassom_nxt::INPUT_4);
 	Mapeamento mapa(&robot, &cor);
-	Resgate resgate(&robot, &cor, &ultraE, &ultraD, ev3dev::OUTPUT_D);
+	Resgate resgate(&robot, &cor, &ultraE, &ultraD, ev3dev::OUTPUT_C, ev3dev::OUTPUT_D);
 
 
 	robot.inicializar_thread_aceleracao();
@@ -255,13 +255,16 @@ void teste_rogerio(){
 //	while(!ev3dev::button::enter.process());
 //	usleep(1000000*0.1);
 //	while(!ev3dev::button::enter.process());
-//	//mapa.saidinha_ultima_intersec();
-//	//mapa.mapear();
-//	cout <<"SAIU DO MAPEAMENTO JA"<<endl;
-//	//resgate.ir_para_final();
-//	qnt_cruzamentos = total_cruzamentos_teste;
-//
-//	resgate.resgatar();
+	//mapa.saidinha_ultima_intersec();
+	//mapa.mapear();
+	cout <<"SAIU DO MAPEAMENTO JA"<<endl;
+	//usleep(1000000*2);
+	//resgate.ir_para_final();
+	//cout << endl << endl << "PODE INICIAR CAPTURA"<< endl;
+	//qnt_cruzamentos = total_cruzamentos_teste;
+	cp.checkpoint_verde = direcao::direita;
+	cp.checkpoint_amarelo = direcao::esquerda;
+	resgate.resgatar();
 
 
 	/*
@@ -297,19 +300,19 @@ void teste_rogerio(){
 	 * pega alguns valores e guarda no arquivo
 	 */
 		//robot.calibra_sensor_cor(&cor);
-		while(!ev3dev::button::up.pressed()){
-			while(!ev3dev::button::enter.pressed() && !ev3dev::button::up.pressed());
-			while(ev3dev::button::enter.pressed());
-			//robot.andar(30);
-			while(!ev3dev::button::enter.pressed() && !ev3dev::button::up.pressed()){
-				cout<<cor.ler_cor_E()<<";"<<cor.ler_cor_D()<<endl;
-				usleep(1000000*0.1);
-			}
-			robot.parar();
-			usleep(1000000*0.01);
-			while(ev3dev::button::enter.pressed());
-		}
-		cor.fecha_arquivo();
+//		while(!ev3dev::button::up.pressed()){
+//			while(!ev3dev::button::enter.pressed() && !ev3dev::button::up.pressed());
+//			while(ev3dev::button::enter.pressed());
+//			//robot.andar(30);
+//			while(!ev3dev::button::enter.pressed() && !ev3dev::button::up.pressed()){
+//				cout<<cor.ler_cor_E()<<";"<<cor.ler_cor_D()<<endl;
+//				usleep(1000000*0.1);
+//			}
+//			robot.parar();
+//			usleep(1000000*0.01);
+//			while(ev3dev::button::enter.pressed());
+//		}
+//		cor.fecha_arquivo();
 
 	/*
 	 * teste da classe de cor

@@ -63,7 +63,7 @@ private:
 	double raio_roda = 0.0267; // metros
 	double tamanho_do_pintao = 0.076; // 0.062 melhor
 	double relacao_engrenagem = 0.5; // 2 volta motor equivale 1 voltas roda
-	double raio_robo = 0.0741; // largura entre os centros das rodas div por 2
+	double raio_robo = 0.0745; // largura entre os centros das rodas div por 2
 	double angulo_robo_graus = 0; // quanto o robo vai girar quando chamar o metodo girar
 	double distancia_linha_reta = 0; // distancia que  o robo ja andou
 	double distancia_absoluta = 0; // distancia absoluta que o robo andou
