@@ -278,7 +278,7 @@ void go_to_plaza(Controlador_robo *robo, Sensor_cor_hsv *sensor, Ultrassom *ultr
 	Cor	cor_D = Cor::ndCor;
 	int count_nwhite = 0;
 
-	robo->andar(60);
+	robo->andar(70);
 	while(true){
 		cor_E = sensor->ler_cor_E();
 		cor_D = sensor->ler_cor_D();
@@ -294,11 +294,11 @@ void go_to_plaza(Controlador_robo *robo, Sensor_cor_hsv *sensor, Ultrassom *ultr
 	}
 	robo->parar();
 
-	robo->andar(40, 0.25);
+	robo->andar(70, 0.25);
 
 	cancela->abrir();
 
-	robo->andar(-30);
+	robo->andar(-70);
 	while(sensor->ler_cor_E() != Cor::branco || sensor->ler_cor_D() != Cor::branco);
 	usleep(100000);
 
@@ -312,25 +312,27 @@ void go_to_plaza(Controlador_robo *robo, Sensor_cor_hsv *sensor, Ultrassom *ultr
 	robo->girar(-90);
 	while(robo->get_estado() == flag_aceleracao::girar);
 
-	robo->andar(50, 0.40);
+	robo->andar(70, 0.40);
 
 	robo->girar(-90);
 	while(robo->get_estado() == flag_aceleracao::girar);
 
-	robo->andar(50, 0.5);
+	robo->andar(70, 0.5);
 	robo->andar(-30, 0.05);
 
 	robo->girar(-90);
 	while(robo->get_estado() == flag_aceleracao::girar);
 
-	robo->andar(30);
+	robo->andar(50);
 	while(ultraE->le_centimetro() < 30);
 	robo->parar();
-	robo->girar(90);
+	usleep(1000000*0.5);
+	robo->girar(-90);
 	while(robo->get_estado() == flag_aceleracao::girar);
 
-	robo->andar(40);
+	robo->andar(-50, 0.05);
 	while(true){
+		robo->andar(-50);
 		cor_E = sensor->ler_cor_E();
 		cor_D = sensor->ler_cor_D();
 
@@ -339,15 +341,16 @@ void go_to_plaza(Controlador_robo *robo, Sensor_cor_hsv *sensor, Ultrassom *ultr
 		else if (cor_D == Cor::fora)
 			realinha(robo, direcao::direita);
 
-		if((cor_E == Cor::vermelho && cor_D == Cor::vermelho) ||
-				(cor_E == Cor::verde && cor_D == Cor::verde))
-		{
-			//robo->alinhar(sensor, direcao::traz);
-			robo->andar(30);
-			while(sensor->ler_cor_E() != Cor::branco || sensor->ler_cor_D() != Cor::branco);
-			usleep(1000000*0.5);
+		if(cor_E == Cor::verde && cor_D == Cor::verde){
 			robo->alinhar(sensor, direcao::traz);
+			robo->andar(-50, 0.05);
+			robo->andar(-50);
+			while(sensor->ler_cor_E() != Cor::branco || sensor->ler_cor_D() != Cor::branco);
+			//usleep(1000000*0.5);
+			robo->girar(180);
 			robo->parar();
+			cout << "terminei!!!" << endl;
+			usleep(1000000*3);
 			break;
 		}
 	}
