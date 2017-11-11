@@ -47,6 +47,7 @@ void Resgate::resgatar(){
 			}
 		} else	cont = 0;
 
+
 		switch (estd){
 		case estados_arena::leu_fora:
 			cout << "fora:";
@@ -126,7 +127,7 @@ void Resgate::resgatar(){
 				robo->andar(pwm_busca);
 			if (cor_E != Cor::branco || cor_D != Cor::branco){
 				if(qnt_cruzamentos >=total_cruzamentos_teste &&
-						sentido_navegacao == 1){ // saindo da ultima intersec, subir rampa
+						sentido_navegacao == 1){//saindo da ultima intersec, subir rampa
 					// *** ALINHAR PELA TANGENTE PARA VOLTAR CERTO OU IR PARA RAMPA CERTO
 					robo->andar(-50,0.1);
 					robo->girar(45+180);
@@ -683,7 +684,7 @@ void Resgate::go_to_plaza() {
 	}
 	robo->parar();
 
-	robo->andar(40, 0.3);
+	robo->andar(40, 0.22);
 
 	cancela.abrir();
 
@@ -708,8 +709,12 @@ void Resgate::go_to_plaza() {
 
 	robo->andar(50, 0.5);
 
+	robo->andar(-30, 0.03);
+
 	robo->girar(-90);
 	while(robo->get_estado() == flag_aceleracao::girar);
+
+
 
 	robo->andar(30);
 	while(ultraE->le_centimetro() < 30);
@@ -763,7 +768,7 @@ void Resgate::go_to_plaza2(){
 	}
 	robo->parar();
 
-	robo->andar(40, 0.3);
+	robo->andar(40, 0.22);
 
 
 	robo->andar(-30);

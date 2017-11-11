@@ -20,6 +20,7 @@ set(LIBS src_folder/ev3dev.cpp)
 list(APPEND LIBS  src_folder/M_arquivos.cpp)
 list(APPEND LIBS  src_folder/Sensor_cor_hsv.cpp)
 list(APPEND LIBS  src_folder/Ultrassom_nxt.cpp)
+list(APPEND LIBS  src_folder/Ultrassom.cpp)
 list(APPEND LIBS  src_folder/Controlador_robo.cpp)
 list(APPEND LIBS  src_folder/Mapeamento.cpp)
 list(APPEND LIBS  src_folder/Garra.cpp)
@@ -27,4 +28,4 @@ list(APPEND LIBS  src_folder/Resgate.cpp)
 
 
 # adiciona todos os sources e o main para serem compilados juntos
-add_executable(binario  ${LIBS} main.cpp)
+add_executable(testesL  ${LIBS} main.cpp)
