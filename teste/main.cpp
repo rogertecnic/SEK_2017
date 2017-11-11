@@ -8,6 +8,8 @@
 #include "src_folder/Mapeamento.h"
 #include "src_folder/Resgate.h"
 
+#include "src_folder/Garra.h"
+
 
 using namespace std;
 
@@ -74,13 +76,22 @@ void teste_rogerio(){
 	//cp.checkpoint_verde = direcao::esquerda;
 	//cp.checkpoint_vermelho = direcao::direita;
 
-	mapa.mapear();
-	cout <<"SAIU DO MAPEAMENTO JA"<<endl;
-
+	//mapa.mapear();
+//	cout <<"SAIU DO MAPEAMENTO JA"<<endl;
+//	Garra cancela(ev3dev::OUTPUT_C, 48, "cancela");
+//	cancela.abrir();
+//	usleep(1000000);
+//	cancela.fechar();
+//	usleep(1000000);
+//	robot.andar(-70);
+//	while(!ev3dev::button::enter.process());
+//	usleep(1000000*0.1);
+//	while(!ev3dev::button::enter.process());
 	//usleep(1000000*2);
 	//resgate.ir_para_final();
 	//cout << endl << endl << "PODE INICIAR CAPTURA"<< endl;
-	//qnt_cruzamentos = total_cruzamentos_teste;
+	//robot.girar(360);
+	qnt_cruzamentos = total_cruzamentos_teste;
 	resgate.resgatar();
 
 
@@ -425,8 +436,8 @@ void teste_rampa(){
 int main(){
 	system("setfont Greek-TerminusBold20x10.psf.gz");
 
-	//teste_rogerio();
-	teste_rampa();
+	teste_rogerio();
+	//teste_rampa();
 
 	ev3dev::button::back.pressed();
 

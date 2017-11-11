@@ -7,7 +7,8 @@ Resgate::Resgate(Controlador_robo *robo, Sensor_cor_hsv *sensor, Ultrassom_nxt *
 {}
 
 void Resgate::resgatar(){
-	//carga_bonecos = capacidade_bonecos
+	carga_bonecos = capacidade_bonecos;
+	sentido_navegacao = 1;
 	robo->andar(pwm_busca);
 	usleep(1000000*0.5); // esperar sair da cor que ele alinhou
 
@@ -30,7 +31,7 @@ void Resgate::resgatar(){
 		if(carga_bonecos >= capacidade_bonecos)
 			pwm_busca = 70;
 		else pwm_busca = 40;
-		if(estd != estados_arena::atencao)cout << dist_boneco_E<<";" << dist_boneco_D << endl;
+		//if(estd != estados_arena::atencao)cout << dist_boneco_E<<";" << dist_boneco_D << endl;
 
 		if((dist_boneco_E <= distancia_boneco || dist_boneco_D <= distancia_boneco) &&
 				carga_bonecos <capacidade_bonecos &&
@@ -45,7 +46,6 @@ void Resgate::resgatar(){
 				estd = estados_arena::captura;
 			}
 		} else	cont = 0;
-
 
 		switch (estd){
 		case estados_arena::leu_fora:
@@ -126,15 +126,15 @@ void Resgate::resgatar(){
 				robo->andar(pwm_busca);
 			if (cor_E != Cor::branco || cor_D != Cor::branco){
 				if(qnt_cruzamentos >=total_cruzamentos_teste &&
-						sentido_navegacao == 1){//saindo da ultima intersec, subir rampa
+						sentido_navegacao == 1){ // saindo da ultima intersec, subir rampa
 					// *** ALINHAR PELA TANGENTE PARA VOLTAR CERTO OU IR PARA RAMPA CERTO
-					robo->andar(-50,0.2);
-					girar(45);
+					robo->andar(-50,0.1);
+					robo->girar(45+180);
 					robo->andar(40);
 					while(sensor->ler_cor_E() != Cor::fora);
-					parar();
+					robo->parar();
 					robo->andar(-30,0.06);
-					girar(-45);
+					robo->girar(-45);
 					if(carga_bonecos >= 1){
 						estd = estados_arena::rampa;
 						cout << "RAMPA" << endl;
@@ -193,36 +193,27 @@ void Resgate::resgatar(){
 
 
 		case estados_arena::rampa:
-			if(cor_E == Cor::branco && cor_D == Cor::branco)
-			{
-				estd = estados_arena::faixa;
-				cout << "FAIXA!!" << endl;
-				break;
+			// aqui eu estou no inicio da rampa
+			robo->andar(-40);
+			usleep(1000000*1);
+			while(true){
+				//cout << sensor->ler_cor_E() << ";" << sensor->ler_cor_D() << endl;
+				if(sensor->ler_cor_E() == Cor::vermelho || sensor->ler_cor_D() == Cor::vermelho)
+					break;
 			}
-			if (cor_E == Cor::fora || cor_D == Cor::fora)
-			{
-				estd = estados_arena::leu_fora;
-				cout << "FORA!!" << endl;
-				break;
+			robo->andar(40);
+			while(true){
+				//cout << sensor->ler_cor_E() << "T" << sensor->ler_cor_D() << endl;
+				if(sensor->ler_cor_E() != Cor::vermelho && sensor->ler_cor_D() != Cor::vermelho)
+					break;
 			}
-			else{ // aqui eu estou no inicio da rampa
-					robo->andar(60);
-					usleep(1000000*2);
-					while(true){
-						//cout << sensor->ler_cor_E() << ";" << sensor->ler_cor_D() << endl;
-						if(sensor->ler_cor_E() == Cor::verde || sensor->ler_cor_D() == Cor::verde)
-							break;
-					}
-					while(true){
-						//cout << sensor->ler_cor_E() << "T" << sensor->ler_cor_D() << endl;
-						if(sensor->ler_cor_E() != Cor::verde && sensor->ler_cor_D() != Cor::verde)
-							break;
-					}
-					usleep(1000000*0.3);
-					robo->alinhar(sensor, direcao::traz);
-					estd = estados_arena::salva;
-				}
-			}
+			usleep(1000000*0.3);
+			robo->alinhar(sensor, direcao::traz);
+			estd = estados_arena::salva;
+			cout << "salvaaa"<<endl;
+			usleep(1000000*2);
+
+
 
 			break;
 
