@@ -1,13 +1,13 @@
 #include "Resgate.h"
 
 
-Resgate::Resgate(Controlador_robo *robo, Sensor_cor_hsv *sensor, Ultrassom_nxt *ultraE, Ultrassom_nxt *ultraD, string porta_cancela, string porta_garra)
+Resgate::Resgate(Controlador_robo *robo, Sensor_cor_hsv *sensor, Ultrassom *ultraE, Ultrassom *ultraD, string porta_cancela, string porta_garra)
 :robo(robo), sensor(sensor), ultraE(ultraE), ultraD(ultraD),
  garra(Garra(porta_garra, 20, "quelicera")), cancela(Garra(porta_cancela, 48, "cancela"))
 {}
 
 void Resgate::resgatar(){
-	carga_bonecos = capacidade_bonecos;
+	//carga_bonecos = capacidade_bonecos;
 	sentido_navegacao = 1;
 	robo->andar(pwm_busca);
 	usleep(1000000*0.5); // esperar sair da cor que ele alinhou
@@ -20,6 +20,7 @@ void Resgate::resgatar(){
 	int cont = 0; // contador para confirmar a leitura do ultra
 	int count_intersec = 0; // contador para confirmar quando entrar na intersecao
 	int count_branco_apos_intersec = 0; // contador para confirmar a saida da intersecao
+	int cnt_rampa = 0;
 	Cor corE_corD_iguais = Cor::ndCor; // quando os sensores lerem a mesma cor, para comparacao
 
 	while(true){
@@ -31,7 +32,7 @@ void Resgate::resgatar(){
 		if(carga_bonecos >= capacidade_bonecos)
 			pwm_busca = 70;
 		else pwm_busca = 40;
-		//if(estd != estados_arena::atencao)cout << dist_boneco_E<<";" << dist_boneco_D << endl;
+		if(estd != estados_arena::atencao)cout << dist_boneco_E<<";" << dist_boneco_D << endl;
 
 		if((dist_boneco_E <= distancia_boneco || dist_boneco_D <= distancia_boneco) &&
 				carga_bonecos <capacidade_bonecos &&
@@ -41,7 +42,7 @@ void Resgate::resgatar(){
 			pwm_busca = 15;
 			robo->andar(pwm_busca);
 			cont ++;
-			if(cont >= 2){
+			if(cont >= 1){
 				cout << "SIM" << endl;
 				estd = estados_arena::captura;
 			}
@@ -134,11 +135,12 @@ void Resgate::resgatar(){
 					robo->andar(40);
 					while(sensor->ler_cor_E() != Cor::fora);
 					robo->parar();
-					robo->andar(-30,0.06);
+					robo->andar(-30,0.05);
 					robo->girar(-45);
 					if(carga_bonecos >= 1){
 						estd = estados_arena::rampa;
 						cout << "RAMPA" << endl;
+						break;
 					}else{
 						robo->andar(-50,0.2);
 						robo->girar(180);
@@ -195,21 +197,28 @@ void Resgate::resgatar(){
 
 		case estados_arena::rampa:
 			// aqui eu estou no inicio da rampa
+			robo->andar(-60, 0.28); // FIXME olhar isso na pista oficial
 			robo->andar(-40);
-			usleep(1000000*1);
+			cnt_rampa = 0;
+			cout << "kd rampa" << endl;
 			while(true){
-				//cout << sensor->ler_cor_E() << ";" << sensor->ler_cor_D() << endl;
-				if(sensor->ler_cor_E() == Cor::vermelho || sensor->ler_cor_D() == Cor::vermelho)
+				usleep(1000000*0.1);
+				if(sensor->ler_cor_E() == Cor::vermelho ||
+						sensor->ler_cor_D() == Cor::vermelho)
+				{
+					cnt_rampa ++;
+				}
+				else cnt_rampa = 0;
+
+				if(cnt_rampa >=4)
 					break;
 			}
-			robo->andar(40);
-			while(true){
-				//cout << sensor->ler_cor_E() << "T" << sensor->ler_cor_D() << endl;
-				if(sensor->ler_cor_E() != Cor::vermelho && sensor->ler_cor_D() != Cor::vermelho)
-					break;
-			}
-			usleep(1000000*0.3);
+			cout << "viu vermelho" << endl;
+			robo->andar(40,0.04);
+			cout << "saiu vermelho" << endl;
 			robo->alinhar(sensor, direcao::traz);
+			robo->andar(-50, 0.3); // FIXME olhar isso na pista oficial
+			robo->girar(180);
 			estd = estados_arena::salva;
 			cout << "salvaaa"<<endl;
 			usleep(1000000*2);
@@ -361,7 +370,7 @@ void Resgate::captura_rogerio() {
 	if(dist_boneco_E <= distancia_boneco){ // >>>>>>>>>>>>>>>>>>>>> viu boneco a esquerda
 		cout << "ESQ!" << endl;
 		robo->parar();
-		robo->andar(-30, 0.1);
+		robo->andar(-30, 0.11);
 		cancela.abrir();
 		robo->girar(90);
 		robo->andar(60);
@@ -371,23 +380,29 @@ void Resgate::captura_rogerio() {
 			if(sensor->ler_cor_E() == Cor::fora && sensor->ler_cor_D() == Cor::fora){
 				robo->andar(-60, 0.15-robo->get_pintao());
 				robo->girar(-90);
-				cancela.fechar();
 				tem_boneco = -1;
 			}
-
 			cnt ++;
 			usleep(1000000*0.1);
-			if(cnt >= 18) // >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> delay pro robo capturar
+			if(cnt >= 16) // >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> delay pro robo capturar
 				tem_boneco = 1;
 		}
-
+		robo->parar();
+		cancela.fechar();
 		if(tem_boneco == 1){
 			cancela.fechar();
-			robo->andar(-60, 0.14);
+			robo->andar(-60, 0.08);
+
 			cancela.abrir();
-			robo->andar(60, 0.14);
+			robo->andar(60, 0.08);
 			cancela.fechar();
-			robo->andar(-60, 0.18);
+			robo->andar(-60, 0.08);
+
+			cancela.abrir();
+			robo->andar(60, 0.08);
+			cancela.fechar();
+
+			robo->andar(-60, 0.20);
 			carga_bonecos ++;
 			if(carga_bonecos >=capacidade_bonecos){ // cheio, salva
 				if(sentido_navegacao -1)
@@ -408,7 +423,7 @@ void Resgate::captura_rogerio() {
 	else if(dist_boneco_D <= distancia_boneco){ // >>>>>>>>>>>>>>>>>>>>> viu boneco a direita
 		cout << "DIR!" << endl;
 		robo->parar();
-		robo->andar(-30, 0.1);
+		robo->andar(-30, 0.11);
 		cancela.abrir();
 		robo->girar(-90);
 		robo->andar(60);
@@ -418,24 +433,30 @@ void Resgate::captura_rogerio() {
 			if(sensor->ler_cor_E() == Cor::fora && sensor->ler_cor_D() == Cor::fora){
 				robo->andar(-60, 0.15-robo->get_pintao());
 				robo->girar(-90);
-				cancela.fechar();
 				tem_boneco = -1;
 			}
 
 			cnt ++;
 			usleep(1000000*0.1);
-			if(cnt >= 18) // >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> delay pro robo capturar
+			if(cnt >= 16) // >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> delay pro robo capturar
 				tem_boneco = 1;
 		}
-
+		robo->parar();
+		cancela.fechar();
 		if(tem_boneco == 1){
 			cancela.fechar();
-			robo->andar(-60, 0.14);
+			robo->andar(-60, 0.08);
+
 			cancela.abrir();
-			robo->andar(60, 0.14);
+			robo->andar(60, 0.08);
 			cancela.fechar();
-			robo->andar(-60, 0.18);
-			carga_bonecos ++;
+			robo->andar(-60, 0.08);
+
+			cancela.abrir();
+			robo->andar(60, 0.08);
+			cancela.fechar();
+
+			robo->andar(-60, 0.17);
 			carga_bonecos ++;
 			if(carga_bonecos >=capacidade_bonecos){ // cheio, saiva
 				if(sentido_navegacao -1)
@@ -466,7 +487,7 @@ void Resgate::captura_luana() {
 	Controlador_robo robo(true, "debug posicao direto no pwm.m");
 	Garra garra(ev3dev::OUTPUT_D, 135, "garra");
 	Garra cancela(ev3dev::OUTPUT_C, 45, "cancela");
-	Ultrassom_nxt ultraE(Ultrassom_nxt::INPUT_3);
+	Ultrassom ultraE(Ultrassom(ev3dev::INPUT_3));
 
 	robo.inicializar_thread_aceleracao();
 

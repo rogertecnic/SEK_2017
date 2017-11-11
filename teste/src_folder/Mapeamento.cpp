@@ -67,9 +67,9 @@ bool Mapeamento::pegar_informacoes_arq(){
 		if (!( getline(file, c))) break;
 		count_intersec_map++;
 
-	} while(count_intersec_map <= 2);
+	} while(count_intersec_map <= 3);
 
-	if(count_intersec_map == 2) return true;
+	if(count_intersec_map == 3) return true;
 	else return false;
 }
 

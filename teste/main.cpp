@@ -20,8 +20,8 @@ typedef chrono::high_resolution_clock Time;
 void teste_rogerio(){
 	Controlador_robo robot(false, "debug posicao direto no pwm.m");
 	Sensor_cor_hsv cor(ev3dev::INPUT_1, ev3dev::INPUT_2,false,"leitura_sensor_cor_hsv");
-	Ultrassom_nxt ultraE(Ultrassom_nxt::INPUT_3);
-	Ultrassom_nxt ultraD(Ultrassom_nxt::INPUT_4);
+	Ultrassom ultraE(ev3dev::INPUT_3);
+	Ultrassom ultraD(ev3dev::INPUT_4);
 	Mapeamento mapa(&robot, &cor);
 	Resgate resgate(&robot, &cor, &ultraE, &ultraD, ev3dev::OUTPUT_C, ev3dev::OUTPUT_D);
 
@@ -73,25 +73,25 @@ void teste_rogerio(){
 	//	usleep(1000000*0.1);
 	//	while(!ev3dev::button::enter.process());
 	//mapa.saidinha_ultima_intersec();
-	//cp.checkpoint_verde = direcao::esquerda;
-	//cp.checkpoint_vermelho = direcao::direita;
+	//cp.checkpoint_verde = direcao::direita;
+	//cp.checkpoint_amarelo = direcao::esquerda;
 
 	//mapa.mapear();
-//	cout <<"SAIU DO MAPEAMENTO JA"<<endl;
-//	Garra cancela(ev3dev::OUTPUT_C, 48, "cancela");
-//	cancela.abrir();
-//	usleep(1000000);
-//	cancela.fechar();
-//	usleep(1000000);
-//	robot.andar(-70);
-//	while(!ev3dev::button::enter.process());
-//	usleep(1000000*0.1);
-//	while(!ev3dev::button::enter.process());
+	//	cout <<"SAIU DO MAPEAMENTO JA"<<endl;
+	//	Garra cancela(ev3dev::OUTPUT_C, 48, "cancela");
+	//	cancela.abrir();
+	//	usleep(1000000);
+	//	cancela.fechar();
+	//	usleep(1000000);
+	//	robot.andar(-70);
+	//	while(!ev3dev::button::enter.process());
+	//	usleep(1000000*0.1);
+	//	while(!ev3dev::button::enter.process());
 	//usleep(1000000*2);
 	//resgate.ir_para_final();
 	//cout << endl << endl << "PODE INICIAR CAPTURA"<< endl;
 	//robot.girar(360);
-	qnt_cruzamentos = total_cruzamentos_teste;
+	//qnt_cruzamentos = total_cruzamentos_teste;
 	resgate.resgatar();
 
 
@@ -127,20 +127,20 @@ void teste_rogerio(){
 	 * teste da classe sensor_cor_hsv
 	 * pega alguns valores e guarda no arquivo
 	 */
-	//robot.calibra_sensor_cor(&cor);
-	//		while(!ev3dev::button::up.pressed()){
-	//			while(!ev3dev::button::enter.pressed() && !ev3dev::button::up.pressed());
-	//			while(ev3dev::button::enter.pressed());
-	//			//robot.andar(30);
-	//			while(!ev3dev::button::enter.pressed() && !ev3dev::button::up.pressed()){
-	//				cout<<cor.ler_cor_E()<<";"<<cor.ler_cor_D()<<endl;
-	//				usleep(1000000*0.1);
+	//	//robot.calibra_sensor_cor(&cor);
+	//			while(!ev3dev::button::up.pressed()){
+	//				while(!ev3dev::button::enter.pressed() && !ev3dev::button::up.pressed());
+	//				while(ev3dev::button::enter.pressed());
+	//				//robot.andar(30);
+	//				while(!ev3dev::button::enter.pressed() && !ev3dev::button::up.pressed()){
+	//					cout<<cor.ler_cor_E()<<";"<<cor.ler_cor_D()<<endl;
+	//					usleep(1000000*0.1);
+	//				}
+	//				robot.parar();
+	//				usleep(1000000*0.01);
+	//				while(ev3dev::button::enter.pressed());
 	//			}
-	//			robot.parar();
-	//			usleep(1000000*0.01);
-	//			while(ev3dev::button::enter.pressed());
-	//		}
-	//		cor.fecha_arquivo();
+	//			cor.fecha_arquivo();
 
 	/*
 	 * teste da classe de cor
@@ -223,8 +223,8 @@ void teste_rogerio(){
 void competicao(){
 	Controlador_robo robot(false, "debug posicao direto no pwm.m");
 	Sensor_cor_hsv cor(ev3dev::INPUT_1, ev3dev::INPUT_2,false,"leitura_sensor_cor_hsv");
-	Ultrassom_nxt ultraE(Ultrassom_nxt::INPUT_3);
-	Ultrassom_nxt ultraD(Ultrassom_nxt::INPUT_4);
+	Ultrassom ultraE(ev3dev::INPUT_3);
+	Ultrassom ultraD(ev3dev::INPUT_4);
 	Mapeamento mapa(&robot, &cor);
 	Resgate resgate(&robot, &cor, &ultraE, &ultraD, ev3dev::OUTPUT_C, ev3dev::OUTPUT_D);
 
@@ -439,7 +439,7 @@ void teste_rampa(){
 	robo.andar(70);
 	usleep(1000000*2);
 	while(cor.ler_cor_E() != Cor::branco || cor.ler_cor_D() != Cor::branco);
-	go_to_plaza(&robo, &cor, &ultraE );
+	//go_to_plaza(&robo, &cor, &ultraE );
 }
 
 

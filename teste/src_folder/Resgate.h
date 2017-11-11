@@ -3,7 +3,7 @@
 
 #include "Controlador_robo.h"
 #include "Sensor_cor_hsv.h"
-#include  "Ultrassom_nxt.h"
+#include  "Ultrassom.h"
 #include "Const.h"
 #include "Garra.h"
 
@@ -12,7 +12,7 @@
 class Resgate {
 public:
 
-	Resgate(Controlador_robo *, Sensor_cor_hsv *, Ultrassom_nxt *, Ultrassom_nxt *, string porta_cancela, string porta_garra);
+	Resgate(Controlador_robo *, Sensor_cor_hsv *, Ultrassom *, Ultrassom *, string porta_cancela, string porta_garra);
 	void resgatar();
 
 	/*
@@ -28,8 +28,8 @@ public:
 private:
 	Controlador_robo *robo;
 	Sensor_cor_hsv *sensor;
-	Ultrassom_nxt *ultraE;
-	Ultrassom_nxt *ultraD;
+	Ultrassom *ultraE;
+	Ultrassom *ultraD;
 	Garra garra;
 	Garra cancela;
 	//ev3dev::large_motor *motorCancela;
@@ -41,7 +41,7 @@ private:
 	int pwm_busca = 40;
 
 	int carga_bonecos = 0;
-	int capacidade_bonecos = 1;
+	int capacidade_bonecos = 2;
 
 	direcao direcao_boneco = direcao::ndDirecao;
 	// cor que o referente a intersecao que o robo acabou de sair

@@ -49,5 +49,5 @@ extern direcao_checkpoint cp; // intersecao
 extern int qnt_cruzamentos;
 const int total_cruzamentos_teste = 4;
 const bool arena_pequi = false; // testar o robo na nossa arena e na arena oficial
-const bool utilizar_arq = true; //utlizar arquivo de mapeamento ou nao
+const bool utilizar_arq = false; //utlizar arquivo de mapeamento ou nao
 #endif

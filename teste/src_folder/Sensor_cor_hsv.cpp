@@ -44,7 +44,7 @@ Sensor_cor_hsv::Sensor_cor_hsv(string sensor_port_E, string sensor_port_D,
 		maximo_S_Branco_E = 0.066512;
 		minimo_V_Branco_E  = 0.661765;
 		maximo_V_Preto_E  = 0.171569;
-		minimo_V_Preto_E =0.063431;
+		minimo_V_Preto_E =0.073431;//0.063431;
 //		% 1.491228
 //		% 1.356383
 //		% 3.109756
@@ -59,7 +59,7 @@ Sensor_cor_hsv::Sensor_cor_hsv(string sensor_port_E, string sensor_port_D,
 		maximo_S_Branco_D = 0.093394;
 		minimo_V_Branco_D  = 0.677451;
 		maximo_V_Preto_D  = 0.187255;
-		minimo_V_Preto_D = 0.053431;
+		minimo_V_Preto_D = 0.063431;//0.053431;
 
 //		% 1.268657
 //		% 1.020000

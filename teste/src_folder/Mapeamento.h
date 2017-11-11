@@ -10,7 +10,6 @@
 
 #include "Controlador_robo.h"
 #include "Sensor_cor_hsv.h"
-#include  "Ultrassom_nxt.h"
 #include "Const.h"
 
 #include <vector>

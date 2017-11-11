@@ -64,8 +64,13 @@ void Controlador_robo::alinhar(Sensor_cor_hsv *cor, direcao dir){
 
 
 	cout<<"alinhando:"<<cor_E<<";"<<cor_D<<endl;
-	motorD->set_duty_cycle_sp(dir == direcao::traz?20:-20);
-	motorE->set_duty_cycle_sp(dir == direcao::traz?22:-22); // sentido inverso devido a reducao de engrenagem
+	if(qnt_cruzamentos >= total_cruzamentos_teste){
+		motorD->set_duty_cycle_sp(dir == direcao::traz?30:-30);
+		motorE->set_duty_cycle_sp(dir == direcao::traz?32:-32); // sentido inverso devido a reducao de engrenagem
+	}else {
+		motorD->set_duty_cycle_sp(dir == direcao::traz?20:-20);
+		motorE->set_duty_cycle_sp(dir == direcao::traz?22:-22); // sentido inverso devido a reducao de engrenagem
+	}
 	motorE->run_direct();
 	motorD->run_direct();
 	bool motorE_parado = false,
