@@ -69,14 +69,16 @@ void teste_rogerio(){
 	//robot.calibra_sensor_cor(&cor);
 	//cor.fecha_arquivo();
 	//robot.andar(-40);
-	//	while(!ev3dev::button::enter.process());
-	//	usleep(1000000*0.1);
-	//	while(!ev3dev::button::enter.process());
+	cout << endl << endl << endl << "comecar?" << endl;
+		while(!ev3dev::button::enter.process());
+		usleep(1000000*0.1);
+		while(!ev3dev::button::enter.process());
+		cout << endl << endl << endl << endl << endl << endl;
 	//mapa.saidinha_ultima_intersec();
 	//cp.checkpoint_verde = direcao::direita;
 	//cp.checkpoint_amarelo = direcao::esquerda;
 
-	//mapa.mapear();
+	mapa.mapear();
 	//	cout <<"SAIU DO MAPEAMENTO JA"<<endl;
 	//	Garra cancela(ev3dev::OUTPUT_C, 48, "cancela");
 	//	cancela.abrir();
@@ -84,9 +86,9 @@ void teste_rogerio(){
 	//	cancela.fechar();
 	//	usleep(1000000);
 	//	robot.andar(-70);
-	//	while(!ev3dev::button::enter.process());
-	//	usleep(1000000*0.1);
-	//	while(!ev3dev::button::enter.process());
+//		while(!ev3dev::button::enter.process());
+//		usleep(1000000*0.1);
+//		while(!ev3dev::button::enter.process());
 	//usleep(1000000*2);
 	//resgate.ir_para_final();
 	//cout << endl << endl << "PODE INICIAR CAPTURA"<< endl;

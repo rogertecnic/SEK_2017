@@ -34,7 +34,7 @@ struct direcao_checkpoint {
 	direcao checkpoint_amarelo;
 };
 
-const bool automapear_3_checkpoint = false;
+const bool automapear_3_checkpoint = true;
 
 /* == 1 se estiver indo do ponto de start para a rampa
  * == -1 se estiver indo da rampa para o ponto de start
@@ -47,7 +47,7 @@ extern int sentido_navegacao;
  * */
 extern direcao_checkpoint cp; // intersecao
 extern int qnt_cruzamentos;
-const int total_cruzamentos_teste = 4;
+const int total_cruzamentos_teste = 8;
 const bool arena_pequi = false; // testar o robo na nossa arena e na arena oficial
-const bool utilizar_arq = false; //utlizar arquivo de mapeamento ou nao
+const bool utilizar_arq = true; //utlizar arquivo de mapeamento ou nao
 #endif

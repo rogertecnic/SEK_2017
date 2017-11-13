@@ -261,9 +261,9 @@ void Mapeamento::mapeamento_intersec() {
 	{
 		//robo->parar();
 		cout << "mapeamento_intersec sensores com leituras diferentes, press enter" << endl;
-//		while(!ev3dev::button::enter.process());
-//		usleep(1000000*0.1);
-//		while(!ev3dev::button::enter.process());
+		//		while(!ev3dev::button::enter.process());
+		//		usleep(1000000*0.1);
+		//		while(!ev3dev::button::enter.process());
 	}
 
 	/*Primeira intersecção*/
@@ -283,6 +283,7 @@ void Mapeamento::mapeamento_intersec() {
 				direcao_atual = cp.checkpoint_amarelo;
 
 			caminho_certo();
+			//qnt_cores_mapeadas++; //TODO
 		}
 		else{
 			direcao_atual = direcao::direita;
@@ -306,7 +307,7 @@ void Mapeamento::mapeamento_intersec() {
 			robo->girar(180);
 			while(robo->get_estado() == flag_aceleracao::girar);
 			while(sensor->ler_cor_E() != Cor::branco || sensor->ler_cor_D() != Cor::branco){
-					robo->andar(30);
+				robo->andar(30);
 			}
 			robo->alinhar(sensor, direcao::traz);
 			robo->andar(30);
@@ -381,25 +382,31 @@ void Mapeamento::mapeamento_intersec() {
 					direcao * ultimo_checkpoint = nullptr;
 					if( cp.checkpoint_vermelho != direcao::ndDirecao){
 						soma_direcoes += cp.checkpoint_vermelho;
+						//if(utilizar_arq) outfile << "0";
 					}
 					else  ultimo_checkpoint = &cp.checkpoint_vermelho;
 
 					if( cp.checkpoint_verde != direcao::ndDirecao){
 						soma_direcoes += cp.checkpoint_verde;
+						//if(utilizar_arq) outfile << "1";
 					}
 					else  ultimo_checkpoint = &cp.checkpoint_verde;
 
 					if( cp.checkpoint_amarelo != direcao::ndDirecao){
 						soma_direcoes += cp.checkpoint_amarelo;
+						//if(utilizar_arq) outfile << "2";
 					}
 					else  ultimo_checkpoint = &cp.checkpoint_amarelo;
 
 					*ultimo_checkpoint = (direcao)(6-soma_direcoes);
+					//if(utilizar_arq) outfile << (*ultimo_checkpoint) << endl;
 					cout <<endl << endl << endl << "ultima direcao:"<< *ultimo_checkpoint << endl;
 					cout << "ultima cor, seguir" << endl;
 					usleep(1000000*0.1);
 					caminho_certo();
 					confirmacao_status = true;
+
+
 					qnt_cores_mapeadas ++;
 				}
 				else if(cor_E != cor_atual){

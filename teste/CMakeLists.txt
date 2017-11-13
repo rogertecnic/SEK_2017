@@ -28,4 +28,4 @@ list(APPEND LIBS  src_folder/Resgate.cpp)
 
 
 # adiciona todos os sources e o main para serem compilados juntos
-add_executable(binario  ${LIBS} main.cpp)
+add_executable(8binario  ${LIBS} main.cpp)

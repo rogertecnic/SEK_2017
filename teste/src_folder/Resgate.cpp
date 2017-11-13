@@ -686,86 +686,85 @@ void Resgate::ir_para_final() {
  */
 void Resgate::go_to_plaza() {
 	Cor cor_E = Cor::ndCor;
-	Cor	cor_D = Cor::ndCor;
-	int count_nwhite = 0;
+		Cor	cor_D = Cor::ndCor;
+		int count_nwhite = 0;
 
-	robo->andar(60);
-	while(true){
-		cor_E = sensor->ler_cor_E();
-		cor_D = sensor->ler_cor_D();
+		robo->andar(70);
+		while(true){
+			cor_E = sensor->ler_cor_E();
+			cor_D = sensor->ler_cor_D();
 
-		cout << cor_E << "   " << cor_D << endl;
+			cout << cor_E << "   " << cor_D << endl;
 
-		if(count_nwhite >= 10) break;
+			if(count_nwhite >= 10) break;
 
-		if(cor_E != Cor::branco && cor_D != Cor::branco)
-			count_nwhite++;
-		else count_nwhite = 0;
-		usleep(1000000*0.1);
-	}
-	robo->parar();
-
-	robo->andar(40, 0.22);
-
-	cancela.abrir();
-
-	robo->andar(-30);
-	while(sensor->ler_cor_E() != Cor::branco || sensor->ler_cor_D() != Cor::branco);
-	usleep(100000);
-
-	robo->parar();
-	cancela.fechar();
-
-	//robo.alinhar(&sensor, direcao::frente);
-
-	cancela.fechar();
-
-	robo->girar(-90);
-	while(robo->get_estado() == flag_aceleracao::girar);
-
-	robo->andar(50, 0.40);
-
-	robo->girar(-90);
-	while(robo->get_estado() == flag_aceleracao::girar);
-
-	robo->andar(50, 0.5);
-
-	robo->andar(-30, 0.03);
-
-	robo->girar(-90);
-	while(robo->get_estado() == flag_aceleracao::girar);
-
-
-
-	robo->andar(30);
-	while(ultraE->le_centimetro() < 30);
-	robo->parar();
-	robo->girar(90);
-	while(robo->get_estado() == flag_aceleracao::girar);
-
-	robo->andar(40);
-	while(true){
-		cor_E = sensor->ler_cor_E();
-		cor_D = sensor->ler_cor_D();
-
-		if(cor_E == Cor::fora)
-			realinha(direcao::esquerda);
-		else if (cor_D == Cor::fora)
-			realinha(direcao::direita);
-
-		if((cor_E == Cor::vermelho && cor_D == Cor::vermelho) ||
-				(cor_E == Cor::verde && cor_D == Cor::verde))
-		{
-			//robo->alinhar(sensor, direcao::traz);
-			robo->andar(30);
-			while(sensor->ler_cor_E() != Cor::branco || sensor->ler_cor_D() != Cor::branco);
-			usleep(1000000*0.5);
-			robo->alinhar(sensor, direcao::traz);
-			robo->parar();
-			break;
+			if(cor_E != Cor::branco && cor_D != Cor::branco)
+				count_nwhite++;
+			else count_nwhite = 0;
+			usleep(1000000*0.1);
 		}
-	}
-	carga_bonecos = 0;
+		robo->parar();
+
+		robo->andar(70, 0.25);
+
+		cancela.abrir();
+
+		robo->andar(-70);
+		while(sensor->ler_cor_E() != Cor::branco || sensor->ler_cor_D() != Cor::branco);
+		usleep(100000);
+
+		robo->parar();
+		//cancela->fechar();
+
+		//robo.alinhar(&sensor, direcao::frente);
+
+		cancela.fechar();
+
+		robo->girar(-90);
+		while(robo->get_estado() == flag_aceleracao::girar);
+
+		robo->andar(70, 0.40);
+
+		robo->girar(-90);
+		while(robo->get_estado() == flag_aceleracao::girar);
+
+		robo->andar(70, 0.5);
+		robo->andar(-30, 0.05);
+
+		robo->girar(-90);
+		while(robo->get_estado() == flag_aceleracao::girar);
+
+		robo->andar(50);
+		while(ultraE->le_centimetro() < 30);
+		robo->parar();
+		usleep(1000000*0.5);
+		robo->girar(-90);
+		while(robo->get_estado() == flag_aceleracao::girar);
+
+		robo->andar(-50, 0.05);
+		while(true){
+			robo->andar(-50);
+			cor_E = sensor->ler_cor_E();
+			cor_D = sensor->ler_cor_D();
+
+			if(cor_E == Cor::fora)
+				realinha(direcao::esquerda);
+			else if (cor_D == Cor::fora)
+				realinha(direcao::direita);
+
+			if(cor_E == Cor::verde && cor_D == Cor::verde){
+				robo->alinhar(sensor, direcao::traz);
+				robo->andar(-50, 0.05);
+				robo->andar(-50);
+				while(sensor->ler_cor_E() != Cor::branco || sensor->ler_cor_D() != Cor::branco);
+				//usleep(1000000*0.5);
+				robo->girar(180);
+				robo->parar();
+				cout << "terminei!!!" << endl;
+				usleep(1000000*3);
+				break;
+			}
+		}
 }
 
 void Resgate::go_to_plaza2(){

@@ -57,7 +57,7 @@ private:
 
 
 	/*Variaveis caracteristica do robo*/
-	double fator_croda = 1.0173;
+	double fator_croda = 1.0173; // 1.0173 diminuir pende para direita 1.007 (pouquinho p direita
 	double delay = 5.0;//Em miliseg
 	double aceleracao = 700.0;//Em pwm/seg
 	double raio_roda = 0.0267; // metros
